@@ -26,11 +26,13 @@ export default function Navbar() {
             <section>
                 <div
                     className={"max-w-6xl mx-auto py-6 flex items-center justify-between"}>
-                    <div>
+                    <div className={"text-gray-50 text-shadow-2xs"}>
                         <h1 className={`text-3xl font-semibold ${roboto.className} leading-5`}>LEARNMORE</h1>
-                        <p>Educational Learning Institute</p>
+                        <p className={"text-gray-50"}>Educational Learning
+                            Institute</p>
                     </div>
-                    <nav className={"flex items-center gap-20"}>
+                    <nav
+                        className={"flex items-center gap-20 text-gray-50 bg-[#17867d] py-2 px-5"}>
                         <div className={"flex items-center gap-2"}>
                             <FaRegClock className={"text-4xl"}/>
                             <p className={"flex flex-col leading-5"}>
@@ -54,9 +56,9 @@ export default function Navbar() {
                     </nav>
                 </div>
                 <header
-                    className={"max-w-6xl mx-auto flex items-center justify-between"}>
+                    className={"max-w-6xl mx-auto flex items-center justify-between glass-card"}>
                     <nav>
-                        <ul className={"flex items-center gap-5 p-5"}>
+                        <ul className={"flex items-center gap-5 p-5 text-white "}>
                             {navLinks.map(link => {
                                 return (
                                     <li key={link.id}>
@@ -69,9 +71,10 @@ export default function Navbar() {
                             })}
                         </ul>
                     </nav>
-                    <div>
-                        <h2>Enroll with us</h2>
-                    </div>
+                    <Link href={"#"}
+                          className={"p-5 h-full bg-[#17867d] text-white"}>
+                        Enroll with us
+                    </Link>
                 </header>
             </section>
         </>
