@@ -70,7 +70,7 @@ export default function Navbar() {
                             })}
                         </ul>
                     </nav>
-                    <Link href={"#"}
+                    <Link href={"/enroll"}
                           className={"p-5 h-full bg-yellow-400 text-green-900 font-semibold"}>
                         Enroll with us
                     </Link>

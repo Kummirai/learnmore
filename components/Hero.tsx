@@ -18,7 +18,7 @@ export default function Hero() {
                             creative play, and lifelong friendships.
                         </p>
                         <div className={"flex items-center gap-2 flex-wrap"}>
-                            <Link href={"#"}
+                            <Link href={"/enroll"}
                                   className={"bg-green-600 text-white py-3 px-8 sm:px-10 text-sm sm:text-base"}>Enroll
                                 Your Child</Link>
                             <Link href={"#"}
