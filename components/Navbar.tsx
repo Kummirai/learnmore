@@ -5,6 +5,7 @@ import {FaRegClock} from "react-icons/fa6"
 import {BsTelephone} from "react-icons/bs"
 import {FaFacebook, FaInstagramSquare} from "react-icons/fa"
 import {LuMenu, LuX} from "react-icons/lu"
+import {FaGraduationCap} from "react-icons/fa6"
 import Link from "next/link"
 import {useState} from "react"
 
@@ -34,9 +35,12 @@ export default function Navbar() {
     return (
         <section className={"bg-green-700"}>
             <div className={"max-w-6xl mx-auto py-4 md:py-6 flex items-center justify-between px-4 md:px-0"}>
-                <Link href={"/"} className={"text-gray-50"}>
-                    <h1 className={`text-2xl md:text-3xl font-semibold ${roboto.className} leading-5`}>LEARNMORE</h1>
-                    <p className={"text-xs md:text-sm text-gray-50"}>Primary School</p>
+                <Link href={"/"} className={"text-gray-50 flex items-center gap-2"}>
+                    <FaGraduationCap className={"text-4xl md:text-5xl text-yellow-400 self-center"}/>
+                    <div>
+                        <h1 className={`text-2xl md:text-3xl font-semibold ${roboto.className} leading-5`}>LEARNMORE</h1>
+                        <p className={"text-xs md:text-sm text-gray-50"}>Primary School</p>
+                    </div>
                 </Link>
                 <nav
                     className={"hidden lg:flex items-center gap-6 xl:gap-10 text-gray-50 bg-green-600 py-2 px-4 xl:px-5"}>
@@ -64,7 +68,7 @@ export default function Navbar() {
             </div>
 
             <header
-                className={"max-w-6xl mx-auto hidden lg:flex items-center justify-between bg-green-800/90 backdrop-blur-sm"}>
+                className={"max-w-6xl mx-auto hidden lg:flex items-center justify-between bg-green-800/40 backdrop-blur-xl"}>
                 <nav className={"overflow-x-auto"}>
                     <ul className={"flex items-center gap-3 xl:gap-5 p-5 text-white whitespace-nowrap"}>
                         {navLinks.map(link => (
@@ -84,9 +88,12 @@ export default function Navbar() {
             {open && (
                 <div className={"fixed inset-0 z-50 bg-green-700 flex flex-col lg:hidden overflow-y-auto"}>
                     <div className={"flex items-center justify-between px-4 py-4"}>
-                        <Link href={"/"} className={"text-gray-50"} onClick={() => setOpen(false)}>
-                            <h1 className={`text-2xl font-semibold ${roboto.className}`}>LEARNMORE</h1>
-                            <p className={"text-xs text-gray-50"}>Primary School</p>
+                        <Link href={"/"} className={"text-gray-50 flex items-center gap-2"} onClick={() => setOpen(false)}>
+                            <FaGraduationCap className={"text-4xl text-yellow-400 self-center"}/>
+                            <div>
+                                <h1 className={`text-2xl font-semibold ${roboto.className} leading-5`}>LEARNMORE</h1>
+                                <p className={"text-xs text-gray-50"}>Primary School</p>
+                            </div>
                         </Link>
                         <button onClick={() => setOpen(false)} className={"text-white p-2"}>
                             <LuX className={"text-3xl"}/>
