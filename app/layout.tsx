@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const geistSans = Geist({
@@ -23,7 +24,8 @@ export default function RootLayout({children}: Readonly<{ children: React.ReactN
         <html lang="en"
               className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
         <body className="min-h-full flex flex-col">
-        {children}
+        <main className={"flex-1"}>{children}</main>
+        <Footer/>
         <WhatsAppButton/>
         </body>
         </html>

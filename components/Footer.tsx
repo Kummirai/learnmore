@@ -16,7 +16,7 @@ export default function Footer() {
     const [state, formAction, pending] = useActionState(subscribeNewsletter, null)
 
     return (
-        <footer className={"bg-gray-900 text-gray-300 px-4"}>
+        <footer className={"bg-green-950 text-green-200 px-4"}>
             <div className={"max-w-6xl mx-auto py-16"}>
                 <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"}>
                     <div>
@@ -84,7 +84,7 @@ export default function Footer() {
                         ) : (
                             <form action={formAction} className={"flex"}>
                                 <input type="email" name={"email"} placeholder="Your Email" required
-                                       className={"bg-gray-800 text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-green-600"}/>
+                                       className={"bg-green-900 text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-yellow-400 text-white placeholder:text-green-300"}/>
                                 <button type={"submit"} disabled={pending}
                                         className={"bg-yellow-400 text-green-900 px-4 py-2 text-sm font-medium hover:bg-yellow-500 disabled:opacity-60 transition-colors shrink-0"}>
                                     {pending ? "..." : "Subscribe"}
@@ -100,7 +100,7 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className={"border-t border-gray-800 py-6 text-center text-sm"}>
+            <div className={"border-t border-green-800 py-6 text-center text-sm"}>
                 <p>&copy; {new Date().getFullYear()} LearnMore Primary School. All rights reserved.</p>
             </div>
         </footer>
