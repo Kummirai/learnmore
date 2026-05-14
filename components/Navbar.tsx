@@ -28,11 +28,10 @@ export default function Navbar() {
                     className={"max-w-6xl mx-auto py-6 flex items-center justify-between"}>
                     <div className={"text-gray-50 text-shadow-2xs"}>
                         <h1 className={`text-3xl font-semibold ${roboto.className} leading-5`}>LEARNMORE</h1>
-                        <p className={"text-gray-50"}>Educational Learning
-                            Institute</p>
+                        <p className={"text-gray-50"}>Primary School</p>
                     </div>
                     <nav
-                        className={"flex items-center gap-20 text-gray-50 bg-[#17867d] py-2 px-5"}>
+                        className={"flex items-center gap-20 text-gray-50 bg-green-600 py-2 px-5"}>
                         <div className={"flex items-center gap-2"}>
                             <FaRegClock className={"text-4xl"}/>
                             <p className={"flex flex-col leading-5"}>
@@ -72,7 +71,7 @@ export default function Navbar() {
                         </ul>
                     </nav>
                     <Link href={"#"}
-                          className={"p-5 h-full bg-[#17867d] text-white"}>
+                          className={"p-5 h-full bg-yellow-400 text-green-900 font-semibold"}>
                         Enroll with us
                     </Link>
                 </header>
