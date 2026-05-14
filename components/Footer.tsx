@@ -5,7 +5,7 @@ import {Roboto} from "next/font/google";
 import {FaFacebook, FaInstagramSquare, FaTwitter} from "react-icons/fa";
 import {LuMapPin, LuPhone, LuMail, LuClock, LuCircleCheck, LuCircleAlert} from "react-icons/lu";
 import {useActionState} from "react";
-import {subscribeNewsletter} from "@/app/newsletter/actions";
+import {subscribeNewsletter} from "@/app/(main)/newsletter/actions";
 
 const roboto = Roboto({
     variable: "--font-geist-mono",

@@ -32,7 +32,7 @@ export default function Navbar() {
     ]
 
     return (
-        <section>
+        <section className={"bg-green-700"}>
             <div className={"max-w-6xl mx-auto py-4 md:py-6 flex items-center justify-between px-4 md:px-0"}>
                 <Link href={"/"} className={"text-gray-50"}>
                     <h1 className={`text-2xl md:text-3xl font-semibold ${roboto.className} leading-5`}>LEARNMORE</h1>
@@ -64,7 +64,7 @@ export default function Navbar() {
             </div>
 
             <header
-                className={"max-w-6xl mx-auto hidden lg:flex items-center justify-between glass-card"}>
+                className={"max-w-6xl mx-auto hidden lg:flex items-center justify-between bg-green-800/90 backdrop-blur-sm"}>
                 <nav className={"overflow-x-auto"}>
                     <ul className={"flex items-center gap-3 xl:gap-5 p-5 text-white whitespace-nowrap"}>
                         {navLinks.map(link => (
