@@ -69,7 +69,7 @@ export default function Courses() {
                             <p className={"text-gray-600 text-sm leading-relaxed mb-4"}>{course.description}</p>
                             <div className={"flex items-center justify-between"}>
                                 <span className={"text-sm text-gray-500"}>{course.students} Learners</span>
-                                <Link href={"#"}
+                                <Link href={"/subjects"}
                                       className={"text-green-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
                                     Learn More <LuArrowRight/>
                                 </Link>

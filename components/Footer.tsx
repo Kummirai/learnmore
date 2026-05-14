@@ -1,7 +1,11 @@
+"use client"
+
 import Link from "next/link"
 import {Roboto} from "next/font/google";
 import {FaFacebook, FaInstagramSquare, FaTwitter} from "react-icons/fa";
-import {LuMapPin, LuPhone, LuMail, LuClock} from "react-icons/lu";
+import {LuMapPin, LuPhone, LuMail, LuClock, LuCircleCheck, LuCircleAlert} from "react-icons/lu";
+import {useActionState} from "react";
+import {subscribeNewsletter} from "@/app/newsletter/actions";
 
 const roboto = Roboto({
     variable: "--font-geist-mono",
@@ -9,6 +13,8 @@ const roboto = Roboto({
 });
 
 export default function Footer() {
+    const [state, formAction, pending] = useActionState(subscribeNewsletter, null)
+
     return (
         <footer className={"bg-gray-900 text-gray-300 px-4"}>
             <div className={"max-w-6xl mx-auto py-16"}>
@@ -16,7 +22,7 @@ export default function Footer() {
                     <div>
                         <h3 className={`text-2xl font-semibold text-white ${roboto.className} mb-4`}>LEARNMORE</h3>
                         <p className={"text-sm leading-relaxed mb-4"}>
-                            Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.
+                            A nurturing primary school for learners from Grade R to Grade 7, building bright futures since 2000.
                         </p>
                         <div className={"flex items-center gap-3"}>
                             <FaFacebook className={"hover:text-yellow-400 cursor-pointer transition-colors"}/>
@@ -27,10 +33,18 @@ export default function Footer() {
                     <div>
                         <h4 className={"text-white font-semibold mb-4"}>Quick Links</h4>
                         <ul className={"space-y-2 text-sm"}>
-                            {["About Us", "Our Courses", "Our Team", "Pricing", "Contact"].map((link, i) => (
+                            {[
+                                {label: "About Us", path: "/about"},
+                                {label: "Our Subjects", path: "/subjects"},
+                                {label: "Our Team", path: "/team"},
+                                {label: "School Fees", path: "/fees"},
+                                {label: "FAQ", path: "/faq"},
+                                {label: "Contact", path: "/contact"},
+                            ].map((link, i) => (
                                 <li key={i}>
-                                    <Link href={"#"} className={"hover:text-yellow-400 transition-colors"}>
-                                        {link}
+                                    <Link href={link.path}
+                                          className={"hover:text-yellow-400 transition-colors"}>
+                                        {link.label}
                                     </Link>
                                 </li>
                             ))}
@@ -53,7 +67,7 @@ export default function Footer() {
                             </li>
                             <li className={"flex items-start gap-2"}>
                                 <LuClock className={"mt-1 shrink-0 text-yellow-400"}/>
-                                <span>Mon - Fri: 8:00AM - 4:00PM</span>
+                                <span>Mon - Fri: 7:30AM - 4:00PM</span>
                             </li>
                         </ul>
                     </div>
@@ -62,19 +76,32 @@ export default function Footer() {
                         <p className={"text-sm leading-relaxed mb-4"}>
                             Subscribe to get the latest updates and news.
                         </p>
-                        <div className={"flex"}>
-                            <input type="email" placeholder="Your Email"
-                                   className={"bg-gray-800 text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-green-600"}/>
-                            <button
-                                className={"bg-yellow-400 text-green-900 px-4 py-2 text-sm font-medium hover:bg-yellow-500 transition-colors"}>
-                                Subscribe
-                            </button>
-                        </div>
+                        {state?.success ? (
+                            <div className={"flex items-start gap-2 text-sm text-green-400"}>
+                                <LuCircleCheck className={"mt-0.5 shrink-0"}/>
+                                <span>{state.message}</span>
+                            </div>
+                        ) : (
+                            <form action={formAction} className={"flex"}>
+                                <input type="email" name={"email"} placeholder="Your Email" required
+                                       className={"bg-gray-800 text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-green-600"}/>
+                                <button type={"submit"} disabled={pending}
+                                        className={"bg-yellow-400 text-green-900 px-4 py-2 text-sm font-medium hover:bg-yellow-500 disabled:opacity-60 transition-colors shrink-0"}>
+                                    {pending ? "..." : "Subscribe"}
+                                </button>
+                            </form>
+                        )}
+                        {state?.message && !state.success && (
+                            <div className={"flex items-start gap-2 text-sm text-red-400 mt-2"}>
+                                <LuCircleAlert className={"mt-0.5 shrink-0"}/>
+                                <span>{state.message}</span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
             <div className={"border-t border-gray-800 py-6 text-center text-sm"}>
-                <p>&copy; {new Date().getFullYear()} LearnMore. All rights reserved.</p>
+                <p>&copy; {new Date().getFullYear()} LearnMore Primary School. All rights reserved.</p>
             </div>
         </footer>
     )
