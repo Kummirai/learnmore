@@ -89,7 +89,7 @@ export default function Team() {
                             <p className={"text-gray-500 mt-2"}>{group.subtitle}</p>
                         </div>
                         <div className={"flex flex-wrap justify-center gap-8"}>
-                            {group.members.map((member, i) => (
+                            {group.members?.map((member, i) => (
                                 <div key={i} className={"text-center group w-72 bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-shadow"}>
                                     <div
                                         className={"size-36 sm:size-40 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300"}>
