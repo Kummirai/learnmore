@@ -4,34 +4,26 @@ import {LuArrowLeft, LuCheck, LuX} from "react-icons/lu"
 const fees = [
     {
         grade: "Grade R",
-        tuition: "R 8,500",
-        registration: "R 1,200",
-        resources: "R 950",
-        total: "R 10,650",
+        monthly: "R 600",
+        annual: "R 7,200",
         featured: false,
     },
     {
         grade: "Grade 1 - 3",
-        tuition: "R 9,800",
-        registration: "R 1,200",
-        resources: "R 1,100",
-        total: "R 12,100",
+        monthly: "R 650",
+        annual: "R 7,800",
         featured: true,
     },
     {
         grade: "Grade 4 - 5",
-        tuition: "R 10,500",
-        registration: "R 1,200",
-        resources: "R 1,250",
-        total: "R 12,950",
+        monthly: "R 700",
+        annual: "R 8,400",
         featured: false,
     },
     {
         grade: "Grade 6 - 7",
-        tuition: "R 11,200",
-        registration: "R 1,200",
-        resources: "R 1,400",
-        total: "R 13,800",
+        monthly: "R 750",
+        annual: "R 9,000",
         featured: false,
     },
 ]
@@ -79,12 +71,8 @@ export default function FeesPage() {
                                 </span>
                             )}
                             <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>{f.grade}</h3>
-                            <p className={"text-3xl font-bold text-green-600 mb-4"}>{f.total}</p>
-                            <div className={"text-sm text-gray-500 space-y-1 mb-4"}>
-                                <p>Tuition: <span className={"text-gray-700"}>{f.tuition}</span></p>
-                                <p>Registration: <span className={"text-gray-700"}>{f.registration}</span></p>
-                                <p>Resources: <span className={"text-gray-700"}>{f.resources}</span></p>
-                            </div>
+                            <p className={"text-3xl font-bold text-green-600 mb-1"}>{f.monthly}</p>
+                            <p className={"text-sm text-gray-500 mb-4"}>per month / <span className={"text-gray-700"}>{f.annual}</span> annually</p>
                             <Link href={"/enroll"}
                                   className={`block text-sm font-medium py-2.5 rounded transition-colors ${f.featured ? "bg-green-600 text-white hover:bg-green-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                                 Enroll Now
