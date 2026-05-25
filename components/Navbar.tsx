@@ -22,10 +22,7 @@ const navGroups: NavGroup[] = [
         link: "Academics", items: [
         {link: "Subjects", path: "/subjects"},
         {link: "Timetable", path: "/timetable"},
-        {link: "Homework", path: "/homework"},
         {link: "Resources", path: "/resources"},
-        {link: "Reports", path: "/reports"},
-        {link: "Attendance", path: "/attendance"},
         {link: "Merits", path: "/merits"},
     ]},
     {
