@@ -4,7 +4,7 @@ import {LuBookOpen} from "react-icons/lu"
 
 export default function Hero() {
     return (
-        <section className={"relative min-h-[calc(100vh-168px)] max-lg:min-h-[calc(100vh-120px)] flex items-center px-4 overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-green-800"}>
+        <section className={"relative h-[100vh] max-lg:min-h-[calc(100vh-120px)] flex items-center px-4 overflow-hidden bg-gradient-to-br from-green-600 via-green-700 to-green-800"}>
             <div className={"absolute top-10 -left-20 size-72 rounded-full bg-green-500/20 blur-3xl"}/>
             <div className={"absolute bottom-10 -right-20 size-96 rounded-full bg-yellow-400/10 blur-3xl"}/>
             <div className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[500px] rounded-full bg-green-400/5 blur-3xl"}/>

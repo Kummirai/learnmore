@@ -1,15 +1,15 @@
 "use client"
 
 import {useState} from "react"
-import {LuChevronLeft, LuChevronRight, LuImage} from "react-icons/lu"
+import {LuChevronLeft, LuChevronRight} from "react-icons/lu"
 
 const photos = [
-    {label: "Sports Day 2025", color: "bg-green-600"},
-    {label: "Science Fair Projects", color: "bg-blue-600"},
-    {label: "Grade R Graduation", color: "bg-purple-600"},
-    {label: "Heritage Day Celebrations", color: "bg-orange-600"},
-    {label: "School Choir Performance", color: "bg-pink-600"},
-    {label: "Chess Tournament", color: "bg-cyan-600"},
+    {label: "Sports Day 2025", src: "https://images.unsplash.com/photo-1774599804869-71bafe4e4b59?q=80&w=400&h=300&fit=crop&fm=webp"},
+    {label: "Science Fair Projects", src: "https://images.unsplash.com/photo-1764192736615-02dad1afc2a3?q=80&w=400&h=300&fit=crop&fm=webp"},
+    {label: "Grade R Graduation", src: "https://images.unsplash.com/photo-1625999874116-dba9a603fa24?q=80&w=400&h=300&fit=crop&fm=webp"},
+    {label: "Heritage Day Celebrations", src: "https://images.unsplash.com/photo-1744972974629-daa2fdaa15ee?q=80&w=400&h=300&fit=crop&fm=webp"},
+    {label: "School Choir Performance", src: "https://images.unsplash.com/photo-1729284440498-19b2295ac7bb?q=80&w=400&h=300&fit=crop&fm=webp"},
+    {label: "Chess Tournament", src: "https://images.unsplash.com/photo-1630863494122-6b726a344d3d?q=80&w=400&h=300&fit=crop&fm=webp"},
 ]
 
 export default function PhotoHighlights() {
@@ -30,9 +30,14 @@ export default function PhotoHighlights() {
                     <div className={"grid grid-cols-2 md:grid-cols-4 gap-4"}>
                         {photos.slice(start, start + visible).map((p, i) => (
                             <div key={i}
-                                 className={`${p.color} rounded-xl aspect-[4/3] flex flex-col items-center justify-center text-white hover:scale-[1.02] transition-transform cursor-pointer`}>
-                                <LuImage className={"text-4xl mb-2 opacity-60"}/>
-                                <span className={"text-sm font-medium text-center px-2"}>{p.label}</span>
+                                 className={"relative rounded-xl aspect-[4/3] overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer"}>
+                                <img src={p.src} alt={p.label}
+                                     className={"absolute inset-0 size-full object-cover"}/>
+                                <div
+                                    className={"absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"}/>
+                                <div className={"absolute bottom-0 left-0 right-0 p-3"}>
+                                    <span className={"text-sm font-medium text-white"}>{p.label}</span>
+                                </div>
                             </div>
                         ))}
                     </div>
