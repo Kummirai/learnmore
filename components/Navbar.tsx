@@ -29,9 +29,6 @@ const navGroups: NavGroup[] = [
         link: "School Life", items: [
         {link: "Gallery", path: "/gallery"},
         {link: "Events", path: "/calendar"},
-        {link: "Aftercare", path: "/aftercare"},
-        {link: "Lunch Menu", path: "/lunch"},
-        {link: "Birthdays", path: "/birthdays"},
     ]},
     {
         link: "Connect", items: [
@@ -79,7 +76,7 @@ export default function Navbar() {
                     <div className={"flex items-center gap-2 text-sm"}>
                         <BsTelephone className={"text-2xl xl:text-4xl shrink-0"}/>
                         <p className={"flex flex-col leading-4 xl:leading-5"}>
-                            <span>Call Us</span><span>+27 39 392 9210</span>
+                            <span>Call Us</span>                            <span>+27 78 267 7436</span>
                         </p>
                     </div>
                     <div className={"flex items-center gap-3"}>

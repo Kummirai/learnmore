@@ -1,6 +1,6 @@
 "use client"
 
-import {useActionState} from "react"
+import {useActionState, useEffect} from "react"
 import {submitEnrollment} from "./actions"
 import Link from "next/link"
 import {LuArrowLeft, LuCircleCheck, LuCircleAlert} from "react-icons/lu"
@@ -30,6 +30,12 @@ function Field({label, name, type = "text", error, ...props}: {
 
 export default function EnrollPage() {
     const [state, formAction, pending] = useActionState(submitEnrollment, null)
+
+    useEffect(() => {
+        if (state?.success && state.whatsappUrl) {
+            window.open(state.whatsappUrl, "_blank")
+        }
+    }, [state])
 
     if (state?.success) {
         return (

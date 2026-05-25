@@ -16,7 +16,8 @@ export default function TourCta() {
                     See our school in action! Schedule a personal tour and meet our teachers, 
                     explore our classrooms, and experience the LearnMore difference firsthand.
                 </p>
-                <Link href={"/contact"}
+                <Link href={"https://wa.me/27782677436?text=Hello%20LearnMore!%20I%27d%20like%20to%20book%20a%20school%20tour."}
+                      target={"_blank"}
                       className={"inline-flex items-center gap-2 bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-green-700 transition-colors"}>
                     Book a School Tour <LuArrowRight/>
                 </Link>

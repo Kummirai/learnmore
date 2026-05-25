@@ -4,6 +4,7 @@ export type EnrollState = {
     success: boolean
     message: string
     errors?: Record<string, string>
+    whatsappUrl?: string
 }
 
 export async function submitEnrollment(prev: EnrollState | null, formData: FormData): Promise<EnrollState> {
@@ -15,6 +16,8 @@ export async function submitEnrollment(prev: EnrollState | null, formData: FormD
     const childName = formData.get("childName") as string
     const childDob = formData.get("childDob") as string
     const grade = formData.get("grade") as string
+    const previousSchool = formData.get("previousSchool") as string
+    const notes = formData.get("notes") as string
 
     const errors: Record<string, string> = {}
 
@@ -29,8 +32,11 @@ export async function submitEnrollment(prev: EnrollState | null, formData: FormD
         return {success: false, message: "Please fix the errors below.", errors}
     }
 
+    const text = `New Enrollment Request%0A%0AParent: ${encodeURIComponent(parentName)}%0AEmail: ${encodeURIComponent(parentEmail)}%0APhone: ${encodeURIComponent(parentPhone)}%0AChild: ${encodeURIComponent(childName)}%0ADOB: ${encodeURIComponent(childDob)}%0AGrade: ${encodeURIComponent(grade)}${previousSchool ? `%0APrevious School: ${encodeURIComponent(previousSchool)}` : ""}${notes ? `%0ANotes: ${encodeURIComponent(notes)}` : ""}`
+
     return {
         success: true,
-        message: `Thank you, ${parentName}! Your enrollment for ${childName} (Grade ${grade}) has been received. We will contact you at ${parentEmail} within 2 business days.`
+        message: `Thank you, ${parentName}! Redirecting to WhatsApp to send your enrollment details...`,
+        whatsappUrl: `https://wa.me/27782677436?text=${text}`,
     }
 }

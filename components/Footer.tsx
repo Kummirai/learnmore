@@ -59,7 +59,7 @@ export default function Footer() {
                             </li>
                             <li className={"flex items-center gap-2"}>
                                 <LuPhone className={"shrink-0 text-yellow-400"}/>
-                                <span>+27 39 392 9210</span>
+                                <span>+27 78 267 7436</span>
                             </li>
                             <li className={"flex items-center gap-2"}>
                                 <LuMail className={"shrink-0 text-yellow-400"}/>

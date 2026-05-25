@@ -1,12 +1,18 @@
 "use client"
 
-import {useActionState} from "react"
+import {useActionState, useEffect} from "react"
 import Link from "next/link"
 import {LuArrowLeft, LuMapPin, LuPhone, LuMail, LuClock, LuCircleCheck, LuCircleAlert} from "react-icons/lu"
 import {submitContact} from "./actions"
 
 export default function ContactPage() {
     const [state, formAction, pending] = useActionState(submitContact, null)
+
+    useEffect(() => {
+        if (state?.success && state.whatsappUrl) {
+            window.open(state.whatsappUrl, "_blank")
+        }
+    }, [state])
 
     return (
         <section className={"flex-1 px-4 py-12"}>
@@ -79,7 +85,7 @@ export default function ContactPage() {
                                 </div>
                                 <div className={"flex items-center gap-3"}>
                                     <LuPhone className={"shrink-0 text-green-600"}/>
-                                    <span className={"text-gray-600"}>+27 39 392 9210</span>
+                                    <span className={"text-gray-600"}>+27 78 267 7436</span>
                                 </div>
                                 <div className={"flex items-center gap-3"}>
                                     <LuMail className={"shrink-0 text-green-600"}/>

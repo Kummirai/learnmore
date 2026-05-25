@@ -4,7 +4,7 @@ import {LuMapPin, LuPhone, LuMail, LuClock, LuArrowRight} from "react-icons/lu"
 export default function Contact() {
     const details = [
         {icon: <LuMapPin className={"text-2xl text-green-600"}/>, label: "Address", value: "123 Education Street, Learning City, 2000"},
-        {icon: <LuPhone className={"text-2xl text-green-600"}/>, label: "Phone", value: "+27 39 392 9210"},
+        {icon: <LuPhone className={"text-2xl text-green-600"}/>, label: "Phone", value: "+27 78 267 7436"},
         {icon: <LuMail className={"text-2xl text-green-600"}/>, label: "Email", value: "info@learnmore.edu"},
         {icon: <LuClock className={"text-2xl text-green-600"}/>, label: "Hours", value: "Mon - Fri: 7:30AM - 4:00PM"},
     ]
@@ -47,9 +47,10 @@ export default function Contact() {
                                    className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600"}/>
                             <textarea rows={4} placeholder="Your Message" required
                                       className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 resize-none"}/>
-                            <Link href={"/contact"}
+                            <Link href={"https://wa.me/27782677436?text=Hello%20LearnMore!%20I%27d%20like%20to%20make%20an%20enquiry."}
+                                  target={"_blank"}
                                   className={"inline-flex items-center gap-2 bg-green-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"}>
-                                Send Message <LuArrowRight/>
+                                Send via WhatsApp <LuArrowRight/>
                             </Link>
                         </form>
                     </div>

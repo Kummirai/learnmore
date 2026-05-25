@@ -88,15 +88,15 @@ export default function Team() {
                             </h3>
                             <p className={"text-gray-500 mt-2"}>{group.subtitle}</p>
                         </div>
-                        <div className={"grid grid-cols-1 sm:grid-cols-2 justify-items-center gap-8"}>
+                        <div className={"flex flex-wrap justify-center gap-8"}>
                             {group.members.map((member, i) => (
-                                <div key={i} className={"text-center group w-full max-w-72 bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-shadow"}>
+                                <div key={i} className={"text-center group w-72 bg-white rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-shadow"}>
                                     <div
-                                        className={"size-32 sm:size-36 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300"}>
+                                        className={"size-36 sm:size-40 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300"}>
                                         <img src={member.src} alt={member.name}
                                              className={"size-full object-cover"}/>
                                     </div>
-                                    <h4 className={"text-lg font-semibold text-gray-800"}>{member.name}</h4>
+                                    <h4 className={"text-xl font-semibold text-gray-800"}>{member.name}</h4>
                                     <p className={"text-green-600 text-sm mb-3"}>{member.role}</p>
                                     <div className={"flex items-center justify-center gap-3 text-gray-400"}>
                                         <FaFacebook
