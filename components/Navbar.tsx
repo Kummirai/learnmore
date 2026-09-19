@@ -1,8 +1,6 @@
 "use client";
 
 import { Roboto } from "next/font/google";
-import { FaRegClock } from "react-icons/fa6";
-import { BsTelephone } from "react-icons/bs";
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import { FaGraduationCap } from "react-icons/fa6";
@@ -57,7 +55,7 @@ const flatLinks = [
   ...navGroups.flatMap((g) => g.items),
 ];
 
-export default function Navbar() {
+export default function Navbar({ overlay = false }: { overlay?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(
     {},
@@ -68,13 +66,20 @@ export default function Navbar() {
   };
 
   return (
-    <section style={{backgroundColor: "color-mix(in srgb, var(--club-accent) 10%, #eff5f9)"}}>
+    <section
+      className={overlay ? "absolute inset-x-0 top-0 z-30 pt-3 sm:pt-4 lg:pt-5" : undefined}
+      style={
+        overlay
+          ? undefined
+          : {background: "linear-gradient(90deg, var(--club-chrome-dark), var(--club-chrome))"}
+      }
+    >
       <div
         className={
-          "max-w-6xl mx-auto py-4 md:py-6 flex items-center justify-between px-4 md:px-0"
+          "max-w-6xl mx-auto px-4 md:px-0 flex items-center justify-between gap-4"
         }
       >
-        <Link href={"/"} className={"text-navy flex items-center gap-2"}>
+        <Link href={"/"} className={"text-white flex items-center gap-2 py-3 md:py-4"}>
           <FaGraduationCap
             className={"text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"}
           />
@@ -84,51 +89,15 @@ export default function Navbar() {
             >
               Relate
             </h1>
-            <p className={"text-xs md:text-sm text-navy-dark"}>
+            <p className={"text-xs md:text-sm text-white/70"}>
               World
             </p>
           </div>
         </Link>
-        <nav
-          className={
-            "hidden lg:flex items-center gap-6 xl:gap-10 text-gray-50 bg-navy-dark py-2 px-4 xl:px-5"
-          }
-        >
-          <div className={"flex items-center gap-2 text-sm"}>
-            <FaRegClock className={"text-2xl xl:text-4xl shrink-0"} />
-            <p className={"flex flex-col leading-4 xl:leading-5"}>
-              <span>Monday - Friday</span>
-              <span>8:00AM - 4:00PM</span>
-            </p>
-          </div>
-          <div className={"flex items-center gap-2 text-sm"}>
-            <BsTelephone className={"text-2xl xl:text-4xl shrink-0"} />
-            <p className={"flex flex-col leading-4 xl:leading-5"}>
-              <span>Call Us</span> <span>+27 78 267 7436</span>
-            </p>
-          </div>
-          <div className={"flex items-center gap-3"}>
-            <FaFacebook className={"text-xl xl:text-2xl"} />
-            <FaInstagramSquare className={"text-xl xl:text-2xl"} />
-          </div>
-        </nav>
-        <button
-          onClick={() => setMenuOpen(true)}
-          className={"lg:hidden text-white p-2"}
-        >
-          <LuMenu className={"text-3xl"} />
-        </button>
-      </div>
-
-      <header
-        className={
-          "max-w-6xl mx-auto hidden lg:flex items-center justify-between bg-navy-dark backdrop-blur-xl relative z-50"
-        }
-      >
-        <nav>
+        <nav className={"hidden lg:block"}>
           <ul
             className={
-              "flex items-center gap-3 xl:gap-5 p-5 text-white whitespace-nowrap"
+              "flex items-center gap-3 xl:gap-5 py-3 text-white whitespace-nowrap"
             }
           >
             <li>
@@ -200,20 +169,38 @@ export default function Navbar() {
             </li>
           </ul>
         </nav>
-        <Link
-          href={"/enroll"}
-          className={`p-5 h-full  font-semibold text-sm xl:text-base shrink-0`}
-          style={{backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)"}}
-        >
-          Join our clubs
-        </Link>
-      </header>
+        <div className={"flex items-center gap-3"}>
+          <div className={"hidden lg:flex items-center gap-3 text-white/80"}>
+            <FaFacebook
+              className={
+                "text-xl xl:text-2xl hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
+              }
+            />
+            <FaInstagramSquare
+              className={
+                "text-xl xl:text-2xl hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
+              }
+            />
+          </div>
+          <Link
+            href={"/enroll"}
+            className={`hidden lg:inline-flex px-5 py-3 font-semibold text-sm xl:text-base shrink-0`}
+            style={{backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)"}}
+          >
+            Join our clubs
+          </Link>
+          <button onClick={() => setMenuOpen(true)} className={"lg:hidden text-white p-2"}>
+            <LuMenu className={"text-3xl"} />
+          </button>
+        </div>
+      </div>
 
       {menuOpen && (
         <div
           className={
-            "fixed inset-0 z-50 bg-navy-dark flex flex-col lg:hidden overflow-y-auto"
+            "fixed inset-0 z-50 flex flex-col lg:hidden overflow-y-auto"
           }
+          style={{backgroundColor: "var(--club-chrome-dark)"}}
         >
           <div className={"flex items-center justify-between px-4 py-4"}>
             <Link

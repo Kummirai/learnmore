@@ -16,7 +16,8 @@ export default function Footer() {
     const [state, formAction, pending] = useActionState(subscribeNewsletter, null)
 
     return (
-        <footer className={"bg-navy-dark text-ice-blue px-4"}>
+        <footer className={"text-ice-blue px-4"}
+                 style={{background: "linear-gradient(180deg, var(--club-chrome), var(--club-chrome-dark))"}}>
             <div className={"h-1"} style={{backgroundColor: "var(--club-accent)"}}/>
             <div className={"max-w-6xl mx-auto py-16"}>
                 <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"}>
