@@ -67,11 +67,18 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
 
   return (
     <section
-      className={overlay ? "absolute inset-x-0 top-0 z-30 pt-3 sm:pt-4 lg:pt-5" : undefined}
+      className={
+        overlay
+          ? "absolute inset-x-0 top-0 z-30 pt-3 sm:pt-4 lg:pt-5"
+          : undefined
+      }
       style={
         overlay
           ? undefined
-          : {background: "linear-gradient(90deg, var(--club-chrome-dark), var(--club-chrome))"}
+          : {
+              background:
+                "linear-gradient(90deg, var(--club-chrome-dark), var(--club-chrome))",
+            }
       }
     >
       <div
@@ -79,9 +86,14 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           "max-w-6xl mx-auto px-4 md:px-0 flex items-center justify-between gap-4"
         }
       >
-        <Link href={"/"} className={"text-white flex items-center gap-2 py-3 md:py-4"}>
+        <Link
+          href={"/"}
+          className={"text-white flex items-center gap-2 py-3 md:py-4"}
+        >
           <FaGraduationCap
-            className={"text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"}
+            className={
+              "text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"
+            }
           />
           <div>
             <h1
@@ -89,9 +101,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             >
               Relate
             </h1>
-            <p className={"text-xs md:text-sm text-white/70"}>
-              World
-            </p>
+            <p className={"text-xs md:text-sm text-white/70"}>World</p>
           </div>
         </Link>
         <nav className={"hidden lg:block"}>
@@ -185,11 +195,17 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           <Link
             href={"/enroll"}
             className={`hidden lg:inline-flex px-5 py-3 font-semibold text-sm xl:text-base shrink-0`}
-            style={{backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)"}}
+            style={{
+              backgroundColor: "var(--club-accent)",
+              color: "var(--club-on-accent)",
+            }}
           >
             Join our clubs
           </Link>
-          <button onClick={() => setMenuOpen(true)} className={"lg:hidden text-white p-2"}>
+          <button
+            onClick={() => setMenuOpen(true)}
+            className={"lg:hidden text-white p-2"}
+          >
             <LuMenu className={"text-3xl"} />
           </button>
         </div>
@@ -200,7 +216,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           className={
             "fixed inset-0 z-50 flex flex-col lg:hidden overflow-y-auto"
           }
-          style={{backgroundColor: "var(--club-chrome-dark)"}}
+          style={{ backgroundColor: "var(--club-chrome-dark)" }}
         >
           <div className={"flex items-center justify-between px-4 py-4"}>
             <Link
@@ -209,13 +225,15 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               onClick={() => setMenuOpen(false)}
             >
               <FaGraduationCap
-                className={"text-4xl text-[color:var(--club-accent)] self-center"}
+                className={
+                  "text-4xl text-[color:var(--club-accent)] self-center"
+                }
               />
               <div>
                 <h1
                   className={`text-2xl font-semibold ${roboto.className} leading-5`}
                 >
-                  LEARNMORE
+                  RelateWorld
                 </h1>
                 <p className={"text-xs text-gray-50"}>Primary School</p>
               </div>
