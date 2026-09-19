@@ -7,6 +7,49 @@ import {STORE_CATEGORIES, STORE_ITEMS, type StoreCategory} from "@/constants/rel
 
 const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`
 
+const orderLink = (item?: {name: string; price: number}) =>
+    `https://wa.me/27782677436${item ? `?text=${encodeURIComponent(`Hi RelateWorld! I'd like to order the ${item.name} (${formatPrice(item.price)}).`)}` : ""}`
+
+function StoreCard({item}: {item: (typeof STORE_ITEMS)[number]}) {
+    return (
+        <div className={"group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"}>
+            <div className={"relative aspect-square overflow-hidden bg-gray-100"}>
+                <img
+                    src={item.image}
+                    alt={item.name}
+                    loading={"lazy"}
+                    className={"w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"}
+                />
+                <span className={"absolute top-3 left-3 bg-white/90 backdrop-blur text-[10px] uppercase tracking-wider text-gray-700 font-medium px-2.5 py-1 rounded-full shadow-sm"}>
+                    {item.category}
+                </span>
+                <a
+                    href={orderLink(item)}
+                    target={"_blank"}
+                    rel={"noopener noreferrer"}
+                    aria-label={`Order ${item.name} on WhatsApp`}
+                    className={"absolute bottom-3 right-3 size-10 rounded-full bg-cyan text-navy flex items-center justify-center shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"}>
+                    <FaWhatsapp className={"text-lg"}/>
+                </a>
+            </div>
+            <div className={"p-4 flex flex-col flex-1"}>
+                <div className={"flex items-start justify-between gap-3 mb-1"}>
+                    <h3 className={"font-semibold text-gray-800 text-sm leading-snug"}>{item.name}</h3>
+                    <span className={"shrink-0 font-bold text-navy text-sm"}>{formatPrice(item.price)}</span>
+                </div>
+                <p className={"text-gray-500 text-xs leading-relaxed mb-4 flex-1"}>{item.blurb}</p>
+                <a
+                    href={orderLink(item)}
+                    target={"_blank"}
+                    rel={"noopener noreferrer"}
+                    className={"inline-flex items-center justify-center gap-2 w-full bg-cyan text-navy px-4 py-2.5 rounded-lg text-xs font-semibold hover:bg-cyan-dark transition-colors"}>
+                    <FaWhatsapp/> Order on WhatsApp
+                </a>
+            </div>
+        </div>
+    )
+}
+
 export default function StorePage() {
     const [category, setCategory] = useState<StoreCategory>("All")
 
@@ -27,7 +70,7 @@ export default function StorePage() {
                 actions={
                     <>
                         <a
-                            href={"https://wa.me/27782677436"}
+                            href={orderLink()}
                             target={"_blank"}
                             rel={"noopener noreferrer"}
                             className={"inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"}>
@@ -62,31 +105,7 @@ export default function StorePage() {
 
                     <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6"}>
                         {items.map((item) => (
-                            <div key={item.id}
-                                 className={"bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col"}>
-                                <div className={"aspect-square overflow-hidden"}>
-                                    <img
-                                        src={item.image}
-                                        alt={item.name}
-                                        className={"w-full h-full object-cover hover:scale-105 transition-transform duration-300"}
-                                    />
-                                </div>
-                                <div className={"p-4 flex flex-col flex-1"}>
-                                    <span className={"text-[11px] uppercase tracking-wider text-cyan-dark font-medium mb-1"}>{item.category}</span>
-                                    <h3 className={"font-semibold text-gray-800 text-sm mb-1"}>{item.name}</h3>
-                                    <p className={"text-gray-500 text-xs mb-3 flex-1"}>{item.blurb}</p>
-                                    <div className={"flex items-center justify-between"}>
-                                        <span className={"font-semibold text-navy"}>{formatPrice(item.price)}</span>
-                                        <a
-                                            href={"https://wa.me/27782677436"}
-                                            target={"_blank"}
-                                            rel={"noopener noreferrer"}
-                                            className={"inline-flex items-center gap-1.5 bg-cyan text-navy px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-cyan-light transition-colors"}>
-                                            <FaWhatsapp/> Order
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
+                            <StoreCard key={item.id} item={item}/>
                         ))}
                     </div>
                 </div>

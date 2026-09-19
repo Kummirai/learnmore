@@ -2,10 +2,10 @@ import {LuCalendar, LuChevronRight} from "react-icons/lu"
 import Link from "next/link"
 
 const events = [
-    {date: "15 Jun", title: "Winter Sports Day", desc: "Inter-house athletics and ball games", color: "bg-blue-100 text-blue-700"},
-    {date: "28 Jun", title: "Parent-Teacher Meeting", desc: "Term 2 progress discussions", color: "bg-purple-100 text-purple-700"},
-    {date: "12 Jul", title: "School Concert", desc: "Music, drama and dance performances", color: "bg-pink-100 text-pink-700"},
-    {date: "25 Jul", title: "Science Fair", desc: "Grade 4-7 project exhibitions", color: "bg-cyan-100 text-cyan-700"},
+    {date: "Sat", title: "Sprout Club Morning", desc: "Games, crafts and stories for ages 6–15", color: "bg-blue-100 text-blue-700"},
+    {date: "Fri", title: "Surge Fire Worship Night", desc: "Monthly worship, testimony and prayer", color: "bg-purple-100 text-purple-700"},
+    {date: "Thu", title: "Pulse Network Meetup", desc: "Grow your network — bring a friend", color: "bg-pink-100 text-pink-700"},
+    {date: "Sun", title: "Nexus Family Table", desc: "Potluck dinner — nobody eats alone", color: "bg-cyan-100 text-cyan-700"},
 ]
 
 export default function Events() {
@@ -14,7 +14,7 @@ export default function Events() {
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"flex items-center justify-between mb-8"}>
                     <div>
-                        <h4 className={"text-cyan font-medium mb-1"}>UPCOMING EVENTS</h4>
+                        <h4 className={"text-cyan font-medium mb-1"}>WEEKLY RHYTHM</h4>
                         <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>What&rsquo;s Happening</h2>
                     </div>
                     <Link href={"/calendar"}

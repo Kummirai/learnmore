@@ -3,27 +3,27 @@ import Link from "next/link";
 
 const posts = [
   {
-    title: "RelateWorld Achieves 100% Pass Rate",
+    title: "Spring Season Reading Guides Are Live",
     excerpt:
-      "For the fifth consecutive year, all our Grade 7 learners passed with flying colours.",
-    date: "12 Dec 2025",
-    tag: "Achievement",
+      "Footsteps for Surge and Rooted for Sprout — thirteen weeks of daily verses, try-its and prayers are ready in the app.",
+    date: "1 Sep 2026",
+    tag: "Reading Guides",
     color: "bg-ice-blue text-navy-dark",
   },
   {
-    title: "New Computer Lab Opened",
+    title: "The Bible Quiz Season Has Begun",
     excerpt:
-      "Thanks to our sponsors, learners now have access to 30 new computers for digital literacy.",
-    date: "5 Nov 2025",
-    tag: "Facilities",
+      "Read the books, earn points on the leaderboard and battle it out at club — Sprout's quiz season is underway.",
+    date: "15 Aug 2026",
+    tag: "Sprout",
     color: "bg-blue-100 text-blue-700",
   },
   {
-    title: "Grade R Outdoor Classroom Launch",
+    title: "New Clubs Opened for Parents & Families",
     excerpt:
-      "Our new outdoor learning space lets foundation phase learners explore nature while learning.",
-    date: "20 Oct 2025",
-    tag: "Foundation Phase",
+      "Anchor, Base and Nexus bring single parents, couples and families into the Relate family — every age now has a home.",
+    date: "2 Aug 2026",
+    tag: "Community",
     color: "bg-purple-100 text-purple-700",
   },
 ];
@@ -36,7 +36,7 @@ export default function NewsHighlights() {
           <div>
             <h4 className={"text-cyan font-medium mb-1"}>LATEST NEWS</h4>
             <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>
-              From Our School
+              From the Relate Community
             </h2>
           </div>
           <Link

@@ -5,27 +5,27 @@ import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 const photos = [
   {
-    label: "Sports Day 2025",
+    label: "Saturday Morning Sprout Club",
     src: "https://images.unsplash.com/photo-1774599804869-71bafe4e4b59?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "Science Fair Projects",
+    label: "Surge Park Day",
     src: "https://images.unsplash.com/photo-1764192736615-02dad1afc2a3?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "Grade R Graduation",
+    label: "Pulse Networking Morning",
     src: "https://images.unsplash.com/photo-1625999874116-dba9a603fa24?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "Heritage Day Celebrations",
+    label: "Base Couples Date Night",
     src: "https://images.unsplash.com/photo-1744972974629-daa2fdaa15ee?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "School Choir Performance",
+    label: "Nexus Family Potluck",
     src: "https://images.unsplash.com/photo-1729284440498-19b2295ac7bb?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "Chess Tournament",
+    label: "Holiday Club Outing",
     src: "https://images.unsplash.com/photo-1630863494122-6b726a344d3d?q=80&w=400&h=300&fit=crop&fm=webp",
   },
 ];
@@ -41,9 +41,9 @@ export default function PhotoHighlights() {
     <section className={"py-16 md:py-20 bg-white px-4"}>
       <div className={"max-w-6xl mx-auto"}>
         <div className={"text-center mb-8"}>
-          <h4 className={"text-cyan font-medium mb-1"}>SCHOOL LIFE</h4>
+          <h4 className={"text-cyan font-medium mb-1"}>CLUB LIFE</h4>
           <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>
-            Moments at RelateWorld
+            Moments at Relate
           </h2>
         </div>
         <div className={"relative"}>

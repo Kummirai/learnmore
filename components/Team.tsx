@@ -1,8 +1,9 @@
 "use client"
 
 import {FaFacebook, FaTwitter, FaInstagramSquare} from "react-icons/fa";
-import {LuStar, LuBriefcase, LuBookOpen} from "react-icons/lu";
+import {LuShield, LuUsers, LuBookOpen} from "react-icons/lu";
 import {useState} from "react";
+import {MAGAZINES} from "@/constants/relate";
 
 type TeamMember = {
     name: string
@@ -49,20 +50,20 @@ export default function Team() {
 
     const groups: TeamGroup[] = [
         {
-            title: "Leadership",
-            subtitle: "Guiding our school with vision and dedication",
+            title: "Governance",
+            subtitle: "Stewarding the Relate family with integrity",
             members: [
-                {name: "Dr. Sarah Johnson", role: "Principal & Founder", src: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face", subject: ""},
-                {name: "Mr. Mark Williams", role: "Vice Principal", src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face", subject: ""},
+                {name: "Milton Kumirai", role: "Chairman", src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=200&h=200&fit=crop&crop=face", subject: ""},
+                {name: "Talayiwa Ngwenya", role: "Secretary", src: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=face", subject: ""},
+                {name: "Anacleta Ncube", role: "Treasurer", src: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&crop=face", subject: ""},
             ]
         },
         {
-            title: "Admin Staff",
-            subtitle: "Keeping everything running smoothly behind the scenes",
+            title: "Nexus Directors",
+            subtitle: "Leading our families club with heart",
             members: [
-                {name: "Mrs. Linda Nel", role: "Administrative Assistant", src: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&h=200&fit=crop&crop=face", subject: ""},
-                {name: "Ms. Thandi Mokoena", role: "Finance & Admissions", src: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=200&h=200&fit=crop&crop=face", subject: ""},
-                {name: "Mr. James Botha", role: "IT & Operations", src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face", subject: ""},
+                {name: "Moses Fusi", role: "Nexus Director", src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=face", subject: ""},
+                {name: "Constance Lowani", role: "Nexus Director", src: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&crop=face", subject: ""},
             ]
         },
     ]
@@ -73,13 +74,13 @@ export default function Team() {
                 <div className={"text-center mb-12 md:mb-16"}>
                     <h4 className={"text-cyan font-medium mb-3"}>OUR TEAM</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-                        Meet Our Dedicated <br className={"hidden sm:block"}/>
-                        Educators
+                        Meet the Relate <br className={"hidden sm:block"}/>
+                        Family
                     </h2>
                 </div>
                 {groups.map(group => {
-                    const icon = group.title === "Leadership" ? <LuStar className={"text-amber-500 text-3xl"}/>
-                        : <LuBriefcase className={"text-cyan text-3xl"}/>
+                    const icon = group.title === "Governance" ? <LuShield className={"text-cyan text-3xl"}/>
+                        : <LuUsers className={"text-cyan text-3xl"}/>
                     return (
                     <div key={group.title} className={"py-12 md:py-16 px-6 md:px-12 rounded-2xl mb-10 last:mb-0"}>
                         <div className={"text-center mb-10"}>
