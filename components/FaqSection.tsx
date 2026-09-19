@@ -6,20 +6,20 @@ import {LuChevronDown, LuArrowRight} from "react-icons/lu"
 
 const faqs = [
     {
-        q: "What are the school hours?",
-        a: "School starts at 7:45 AM and ends at 1:00 PM for Grade R, and 2:00 PM for Grade 1-7. Aftercare is available until 5:30 PM."
+        q: "Is Relate really free to join?",
+        a: "Yes. Every club, weekly program and prayer time is completely free. Sponsorship covers school fees, uniforms and meals for families who need a hand — no one pays to belong."
     },
     {
-        q: "How do I enroll my child?",
-        a: "You can enroll by visiting our Enroll page and filling out the online form, or visit the school office to collect a paper application."
+        q: "Which club is right for me or my family?",
+        a: "There's a club for every season of life: Sprout (children 6–15), Surge (16–21), Pulse (21–33), Prime (singles 33+), Anchor (single parents), Base (couples) and Nexus (families). Message us on WhatsApp and we'll help you find your crew."
     },
     {
-        q: "What is the learner-to-teacher ratio?",
-        a: "Average class size is 25 learners per teacher in Foundation Phase (R-3) and 30 in Intermediate Phase (4-7)."
+        q: "What happens at a typical club gathering?",
+        a: "Each club meets weekly — games, real conversations and practical skills, with an optional faith component. Sprout runs Saturday morning activities, Pulse hosts monthly networking, Nexus shares potluck dinners. Every program serves a meal or snack."
     },
     {
-        q: "Do you offer aftercare and transport?",
-        a: "Yes! Aftercare runs until 5:30 PM with homework supervision. School bus service covers a 15km radius."
+        q: "Do I need to be religious to join?",
+        a: "Not at all. Prayer groups, worship nights and Bible study are optional and open to everyone. Most members come for the community, the skills and the support — faith is there if and when you want it."
     },
 ]
 

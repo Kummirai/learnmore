@@ -26,8 +26,8 @@ export default function Contact() {
     },
     {
       icon: <LuClock className={"text-2xl text-cyan"} />,
-      label: "Hours",
-      value: "Mon - Fri: 7:30AM - 4:00PM",
+      label: "Club Times",
+      value: "Weekly meetups · Saturdays & evenings",
     },
   ];
 
@@ -40,8 +40,8 @@ export default function Contact() {
             We&apos;d Love to <span className={"text-cyan"}>Hear From You</span>
           </h2>
           <p className={"text-gray-500 max-w-xl mx-auto mt-3"}>
-            Have questions about enrollment, school fees, or want to schedule a
-            visit? Reach out to us.
+            Want to join a club, ask for help in a hard season, or partner with
+            us to fund lasting change? Reach out — someone will walk with you.
           </p>
         </div>
         <div className={"grid grid-cols-1 lg:grid-cols-2 gap-10 items-start"}>
@@ -63,7 +63,7 @@ export default function Contact() {
           </div>
           <div className={"bg-white rounded-xl border border-gray-200 p-8"}>
             <h3 className={"text-xl font-semibold text-gray-800 mb-4"}>
-              Send Us a Message
+              Say Hello
             </h3>
             <form className={"space-y-4"}>
               <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>

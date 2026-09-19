@@ -4,24 +4,24 @@ export default function Testimonials() {
   const testimonials = [
     {
       quote:
-        "My daughter has blossomed since joining RelateWorld. The teachers truly care about each child's growth and happiness.",
-      name: "Thandi Mokoena",
-      role: "Parent of Grade 3 Learner",
-      initials: "TM",
+        "I joined Pulse to grow my network and stayed for the people. The wallet course changed how I handle money — I opened my first savings account and I'm finally building something.",
+      name: "Lerato M.",
+      role: "Pulse Member · Youth",
+      initials: "LM",
     },
     {
       quote:
-        "I love coming to school every day! My teacher makes learning fun and I've made so many friends.",
-      name: "Liam Botha",
-      role: "Grade 7 Learner",
-      initials: "LB",
+        "As a single mom, Anchor gave me more than support — it gave me a village. Free childcare during our meetups, food parcels in a hard month, and friends who actually understand.",
+      name: "Nomsa K.",
+      role: "Anchor Member · Single Parent",
+      initials: "NK",
     },
     {
       quote:
-        "The foundation phase program is wonderful. My son started in Grade R not knowing his ABCs and now he's reading confidently.",
-      name: "Priya Naidoo",
-      role: "Parent of Grade 1 Learner",
-      initials: "PN",
+        "My son counts down the days to Sprout club on Saturday. He's reading on his own now, and the leaders know every child by name. It's the highlight of his week.",
+      name: "Sipho D.",
+      role: "Sprout Parent · Children",
+      initials: "SD",
     },
   ];
 
@@ -31,7 +31,7 @@ export default function Testimonials() {
         <div className={"text-center mb-12 md:mb-16"}>
           <h4 className={"text-cyan font-medium mb-3"}>TESTIMONIALS</h4>
           <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-            What Parents & Learners <br className={"hidden sm:block"} />
+            What Our Members & Families <br className={"hidden sm:block"} />
             Say About Us
           </h2>
         </div>

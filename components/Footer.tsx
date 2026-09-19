@@ -48,8 +48,8 @@ export default function Footer() {
               RelateWorld
             </h3>
             <p className={"text-sm leading-relaxed mb-4"}>
-              A nurturing primary school for learners from Grade R to Grade 7,
-              building bright futures since 2000.
+              Skills, social and spiritual growth — all in one community. Free
+              clubs for every age and season of life.
             </p>
             <div className={"flex items-center gap-3"}>
               <FaFacebook
@@ -74,9 +74,9 @@ export default function Footer() {
             <ul className={"space-y-2 text-sm"}>
               {[
                 { label: "About Us", path: "/about" },
-                { label: "Our Subjects", path: "/subjects" },
+                { label: "Our Clubs", path: "/sprout" },
                 { label: "Our Team", path: "/team" },
-                { label: "School Fees", path: "/fees" },
+                { label: "Store", path: "/store" },
                 { label: "FAQ", path: "/faq" },
                 { label: "Contact", path: "/contact" },
               ].map((link, i) => (
@@ -118,14 +118,15 @@ export default function Footer() {
                 <LuClock
                   className={"mt-1 shrink-0 text-[color:var(--club-accent)]"}
                 />
-                <span>Mon - Fri: 7:30AM - 4:00PM</span>
+                <span>Weekly club meetups · Saturdays & evenings</span>
               </li>
             </ul>
           </div>
           <div>
             <h4 className={"text-white font-semibold mb-4"}>Newsletter</h4>
             <p className={"text-sm leading-relaxed mb-4"}>
-              Subscribe to get the latest updates and news.
+              Season updates, new reading guides and community news — straight
+              to your inbox.
             </p>
             {state?.success ? (
               <div className={"flex items-start gap-2 text-sm text-cyan-light"}>
@@ -167,7 +168,7 @@ export default function Footer() {
       </div>
       <div className={"border-t border-navy-soft py-6 text-center text-sm"}>
         <p>
-          &copy; {new Date().getFullYear()} RelateWorld Primary School. All
+          &copy; {new Date().getFullYear()} Relate. All
           rights reserved.
         </p>
       </div>
