@@ -23,7 +23,7 @@ const events = [
 ]
 
 const typeColor: Record<string, string> = {
-    Important: "bg-green-100 text-green-700 border-green-300",
+    Important: "bg-ice-blue text-navy-dark border-cyan-dark",
     Holiday: "bg-red-100 text-red-700 border-red-300",
     Event: "bg-blue-100 text-blue-700 border-blue-300",
 }
@@ -33,7 +33,7 @@ export default function CalendarPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-4xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -52,7 +52,7 @@ export default function CalendarPage() {
                 <div className={"space-y-3"}>
                     {events.map((e, i) => (
                         <div key={i}
-                             className={`bg-white rounded-lg p-4 border-l-4 ${e.type === "Important" ? "border-l-green-600" : e.type === "Holiday" ? "border-l-red-500" : "border-l-blue-500"} flex items-center justify-between hover:shadow-sm transition-shadow`}>
+                             className={`bg-white rounded-lg p-4 border-l-4 ${e.type === "Important" ? "border-l-cyan" : e.type === "Holiday" ? "border-l-red-500" : "border-l-blue-500"} flex items-center justify-between hover:shadow-sm transition-shadow`}>
                             <div className={"flex items-center gap-4"}>
                                 <div className={"text-center w-14 shrink-0"}>
                                     <p className={"text-xs text-gray-400"}>{e.date.split(" ")[0]}</p>

@@ -6,7 +6,7 @@ export default function AboutPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-4xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -28,17 +28,17 @@ export default function AboutPage() {
 
                 <div className={"grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"}>
                     <div className={"bg-white rounded-xl p-6 shadow-sm text-center"}>
-                        <LuTarget className={"text-4xl text-green-600 mx-auto mb-3"}/>
+                        <LuTarget className={"text-4xl text-cyan mx-auto mb-3"}/>
                         <h3 className={"font-semibold text-gray-800 mb-2"}>Our Mission</h3>
                         <p className={"text-gray-600 text-sm leading-relaxed"}>To provide a safe, inclusive, and stimulating environment where every learner achieves academic excellence and personal growth.</p>
                     </div>
                     <div className={"bg-white rounded-xl p-6 shadow-sm text-center"}>
-                        <LuEye className={"text-4xl text-green-600 mx-auto mb-3"}/>
+                        <LuEye className={"text-4xl text-cyan mx-auto mb-3"}/>
                         <h3 className={"font-semibold text-gray-800 mb-2"}>Our Vision</h3>
                         <p className={"text-gray-600 text-sm leading-relaxed"}>To be a leading primary school that nurtures confident, compassionate, and curious lifelong learners.</p>
                     </div>
                     <div className={"bg-white rounded-xl p-6 shadow-sm text-center"}>
-                        <LuHeart className={"text-4xl text-green-600 mx-auto mb-3"}/>
+                        <LuHeart className={"text-4xl text-cyan mx-auto mb-3"}/>
                         <h3 className={"font-semibold text-gray-800 mb-2"}>Our Values</h3>
                         <p className={"text-gray-600 text-sm leading-relaxed"}>Respect, Responsibility, Resilience, Integrity, and Compassion guide everything we do.</p>
                     </div>

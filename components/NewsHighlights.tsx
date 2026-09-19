@@ -7,7 +7,7 @@ const posts = [
         excerpt: "For the fifth consecutive year, all our Grade 7 learners passed with flying colours.",
         date: "12 Dec 2025",
         tag: "Achievement",
-        color: "bg-green-100 text-green-700"
+        color: "bg-ice-blue text-navy-dark"
     },
     {
         title: "New Computer Lab Opened",
@@ -31,11 +31,11 @@ export default function NewsHighlights() {
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"flex items-center justify-between mb-8"}>
                     <div>
-                        <h4 className={"text-green-600 font-medium mb-1"}>LATEST NEWS</h4>
+                        <h4 className={"text-cyan font-medium mb-1"}>LATEST NEWS</h4>
                         <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>From Our School</h2>
                     </div>
                     <Link href={"/news"}
-                          className={"text-sm text-green-600 font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
+                          className={"text-sm text-cyan font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
                         View All <LuChevronRight/>
                     </Link>
                 </div>

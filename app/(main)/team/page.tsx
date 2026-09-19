@@ -3,7 +3,7 @@ import {LuArrowLeft} from "react-icons/lu"
 import {FaFacebook, FaTwitter, FaInstagramSquare} from "react-icons/fa"
 
 const staff = [
-    {name: "Dr. Sarah Johnson", role: "Principal & Founder", initials: "SJ", color: "bg-green-600", dept: "Leadership"},
+    {name: "Dr. Sarah Johnson", role: "Principal & Founder", initials: "SJ", color: "bg-navy", dept: "Leadership"},
     {name: "Mr. Mark Williams", role: "Deputy Principal", initials: "MW", color: "bg-blue-600", dept: "Leadership"},
     {name: "Ms. Emily Chen", role: "Foundation Phase Head", initials: "EC", color: "bg-purple-600", dept: "Leadership"},
     {name: "Mr. David Okafor", role: "Intermediate Phase Head", initials: "DO", color: "bg-orange-600", dept: "Leadership"},
@@ -28,7 +28,7 @@ export default function TeamPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -42,7 +42,7 @@ export default function TeamPage() {
                     if (!members.length) return null
                     return (
                         <div key={dept} className={"mb-12"}>
-                            <h2 className={"text-lg font-semibold text-green-600 mb-6 border-b border-gray-200 pb-2"}>{dept}</h2>
+                            <h2 className={"text-lg font-semibold text-cyan mb-6 border-b border-gray-200 pb-2"}>{dept}</h2>
                             <div className={"grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"}>
                                 {members.map((s, i) => (
                                     <div key={i} className={"bg-white rounded-xl p-5 text-center shadow-sm hover:shadow-md transition-shadow"}>
@@ -50,11 +50,11 @@ export default function TeamPage() {
                                             <span className={"text-xl sm:text-2xl font-bold text-white"}>{s.initials}</span>
                                         </div>
                                         <h3 className={"font-semibold text-gray-800 text-sm"}>{s.name}</h3>
-                                        <p className={"text-green-600 text-xs mb-3"}>{s.role}</p>
+                                        <p className={"text-cyan text-xs mb-3"}>{s.role}</p>
                                         <div className={"flex items-center justify-center gap-2 text-gray-400"}>
-                                            <FaFacebook className={"hover:text-green-600 cursor-pointer transition-colors text-sm"}/>
-                                            <FaTwitter className={"hover:text-green-600 cursor-pointer transition-colors text-sm"}/>
-                                            <FaInstagramSquare className={"hover:text-green-600 cursor-pointer transition-colors text-sm"}/>
+                                            <FaFacebook className={"hover:text-cyan cursor-pointer transition-colors text-sm"}/>
+                                            <FaTwitter className={"hover:text-cyan cursor-pointer transition-colors text-sm"}/>
+                                            <FaInstagramSquare className={"hover:text-cyan cursor-pointer transition-colors text-sm"}/>
                                         </div>
                                     </div>
                                 ))}

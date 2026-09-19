@@ -54,7 +54,7 @@ export default function FAQPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-3xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -82,11 +82,11 @@ export default function FAQPage() {
                     ))}
                 </div>
 
-                <div className={"bg-green-50 rounded-xl p-8 text-center mt-10 border border-green-200"}>
-                    <h2 className={"text-lg font-semibold text-green-800 mb-2"}>Still Have Questions?</h2>
-                    <p className={"text-sm text-green-700 mb-4"}>We&rsquo;re happy to help. Reach out to us directly.</p>
+                <div className={"bg-alice-blue rounded-xl p-8 text-center mt-10 border border-ice-blue"}>
+                    <h2 className={"text-lg font-semibold text-navy-dark mb-2"}>Still Have Questions?</h2>
+                    <p className={"text-sm text-navy mb-4"}>We&rsquo;re happy to help. Reach out to us directly.</p>
                     <Link href={"/contact"}
-                          className={"inline-block bg-green-600 text-white px-8 py-3 text-sm font-medium rounded hover:bg-green-700 transition-colors"}>
+                          className={"inline-block bg-navy text-white px-8 py-3 text-sm font-medium rounded hover:bg-navy-dark transition-colors"}>
                         Contact Us
                     </Link>
                 </div>

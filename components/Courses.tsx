@@ -43,7 +43,7 @@ export default function Courses() {
             description: "Learning about our world, community, values, and becoming responsible young citizens.",
             duration: "Grade 1 - 7",
             students: 290,
-            color: "bg-green-100 text-green-600"
+            color: "bg-ice-blue text-cyan"
         }
     ]
 
@@ -51,7 +51,7 @@ export default function Courses() {
         <section className={"py-16 md:py-24 bg-gray-50 px-4"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-12 md:mb-16"}>
-                    <h4 className={"text-green-600 font-medium mb-3"}>OUR SUBJECTS</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>OUR SUBJECTS</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
                         A Rich Curriculum For <br className={"hidden sm:block"}/>
                         Every Stage
@@ -70,7 +70,7 @@ export default function Courses() {
                             <div className={"flex items-center justify-between"}>
                                 <span className={"text-sm text-gray-500"}>{course.students} Learners</span>
                                 <Link href={"/subjects"}
-                                      className={"text-green-600 text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
+                                      className={"text-cyan text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
                                     Learn More <LuArrowRight/>
                                 </Link>
                             </div>

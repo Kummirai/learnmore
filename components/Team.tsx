@@ -34,7 +34,7 @@ const allTeachers: TeamMember[] = [
 const subjects = Array.from(new Set(allTeachers.map(t => t.subject)))
 
 const chipBase = "px-5 py-2 rounded-full text-base font-medium transition-colors"
-const chipActive = "bg-green-600 text-white shadow-md"
+const chipActive = "bg-navy text-white shadow-md"
 const chipInactive = "bg-gray-100 text-gray-600 hover:bg-gray-200"
 
 export default function Team() {
@@ -71,15 +71,15 @@ export default function Team() {
         <section className={"py-16 md:py-24 bg-white px-4"}>
             <div className={"max-w-4xl mx-auto"}>
                 <div className={"text-center mb-12 md:mb-16"}>
-                    <h4 className={"text-green-600 font-medium mb-3"}>OUR TEAM</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>OUR TEAM</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
                         Meet Our Dedicated <br className={"hidden sm:block"}/>
                         Educators
                     </h2>
                 </div>
                 {groups.map(group => {
-                    const icon = group.title === "Leadership" ? <LuStar className={"text-yellow-500 text-3xl"}/>
-                        : <LuBriefcase className={"text-green-600 text-3xl"}/>
+                    const icon = group.title === "Leadership" ? <LuStar className={"text-amber-500 text-3xl"}/>
+                        : <LuBriefcase className={"text-cyan text-3xl"}/>
                     return (
                     <div key={group.title} className={"py-12 md:py-16 px-6 md:px-12 rounded-2xl mb-10 last:mb-0"}>
                         <div className={"text-center mb-10"}>
@@ -97,14 +97,14 @@ export default function Team() {
                                              className={"size-full object-cover"}/>
                                     </div>
                                     <h4 className={"text-xl font-semibold text-gray-800"}>{member.name}</h4>
-                                    <p className={"text-green-600 text-sm mb-3"}>{member.role}</p>
+                                    <p className={"text-cyan text-sm mb-3"}>{member.role}</p>
                                     <div className={"flex items-center justify-center gap-3 text-gray-400"}>
                                         <FaFacebook
-                                            className={"hover:text-green-600 cursor-pointer transition-colors"}/>
+                                            className={"hover:text-cyan cursor-pointer transition-colors"}/>
                                         <FaTwitter
-                                            className={"hover:text-green-600 cursor-pointer transition-colors"}/>
+                                            className={"hover:text-cyan cursor-pointer transition-colors"}/>
                                         <FaInstagramSquare
-                                            className={"hover:text-green-600 cursor-pointer transition-colors"}/>
+                                            className={"hover:text-cyan cursor-pointer transition-colors"}/>
                                     </div>
                                 </div>
                             ))}
@@ -116,7 +116,7 @@ export default function Team() {
                 <div className={"py-12 md:py-16 px-6 md:px-12 rounded-2xl mb-10 last:mb-0"}>
                     <div className={"text-center mb-10"}>
                         <h3 className={"text-2xl md:text-3xl font-bold text-gray-800 flex items-center justify-center gap-3"}>
-                            <LuBookOpen className={"text-green-600 text-3xl"}/> Teachers
+                            <LuBookOpen className={"text-cyan text-3xl"}/> Teachers
                         </h3>
                         <p className={"text-gray-500 mt-2"}>Shaping young minds with passion and care</p>
                     </div>
@@ -143,16 +143,16 @@ export default function Team() {
                                              className={"size-full object-cover"}/>
                                     </div>
                                     <h4 className={"text-lg font-semibold text-gray-800"}>{member.name}</h4>
-                                    <p className={"text-green-600 text-sm mb-2"}>{member.role}</p>
+                                    <p className={"text-cyan text-sm mb-2"}>{member.role}</p>
                                     <span
-                                        className={"inline-block text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded"}>{member.subject}</span>
+                                        className={"inline-block text-xs bg-ice-blue text-navy-dark px-2 py-0.5 rounded"}>{member.subject}</span>
                                     <div className={"flex items-center justify-center gap-3 text-gray-400 mt-3"}>
                                         <FaFacebook
-                                            className={"hover:text-green-600 cursor-pointer transition-colors"}/>
+                                            className={"hover:text-cyan cursor-pointer transition-colors"}/>
                                         <FaTwitter
-                                            className={"hover:text-green-600 cursor-pointer transition-colors"}/>
+                                            className={"hover:text-cyan cursor-pointer transition-colors"}/>
                                         <FaInstagramSquare
-                                            className={"hover:text-green-600 cursor-pointer transition-colors"}/>
+                                            className={"hover:text-cyan cursor-pointer transition-colors"}/>
                                     </div>
                                 </div>
                             ))}
@@ -160,7 +160,7 @@ export default function Team() {
                         {filtered.length > 6 && (
                             <div className={"text-center mt-8"}>
                                 <button onClick={() => setShowAll(!showAll)}
-                                        className={"px-6 py-2.5 rounded-lg bg-green-600 text-white font-medium text-sm hover:bg-green-700 transition-colors"}>
+                                        className={"px-6 py-2.5 rounded-lg bg-navy text-white font-medium text-sm hover:bg-navy-dark transition-colors"}>
                                     {showAll ? "Show Less" : `Show More (${filtered.length - 6} more)`}
                                 </button>
                             </div>

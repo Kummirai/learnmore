@@ -16,7 +16,7 @@ export default function Footer() {
     const [state, formAction, pending] = useActionState(subscribeNewsletter, null)
 
     return (
-        <footer className={"bg-green-950 text-green-200 px-4"}>
+        <footer className={"bg-navy-dark text-ice-blue px-4"}>
             <div className={"max-w-6xl mx-auto py-16"}>
                 <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"}>
                     <div>
@@ -25,9 +25,9 @@ export default function Footer() {
                             A nurturing primary school for learners from Grade R to Grade 7, building bright futures since 2000.
                         </p>
                         <div className={"flex items-center gap-3"}>
-                            <FaFacebook className={"hover:text-yellow-400 cursor-pointer transition-colors"}/>
-                            <FaTwitter className={"hover:text-yellow-400 cursor-pointer transition-colors"}/>
-                            <FaInstagramSquare className={"hover:text-yellow-400 cursor-pointer transition-colors"}/>
+                            <FaFacebook className={"hover:text-cyan cursor-pointer transition-colors"}/>
+                            <FaTwitter className={"hover:text-cyan cursor-pointer transition-colors"}/>
+                            <FaInstagramSquare className={"hover:text-cyan cursor-pointer transition-colors"}/>
                         </div>
                     </div>
                     <div>
@@ -43,7 +43,7 @@ export default function Footer() {
                             ].map((link, i) => (
                                 <li key={i}>
                                     <Link href={link.path}
-                                          className={"hover:text-yellow-400 transition-colors"}>
+                                          className={"hover:text-cyan transition-colors"}>
                                         {link.label}
                                     </Link>
                                 </li>
@@ -54,19 +54,19 @@ export default function Footer() {
                         <h4 className={"text-white font-semibold mb-4"}>Contact Info</h4>
                         <ul className={"space-y-3 text-sm"}>
                             <li className={"flex items-start gap-2"}>
-                                <LuMapPin className={"mt-1 shrink-0 text-yellow-400"}/>
+                                <LuMapPin className={"mt-1 shrink-0 text-cyan"}/>
                                 <span>123 Education Street, Learning City, 2000</span>
                             </li>
                             <li className={"flex items-center gap-2"}>
-                                <LuPhone className={"shrink-0 text-yellow-400"}/>
+                                <LuPhone className={"shrink-0 text-cyan"}/>
                                 <span>+27 78 267 7436</span>
                             </li>
                             <li className={"flex items-center gap-2"}>
-                                <LuMail className={"shrink-0 text-yellow-400"}/>
+                                <LuMail className={"shrink-0 text-cyan"}/>
                                 <span>info@learnmore.edu</span>
                             </li>
                             <li className={"flex items-start gap-2"}>
-                                <LuClock className={"mt-1 shrink-0 text-yellow-400"}/>
+                                <LuClock className={"mt-1 shrink-0 text-cyan"}/>
                                 <span>Mon - Fri: 7:30AM - 4:00PM</span>
                             </li>
                         </ul>
@@ -77,16 +77,16 @@ export default function Footer() {
                             Subscribe to get the latest updates and news.
                         </p>
                         {state?.success ? (
-                            <div className={"flex items-start gap-2 text-sm text-green-400"}>
+                            <div className={"flex items-start gap-2 text-sm text-cyan-light"}>
                                 <LuCircleCheck className={"mt-0.5 shrink-0"}/>
                                 <span>{state.message}</span>
                             </div>
                         ) : (
                             <form action={formAction} className={"flex"}>
                                 <input type="email" name={"email"} placeholder="Your Email" required
-                                       className={"bg-green-900 text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-yellow-400 text-white placeholder:text-green-300"}/>
+                                       className={"bg-navy-soft text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-cyan text-white placeholder:text-cyan-light/60"}/>
                                 <button type={"submit"} disabled={pending}
-                                        className={"bg-yellow-400 text-green-900 px-4 py-2 text-sm font-medium hover:bg-yellow-500 disabled:opacity-60 transition-colors shrink-0"}>
+                                        className={"bg-cyan text-navy px-4 py-2 text-sm font-medium hover:bg-cyan-dark disabled:opacity-60 transition-colors shrink-0"}>
                                     {pending ? "..." : "Subscribe"}
                                 </button>
                             </form>
@@ -100,7 +100,7 @@ export default function Footer() {
                     </div>
                 </div>
             </div>
-            <div className={"border-t border-green-800 py-6 text-center text-sm"}>
+            <div className={"border-t border-navy-soft py-6 text-center text-sm"}>
                 <p>&copy; {new Date().getFullYear()} LearnMore Primary School. All rights reserved.</p>
             </div>
         </footer>

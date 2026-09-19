@@ -44,12 +44,12 @@ const subjects = [
         color: "bg-orange-50 border-orange-200"
     },
     {
-        icon: <LuHeart className={"text-4xl text-green-600"}/>,
+        icon: <LuHeart className={"text-4xl text-cyan"}/>,
         title: "Life Skills & Social Studies",
         phase: "Grade 1 - 7",
         description: "Learning about our world, community, values, and becoming responsible young citizens with empathy and confidence.",
         topics: ["Personal & Social Well-being", "Citizenship & Democracy", "Geography & Our World", "History & Heritage", "Religious & Cultural Studies", "Financial Literacy"],
-        color: "bg-green-50 border-green-200"
+        color: "bg-alice-blue border-ice-blue"
     },
     {
         icon: <LuLanguages className={"text-4xl text-red-600"}/>,
@@ -74,7 +74,7 @@ export default function SubjectsPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 

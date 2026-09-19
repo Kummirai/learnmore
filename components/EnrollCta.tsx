@@ -2,18 +2,18 @@ import Link from "next/link"
 
 export default function EnrollCta() {
     return (
-        <section className={"bg-gradient-to-br from-green-600 via-green-700 to-green-800 px-4"}>
+        <section className={"bg-gradient-to-br from-navy via-navy-soft to-navy-dark px-4"}>
             <div className={"max-w-4xl mx-auto py-20 text-center"}>
                 <h2 className={"text-3xl md:text-4xl font-bold text-white mb-4"}>
                     Ready to Join the LearnMore Family?
                 </h2>
-                <p className={"text-green-100 text-lg mb-8 max-w-2xl mx-auto"}>
+                <p className={"text-cyan-light text-lg mb-8 max-w-2xl mx-auto"}>
                     Give your child the gift of a quality education in a nurturing, vibrant environment. 
                     Enrollment is open for Grade R to Grade 7.
                 </p>
                 <div className={"flex items-center justify-center gap-4 flex-wrap"}>
                     <Link href={"/enroll"}
-                          className={"bg-yellow-400 text-green-900 py-3 px-10 text-lg font-semibold hover:bg-yellow-500 transition-colors"}>
+                          className={"bg-cyan text-navy py-3 px-10 text-lg font-semibold hover:bg-cyan-dark transition-colors"}>
                         Enroll Your Child
                     </Link>
                     <Link href={"/contact"}

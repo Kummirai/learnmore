@@ -363,13 +363,13 @@ export default function TimetablePage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
                 <div className={"text-center mb-8"}>
                     <div className={"flex items-center justify-center gap-3 mb-3"}>
-                        <LuClock className={"text-3xl text-green-600"}/>
+                        <LuClock className={"text-3xl text-cyan"}/>
                         <h1 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>Weekly Timetable</h1>
                     </div>
                     <p className={"text-gray-500 max-w-xl mx-auto"}>
@@ -383,7 +383,7 @@ export default function TimetablePage() {
                             <button key={g} onClick={() => { setGrade(g); setClassId("A") }}
                                     className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
                                         grade === g
-                                            ? "bg-green-600 text-white shadow-md"
+                                            ? "bg-navy text-white shadow-md"
                                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                                     }`}>
                                 Grade {g}
@@ -396,7 +396,7 @@ export default function TimetablePage() {
                             <button key={c} onClick={() => setClassId(c)}
                                     className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                                         classId === c
-                                            ? "bg-green-100 text-green-700 border border-green-300"
+                                            ? "bg-ice-blue text-navy-dark border border-cyan-dark"
                                             : "bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100"
                                     }`}>
                                 {c}
@@ -409,13 +409,13 @@ export default function TimetablePage() {
                     {schedule.map(day => (
                         <div key={day.day}
                              className={"bg-white rounded-xl border border-gray-200 overflow-hidden"}>
-                            <div className={"bg-green-600 text-white text-center py-3 font-semibold text-lg"}>
+                            <div className={"bg-navy text-white text-center py-3 font-semibold text-lg"}>
                                 {day.day}
                             </div>
                             <div className={"p-3 space-y-2"}>
                                 {day.slots.map((slot, i) => (
                                     <div key={i}
-                                         className={`text-sm p-2 rounded ${slot.subject === "Break" || slot.subject === "Lunch" ? "bg-yellow-50 border border-yellow-200" : "bg-gray-50"}`}>
+                                         className={`text-sm p-2 rounded ${slot.subject === "Break" || slot.subject === "Lunch" ? "bg-amber-50 border border-amber-200" : "bg-gray-50"}`}>
                                         <div className={"font-medium text-gray-700"}>{slot.time}</div>
                                         <div className={"font-semibold text-gray-800"}>{slot.subject}</div>
                                         {slot.teacher !== "—" && (

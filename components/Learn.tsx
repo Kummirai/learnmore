@@ -3,22 +3,22 @@ import {LuHeart, LuUsers, LuShield, LuSparkles} from "react-icons/lu";
 export default function Learn() {
     const features = [
         {
-            icon: <LuHeart className={"text-4xl text-green-600"}/>,
+            icon: <LuHeart className={"text-4xl text-cyan"}/>,
             title: "Qualified Educators",
             description: "Our passionate teachers nurture each child's unique talents and create a love for learning."
         },
         {
-            icon: <LuUsers className={"text-4xl text-green-600"}/>,
+            icon: <LuUsers className={"text-4xl text-cyan"}/>,
             title: "Small Classes",
             description: "Small class sizes ensure every learner gets the attention and support they deserve."
         },
         {
-            icon: <LuShield className={"text-4xl text-green-600"}/>,
+            icon: <LuShield className={"text-4xl text-cyan"}/>,
             title: "Safe & Nurturing",
             description: "A warm, caring environment where children feel safe, valued, and inspired to grow."
         },
         {
-            icon: <LuSparkles className={"text-4xl text-green-600"}/>,
+            icon: <LuSparkles className={"text-4xl text-cyan"}/>,
             title: "Holistic Growth",
             description: "Balancing academics, sports, arts, and life skills for well-rounded development."
         }
@@ -28,7 +28,7 @@ export default function Learn() {
         <section className={"py-16 md:py-24 bg-white px-4"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-12 md:mb-16"}>
-                    <h4 className={"text-green-600 font-medium mb-3"}>WHY LEARNMORE</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>WHY LEARNMORE</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
                         Where Learning Feels Like <br className={"hidden sm:block"}/>
                         Play

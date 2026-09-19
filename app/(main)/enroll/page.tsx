@@ -20,7 +20,7 @@ function Field({label, name, type = "text", error, ...props}: {
                 id={name}
                 name={name}
                 type={type}
-                className={`w-full px-4 py-2.5 rounded border ${error ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-sm outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition`}
+                className={`w-full px-4 py-2.5 rounded border ${error ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition`}
                 {...props}
             />
             {error && <p className={"text-red-500 text-xs mt-1"}>{error}</p>}
@@ -41,11 +41,11 @@ export default function EnrollPage() {
         return (
             <section className={"flex-1 flex items-center justify-center px-4 py-16"}>
                 <div className={"max-w-lg w-full bg-white rounded-xl p-8 md:p-12 text-center shadow-sm"}>
-                    <LuCircleCheck className={"text-6xl text-green-600 mx-auto mb-4"}/>
+                    <LuCircleCheck className={"text-6xl text-cyan mx-auto mb-4"}/>
                     <h1 className={"text-2xl md:text-3xl font-semibold text-gray-800 mb-3"}>Enrollment Submitted!</h1>
                     <p className={"text-gray-600 leading-relaxed mb-6"}>{state.message}</p>
                     <Link href={"/"}
-                          className={"inline-block bg-green-600 text-white px-8 py-3 rounded text-sm font-medium hover:bg-green-700 transition-colors"}>
+                          className={"inline-block bg-navy text-white px-8 py-3 rounded text-sm font-medium hover:bg-navy-dark transition-colors"}>
                         Back to Home
                     </Link>
                 </div>
@@ -57,7 +57,7 @@ export default function EnrollPage() {
         <section className={"flex-1 flex items-center justify-center px-4 py-12"}>
             <div className={"max-w-2xl w-full"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -70,7 +70,7 @@ export default function EnrollPage() {
 
                     <form action={formAction} className={"space-y-5"}>
                         <fieldset>
-                            <legend className={"text-sm font-semibold text-green-600 mb-3"}>Parent / Guardian Details
+                            <legend className={"text-sm font-semibold text-cyan mb-3"}>Parent / Guardian Details
                             </legend>
                             <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                                 <Field label={"Full Name"} name={"parentName"}
@@ -89,7 +89,7 @@ export default function EnrollPage() {
                         <hr className={"border-gray-200"}/>
 
                         <fieldset>
-                            <legend className={"text-sm font-semibold text-green-600 mb-3"}>Child / Learner Details
+                            <legend className={"text-sm font-semibold text-cyan mb-3"}>Child / Learner Details
                             </legend>
                             <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                                 <Field label={"Child's Full Name"} name={"childName"}
@@ -102,7 +102,7 @@ export default function EnrollPage() {
                                            className={"block text-sm font-medium text-gray-700 mb-1"}>Current
                                         Grade</label>
                                     <select id={"grade"} name={"grade"}
-                                            className={`w-full px-4 py-2.5 rounded border ${state?.errors?.grade ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-sm outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition bg-white`}>
+                                            className={`w-full px-4 py-2.5 rounded border ${state?.errors?.grade ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition bg-white`}>
                                         <option value="">Select grade...</option>
                                         {grades.map(g => (
                                             <option key={g} value={g}>Grade {g}</option>
@@ -122,7 +122,7 @@ export default function EnrollPage() {
                                    className={"block text-sm font-medium text-gray-700 mb-1"}>Additional Notes
                                 (optional)</label>
                             <textarea id={"notes"} name={"notes"} rows={3}
-                                      className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition resize-none"}
+                                      className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition resize-none"}
                                       placeholder={"Any special requirements or information..."}/>
                         </div>
 
@@ -135,7 +135,7 @@ export default function EnrollPage() {
                         )}
 
                         <button type={"submit"} disabled={pending}
-                                className={"w-full bg-green-600 text-white py-3 rounded text-sm font-medium hover:bg-green-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"}>
+                                className={"w-full bg-navy text-white py-3 rounded text-sm font-medium hover:bg-navy-dark disabled:opacity-60 disabled:cursor-not-allowed transition-colors"}>
                             {pending ? "Submitting..." : "Submit Enrollment"}
                         </button>
                     </form>

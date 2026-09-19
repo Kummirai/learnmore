@@ -26,7 +26,7 @@ export default function Testimonials() {
         <section className={"py-16 md:py-24 bg-gray-50 px-4"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-12 md:mb-16"}>
-                    <h4 className={"text-green-600 font-medium mb-3"}>TESTIMONIALS</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>TESTIMONIALS</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
                         What Parents & Learners <br className={"hidden sm:block"}/>
                         Say About Us
@@ -46,7 +46,7 @@ export default function Testimonials() {
                             </p>
                             <div className={"flex items-center gap-3"}>
                                 <div
-                                    className={"size-10 rounded-full bg-green-600 flex items-center justify-center text-white text-sm font-semibold"}>
+                                    className={"size-10 rounded-full bg-navy flex items-center justify-center text-white text-sm font-semibold"}>
                                     {t.initials}
                                 </div>
                                 <div>

@@ -6,8 +6,8 @@ export default function TourCta() {
         <section className={"py-16 md:py-24 bg-white px-4"}>
             <div className={"max-w-4xl mx-auto text-center"}>
                 <div
-                    className={"size-20 mx-auto rounded-full bg-green-100 flex items-center justify-center mb-6"}>
-                    <LuCalendarCheck className={"text-4xl text-green-600"}/>
+                    className={"size-20 mx-auto rounded-full bg-ice-blue flex items-center justify-center mb-6"}>
+                    <LuCalendarCheck className={"text-4xl text-cyan"}/>
                 </div>
                 <h2 className={"text-3xl md:text-4xl font-bold text-gray-800 mb-4"}>
                     Come Visit Us
@@ -18,7 +18,7 @@ export default function TourCta() {
                 </p>
                 <Link href={"https://wa.me/27782677436?text=Hello%20LearnMore!%20I%27d%20like%20to%20book%20a%20school%20tour."}
                       target={"_blank"}
-                      className={"inline-flex items-center gap-2 bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-green-700 transition-colors"}>
+                      className={"inline-flex items-center gap-2 bg-navy text-white px-8 py-3 rounded-lg text-lg font-medium hover:bg-navy-dark transition-colors"}>
                     Book a School Tour <LuArrowRight/>
                 </Link>
             </div>

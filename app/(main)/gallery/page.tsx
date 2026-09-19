@@ -10,8 +10,8 @@ const topStudents = [
         subjects: 8,
         rank: 1,
         quote: "Hard work and dedication pay off. I study two hours every day and always ask questions when I don't understand.",
-        color: "bg-yellow-50 border-yellow-300",
-        icon: <FaCrown className={"text-yellow-500 text-3xl"}/>,
+        color: "bg-amber-50 border-amber-300",
+        icon: <FaCrown className={"text-amber-500 text-3xl"}/>,
         medal: "gold"
     },
     {
@@ -95,7 +95,7 @@ export default function GalleryPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -109,20 +109,20 @@ export default function GalleryPage() {
                 <div className={"grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"}>
                     {gradeStats.map((s, i) => (
                         <div key={i}
-                             className={"bg-green-600 text-white rounded-xl p-4 md:p-6 text-center"}>
-                            <p className={"text-xs md:text-sm text-green-100 mb-1"}>{s.grade}</p>
+                             className={"bg-navy text-white rounded-xl p-4 md:p-6 text-center"}>
+                            <p className={"text-xs md:text-sm text-cyan-light mb-1"}>{s.grade}</p>
                             <p className={"text-xl md:text-3xl font-bold"}>{s.passRate}</p>
-                            <p className={"text-xs text-green-100"}>Pass Rate</p>
-                            <hr className={"border-green-500 my-2"}/>
+                            <p className={"text-xs text-cyan-light"}>Pass Rate</p>
+                            <hr className={"border-cyan my-2"}/>
                             <p className={"text-lg md:text-2xl font-bold"}>{s.avgScore}</p>
-                            <p className={"text-xs text-green-100"}>Average Score</p>
+                            <p className={"text-xs text-cyan-light"}>Average Score</p>
                         </div>
                     ))}
                 </div>
 
                 <div className={"mb-8"}>
                     <div className={"flex items-center gap-2 mb-6"}>
-                        <LuAward className={"text-2xl text-green-600"}/>
+                        <LuAward className={"text-2xl text-cyan"}/>
                         <h2 className={"text-xl md:text-2xl font-semibold text-gray-800"}>Top Performing Learners</h2>
                     </div>
                     <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"}>
@@ -130,7 +130,7 @@ export default function GalleryPage() {
                             <div key={i}
                                  className={`rounded-xl border p-5 ${s.rank <= 3 ? s.color : "bg-white border-gray-200"} hover:shadow-md transition-shadow`}>
                                 <div className={"flex items-center justify-between mb-3"}>
-                                    <div className={"size-12 rounded-full bg-green-600 flex items-center justify-center text-white text-lg font-bold"}>
+                                    <div className={"size-12 rounded-full bg-navy flex items-center justify-center text-white text-lg font-bold"}>
                                         {s.name.split(" ").map(n => n[0]).join("")}
                                     </div>
                                     <div className={"flex items-center gap-1"}>
@@ -140,7 +140,7 @@ export default function GalleryPage() {
                                 </div>
                                 <h3 className={"font-semibold text-gray-800 text-sm"}>{s.name}</h3>
                                 <p className={"text-xs text-gray-500 mb-2"}>{s.grade} &middot; {s.subjects} Subjects</p>
-                                <p className={"text-2xl font-bold text-green-600 mb-2"}>{s.average}</p>
+                                <p className={"text-2xl font-bold text-cyan mb-2"}>{s.average}</p>
                                 {s.quote && (
                                     <p className={"text-xs text-gray-500 leading-relaxed italic"}>
                                         &ldquo;{s.quote}&rdquo;

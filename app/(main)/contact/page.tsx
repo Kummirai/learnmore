@@ -18,7 +18,7 @@ export default function ContactPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-4xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -31,7 +31,7 @@ export default function ContactPage() {
                     <div className={"bg-white rounded-xl p-8 shadow-sm"}>
                         {state?.success ? (
                             <div className={"text-center py-12"}>
-                                <LuCircleCheck className={"text-5xl text-green-600 mx-auto mb-4"}/>
+                                <LuCircleCheck className={"text-5xl text-cyan mx-auto mb-4"}/>
                                 <p className={"text-gray-700"}>{state.message}</p>
                             </div>
                         ) : (
@@ -39,17 +39,17 @@ export default function ContactPage() {
                                 <div>
                                     <label htmlFor={"name"} className={"block text-sm font-medium text-gray-700 mb-1"}>Full Name *</label>
                                     <input id={"name"} name={"name"} required
-                                           className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-green-500"}/>
+                                           className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan"}/>
                                 </div>
                                 <div>
                                     <label htmlFor={"email"} className={"block text-sm font-medium text-gray-700 mb-1"}>Email Address *</label>
                                     <input id={"email"} name={"email"} type={"email"} required
-                                           className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-green-500"}/>
+                                           className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan"}/>
                                 </div>
                                 <div>
                                     <label htmlFor={"subject"} className={"block text-sm font-medium text-gray-700 mb-1"}>Subject</label>
                                     <select id={"subject"} name={"subject"}
-                                            className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-green-500 bg-white"}>
+                                            className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan bg-white"}>
                                         <option>General Enquiry</option>
                                         <option>Enrollment Question</option>
                                         <option>Fee Enquiry</option>
@@ -59,7 +59,7 @@ export default function ContactPage() {
                                 <div>
                                     <label htmlFor={"message"} className={"block text-sm font-medium text-gray-700 mb-1"}>Message *</label>
                                     <textarea id={"message"} name={"message"} rows={4} required
-                                              className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-green-500 resize-none"}/>
+                                              className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan resize-none"}/>
                                 </div>
                                 {state?.message && (
                                     <div className={"flex items-start gap-2 p-3 rounded bg-red-50 text-red-600 text-sm"}>
@@ -68,7 +68,7 @@ export default function ContactPage() {
                                     </div>
                                 )}
                                 <button type={"submit"} disabled={pending}
-                                        className={"w-full bg-green-600 text-white py-3 rounded text-sm font-medium hover:bg-green-700 disabled:opacity-60 transition-colors"}>
+                                        className={"w-full bg-navy text-white py-3 rounded text-sm font-medium hover:bg-navy-dark disabled:opacity-60 transition-colors"}>
                                     {pending ? "Sending..." : "Send Message"}
                                 </button>
                             </form>
@@ -80,19 +80,19 @@ export default function ContactPage() {
                             <h3 className={"font-semibold text-gray-800 mb-4"}>Visit Us</h3>
                             <div className={"space-y-4 text-sm"}>
                                 <div className={"flex items-start gap-3"}>
-                                    <LuMapPin className={"mt-0.5 shrink-0 text-green-600"}/>
+                                    <LuMapPin className={"mt-0.5 shrink-0 text-cyan"}/>
                                     <span className={"text-gray-600"}>123 Education Street, Learning City, 2000</span>
                                 </div>
                                 <div className={"flex items-center gap-3"}>
-                                    <LuPhone className={"shrink-0 text-green-600"}/>
+                                    <LuPhone className={"shrink-0 text-cyan"}/>
                                     <span className={"text-gray-600"}>+27 78 267 7436</span>
                                 </div>
                                 <div className={"flex items-center gap-3"}>
-                                    <LuMail className={"shrink-0 text-green-600"}/>
+                                    <LuMail className={"shrink-0 text-cyan"}/>
                                     <span className={"text-gray-600"}>info@learnmore.edu</span>
                                 </div>
                                 <div className={"flex items-start gap-3"}>
-                                    <LuClock className={"mt-0.5 shrink-0 text-green-600"}/>
+                                    <LuClock className={"mt-0.5 shrink-0 text-cyan"}/>
                                     <span className={"text-gray-600"}>Mon - Fri: 7:30AM - 4:00PM</span>
                                 </div>
                             </div>

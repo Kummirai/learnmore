@@ -52,7 +52,7 @@ export default function FeesPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -64,17 +64,17 @@ export default function FeesPage() {
                 <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12"}>
                     {fees.map((f, i) => (
                         <div key={i}
-                             className={`bg-white rounded-xl p-6 shadow-sm border-2 text-center ${f.featured ? "border-green-500 relative" : "border-transparent"}`}>
+                             className={`bg-white rounded-xl p-6 shadow-sm border-2 text-center ${f.featured ? "border-cyan relative" : "border-transparent"}`}>
                             {f.featured && (
-                                <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-green-600 text-white text-xs font-medium px-4 py-1 rounded-full"}>
+                                <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-navy text-white text-xs font-medium px-4 py-1 rounded-full"}>
                                     Most Popular
                                 </span>
                             )}
                             <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>{f.grade}</h3>
-                            <p className={"text-3xl font-bold text-green-600 mb-1"}>{f.monthly}</p>
+                            <p className={"text-3xl font-bold text-cyan mb-1"}>{f.monthly}</p>
                             <p className={"text-sm text-gray-500 mb-4"}>per month / <span className={"text-gray-700"}>{f.annual}</span> annually</p>
                             <Link href={"/enroll"}
-                                  className={`block text-sm font-medium py-2.5 rounded transition-colors ${f.featured ? "bg-green-600 text-white hover:bg-green-700" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                                  className={`block text-sm font-medium py-2.5 rounded transition-colors ${f.featured ? "bg-navy text-white hover:bg-navy-dark" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                                 Enroll Now
                             </Link>
                         </div>
@@ -87,7 +87,7 @@ export default function FeesPage() {
                         <ul className={"space-y-2"}>
                             {included.map((item, i) => (
                                 <li key={i} className={"flex items-start gap-2 text-sm text-gray-600"}>
-                                    <LuCheck className={"text-green-600 mt-0.5 shrink-0"}/>
+                                    <LuCheck className={"text-cyan mt-0.5 shrink-0"}/>
                                     <span>{item}</span>
                                 </li>
                             ))}

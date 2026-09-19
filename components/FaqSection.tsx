@@ -30,9 +30,9 @@ export default function FaqSection() {
         <section className={"py-16 md:py-24 bg-white px-4"}>
             <div className={"max-w-3xl mx-auto"}>
                 <div className={"text-center mb-12"}>
-                    <h4 className={"text-green-600 font-medium mb-3"}>FAQ</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>FAQ</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-                        Frequently Asked <span className={"text-green-600"}>Questions</span>
+                        Frequently Asked <span className={"text-cyan"}>Questions</span>
                     </h2>
                 </div>
                 <div className={"space-y-3 mb-8"}>
@@ -54,7 +54,7 @@ export default function FaqSection() {
                 </div>
                 <div className={"text-center"}>
                     <Link href={"/faq"}
-                          className={"inline-flex items-center gap-2 text-green-600 font-medium text-sm hover:text-green-700 transition-colors"}>
+                          className={"inline-flex items-center gap-2 text-cyan font-medium text-sm hover:text-cyan-dark transition-colors"}>
                         View All FAQs <LuArrowRight/>
                     </Link>
                 </div>

@@ -3,19 +3,19 @@ import {LuMapPin, LuPhone, LuMail, LuClock, LuArrowRight} from "react-icons/lu"
 
 export default function Contact() {
     const details = [
-        {icon: <LuMapPin className={"text-2xl text-green-600"}/>, label: "Address", value: "123 Education Street, Learning City, 2000"},
-        {icon: <LuPhone className={"text-2xl text-green-600"}/>, label: "Phone", value: "+27 78 267 7436"},
-        {icon: <LuMail className={"text-2xl text-green-600"}/>, label: "Email", value: "info@learnmore.edu"},
-        {icon: <LuClock className={"text-2xl text-green-600"}/>, label: "Hours", value: "Mon - Fri: 7:30AM - 4:00PM"},
+        {icon: <LuMapPin className={"text-2xl text-cyan"}/>, label: "Address", value: "123 Education Street, Learning City, 2000"},
+        {icon: <LuPhone className={"text-2xl text-cyan"}/>, label: "Phone", value: "+27 78 267 7436"},
+        {icon: <LuMail className={"text-2xl text-cyan"}/>, label: "Email", value: "info@learnmore.edu"},
+        {icon: <LuClock className={"text-2xl text-cyan"}/>, label: "Hours", value: "Mon - Fri: 7:30AM - 4:00PM"},
     ]
 
     return (
         <section className={"py-16 md:py-24 bg-gray-50 px-4"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-12 md:mb-16"}>
-                    <h4 className={"text-green-600 font-medium mb-3"}>GET IN TOUCH</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>GET IN TOUCH</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-                        We&apos;d Love to <span className={"text-green-600"}>Hear From You</span>
+                        We&apos;d Love to <span className={"text-cyan"}>Hear From You</span>
                     </h2>
                     <p className={"text-gray-500 max-w-xl mx-auto mt-3"}>
                         Have questions about enrollment, school fees, or want to schedule a visit? Reach out to us.
@@ -39,17 +39,17 @@ export default function Contact() {
                         <form className={"space-y-4"}>
                             <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                                 <input type="text" placeholder="Your Name" required
-                                       className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600"}/>
+                                       className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"}/>
                                 <input type="email" placeholder="Your Email" required
-                                       className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600"}/>
+                                       className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"}/>
                             </div>
                             <input type="text" placeholder="Subject"
-                                   className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600"}/>
+                                   className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"}/>
                             <textarea rows={4} placeholder="Your Message" required
-                                      className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-600 resize-none"}/>
+                                      className={"w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan resize-none"}/>
                             <Link href={"https://wa.me/27782677436?text=Hello%20LearnMore!%20I%27d%20like%20to%20make%20an%20enquiry."}
                                   target={"_blank"}
-                                  className={"inline-flex items-center gap-2 bg-green-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"}>
+                                  className={"inline-flex items-center gap-2 bg-navy text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-navy-dark transition-colors"}>
                                 Send via WhatsApp <LuArrowRight/>
                             </Link>
                         </form>

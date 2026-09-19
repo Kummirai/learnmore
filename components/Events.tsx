@@ -14,11 +14,11 @@ export default function Events() {
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"flex items-center justify-between mb-8"}>
                     <div>
-                        <h4 className={"text-green-600 font-medium mb-1"}>UPCOMING EVENTS</h4>
+                        <h4 className={"text-cyan font-medium mb-1"}>UPCOMING EVENTS</h4>
                         <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>What&rsquo;s Happening</h2>
                     </div>
                     <Link href={"/calendar"}
-                          className={"text-sm text-green-600 font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
+                          className={"text-sm text-cyan font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
                         View All <LuChevronRight/>
                     </Link>
                 </div>
@@ -26,7 +26,7 @@ export default function Events() {
                     {events.map((e, i) => (
                         <div key={i}
                              className={"flex gap-4 p-4 rounded-lg border border-gray-200 hover:shadow-md transition-shadow"}>
-                            <div className={"shrink-0 text-center bg-green-600 text-white rounded-lg px-3 py-2 w-16"}>
+                            <div className={"shrink-0 text-center bg-navy text-white rounded-lg px-3 py-2 w-16"}>
                                 <p className={"text-xs leading-tight"}>{e.date.split(" ")[0]}</p>
                                 <p className={"text-sm font-bold"}>{e.date.split(" ")[1]}</p>
                             </div>

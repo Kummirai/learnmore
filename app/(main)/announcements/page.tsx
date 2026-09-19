@@ -60,13 +60,13 @@ export default function AnnouncementsPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
                 <div className={"text-center mb-12"}>
                     <div className={"flex items-center justify-center gap-3 mb-3"}>
-                        <LuMegaphone className={"text-3xl text-green-600"}/>
+                        <LuMegaphone className={"text-3xl text-cyan"}/>
                         <h1 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>Class Announcements</h1>
                     </div>
                     <p className={"text-gray-500 max-w-xl mx-auto"}>
@@ -85,7 +85,7 @@ export default function AnnouncementsPage() {
                             </div>
                             <div className={"flex items-center gap-2 mb-3"}>
                                 <span
-                                    className={"text-xs font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded"}>{a.category}</span>
+                                    className={"text-xs font-medium text-navy-dark bg-ice-blue px-2 py-0.5 rounded"}>{a.category}</span>
                                 <span className={"text-xs text-gray-400"}>Posted by {a.author}</span>
                             </div>
                             <p className={"text-sm text-gray-600 leading-relaxed"}>{a.content}</p>

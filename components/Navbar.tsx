@@ -75,9 +75,9 @@ export default function Navbar() {
           "max-w-6xl mx-auto py-4 md:py-6 flex items-center justify-between px-4 md:px-0"
         }
       >
-        <Link href={"/"} className={"text-[#0a1a25] flex items-center gap-2"}>
+        <Link href={"/"} className={"text-navy flex items-center gap-2"}>
           <FaGraduationCap
-            className={"text-4xl md:text-5xl text-yellow-400 self-center"}
+            className={"text-4xl md:text-5xl text-cyan self-center"}
           />
           <div>
             <h1
@@ -85,14 +85,14 @@ export default function Navbar() {
             >
               Relate
             </h1>
-            <p className={`text-xs md:text-sm text-${colors.navyDark}`}>
+            <p className={"text-xs md:text-sm text-navy-dark"}>
               World
             </p>
           </div>
         </Link>
         <nav
           className={
-            "hidden lg:flex items-center gap-6 xl:gap-10 text-gray-50 bg-[#0a1a25] py-2 px-4 xl:px-5"
+            "hidden lg:flex items-center gap-6 xl:gap-10 text-gray-50 bg-navy-dark py-2 px-4 xl:px-5"
           }
         >
           <div className={"flex items-center gap-2 text-sm"}>
@@ -123,7 +123,7 @@ export default function Navbar() {
 
       <header
         className={
-          "max-w-6xl mx-auto hidden lg:flex items-center justify-between bg-[#0a1a25] backdrop-blur-xl relative z-50"
+          "max-w-6xl mx-auto hidden lg:flex items-center justify-between bg-navy-dark backdrop-blur-xl relative z-50"
         }
       >
         <nav>
@@ -136,7 +136,7 @@ export default function Navbar() {
               <Link
                 href={"/"}
                 className={
-                  "block text-sm xl:text-base hover:text-yellow-400 transition-colors"
+                  "block text-sm xl:text-base hover:text-cyan transition-colors"
                 }
               >
                 Home
@@ -146,7 +146,7 @@ export default function Navbar() {
               <Link
                 href={"/about"}
                 className={
-                  "block text-sm xl:text-base hover:text-yellow-400 transition-colors"
+                  "block text-sm xl:text-base hover:text-cyan transition-colors"
                 }
               >
                 About
@@ -156,7 +156,7 @@ export default function Navbar() {
               <li key={group.link} className={"relative group"}>
                 <span
                   className={
-                    "flex items-center gap-1 text-sm xl:text-base hover:text-yellow-400 transition-colors cursor-default"
+                    "flex items-center gap-1 text-sm xl:text-base hover:text-cyan transition-colors cursor-default"
                   }
                 >
                   {group.link}
@@ -181,7 +181,7 @@ export default function Navbar() {
                         key={item.path}
                         href={item.path}
                         className={
-                          "block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 transition-colors"
+                          "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-cyan-dark transition-colors"
                         }
                       >
                         {item.link}
@@ -194,7 +194,7 @@ export default function Navbar() {
             <li>
               <Link
                 href={"/store"}
-                className={`block text-sm xl:text-base hover:[${colors.navy}] transition-colors`}
+                className={`block text-sm xl:text-base hover:text-cyan transition-colors`}
               >
                 Store
               </Link>
@@ -213,7 +213,7 @@ export default function Navbar() {
       {menuOpen && (
         <div
           className={
-            "fixed inset-0 z-50 bg-green-700 flex flex-col lg:hidden overflow-y-auto"
+            "fixed inset-0 z-50 bg-navy-dark flex flex-col lg:hidden overflow-y-auto"
           }
         >
           <div className={"flex items-center justify-between px-4 py-4"}>
@@ -223,7 +223,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
             >
               <FaGraduationCap
-                className={"text-4xl text-yellow-400 self-center"}
+                className={"text-4xl text-cyan self-center"}
               />
               <div>
                 <h1
@@ -251,7 +251,7 @@ export default function Navbar() {
               href={"/"}
               onClick={() => setMenuOpen(false)}
               className={
-                "text-white text-2xl font-medium hover:text-yellow-400 transition-colors"
+                "text-white text-2xl font-medium hover:text-cyan transition-colors"
               }
             >
               Home
@@ -260,7 +260,7 @@ export default function Navbar() {
               href={"/about"}
               onClick={() => setMenuOpen(false)}
               className={
-                "text-white text-2xl font-medium hover:text-yellow-400 transition-colors"
+                "text-white text-2xl font-medium hover:text-cyan transition-colors"
               }
             >
               About
@@ -270,7 +270,7 @@ export default function Navbar() {
                 <button
                   onClick={() => toggleGroup(group.link)}
                   className={
-                    "w-full flex items-center justify-center gap-2 text-white text-2xl font-medium hover:text-yellow-400 transition-colors"
+                    "w-full flex items-center justify-center gap-2 text-white text-2xl font-medium hover:text-cyan transition-colors"
                   }
                 >
                   {group.link}
@@ -286,7 +286,7 @@ export default function Navbar() {
                         href={item.path}
                         onClick={() => setMenuOpen(false)}
                         className={
-                          "text-white/80 text-lg hover:text-yellow-400 transition-colors"
+                          "text-white/80 text-lg hover:text-cyan transition-colors"
                         }
                       >
                         {item.link}
@@ -300,7 +300,7 @@ export default function Navbar() {
               href={"/enroll"}
               onClick={() => setMenuOpen(false)}
               className={
-                "mt-4 bg-yellow-400 text-green-900 px-10 py-3 text-lg font-semibold"
+                "mt-4 bg-cyan text-navy px-10 py-3 text-lg font-semibold"
               }
             >
               Enroll with us

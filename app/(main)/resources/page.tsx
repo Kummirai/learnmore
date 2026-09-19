@@ -61,7 +61,7 @@ export default function ResourcesPage() {
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
                 <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 mb-6 transition-colors"}>
+                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                     <LuArrowLeft/> Back to Home
                 </Link>
 
@@ -83,14 +83,14 @@ export default function ResourcesPage() {
                                     <h2 className={"text-lg font-semibold text-gray-800"}>{r.title}</h2>
                                     <p className={"text-sm text-gray-500"}>{r.description}</p>
                                     <span
-                                        className={"inline-block mt-1 text-xs font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded"}>{r.type}</span>
+                                        className={"inline-block mt-1 text-xs font-medium text-navy-dark bg-ice-blue px-2 py-0.5 rounded"}>{r.type}</span>
                                 </div>
                             </div>
                             <ul className={"space-y-2"}>
                                 {r.items.map((item, j) => (
                                     <li key={j}>
                                         <Link href={item.url}
-                                              className={"flex items-center gap-2 text-sm text-green-600 hover:text-green-700 transition-colors"}>
+                                              className={"flex items-center gap-2 text-sm text-cyan hover:text-cyan-dark transition-colors"}>
                                             <LuDownload className={"shrink-0"}/>
                                             <span>{item.name}</span>
                                         </Link>
