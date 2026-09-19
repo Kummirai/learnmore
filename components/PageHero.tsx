@@ -13,9 +13,10 @@ type PageHeroProps = {
     meta?: MetaItem[]
     metaEnd?: React.ReactNode
     titleSize?: string
+    extra?: React.ReactNode
 }
 
-export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)"}: PageHeroProps) {
+export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra}: PageHeroProps) {
     const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd
 
     return (
@@ -91,6 +92,8 @@ export default function PageHero({title, tagline, description, watermark, chips 
                             {metaEnd && <div className={"ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>{metaEnd}</div>}
                         </div>
                     )}
+
+                    {extra}
                 </div>
             </div>
         </section>
