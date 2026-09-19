@@ -14,6 +14,12 @@
   --color-slate-gray: #6b7a8d;
 }
 
+:root {
+  --club-accent: #13c5dd;
+  --club-accent-dark: #0fa3c4;
+  --club-on-accent: #1d2a4d;
+}
+
 .glass-card {
     /* From https://css.glass */
     background: rgba(255, 255, 255, 0.06);

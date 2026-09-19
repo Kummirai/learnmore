@@ -17,6 +17,7 @@ export default function Footer() {
 
     return (
         <footer className={"bg-navy-dark text-ice-blue px-4"}>
+            <div className={"h-1"} style={{backgroundColor: "var(--club-accent)"}}/>
             <div className={"max-w-6xl mx-auto py-16"}>
                 <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"}>
                     <div>
@@ -25,9 +26,9 @@ export default function Footer() {
                             A nurturing primary school for learners from Grade R to Grade 7, building bright futures since 2000.
                         </p>
                         <div className={"flex items-center gap-3"}>
-                            <FaFacebook className={"hover:text-cyan cursor-pointer transition-colors"}/>
-                            <FaTwitter className={"hover:text-cyan cursor-pointer transition-colors"}/>
-                            <FaInstagramSquare className={"hover:text-cyan cursor-pointer transition-colors"}/>
+                            <FaFacebook className={"hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"}/>
+                            <FaTwitter className={"hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"}/>
+                            <FaInstagramSquare className={"hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"}/>
                         </div>
                     </div>
                     <div>
@@ -43,7 +44,7 @@ export default function Footer() {
                             ].map((link, i) => (
                                 <li key={i}>
                                     <Link href={link.path}
-                                          className={"hover:text-cyan transition-colors"}>
+                                          className={"hover:text-[color:var(--club-accent)] transition-colors"}>
                                         {link.label}
                                     </Link>
                                 </li>
@@ -54,19 +55,19 @@ export default function Footer() {
                         <h4 className={"text-white font-semibold mb-4"}>Contact Info</h4>
                         <ul className={"space-y-3 text-sm"}>
                             <li className={"flex items-start gap-2"}>
-                                <LuMapPin className={"mt-1 shrink-0 text-cyan"}/>
+                                <LuMapPin className={"mt-1 shrink-0 text-[color:var(--club-accent)]"}/>
                                 <span>123 Education Street, Learning City, 2000</span>
                             </li>
                             <li className={"flex items-center gap-2"}>
-                                <LuPhone className={"shrink-0 text-cyan"}/>
+                                <LuPhone className={"shrink-0 text-[color:var(--club-accent)]"}/>
                                 <span>+27 78 267 7436</span>
                             </li>
                             <li className={"flex items-center gap-2"}>
-                                <LuMail className={"shrink-0 text-cyan"}/>
+                                <LuMail className={"shrink-0 text-[color:var(--club-accent)]"}/>
                                 <span>info@learnmore.edu</span>
                             </li>
                             <li className={"flex items-start gap-2"}>
-                                <LuClock className={"mt-1 shrink-0 text-cyan"}/>
+                                <LuClock className={"mt-1 shrink-0 text-[color:var(--club-accent)]"}/>
                                 <span>Mon - Fri: 7:30AM - 4:00PM</span>
                             </li>
                         </ul>
@@ -84,9 +85,9 @@ export default function Footer() {
                         ) : (
                             <form action={formAction} className={"flex"}>
                                 <input type="email" name={"email"} placeholder="Your Email" required
-                                       className={"bg-navy-soft text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-cyan text-white placeholder:text-cyan-light/60"}/>
+                                       className={"bg-navy-soft text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-[color:var(--club-accent)] text-white placeholder:text-cyan-light/60"}/>
                                 <button type={"submit"} disabled={pending}
-                                        className={"bg-cyan text-navy px-4 py-2 text-sm font-medium hover:bg-cyan-dark disabled:opacity-60 transition-colors shrink-0"}>
+                                        className={"bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-4 py-2 text-sm font-medium hover:bg-[color:var(--club-accent-dark)] disabled:opacity-60 transition-colors shrink-0"}>
                                     {pending ? "..." : "Subscribe"}
                                 </button>
                             </form>

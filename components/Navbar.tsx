@@ -8,7 +8,6 @@ import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import { FaGraduationCap } from "react-icons/fa6";
 import Link from "next/link";
 import { useState } from "react";
-import { colors } from "@/constants/colors";
 
 const roboto = Roboto({
   variable: "--font-geist-mono",
@@ -69,7 +68,7 @@ export default function Navbar() {
   };
 
   return (
-    <section style={{ backgroundColor: colors.aliceBlue }}>
+    <section style={{backgroundColor: "color-mix(in srgb, var(--club-accent) 10%, #eff5f9)"}}>
       <div
         className={
           "max-w-6xl mx-auto py-4 md:py-6 flex items-center justify-between px-4 md:px-0"
@@ -77,7 +76,7 @@ export default function Navbar() {
       >
         <Link href={"/"} className={"text-navy flex items-center gap-2"}>
           <FaGraduationCap
-            className={"text-4xl md:text-5xl text-cyan self-center"}
+            className={"text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"}
           />
           <div>
             <h1
@@ -136,7 +135,7 @@ export default function Navbar() {
               <Link
                 href={"/"}
                 className={
-                  "block text-sm xl:text-base hover:text-cyan transition-colors"
+                  "block text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors"
                 }
               >
                 Home
@@ -146,7 +145,7 @@ export default function Navbar() {
               <Link
                 href={"/about"}
                 className={
-                  "block text-sm xl:text-base hover:text-cyan transition-colors"
+                  "block text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors"
                 }
               >
                 About
@@ -156,7 +155,7 @@ export default function Navbar() {
               <li key={group.link} className={"relative group"}>
                 <span
                   className={
-                    "flex items-center gap-1 text-sm xl:text-base hover:text-cyan transition-colors cursor-default"
+                    "flex items-center gap-1 text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors cursor-default"
                   }
                 >
                   {group.link}
@@ -181,7 +180,7 @@ export default function Navbar() {
                         key={item.path}
                         href={item.path}
                         className={
-                          "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-cyan-dark transition-colors"
+                          "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
                         }
                       >
                         {item.link}
@@ -194,7 +193,7 @@ export default function Navbar() {
             <li>
               <Link
                 href={"/store"}
-                className={`block text-sm xl:text-base hover:text-cyan transition-colors`}
+                className={`block text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors`}
               >
                 Store
               </Link>
@@ -204,7 +203,7 @@ export default function Navbar() {
         <Link
           href={"/enroll"}
           className={`p-5 h-full  font-semibold text-sm xl:text-base shrink-0`}
-          style={{ backgroundColor: colors.cyan, color: colors.white }}
+          style={{backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)"}}
         >
           Join our clubs
         </Link>
@@ -223,7 +222,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
             >
               <FaGraduationCap
-                className={"text-4xl text-cyan self-center"}
+                className={"text-4xl text-[color:var(--club-accent)] self-center"}
               />
               <div>
                 <h1
@@ -251,7 +250,7 @@ export default function Navbar() {
               href={"/"}
               onClick={() => setMenuOpen(false)}
               className={
-                "text-white text-2xl font-medium hover:text-cyan transition-colors"
+                "text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
               }
             >
               Home
@@ -260,7 +259,7 @@ export default function Navbar() {
               href={"/about"}
               onClick={() => setMenuOpen(false)}
               className={
-                "text-white text-2xl font-medium hover:text-cyan transition-colors"
+                "text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
               }
             >
               About
@@ -270,7 +269,7 @@ export default function Navbar() {
                 <button
                   onClick={() => toggleGroup(group.link)}
                   className={
-                    "w-full flex items-center justify-center gap-2 text-white text-2xl font-medium hover:text-cyan transition-colors"
+                    "w-full flex items-center justify-center gap-2 text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
                   }
                 >
                   {group.link}
@@ -286,7 +285,7 @@ export default function Navbar() {
                         href={item.path}
                         onClick={() => setMenuOpen(false)}
                         className={
-                          "text-white/80 text-lg hover:text-cyan transition-colors"
+                          "text-white/80 text-lg hover:text-[color:var(--club-accent)] transition-colors"
                         }
                       >
                         {item.link}
@@ -300,7 +299,7 @@ export default function Navbar() {
               href={"/enroll"}
               onClick={() => setMenuOpen(false)}
               className={
-                "mt-4 bg-cyan text-navy px-10 py-3 text-lg font-semibold"
+                "mt-4 bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-10 py-3 text-lg font-semibold"
               }
             >
               Enroll with us

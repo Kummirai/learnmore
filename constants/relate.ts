@@ -16,6 +16,7 @@ export type RelateClub = {
   colorDark: string;
   whatsappGroupLink: string;
   programs: RelateProgram[];
+  parentSlug?: string;
 };
 
 export const CLUBS: RelateClub[] = [
@@ -512,6 +513,113 @@ export const CLUBS: RelateClub[] = [
 
 export function getClub(slug: string): RelateClub | undefined {
   return CLUBS.find((c) => c.slug === slug);
+}
+
+const SPROUT_CLASS_PROGRAMS: RelateProgram[] = [
+  {
+    name: "Bible Quiz",
+    blurb: "Read the books, then battle it out in the quiz.",
+    detail:
+      "Each season we read a few books of the Bible together. Learn the stories and characters, then join the quiz to test your knowledge — build up points on the leaderboard and win the season.",
+  },
+  {
+    name: "Reading Circle",
+    blurb: "Literacy development and reading encouragement.",
+    detail:
+      "Children read aloud in small circles, earn reading badges and take home books each week to build a lifelong love of reading.",
+  },
+  {
+    name: "Memory Verse Club",
+    blurb: "Learn a verse each month, recite it, and grow.",
+    detail:
+      "Each month we learn one Bible verse together. Practice it during the week and share it at club — earn a sticker for every verse you recite.",
+  },
+  {
+    name: "Character Building",
+    blurb: "Life skills, values and confidence workshops.",
+    detail:
+      "Short workshops on honesty, courage, kindness and confidence — the soft skills school doesn't teach.",
+  },
+  {
+    name: "Creative Arts",
+    blurb: "Art, music and drama workshops.",
+    detail:
+      "Rotating workshops in drawing, singing and drama, ending each term with a showcase for parents.",
+  },
+  {
+    name: "Bible Adventurers",
+    blurb: "Story-themed games that bring the Bible alive.",
+    detail:
+      "An adventure through Bible stories with games, crafts and role-play — a fun way to learn the big stories that the quiz is based on.",
+  },
+  {
+    name: "Football Club",
+    blurb: "Weekly training and friendly matches.",
+    detail:
+      "Learn the basics, train with friends and play friendly matches. Bring trainers, a water bottle and lots of energy — everyone gets a game.",
+  },
+  {
+    name: "Netball Club",
+    blurb: "Weekly training and friendly matches.",
+    detail:
+      "Learn passing, shooting and teamwork on the netball court. Bring gym shoes and a water bottle — beginners are very welcome.",
+  },
+];
+
+export const SUB_CLUBS: RelateClub[] = [
+  {
+    slug: "sprout-kids",
+    name: "Sprout Kids",
+    group: "Children",
+    ageRange: "6–8 yrs",
+    parentSlug: "sprout",
+    tagline: "Little roots, first shoots.",
+    description:
+      "Our youngest Sprout members — eager, curious and ready to grow. Activities are playful and safe, with gentle guidance from volunteer leaders.",
+    heroImage: "https://images.unsplash.com/photo-1545558014-8692077e9b5c?w=1200&q=80",
+    color: "#66BB6A",
+    colorDark: "#388E3C",
+    whatsappGroupLink: "https://chat.whatsapp.com/DdZ3vBcZtfLCuoS9BqEL6n",
+    programs: SPROUT_CLASS_PROGRAMS,
+  },
+  {
+    slug: "sprout-tweens",
+    name: "Sprout Tweens",
+    group: "Children",
+    ageRange: "9–11 yrs",
+    parentSlug: "sprout",
+    tagline: "Growing strong, finding their voice.",
+    description:
+      "Tweens exploring who they are becoming — independence with a safety net. Bigger challenges, real leadership and widening friendships.",
+    heroImage: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&q=80",
+    color: "#4CAF50",
+    colorDark: "#2E7D32",
+    whatsappGroupLink: "https://chat.whatsapp.com/DdZ3vBcZtfLCuoS9BqEL6n",
+    programs: SPROUT_CLASS_PROGRAMS,
+  },
+  {
+    slug: "sprout-teens",
+    name: "Sprout Teens",
+    group: "Children",
+    ageRange: "12–15 yrs",
+    parentSlug: "sprout",
+    tagline: "Reaching high, ready for more.",
+    description:
+      "Teens stepping toward adulthood — leadership, mentorship and bigger challenges in a community that knows them by name.",
+    heroImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=1200&q=80",
+    color: "#43A047",
+    colorDark: "#1B5E20",
+    whatsappGroupLink: "https://chat.whatsapp.com/DdZ3vBcZtfLCuoS9BqEL6n",
+    programs: SPROUT_CLASS_PROGRAMS,
+  },
+];
+
+export function getClubClasses(slug: string): RelateClub[] {
+  return SUB_CLUBS.filter((c) => c.parentSlug === slug);
+}
+
+export function getClubClass(slug: string): RelateClub | undefined {
+  return SUB_CLUBS.find((c) => c.slug === slug);
 }
 
 export type MagazineEdition = {

@@ -1,10 +1,10 @@
 import Link from "next/link"
 import {LuArrowLeft} from "react-icons/lu"
 import {FaWhatsapp} from "react-icons/fa"
-import {CLUBS, getClub, getMagazinesForClub} from "@/constants/relate"
+import {CLUBS, getClub, getClubClass, getClubClasses, getMagazinesForClub} from "@/constants/relate"
 
 export default function ClubPage({slug}: {slug: string}) {
-    const club = getClub(slug)
+    const club = getClub(slug) ?? getClubClass(slug)
 
     if (!club) {
         return (
@@ -21,6 +21,7 @@ export default function ClubPage({slug}: {slug: string}) {
     }
 
     const magazines = getMagazinesForClub(club.slug)
+    const classes = getClubClasses(club.slug)
     const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null
 
     return (
@@ -102,7 +103,14 @@ export default function ClubPage({slug}: {slug: string}) {
                                 <span className={"block text-[11px] uppercase tracking-widest text-white/50 mb-0.5"}>Programs</span>
                                 <span className={"font-medium"}>{club.programs.length}</span>
                             </div>
-                            {magazines.map((m) => (
+                            {club.parentSlug && getClub(club.parentSlug) && (
+                                <Link href={`/${club.parentSlug}`}
+                                      className={"ml-auto inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}>
+                                    <span className={"text-[11px] uppercase tracking-widest text-white/50"}>Part of</span>
+                                    {getClub(club.parentSlug)!.name} ←
+                                </Link>
+                            )}
+                            {!club.parentSlug && magazines.map((m) => (
                                 <Link key={m.slug} href={`/${m.slug}`}
                                       className={"ml-auto inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}>
                                     <span className={"text-[11px] uppercase tracking-widest text-white/50"}>Reading guide</span>
@@ -113,24 +121,101 @@ export default function ClubPage({slug}: {slug: string}) {
                     </div>
                 </div>
 
-                <div id={"programs"} className={"text-center mb-8 scroll-mt-8"}>
-                    <h2 className={"text-2xl font-semibold text-gray-800 mb-2"}>Programs &amp; Activities</h2>
-                    <p className={"text-gray-500 text-sm max-w-xl mx-auto"}>
-                        Everything {club.name} runs for {club.group.toLowerCase()} — join any program, no experience needed.
+                {classes.length > 0 && (
+                    <div className={"mb-10"}>
+                        <span className={"text-xs uppercase tracking-widest text-cyan font-medium"}>Age groups</span>
+                        <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"}>
+                            {club.name} runs in three age groups
+                        </h2>
+                        <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+                            Pick the band that fits your child — each has its own leaders, rhythm and weekly program.
+                        </p>
+                        <div className={"border-t border-gray-200"}>
+                            {classes.map((c) => (
+                                <Link key={c.slug} href={`/${c.slug}`}
+                                      className={"group flex items-center gap-5 md:gap-8 py-6 border-b border-gray-200 hover:bg-alice-blue/70 transition-colors"}>
+                                    <div className={"w-20 md:w-28 shrink-0"}>
+                                        <span className={"block font-black tracking-tight leading-none"}
+                                              style={{color: c.color, fontSize: "clamp(2.25rem, 5vw, 3.25rem)"}}>
+                                            {c.ageRange.split(" yrs")[0]}
+                                        </span>
+                                    </div>
+                                    <div className={"flex-1"}>
+                                        <h3 className={"font-bold text-gray-800 text-lg leading-snug"}>{c.name}</h3>
+                                        <p className={"text-sm text-gray-500 leading-snug"}>{c.tagline}</p>
+                                    </div>
+                                    <span className={"shrink-0 text-sm font-semibold text-cyan group-hover:text-cyan-dark transition-colors"}>
+                                        View programs
+                                        <span className={"inline-block ml-1 group-hover:translate-x-1 transition-transform"}>→</span>
+                                    </span>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                <div id={"programs"} className={"scroll-mt-8 mb-10"}>
+                    <span className={"text-xs uppercase tracking-widest text-cyan font-medium"}>What happens here</span>
+                    <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1"}>Programs &amp; Activities</h2>
+                    <p className={"text-gray-500 text-sm mt-2 max-w-xl"}>
+                        {club.programs.length} programs for {club.group.toLowerCase()} — one weekly flagship, then the whole menu of ways to be involved.
                     </p>
                 </div>
 
-                <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"}>
-                    {club.programs.map((p) => (
-                        <div key={p.name}
-                             className={"bg-white rounded-xl p-6 shadow-sm border-l-4 transition-shadow hover:shadow-md"}
-                             style={{borderLeftColor: club.color}}>
-                            <h3 className={"font-semibold text-gray-800 mb-1"}>{p.name}</h3>
-                            <p className={"text-sm text-cyan-dark font-medium mb-2"}>{p.blurb}</p>
-                            <p className={"text-sm text-gray-600 leading-relaxed"}>{p.detail}</p>
+                {club.programs[0] && (
+                    <div className={"relative overflow-hidden rounded-2xl text-white mb-10 shadow-sm"}
+                         style={{backgroundColor: club.colorDark}}>
+                        <div className={"absolute inset-0"}
+                             style={{background: `linear-gradient(120deg, ${club.colorDark} 20%, #1d2a4d 100%)`}}/>
+                        <div className={"absolute -right-16 -top-20 size-64 rounded-full blur-3xl opacity-25"}
+                             style={{backgroundColor: club.color}}/>
+                        <div
+                            className={"relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5"}>
+                            <div>
+                                <span className={"text-[11px] uppercase tracking-widest font-medium"}
+                                      style={{color: club.color}}>
+                                    The weekly flagship
+                                </span>
+                                <h3 className={"mt-1 text-2xl md:text-3xl font-bold tracking-tight"}>
+                                    {club.programs[0].name}
+                                </h3>
+                                <p className={"mt-2 text-white/80 text-sm md:text-base max-w-xl leading-relaxed"}>
+                                    {club.programs[0].blurb}
+                                </p>
+                            </div>
+                            <div className={"shrink-0 self-start md:self-center"}>
+                                <a
+                                    href={club.whatsappGroupLink}
+                                    target={"_blank"}
+                                    rel={"noopener noreferrer"}
+                                    className={"inline-flex items-center gap-2 bg-white text-navy px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"}>
+                                    <FaWhatsapp/> Join {club.name}
+                                </a>
+                            </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                )}
+
+                {club.programs.length > 1 && (
+                    <>
+                        <h3 className={"text-sm font-semibold text-gray-400 uppercase tracking-widest mb-2"}>
+                            More ways to be involved
+                        </h3>
+                        <div className={"grid grid-cols-1 md:grid-cols-2 gap-x-12"}>
+                            {club.programs.slice(1).map((p) => (
+                                <div key={p.name}
+                                     className={"flex items-baseline gap-3 py-4 border-b border-gray-100"}>
+                                    <span className={"size-2 shrink-0 rounded-full self-center"}
+                                          style={{backgroundColor: club.color}}/>
+                                    <div>
+                                        <h4 className={"font-medium text-gray-800 text-[15px]"}>{p.name}</h4>
+                                        <p className={"text-sm text-gray-500 leading-snug"}>{p.blurb}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                )}
 
                 {CLUBS.length > 1 && (
                     <div className={"mt-12 bg-alice-blue rounded-xl p-8 text-center"}>
