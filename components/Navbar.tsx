@@ -6,6 +6,7 @@ import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import { FaGraduationCap } from "react-icons/fa6";
 import Link from "next/link";
 import { useState } from "react";
+import UserAvatar from "./UserAvatar";
 
 const roboto = Roboto({
   variable: "--font-geist-mono",
@@ -180,28 +181,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           </ul>
         </nav>
         <div className={"flex items-center gap-3"}>
-          <div className={"hidden lg:flex items-center gap-3 text-white/80"}>
-            <FaFacebook
-              className={
-                "text-xl xl:text-2xl hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
-              }
-            />
-            <FaInstagramSquare
-              className={
-                "text-xl xl:text-2xl hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
-              }
-            />
-          </div>
-          <Link
-            href={"/enroll"}
-            className={`hidden lg:inline-flex px-5 py-3 font-semibold text-sm xl:text-base shrink-0`}
-            style={{
-              backgroundColor: "var(--club-accent)",
-              color: "var(--club-on-accent)",
-            }}
-          >
-            Join our clubs
-          </Link>
+          <UserAvatar />
           <button
             onClick={() => setMenuOpen(true)}
             className={"lg:hidden text-white p-2"}

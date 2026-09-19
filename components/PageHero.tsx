@@ -58,22 +58,22 @@ export default function PageHero({title, tagline, description, watermark, chips 
 
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
                 <div className={"flex flex-col gap-5 md:gap-6"}>
-                    {(chips.length > 0 || chipsEnd) && (
-                        <div className={"flex flex-wrap items-center gap-3"}>
-                            {chips.map((chip, i) => (
-                                <span key={i}
-                                      className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-white/90 font-medium"}>
-                                    {chip.dot && <span className={"size-2 rounded-full"} style={{backgroundColor: "var(--club-accent)"}}/>}
-                                    {chip.label}
-                                </span>
-                            ))}
-                            {chipsEnd && (
-                                <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
-                                    {chipsEnd}
-                                </span>
-                            )}
-                        </div>
-                    )}
+                    {/* Always render the chips row (like the homepage hero) so titles start at the same height; an empty row reserves the pill height for whitespace. */}
+                    <div className={"flex flex-wrap items-center gap-3"}>
+                        {chips.map((chip, i) => (
+                            <span key={i}
+                                  className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-white/90 font-medium"}>
+                                {chip.dot && <span className={"size-2 rounded-full"} style={{backgroundColor: "var(--club-accent)"}}/>}
+                                {chip.label}
+                            </span>
+                        ))}
+                        {chipsEnd && (
+                            <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
+                                {chipsEnd}
+                            </span>
+                        )}
+                        {chips.length === 0 && !chipsEnd && <span aria-hidden className={"h-[30px]"}/>}
+                    </div>
 
                     <h1 className={"font-black tracking-tight leading-none text-white"} style={{fontSize: titleSize}}>
                         {title}

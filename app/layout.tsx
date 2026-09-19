@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ThemeSync from "@/components/ThemeSync";
+import { AuthProvider } from "@/components/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeSync />
-        <main className={"flex-1"}>{children}</main>
+        <AuthProvider>
+          <main className={"flex-1"}>{children}</main>
+        </AuthProvider>
         <Footer />
         <WhatsAppButton />
       </body>
