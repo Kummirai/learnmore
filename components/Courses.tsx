@@ -4,45 +4,59 @@ import {LuArrowRight} from "react-icons/lu";
 export default function Courses() {
     const courses = [
         {
-            title: "Mathematics & Numeracy",
-            description: "Building strong number sense, problem-solving skills, and logical thinking through fun activities.",
-            duration: "Grade R - 3",
-            students: 320,
-            color: "bg-blue-100 text-blue-600"
+            title: "Sprout",
+            description: "Children in their formative years — needing nurturing, guidance, education support and a safe environment to grow.",
+            duration: "6–15 yrs · Children",
+            students: 9,
+            color: "bg-[#4CAF50]/10 text-[#2E7D32]"
         },
         {
-            title: "English Language & Literacy",
-            description: "Developing reading, writing, speaking, and listening skills with engaging stories and exercises.",
-            duration: "Grade R - 7",
-            students: 480,
-            color: "bg-purple-100 text-purple-600"
+            title: "Surge",
+            description: "Young people stepping into adulthood — needing guidance, skills and purpose.",
+            duration: "16–21 yrs · Young Youth",
+            students: 9,
+            color: "bg-[#FF6B00]/10 text-[#C2410C]"
         },
         {
-            title: "Science & Discovery",
-            description: "Exploring the natural world through hands-on experiments, nature walks, and curious inquiry.",
-            duration: "Grade 4 - 7",
-            students: 210,
-            color: "bg-cyan-100 text-cyan-600"
+            title: "Pulse",
+            description: "Young adults building careers, finances and identity — needing network and direction.",
+            duration: "21–33 yrs · Youth",
+            students: 9,
+            color: "bg-[#00B4D8]/10 text-[#0284C7]"
         },
         {
-            title: "Creative Arts & Culture",
-            description: "Expressing imagination through painting, music, drama, dance, and cultural celebrations.",
-            duration: "Grade R - 7",
-            students: 380,
-            color: "bg-pink-100 text-pink-600"
+            title: "Prime",
+            description: "Mature singles thriving independently — needing community and purpose.",
+            duration: "33+ yrs · Singles",
+            students: 9,
+            color: "bg-[#6C2BD9]/10 text-[#4A148C]"
         },
         {
-            title: "Physical Education & Sport",
-            description: "Building teamwork, coordination, and healthy habits through games, athletics, and play.",
-            duration: "Grade R - 7",
-            students: 450,
-            color: "bg-orange-100 text-orange-600"
+            title: "Anchor",
+            description: "Single parents raising children alone — needing support, community and practical help.",
+            duration: "Parenting but single",
+            students: 10,
+            color: "bg-[#2E7D32]/10 text-[#14532D]"
         },
         {
-            title: "Life Skills & Social Studies",
-            description: "Learning about our world, community, values, and becoming responsible young citizens.",
-            duration: "Grade 1 - 7",
-            students: 290,
+            title: "Base",
+            description: "Couples building life together — needing support, connection and growth.",
+            duration: "Couples of any age",
+            students: 9,
+            color: "bg-[#E8A2B6]/20 text-[#9D174D]"
+        },
+        {
+            title: "Nexus",
+            description: "Families raising children — needing community, resources and stability.",
+            duration: "Families",
+            students: 9,
+            color: "bg-[#8A9A5B]/10 text-[#4D7C0F]"
+        },
+        {
+            title: "Not sure where you fit?",
+            description: "Message us and we'll help you find the right club for your season of life — every age is welcome.",
+            duration: "Everyone",
+            students: 0,
             color: "bg-ice-blue text-cyan"
         }
     ]
@@ -51,9 +65,9 @@ export default function Courses() {
         <section className={"py-16 md:py-24 bg-gray-50 px-4"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-12 md:mb-16"}>
-                    <h4 className={"text-cyan font-medium mb-3"}>OUR SUBJECTS</h4>
+                    <h4 className={"text-cyan font-medium mb-3"}>OUR CLUBS</h4>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-                        A Rich Curriculum For <br className={"hidden sm:block"}/>
+                        Find Your Crew For <br className={"hidden sm:block"}/>
                         Every Stage
                     </h2>
                 </div>
@@ -68,8 +82,8 @@ export default function Courses() {
                             <h3 className={"text-lg font-semibold text-gray-800 mb-2"}>{course.title}</h3>
                             <p className={"text-gray-600 text-sm leading-relaxed mb-4"}>{course.description}</p>
                             <div className={"flex items-center justify-between"}>
-                                <span className={"text-sm text-gray-500"}>{course.students} Learners</span>
-                                <Link href={"/subjects"}
+                                <span className={"text-sm text-gray-500"}>{course.students > 0 ? `${course.students} Programs` : ""}</span>
+                                <Link href={i === courses.length - 1 ? "/enroll" : `/${course.title.toLowerCase()}`}
                                       className={"text-cyan text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
                                     Learn More <LuArrowRight/>
                                 </Link>

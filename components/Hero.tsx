@@ -4,11 +4,16 @@ import PageHero from "@/components/PageHero";
 export default function Hero() {
   return (
     <PageHero
-      title={"Relate"}
-      tagline={"Nurturing young minds for a bright future."}
+      title={"Grow"}
+      tagline={"in every area of life"}
       description={
-        "A loving, vibrant primary school for learners from Grade R to Grade 7 — where every child discovers their potential through quality education, creative play and lifelong friendships."
+        "Share your gifts. Connect with your community. Deepen your faith. Relate brings it all together."
       }
+      chips={[
+        { label: "Skills" },
+        { label: "Social" },
+        { label: "Spiritual" },
+      ]}
       watermark={"R–7"}
       actions={
         <>

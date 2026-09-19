@@ -1,11 +1,11 @@
-import {LuUsers, LuBookOpen, LuHeartHandshake, LuCalendar} from "react-icons/lu";
+import {LuUsers, LuBookOpen, LuHeartHandshake, LuSun} from "react-icons/lu";
 
 export default function Stats() {
     const stats = [
-        {icon: <LuUsers className={"text-4xl"}/>, value: "850+", label: "Happy Learners"},
-        {icon: <LuBookOpen className={"text-4xl"}/>, value: "14", label: "Subjects Offered"},
-        {icon: <LuHeartHandshake className={"text-4xl"}/>, value: "60+", label: "Dedicated Staff"},
-        {icon: <LuCalendar className={"text-4xl"}/>, value: "25+", label: "Years of Excellence"}
+        {icon: <LuUsers className={"text-4xl"}/>, value: "7", label: "Clubs for Every Age"},
+        {icon: <LuBookOpen className={"text-4xl"}/>, value: "60+", label: "Weekly Programs"},
+        {icon: <LuSun className={"text-4xl"}/>, value: "360+", label: "Daily Verses & Prayers"},
+        {icon: <LuHeartHandshake className={"text-4xl"}/>, value: "100%", label: "Free to Join"}
     ]
 
     return (

@@ -1,30 +1,30 @@
-import { LuCoins, LuMapPin, LuSun, LuMusic } from "react-icons/lu";
+import { LuHandHeart, LuUsers, LuMessageCircle, LuTrendingUp } from "react-icons/lu";
 
 export default function WhyChooseUs() {
   const points = [
     {
-      icon: <LuCoins className={"text-4xl text-cyan"} />,
-      title: "Affordable Fees",
+      icon: <LuUsers className={"text-4xl text-cyan"} />,
+      title: "A Club for Every Age",
       description:
-        "Quality education at fees that work for families. We offer payment plans and sibling discounts.",
+        "From 6 to 60+ — Sprout kids to Prime singles, single parents, couples and families. There's a place for your whole household.",
     },
     {
-      icon: <LuMapPin className={"text-4xl text-cyan"} />,
-      title: "Convenient Location",
+      icon: <LuMessageCircle className={"text-4xl text-cyan"} />,
+      title: "Real Community",
       description:
-        "Centrally located with easy access and safe drop-off zones for busy parents.",
+        "Join a real WhatsApp group with weekly meetups, not a mailing list. Trained facilitators walk with you.",
     },
     {
-      icon: <LuSun className={"text-4xl text-cyan"} />,
-      title: "Aftercare Program",
+      icon: <LuHandHeart className={"text-4xl text-cyan"} />,
+      title: "Free to Join, Always",
       description:
-        "Structured after-school care with homework supervision, snacks, and fun activities.",
+        "Every club, program and prayer time is free. Sponsorship covers school fees, uniforms and meals for those who need it.",
     },
     {
-      icon: <LuMusic className={"text-4xl text-cyan"} />,
-      title: "Extracurriculars",
+      icon: <LuTrendingUp className={"text-4xl text-cyan"} />,
+      title: "Grow Day by Day",
       description:
-        "Chess, choir, sports, art, and more — every child finds their passion beyond the classroom.",
+        "Prayer streaks, daily verses, reading guides and Bible quizzes — small daily steps that add up to real growth.",
     },
   ];
 

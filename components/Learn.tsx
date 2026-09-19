@@ -3,28 +3,28 @@ import { LuHeart, LuUsers, LuShield, LuSparkles } from "react-icons/lu";
 export default function Learn() {
   const features = [
     {
-      icon: <LuHeart className={"text-4xl text-cyan"} />,
-      title: "Qualified Educators",
+      icon: <LuSparkles className={"text-4xl text-cyan"} />,
+      title: "Skills",
       description:
-        "Our passionate teachers nurture each child's unique talents and create a love for learning.",
+        "Life skills, mentoring and career guidance for every season — from school support and tuition help to CV writing and financial literacy.",
     },
     {
       icon: <LuUsers className={"text-4xl text-cyan"} />,
-      title: "Small Classes",
+      title: "Social",
       description:
-        "Small class sizes ensure every learner gets the attention and support they deserve.",
+        "Clubs for every age and stage — children, young youth, singles, single parents, couples and families — so everyone finds their crew and belongs.",
+    },
+    {
+      icon: <LuHeart className={"text-4xl text-cyan"} />,
+      title: "Spiritual",
+      description:
+        "A daily rhythm of six prayer times — dawn to evening — a verse for every day, and Bible reading guides for every age.",
     },
     {
       icon: <LuShield className={"text-4xl text-cyan"} />,
-      title: "Safe & Nurturing",
+      title: "Support",
       description:
-        "A warm, caring environment where children feel safe, valued, and inspired to grow.",
-    },
-    {
-      icon: <LuSparkles className={"text-4xl text-cyan"} />,
-      title: "Holistic Growth",
-      description:
-        "Balancing academics, sports, arts, and life skills for well-rounded development.",
+        "Food relief, school fees, uniforms, childcare and counselling — ask for help and someone walks with you.",
     },
   ];
 
@@ -32,10 +32,11 @@ export default function Learn() {
     <section className={"py-16 md:py-24 bg-white px-4"}>
       <div className={"max-w-6xl mx-auto"}>
         <div className={"text-center mb-12 md:mb-16"}>
-          <h4 className={"text-cyan font-medium mb-3"}>WHY RelateWorld</h4>
+          <h4 className={"text-cyan font-medium mb-3"}>WHAT RELATE DOES</h4>
           <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-            Where Learning Feels Like <br className={"hidden sm:block"} />
-            Play
+            <span className={"text-cyan"}>Grow</span> in every{" "}
+            <br className={"hidden sm:block"} />
+            area of life
           </h2>
         </div>
         <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"}>
