@@ -56,6 +56,8 @@ type Slide = {
     watermark: string;
     /** Optional pill pinned to the far right of the chips row (e.g. club age range). */
     ageRange?: string;
+    /** Show the live next-prayer pill on this slide. */
+    prayerPill?: boolean;
     bg: React.CSSProperties;
     actions: React.ReactNode;
 };
@@ -71,10 +73,33 @@ function hexA(hex: string, a: number): string {
     return `rgba(${r},${g},${b},${a})`;
 }
 
-function brandSlide(prayer: { label: string; time: string; countdown: string } | null): Slide {
+function prayerSlide(): Slide {
+    return {
+        key: "prayer",
+        chips: [],
+        title: "Pray with us",
+        tagline: "six moments, every day",
+        description: "Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm of prayer, with a verse for each moment.",
+        watermark: "6",
+        bg: {
+            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.92) 45%, rgba(15,163,196,0.55) 75%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+        },
+        actions: (
+            <>
+                <Link href={"/enroll"} className={btnPrimary}>Start praying</Link>
+                <Link href={"/about"} className={btnGhost}>About the rhythm</Link>
+            </>
+        ),
+        prayerPill: true,
+    };
+}
+
+function brandSlide(): Slide {
     return {
         key: "brand",
-        chips: [{ label: "Skills" }, { label: "Social" }, { label: "Spiritual" }],
+        chips: [],
         title: "Grow",
         tagline: "in every area of life",
         description: "Share your gifts. Connect with your community. Deepen your faith. Relate brings it all together.",
@@ -90,16 +115,13 @@ function brandSlide(prayer: { label: string; time: string; countdown: string } |
                 <Link href={"/store"} className={btnGhost}>Explore the store</Link>
             </>
         ),
-        // prayer line is rendered by the caller via the prayer pill
-        ...( {} as Record<string, never>),
-        chipsExtra: undefined,
-    } as Slide & { prayerPill?: never };
+    };
 }
 
 function magazineSlide(mag: RelateMagazine): Slide {
     return {
         key: mag.slug,
-        chips: [{ dot: true, label: "Reading guide" }],
+        chips: [],
         title: mag.series,
         tagline: mag.theme,
         description: mag.summary,
@@ -123,7 +145,7 @@ function clubSlide(club: RelateClub): Slide {
     const numericAge = club.ageRange.match(/^[\d–+ ]+/)?.[0]?.replace("yrs", "").trim();
     return {
         key: club.slug,
-        chips: [{ dot: true, label: club.group }],
+        chips: [],
         title: club.name,
         tagline: club.tagline,
         description: club.description,
@@ -149,7 +171,8 @@ const AUTOPLAY_MS = 6000;
 export default function Hero() {
     const prayer = useNextPrayer();
     const slides: Slide[] = [
-        brandSlide(prayer),
+        brandSlide(),
+        prayerSlide(),
         ...MAGAZINES.map(magazineSlide),
         ...CLUBS.map(clubSlide),
     ];
@@ -203,22 +226,15 @@ export default function Hero() {
                 <div className={"flex flex-col gap-5 md:gap-6"}>
                     {/* Chips row + age-range pill on the far right of the same row */}
                     <div className={"flex flex-wrap items-center gap-3"}>
-                        {slide.chips.map((chip, i) => (
-                            <span key={i}
-                                  className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-white/90 font-medium"}>
-                                {chip.dot && <span className={"size-2 rounded-full"} style={{ backgroundColor: "var(--club-accent)" }} />}
-                                {chip.label}
-                            </span>
-                        ))}
-                        {slide.ageRange && (
-                            <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
-                                {slide.ageRange}
-                            </span>
-                        )}
-                        {index === 0 && prayer && (
+                        {slide.prayerPill && prayer && (
                             <span className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
                                 <LuClock className={"text-cyan-light"} />
                                 Next prayer · {prayer.label} {prayer.time} — {prayer.countdown}
+                            </span>
+                        )}
+                        {slide.ageRange && (
+                            <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
+                                {slide.ageRange}
                             </span>
                         )}
                     </div>
@@ -268,7 +284,7 @@ export default function Hero() {
                             />
                         ))}
                         <span className={"ml-2 text-[11px] uppercase tracking-widest text-white/50"}>
-                            {index === 0 && "Prayer rhythm"}
+                            {slide.key === "prayer" && "Prayer rhythm"}
                             {MAGAZINES.some((m) => m.slug === slide.key) && "Reading guides"}
                             {CLUBS.some((c) => c.slug === slide.key) && "Clubs"}
                         </span>

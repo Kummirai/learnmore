@@ -1,4 +1,8 @@
 import Link from "next/link";
+import { FaAndroid, FaApple, FaWhatsapp } from "react-icons/fa";
+import { LuArrowDownToLine } from "react-icons/lu";
+
+const APK_URL = "/relate-app.apk"; // drop the built APK into /public with this name
 
 export default function EnrollCta() {
   return (
@@ -13,11 +17,46 @@ export default function EnrollCta() {
           Skills, social and spiritual growth — all in one community. Clubs for
           every age and season of life, and it&apos;s 100% free to join.
         </p>
+
+        {/* App download buttons */}
+        <div className={"flex items-center justify-center gap-4 flex-wrap mb-10"}>
+          <a
+            href={APK_URL}
+            download
+            className={
+              "inline-flex items-center gap-3 bg-cyan text-navy py-3 px-8 text-lg font-semibold rounded-lg hover:bg-cyan-dark transition-colors"
+            }
+          >
+            <FaAndroid className={"text-2xl"} />
+            <span className={"flex flex-col items-start leading-tight"}>
+              <span className={"text-[10px] uppercase tracking-widest opacity-80"}>
+                Download for Android
+              </span>
+              <span>Get the APK</span>
+            </span>
+          </a>
+          <span
+            className={
+              "inline-flex items-center gap-3 bg-white/10 text-white/70 py-3 px-8 text-lg font-medium rounded-lg border border-white/20 cursor-not-allowed"
+            }
+            title={"Coming soon"}
+          >
+            <FaApple className={"text-2xl"} />
+            <span className={"flex flex-col items-start leading-tight"}>
+              <span className={"text-[10px] uppercase tracking-widest opacity-70"}>
+                iOS
+              </span>
+              <span>Coming soon</span>
+            </span>
+          </span>
+        </div>
+
+        {/* Secondary actions */}
         <div className={"flex items-center justify-center gap-4 flex-wrap"}>
           <Link
             href={"/enroll"}
             className={
-              "bg-cyan text-navy py-3 px-10 text-lg font-semibold hover:bg-cyan-dark transition-colors"
+              "bg-white/20 text-white py-3 px-10 text-lg font-medium hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30"
             }
           >
             Join a Club
@@ -27,12 +66,16 @@ export default function EnrollCta() {
             target={"_blank"}
             rel={"noopener noreferrer"}
             className={
-              "bg-white/20 text-white py-3 px-10 text-lg font-medium hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30"
+              "bg-white/20 text-white py-3 px-10 text-lg font-medium hover:bg-white/30 transition-colors backdrop-blur-sm border border-white/30 inline-flex items-center gap-2"
             }
           >
-            Chat on WhatsApp
+            <FaWhatsapp /> Chat on WhatsApp
           </a>
         </div>
+
+        <p className={"text-white/50 text-sm mt-6 flex items-center justify-center gap-2"}>
+          <LuArrowDownToLine /> Free download · Android 8.0+
+        </p>
       </div>
     </section>
   );
