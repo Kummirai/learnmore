@@ -27,7 +27,6 @@ export default function MagazinePage({slug}: {slug: string}) {
                 description={magazine.summary}
                 watermark={"13"}
                 titleSize={"clamp(3rem, 10vw, 7.5rem)"}
-                chipsEnd={`${magazine.clubName} · ${magazine.seasonLabel}`}
                 meta={[
                     {label: "Club", value: magazine.clubName},
                     {label: "Season", value: magazine.seasonLabel},

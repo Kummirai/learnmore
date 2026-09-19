@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { LuClock } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import { CLUBS, MAGAZINES, type RelateClub, type RelateMagazine } from "@/constants/relate";
 
@@ -19,7 +18,7 @@ const PRAYERS: Prayer[] = [
 ];
 
 function useNextPrayer() {
-    const [next, setNext] = useState<{ label: string; time: string; countdown: string } | null>(null);
+    const [next, setNext] = useState<{ label: string; time: string; time12: string; countdown: string } | null>(null);
     useEffect(() => {
         const compute = () => {
             const now = new Date();
@@ -35,6 +34,7 @@ function useNextPrayer() {
             setNext({
                 label: soonest.label,
                 time: soonest.date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
+                time12: soonest.date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }),
                 countdown: h > 0 ? `${h}h ${m}m remaining` : `${m}m remaining`,
             });
         };
@@ -54,10 +54,10 @@ type Slide = {
     tagline: string;
     description: string;
     watermark: string;
+    /** Optional small label rendered above the title (e.g. "Dawn Prayer"). */
+    eyebrow?: string;
     /** Optional pill pinned to the far right of the chips row (e.g. club age range). */
     ageRange?: string;
-    /** Show the live next-prayer pill on this slide. */
-    prayerPill?: boolean;
     bg: React.CSSProperties;
     actions: React.ReactNode;
 };
@@ -73,11 +73,12 @@ function hexA(hex: string, a: number): string {
     return `rgba(${r},${g},${b},${a})`;
 }
 
-function prayerSlide(): Slide {
+function prayerSlide(prayer: { label: string; time12: string } | null): Slide {
     return {
         key: "prayer",
         chips: [],
-        title: "Pray with us",
+        eyebrow: prayer ? `${prayer.label} Prayer` : undefined,
+        title: prayer ? prayer.time12 : "Pray with us",
         tagline: "six moments, every day",
         description: "Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm of prayer, with a verse for each moment.",
         watermark: "6",
@@ -92,7 +93,6 @@ function prayerSlide(): Slide {
                 <Link href={"/about"} className={btnGhost}>About the rhythm</Link>
             </>
         ),
-        prayerPill: true,
     };
 }
 
@@ -172,7 +172,7 @@ export default function Hero() {
     const prayer = useNextPrayer();
     const slides: Slide[] = [
         brandSlide(),
-        prayerSlide(),
+        prayerSlide(prayer),
         ...MAGAZINES.map(magazineSlide),
         ...CLUBS.map(clubSlide),
     ];
@@ -226,12 +226,6 @@ export default function Hero() {
                 <div className={"flex flex-col gap-5 md:gap-6"}>
                     {/* Chips row + age-range pill on the far right of the same row */}
                     <div className={"flex flex-wrap items-center gap-3"}>
-                        {slide.prayerPill && prayer && (
-                            <span className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
-                                <LuClock className={"text-cyan-light"} />
-                                Next prayer · {prayer.label} {prayer.time} — {prayer.countdown}
-                            </span>
-                        )}
                         {slide.ageRange && (
                             <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
                                 {slide.ageRange}
@@ -239,6 +233,11 @@ export default function Hero() {
                         )}
                     </div>
 
+                    {slide.eyebrow && (
+                        <p key={`eb-${slide.key}`} className="text-[11px] uppercase tracking-[0.2em] text-white/70 font-medium">
+                            {slide.eyebrow}
+                        </p>
+                    )}
                     <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(3rem, 10vw, 7.5rem)" }}>
                         {slide.title}
                     </h1>
