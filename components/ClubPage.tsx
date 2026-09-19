@@ -33,7 +33,6 @@ export default function ClubPage({slug}: {slug: string}) {
                 tagline={club.tagline}
                 description={club.description}
                 watermark={numericAge ? numericAge.replace(" yrs", "").trim() : undefined}
-                chips={[{dot: true, label: club.group}, {label: club.ageRange}]}
                 actions={
                     <>
                         <a

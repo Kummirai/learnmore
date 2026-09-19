@@ -14,15 +14,25 @@ type PageHeroProps = {
     metaEnd?: React.ReactNode
     titleSize?: string
     extra?: React.ReactNode
+    /** Optional full-bleed photo background (fades to dark on the left for text legibility). */
+    bgImage?: string
+    /** Optional pill pinned to the far right of the chips row (like the homepage carousel). */
+    chipsEnd?: React.ReactNode
 }
 
-export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra}: PageHeroProps) {
+export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra, bgImage, chipsEnd}: PageHeroProps) {
     const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd
 
     return (
         <section
             className={"relative min-h-screen w-full overflow-hidden"}
-            style={{background: "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)"}}>
+            style={bgImage
+                ? {
+                    backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(21,31,58,0.9) 45%, rgba(21,31,58,0.55) 75%, rgba(21,31,58,0.35) 100%), url(${bgImage})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                }
+                : {background: "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)"}}>
             <Navbar overlay/>
 
             <div className={"absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"}
@@ -48,7 +58,7 @@ export default function PageHero({title, tagline, description, watermark, chips 
 
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
                 <div className={"flex flex-col gap-5 md:gap-6"}>
-                    {chips.length > 0 && (
+                    {(chips.length > 0 || chipsEnd) && (
                         <div className={"flex flex-wrap items-center gap-3"}>
                             {chips.map((chip, i) => (
                                 <span key={i}
@@ -57,6 +67,11 @@ export default function PageHero({title, tagline, description, watermark, chips 
                                     {chip.label}
                                 </span>
                             ))}
+                            {chipsEnd && (
+                                <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
+                                    {chipsEnd}
+                                </span>
+                            )}
                         </div>
                     )}
 
@@ -85,8 +100,8 @@ export default function PageHero({title, tagline, description, watermark, chips 
                         <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center gap-x-10 gap-y-4 text-sm"}>
                             {meta?.map((m) => (
                                 <div key={m.label}>
-                                    <span className={"block text-[11px] uppercase tracking-widest text-white/50 mb-0.5"}>{m.label}</span>
-                                    <span className={"font-medium"}>{m.value}</span>
+                                    <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>{m.label}</span>
+                                    <span className={"font-semibold text-white"}>{m.value}</span>
                                 </div>
                             ))}
                             {metaEnd && <div className={"ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>{metaEnd}</div>}

@@ -23,17 +23,30 @@ export default function MagazinePage({slug}: {slug: string}) {
         <>
             <PageHero
                 title={magazine.series}
-                tagline={`${magazine.seasonLabel} · ${magazine.clubName}`}
+                tagline={magazine.theme}
                 description={magazine.summary}
-                chips={magazine.coverLines.map((line) => ({label: line}))}
-                titleSize={"clamp(3rem, 9vw, 6.5rem)"}
-                meta={[{label: "Theme", value: magazine.theme}]}
+                watermark={"13"}
+                titleSize={"clamp(3rem, 10vw, 7.5rem)"}
+                chipsEnd={`${magazine.clubName} · ${magazine.seasonLabel}`}
+                meta={[
+                    {label: "Club", value: magazine.clubName},
+                    {label: "Season", value: magazine.seasonLabel},
+                    {label: "Editions", value: magazine.editions.length},
+                ]}
+                metaEnd={
+                    <Link href={`/${magazine.clubSlug}`}
+                          className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}>
+                        <span className={"text-[11px] uppercase tracking-widest text-white/50"}>Reading for</span>
+                        {magazine.clubName} →
+                    </Link>
+                }
                 actions={
                     <Link href={`/${magazine.clubSlug}`}
-                          className={"inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"}>
+                          className={"inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"}>
                         Read more about {magazine.clubName} →
                     </Link>
                 }
+                bgImage={magazine.cover}
             />
 
             <section className={"flex-1 px-4 py-12"}>
