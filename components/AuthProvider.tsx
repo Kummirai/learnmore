@@ -12,6 +12,8 @@ export type User = {
 
 type AuthContextType = {
     user: User | null;
+    /** True while the saved session is being restored on first load. */
+    loading: boolean;
     /** Placeholder for the real OAuth redirect flow — signs in a demo profile for now. */
     signInWith: (provider: "google" | "github") => void;
     signInWithEmail: (email: string) => void;
@@ -44,6 +46,7 @@ const DEMO_USERS: Record<"google" | "github", Omit<User, "provider">> = {
 
 export function AuthProvider({children}: {children: ReactNode}) {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
     // Restore the session on first load.
     useEffect(() => {
@@ -52,6 +55,8 @@ export function AuthProvider({children}: {children: ReactNode}) {
             if (raw) setUser(JSON.parse(raw) as User);
         } catch {
             // Ignore corrupt storage — treat as signed out.
+        } finally {
+            setLoading(false);
         }
     }, []);
 
@@ -82,7 +87,7 @@ export function AuthProvider({children}: {children: ReactNode}) {
     const signOut = () => persist(null);
 
     return (
-        <AuthContext.Provider value={{user, signInWith, signInWithEmail, signUpWithEmail, signOut}}>
+        <AuthContext.Provider value={{user, loading, signInWith, signInWithEmail, signUpWithEmail, signOut}}>
             {children}
         </AuthContext.Provider>
     );
