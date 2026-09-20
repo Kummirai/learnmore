@@ -63,7 +63,7 @@ function ReadingInline({blocks}: {blocks?: PubBlock[]}) {
                 if (b.type === "image" && b.uri) {
                     return (
                         <img key={i} src={b.uri} alt=""
-                             className={"w-full rounded-xl object-cover max-h-72"}/>
+                             className={"my-6 w-full object-cover max-h-72"}/>
                     )
                 }
                 if (b.type === "quote") {
@@ -259,7 +259,7 @@ export default function PubBlockView({block}: {block: PubBlock}) {
             return <ReadingView block={block}/>
         case "image":
             return block.uri ? (
-                <img src={block.uri} alt="" className={"w-full rounded-xl object-cover"}/>
+                <img src={block.uri} alt="" className={"my-6 w-full object-cover"}/>
             ) : null
         default:
             return block.text ? (

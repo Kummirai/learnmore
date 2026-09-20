@@ -1,6 +1,6 @@
 import {notFound} from "next/navigation"
 import PageHero from "@/components/PageHero"
-import PublicationCard from "@/components/publications/PublicationCard"
+import PublicationLibrary from "@/components/publications/PublicationLibrary"
 import {getClub, getClubClass} from "@/constants/relate"
 import {getPublications} from "@/lib/publications"
 
@@ -38,11 +38,7 @@ export default async function ClubMagazinesPage({
                         Magazines &amp; Bulletins
                     </h2>
                     {publications.length > 0 ? (
-                        <div className={"flex flex-wrap gap-3 md:gap-4"}>
-                            {publications.map((pub) => (
-                                <PublicationCard key={pub.id} pub={pub}/>
-                            ))}
-                        </div>
+                        <PublicationLibrary publications={publications}/>
                     ) : (
                         <p className={"text-gray-500 text-sm mt-4"}>
                             No magazines published for {club.name} yet — check back soon.

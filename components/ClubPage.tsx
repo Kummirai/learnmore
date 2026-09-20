@@ -4,7 +4,7 @@ import {FaWhatsapp} from "react-icons/fa"
 import PageHero from "@/components/PageHero"
 import {CLUBS, getClub, getClubClass, getClubClasses} from "@/constants/relate"
 import {getPublications} from "@/lib/publications"
-import PublicationCard from "@/components/publications/PublicationCard"
+import PublicationLibrary from "@/components/publications/PublicationLibrary"
 
 export default async function ClubPage({slug}: {slug: string}) {
     const club = getClub(slug) ?? getClubClass(slug)
@@ -184,11 +184,7 @@ export default async function ClubPage({slug}: {slug: string}) {
                             <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
                                 This season’s study guide and bulletin — open to read, no account needed.
                             </p>
-                            <div className={"flex flex-wrap gap-3 md:gap-4"}>
-                                {publications.map((p) => (
-                                    <PublicationCard key={p.id} pub={p}/>
-                                ))}
-                            </div>
+                            <PublicationLibrary publications={publications}/>
                         </div>
                     )}
 

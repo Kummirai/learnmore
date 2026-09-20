@@ -6,11 +6,11 @@ export default function PublicationCard({pub}: {pub: PubSummary}) {
 
     return (
         <Link href={`/library/${pub.id}`}
-              className={"group relative flex flex-col w-[200px] h-[300px] overflow-hidden bg-white shadow-sm hover:shadow-lg transition-all"}>
-            <div className={"relative min-h-0 flex-1 bg-navy overflow-hidden"}>
+              className={"group flex flex-col w-[200px] overflow-hidden bg-white border border-gray-200 shadow-sm hover:shadow-lg transition-all"}>
+            <div className={"relative h-[300px] bg-navy overflow-hidden"}>
                 {pub.cover ? (
                     <img src={pub.cover} alt={`${pub.title ?? pub.id} cover`}
-                         className={"absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"}/>
+                         className={"absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"}/>
                 ) : (
                     <div className={"absolute inset-0 grid place-items-center"}>
                         <span className={"text-4xl font-black tracking-tight text-white/30"}>
@@ -19,14 +19,14 @@ export default function PublicationCard({pub}: {pub: PubSummary}) {
                     </div>
                 )}
             </div>
-            <div className={"shrink-0 bg-navy px-3 py-3"}>
-                <span className={"block text-[9px] font-bold uppercase tracking-widest text-cyan-light"}>
+            <div className={"shrink-0 bg-white px-3 py-3"}>
+                <span className={"block text-[9px] font-bold uppercase tracking-widest text-cyan-dark"}>
                     {meta || pub.kind}
                 </span>
-                <h3 className={"mt-1 font-bold text-white leading-snug line-clamp-3 text-[15px]"}>
+                <h3 className={"mt-1 font-bold text-navy leading-snug line-clamp-3 text-[15px]"}>
                     {pub.theme ?? pub.title ?? pub.id}
                 </h3>
-                <span className={"mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-cyan-light group-hover:text-white transition-colors"}>
+                <span className={"mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-cyan-dark group-hover:text-navy transition-colors"}>
                     Read <span className={"group-hover:translate-x-0.5 transition-transform"}>→</span>
                 </span>
             </div>
