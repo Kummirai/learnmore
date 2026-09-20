@@ -435,12 +435,178 @@ export default function MagazineEditor({
                     )}
                 </Card>
 
-                {/* __WEEKS__ */}
+                {/* Weeks & daily reads */}
+                {draft.season && Array.isArray(draft.weeks) && draft.weeks.length ? (
+                    <Card>
+                        <h3 className="mb-1 text-lg font-black tracking-tight text-navy">Weeks &amp; daily reads</h3>
+                        <p className="mb-4 text-sm text-slate-gray">
+                            Each week has a topic, an introduction, and seven calendar-locked days. Dates and weekdays are auto-filled from the season.
+                        </p>
+                        <div className="space-y-6">
+                            {seasonWeeks.map((sw, wIdx) => {
+                                const wk = draft.weeks?.[wIdx];
+                                return (
+                                    <div key={wIdx} className="rounded-2xl border border-gray-200 p-4">
+                                        <div className="mb-3 flex items-center justify-between gap-2">
+                                            <Badge tone="sky">Week {sw.index}</Badge>
+                                            <span className="text-xs font-medium text-slate-gray">
+                                                {sw.days[0]?.date} → {sw.days[sw.days.length - 1]?.date}
+                                            </span>
+                                        </div>
+                                        <div className="grid grid-cols-1 gap-3">
+                                            <Field label="Week topic">
+                                                <Input value={wk?.topic || ""} onChange={(e) => updateWeek(wIdx, { topic: e.target.value })} placeholder="e.g. The hidden root" />
+                                            </Field>
+                                            <div className="flex items-end">
+                                                <AddBlockButton
+                                                    label="+ Intro block"
+                                                    onAdd={(t) => updateWeek(wIdx, { intro: [...(wk?.intro || []), blankBlock(t)] })}
+                                                />
+                                            </div>
+                                        </div>
+                                        {wk?.intro?.length ? (
+                                            <div className="mt-3 space-y-3">
+                                                {wk.intro.map((b, bi) => (
+                                                    <BlockEditor
+                                                        key={bi}
+                                                        block={b}
+                                                        onChange={(nb) => updateWeek(wIdx, { intro: wk.intro.map((x, j) => (j === bi ? nb : x)) })}
+                                                        onRemove={() => updateWeek(wIdx, { intro: wk.intro.filter((_, j) => j !== bi) })}
+                                                    />
+                                                ))}
+                                            </div>
+                                        ) : null}
 
-                {/* __ACTIONS__ */}
+                                        <div className="mt-4 space-y-3">
+                                            {sw.days.map((cd, dIdx) => {
+                                                const day = wk?.days?.[dIdx] || emptyDay();
+                                                return (
+                                                    <details key={dIdx} className="rounded-xl border border-gray-200 bg-white">
+                                                        <summary
+                                                            onClick={() => setActiveSeat({ wIdx, dIdx })}
+                                                            className="flex cursor-pointer items-center justify-between gap-2 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-alice-blue"
+                                                        >
+                                                            <span>
+                                                                <span className="mr-2 inline-block w-10 text-xs font-bold text-cyan">{cd.weekday.slice(0, 3)}</span>
+                                                                {cd.date}
+                                                            </span>
+                                                            <span className="truncate text-xs font-normal text-slate-gray">{day.title || "Untitled"}</span>
+                                                        </summary>
+                                                        <div className="border-t border-gray-100 p-3">
+                                                            <div className="rounded-xl border border-gray-200 bg-white p-4">
+                                                                <div className="mb-3 flex items-center gap-2">
+                                                                    <SectionChip n={1} />
+                                                                    <SectionLabel>Day details</SectionLabel>
+                                                                </div>
+                                                                <div className="grid grid-cols-1 gap-3">
+                                                                    <Field label="Day title">
+                                                                        <Input value={day.title} onChange={(e) => updateDay(wIdx, dIdx, { title: e.target.value })} />
+                                                                    </Field>
+                                                                    <Field label="Verse text">
+                                                                        <Input value={day.verseText} onChange={(e) => updateDay(wIdx, dIdx, { verseText: e.target.value })} placeholder="For God so loved the world…" />
+                                                                    </Field>
+                                                                    <Field label="Verse reference">
+                                                                        <Input value={day.verseBy} onChange={(e) => updateDay(wIdx, dIdx, { verseBy: e.target.value })} placeholder="John 3:16" />
+                                                                    </Field>
+                                                                </div>
+                                                            </div>
+                                                            <div className="mt-3 rounded-xl border border-gray-200 bg-white p-4">
+                                                                <div className="mb-3 flex items-center gap-2">
+                                                                    <SectionChip n={2} accent />
+                                                                    <SectionLabel>Reading content</SectionLabel>
+                                                                </div>
+                                                                <ReadEditor
+                                                                    value={day.reading ?? emptyReading()}
+                                                                    onChange={(reading) => updateDay(wIdx, dIdx, { reading })}
+                                                                />
+                                                            </div>
+                                                            <div className="mt-3 rounded-xl border border-gray-200 bg-white p-4">
+                                                                <div className="mb-3 flex items-center justify-between gap-2">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <SectionChip n={3} />
+                                                                        <SectionLabel>Extra blocks (images, quotes, lists…)</SectionLabel>
+                                                                    </div>
+                                                                    <AddBlockButton
+                                                                        label="+ Block"
+                                                                        onAdd={(t) => updateDay(wIdx, dIdx, { blocks: [...(day.blocks || []), blankBlock(t)] })}
+                                                                    />
+                                                                </div>
+                                                                {day.blocks?.length ? (
+                                                                    <div className="mt-2 space-y-2">
+                                                                        {day.blocks.map((b, bi) => (
+                                                                            <BlockEditor
+                                                                                key={bi}
+                                                                                block={b}
+                                                                                onChange={(nb) => updateDay(wIdx, dIdx, { blocks: day.blocks.map((x, j) => (j === bi ? nb : x)) })}
+                                                                                onRemove={() => updateDay(wIdx, dIdx, { blocks: day.blocks.filter((_, j) => j !== bi) })}
+                                                                            />
+                                                                        ))}
+                                                                    </div>
+                                                                ) : null}
+                                                            </div>
+                                                        </div>
+                                                    </details>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </Card>
+                ) : null}
+
+                {/* Actions */}
+                <div className="flex flex-col items-start gap-3">
+                    {error ? <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
+                    {saved ? <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Saved.</p> : null}
+                    <div className="flex gap-3">
+                        <Button onClick={save} disabled={saving}>
+                            {saving ? "Saving…" : initial ? "Save changes" : "Create magazine"}
+                        </Button>
+                        <Button variant="ghost" onClick={() => router.push("/admin/magazines")}>Cancel</Button>
+                    </div>
+                </div>
             </div>
 
-            {/* __PREVIEW__ */}
+            {/* Preview column (≈35%, fixed) */}
+            <aside className="sticky top-0 self-start w-[35%] shrink-0 max-h-screen overflow-y-auto overscroll-contain pr-1">
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                        <p className="text-xs font-bold uppercase tracking-widest text-cyan">Live preview</p>
+                        {activePreview ? <Badge tone="sky">updates as you type</Badge> : null}
+                    </div>
+                    {activePreview ? (
+                        <>
+                            <DayPreview day={activePreview} accent={previewAccent} />
+                            <button
+                                onClick={() => setActivePreviewOpen(true)}
+                                className="w-full rounded-xl border border-gray-200 bg-white py-2.5 text-sm font-semibold text-slate-gray transition hover:bg-alice-blue"
+                            >
+                                Open full screen
+                            </button>
+                        </>
+                    ) : (
+                        <div className="rounded-2xl border-2 border-dashed border-gray-200 bg-white p-6 text-center">
+                            <p className="text-sm font-semibold text-slate-gray">
+                                {draft.season ? "No day selected" : "No study guide yet"}
+                            </p>
+                            <p className="mt-1.5 text-xs leading-5 text-gray-400">
+                                {draft.season
+                                    ? "Click any day (week summary) in the season to preview its full reading here — Verse, Read, Reflect and Respond, updating live as you type."
+                                    : "Add a season, then click any day to preview its reading here."}
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </aside>
+
+            <DayPreviewModal
+                open={activePreviewOpen}
+                onClose={() => setActivePreviewOpen(false)}
+                day={activePreview}
+                accent={previewAccent}
+            />
         </div>
     );
 
