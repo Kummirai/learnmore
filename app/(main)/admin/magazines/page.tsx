@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LuPlus, LuX } from "react-icons/lu";
+import Link from "next/link";
+import { LuPlus, LuX, LuPencil } from "react-icons/lu";
 import RequireAuth from "@/components/RequireAuth";
 import { Badge, AdminHeader, Button, Field, Input, Select } from "@/components/admin/ui";
 
@@ -195,10 +196,12 @@ function MagazinesBody() {
                         {visible.map((row) => (
                             <tr key={row.id} className="border-b border-gray-50 last:border-0 hover:bg-alice-blue/40 transition-colors">
                                 <td className="px-4 py-3.5">
-                                    <span className="font-semibold text-navy">{row.title}</span>
-                                    <div className="text-xs text-slate-gray">
-                                        {[row.series, row.id].filter(Boolean).join(" · ")}
-                                    </div>
+                                    <Link href={`/admin/magazines/${encodeURIComponent(row.id)}`} className="group">
+                                        <span className="font-semibold text-navy transition group-hover:text-cyan">{row.title}</span>
+                                        <div className="text-xs text-slate-gray">
+                                            {[row.series, row.id].filter(Boolean).join(" · ")}
+                                        </div>
+                                    </Link>
                                 </td>
                                 <td className="px-4 py-3.5 text-gray-600">{row.clubName}</td>
                                 <td className="hidden px-4 py-3.5 text-gray-500 md:table-cell">{row.seasonLabel || "—"}</td>
@@ -209,6 +212,12 @@ function MagazinesBody() {
                                 </td>
                                 <td className="px-4 py-3.5">
                                     <div className="flex items-center justify-end gap-2">
+                                        <Link
+                                            href={`/admin/magazines/${encodeURIComponent(row.id)}`}
+                                            className="rounded-lg bg-alice-blue px-2.5 py-1.5 text-xs font-semibold text-navy transition hover:bg-sky-100"
+                                        >
+                                            <LuPencil className="mr-1 inline" /> Edit
+                                        </Link>
                                         <button
                                             onClick={() => setStatus(row.id, row.status === "published" ? "draft" : "published")}
                                             disabled={busy === row.id}
