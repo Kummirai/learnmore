@@ -14,6 +14,7 @@ export type PubBlock = {
   type: string;
   text?: string;
   by?: string;
+  source?: string;
   title?: string;
   items?: string[];
   question?: string;
@@ -23,6 +24,39 @@ export type PubBlock = {
   prompt?: string;
   placeholder?: string;
   id?: string;
+  uri?: string;
+  structure?: ReadingStructure;
+};
+
+export type ReadingPart = {
+  hook?: string;
+  thesis?: string;
+  restate?: string;
+  whyItMatters?: string;
+  closing?: string;
+  beforeHook?: PubBlock[];
+  afterHook?: PubBlock[];
+  afterThesis?: PubBlock[];
+  beforeRestate?: PubBlock[];
+  afterRestate?: PubBlock[];
+  afterWhyItMatters?: PubBlock[];
+  afterClosing?: PubBlock[];
+};
+
+export type ReadingBodyItem = {
+  topic?: string;
+  support?: string[];
+  closing?: string;
+  beforeTopic?: PubBlock[];
+  afterTopic?: PubBlock[];
+  afterSupport?: PubBlock[];
+  afterClosing?: PubBlock[];
+};
+
+export type ReadingStructure = {
+  intro?: ReadingPart;
+  body?: ReadingBodyItem[];
+  conclusion?: ReadingPart;
 };
 
 export type PubDay = {

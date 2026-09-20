@@ -1,4 +1,4 @@
-import type { PubBlock } from "@/lib/publications"
+import type { PubBlock, ReadingPart, ReadingBodyItem } from "@/lib/publications"
 
 function ChecklistCard({title, items}: {title?: string; items?: string[]}) {
     return (
@@ -52,6 +52,118 @@ function NewsList({items}: {items?: string[]}) {
                 </li>
             ))}
         </ul>
+    )
+}
+
+function ReadingInline({blocks}: {blocks?: PubBlock[]}) {
+    if (!blocks?.length) return null
+    return (
+        <>
+            {blocks.map((b, i) => {
+                if (b.type === "image" && b.uri) {
+                    return (
+                        <img key={i} src={b.uri} alt=""
+                             className={"w-full rounded-xl object-cover max-h-72"}/>
+                    )
+                }
+                if (b.type === "quote") {
+                    return (
+                        <figure key={i} className={"my-2 border-l-2 border-cyan pl-4"}>
+                            <blockquote className={"text-[15px] md:text-base font-medium text-navy italic leading-relaxed"}>
+                                {b.text}
+                            </blockquote>
+                            {(b.by || b.source) && (
+                                <figcaption className={"mt-1 text-[11px] uppercase tracking-widest text-gray-400 font-medium"}>
+                                    {[b.by, b.source].filter(Boolean).join(" · ")}
+                                </figcaption>
+                            )}
+                        </figure>
+                    )
+                }
+                return <PubBlockView key={i} block={b}/>
+            })}
+        </>
+    )
+}
+
+function ReadingIntro({part}: {part?: ReadingPart}) {
+    if (!part || (!part.hook && !part.thesis)) return null
+    return (
+        <>
+            <ReadingInline blocks={part.beforeHook}/>
+            {part.hook && (
+                <p className={"text-[15px] md:text-base text-gray-700 leading-relaxed"}>{part.hook}</p>
+            )}
+            <ReadingInline blocks={part.afterHook}/>
+            {part.thesis && (
+                <p className={"border-l-4 border-cyan pl-4 font-semibold text-navy text-[15px] md:text-base leading-relaxed"}>
+                    {part.thesis}
+                </p>
+            )}
+            <ReadingInline blocks={part.afterThesis}/>
+        </>
+    )
+}
+
+function ReadingBody({items}: {items?: ReadingBodyItem[]}) {
+    if (!items?.length) return null
+    return (
+        <>
+            {items.map((item, i) => (
+                <div key={i}>
+                    <ReadingInline blocks={item.beforeTopic}/>
+                    {item.topic && (
+                        <p className={"font-bold text-navy text-[15px] md:text-base leading-snug"}>
+                            {item.topic}
+                        </p>
+                    )}
+                    <ReadingInline blocks={item.afterTopic}/>
+                    {item.support?.map((s) => (
+                        <p key={s} className={"text-[15px] md:text-base text-gray-700 leading-relaxed"}>{s}</p>
+                    ))}
+                    <ReadingInline blocks={item.afterSupport}/>
+                    {item.closing && (
+                        <p className={"text-[15px] md:text-base italic text-gray-600 leading-relaxed"}>{item.closing}</p>
+                    )}
+                    <ReadingInline blocks={item.afterClosing}/>
+                </div>
+            ))}
+        </>
+    )
+}
+
+function ReadingConclusion({part}: {part?: ReadingPart}) {
+    if (!part || (!part.restate && !part.whyItMatters && !part.closing)) return null
+    return (
+        <>
+            <ReadingInline blocks={part.beforeRestate}/>
+            {part.restate && (
+                <p className={"border-l-4 border-cyan pl-4 font-semibold text-navy text-[15px] md:text-base leading-relaxed"}>
+                    {part.restate}
+                </p>
+            )}
+            <ReadingInline blocks={part.afterRestate}/>
+            {part.whyItMatters && (
+                <p className={"text-[15px] md:text-base text-gray-700 leading-relaxed"}>{part.whyItMatters}</p>
+            )}
+            <ReadingInline blocks={part.afterWhyItMatters}/>
+            {part.closing && (
+                <p className={"text-[15px] md:text-base font-semibold text-navy leading-relaxed"}>{part.closing}</p>
+            )}
+            <ReadingInline blocks={part.afterClosing}/>
+        </>
+    )
+}
+
+function ReadingView({block}: {block: PubBlock}) {
+    const s = block.structure
+    if (!s) return null
+    return (
+        <div className={"space-y-4"}>
+            <ReadingIntro part={s.intro}/>
+            <ReadingBody items={s.body}/>
+            <ReadingConclusion part={s.conclusion}/>
+        </div>
     )
 }
 
@@ -143,6 +255,12 @@ export default function PubBlockView({block}: {block: PubBlock}) {
             return <QuizBlock block={block}/>
         case "reflection":
             return <ReflectionBlock block={block}/>
+        case "reading":
+            return <ReadingView block={block}/>
+        case "image":
+            return block.uri ? (
+                <img src={block.uri} alt="" className={"w-full rounded-xl object-cover"}/>
+            ) : null
         default:
             return block.text ? (
                 <p className={"text-[15px] md:text-base text-gray-700 leading-relaxed"}>{block.text}</p>

@@ -7,6 +7,7 @@ import { FaGraduationCap } from "react-icons/fa6";
 import Link from "next/link";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
+import { CLUBS, SUB_CLUBS } from "@/constants/relate";
 
 const roboto = Roboto({
   variable: "--font-geist-mono",
@@ -31,10 +32,10 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Magazines",
-    items: [
-      { link: "Footsteps", path: "/footsteps" },
-      { link: "Rooted", path: "/rooted" },
-    ],
+    items: [...CLUBS.filter((c) => c.slug !== "sprout"), ...SUB_CLUBS].map((c) => ({
+      link: `${c.name} Magazines`,
+      path: `/magazines/${c.slug}`,
+    })),
   },
   {
     link: "Reading Plans",
