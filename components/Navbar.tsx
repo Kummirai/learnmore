@@ -32,17 +32,22 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Magazines",
-    items: [...CLUBS.filter((c) => c.slug !== "sprout"), ...SUB_CLUBS].map((c) => ({
-      link: `${c.name} Magazines`,
-      path: `/magazines/${c.slug}`,
-    })),
+    items: [...CLUBS.filter((c) => c.slug !== "sprout"), ...SUB_CLUBS].map(
+      (c) => ({
+        link: `${c.name} Magazines`,
+        path: `/magazines/${c.slug}`,
+      }),
+    ),
   },
   {
     link: "Reading Plans",
     items: [
       { link: "All Reading Plans", path: "/plans" },
       { link: "Bible Reading", path: "/plans#bible-reading" },
-      { link: "Marriage & Relationships", path: "/plans#marriage-relationships" },
+      {
+        link: "Marriage & Relationships",
+        path: "/plans#marriage-relationships",
+      },
       { link: "Emotional Wellness", path: "/plans#emotional-wellness" },
       { link: "Finance & Stewardship", path: "/plans#finance-stewardship" },
       { link: "Academic", path: "/plans#academic" },
@@ -97,25 +102,25 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               className={`text-[1.7rem] md:text-[2rem] font-extrabold ${roboto.className} tracking-tight leading-none`}
             >
               Relate
-              <span className="text-[color:var(--club-accent)] font-black">World</span>
+              <span className="text-[color:var(--club-accent)] font-black">
+                World
+              </span>
             </h1>
-            <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.35em] ${overlay ? "text-white/60" : "text-slate-gray"} mt-1.5`}>
+            <p
+              className={`text-[9px] md:text-[10px] uppercase tracking-[0.35em] ${overlay ? "text-white/60" : "text-slate-gray"} mt-1.5`}
+            >
               Grow · Belong · Become
             </p>
           </div>
         </Link>
         <nav className={"hidden lg:block"}>
           <ul
-            className={
-              `flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`
-            }
+            className={`flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`}
           >
             <li>
               <Link
                 href={"/"}
-                className={
-                  `block text-sm xl:text-base ${hoverText} transition-colors`
-                }
+                className={`block text-sm  ${hoverText} transition-colors`}
               >
                 Home
               </Link>
@@ -123,9 +128,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             <li>
               <Link
                 href={"/about"}
-                className={
-                  `block text-sm xl:text-base ${hoverText} transition-colors`
-                }
+                className={`block text-sm  ${hoverText} transition-colors`}
               >
                 About
               </Link>
@@ -133,9 +136,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             {navGroups.map((group) => (
               <li key={group.link} className={"relative group"}>
                 <span
-                  className={
-                    `flex items-center gap-1 text-sm xl:text-base ${hoverText} transition-colors cursor-default`
-                  }
+                  className={`flex items-center gap-1 text-sm  ${hoverText} transition-colors cursor-default`}
                 >
                   {group.link}
                   <LuChevronDown
@@ -172,7 +173,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             <li>
               <Link
                 href={"/store"}
-                className={`block text-sm xl:text-base ${hoverText} transition-colors`}
+                className={`block text-sm  ${hoverText} transition-colors`}
               >
                 Store
               </Link>
@@ -213,7 +214,9 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                   className={`text-2xl font-extrabold ${roboto.className} tracking-tight leading-none`}
                 >
                   Relate
-                  <span className="text-[color:var(--club-accent)] font-black">World</span>
+                  <span className="text-[color:var(--club-accent)] font-black">
+                    World
+                  </span>
                 </h1>
                 <p className="text-[9px] uppercase tracking-[0.35em] text-white/60 mt-1.5">
                   Grow · Belong · Become
