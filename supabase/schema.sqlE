@@ -161,17 +161,12 @@ create policy "sections are public"         on public.plan_sections    for selec
 
 -- Users read/write only their own rows. No user can touch profiles.club
 -- (the club lock) through a plain client — admin uses the service role.
-drop policy if exists "own progress select" on public.user_reading_progress;
 create policy "own progress select" on public.user_reading_progress for select using (auth.uid() = user_id);
-drop policy if exists "own progress insert" on public.user_reading_progress;
 create policy "own progress insert" on public.user_reading_progress for insert with check (auth.uid() = user_id);
-drop policy if exists "own progress update" on public.user_reading_progress;
 create policy "own progress update" on public.user_reading_progress for update using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
-drop policy if exists "own quiz logs select" on public.quiz_logs;
 create policy "own quiz logs select" on public.quiz_logs for select using (auth.uid() = user_id);
-drop policy if exists "own quiz logs insert" on public.quiz_logs;
 create policy "own quiz logs insert" on public.quiz_logs for insert with check (auth.uid() = user_id);
 
 -- ---------------------------------------------------------------------------
@@ -186,5 +181,3 @@ set search_path = public
 as $$
   select club from public.profiles where id = uid
 $$;
-
-
