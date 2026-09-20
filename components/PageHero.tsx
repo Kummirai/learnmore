@@ -18,9 +18,11 @@ type PageHeroProps = {
     bgImage?: string
     /** Optional pill pinned to the far right of the chips row (like the homepage carousel). */
     chipsEnd?: React.ReactNode
+    /** Set false on pages whose layout already renders a Navbar (avoids a double navbar). */
+    navbar?: boolean
 }
 
-export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra, bgImage, chipsEnd}: PageHeroProps) {
+export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra, bgImage, chipsEnd, navbar = true}: PageHeroProps) {
     const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd
 
     return (
@@ -33,7 +35,7 @@ export default function PageHero({title, tagline, description, watermark, chips 
                     backgroundPosition: "center",
                 }
                 : {background: "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)"}}>
-            <Navbar overlay/>
+            {navbar && <Navbar overlay/>}
 
             <div className={"absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"}
                  style={{backgroundColor: "var(--club-accent)"}}/>

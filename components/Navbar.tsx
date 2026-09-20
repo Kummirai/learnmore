@@ -39,12 +39,21 @@ const navGroups: NavGroup[] = [
   {
     link: "Reading Plans",
     items: [
+      { link: "All Reading Plans", path: "/plans" },
+      { link: "Bible Reading", path: "/plans#bible-reading" },
+      { link: "Marriage & Relationships", path: "/plans#marriage-relationships" },
+      { link: "Emotional Wellness", path: "/plans#emotional-wellness" },
+      { link: "Finance & Stewardship", path: "/plans#finance-stewardship" },
+      { link: "Academic", path: "/plans#academic" },
+    ],
+  },
+  {
+    link: "Community",
+    items: [
       { link: "News", path: "/news" },
-      { link: "Teachers", path: "/teachers" },
-      { link: "Contact", path: "/contact" },
+      { link: "Team", path: "/team" },
       { link: "FAQ", path: "/faq" },
-      { link: "Fees", path: "/fees" },
-      { link: "Lost & Found", path: "/lost-found" },
+      { link: "Contact", path: "/contact" },
     ],
   },
 ];
