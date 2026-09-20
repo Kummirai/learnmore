@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RelateWorld Primary School",
+  title: "RelateWorld | Free Community Clubs, Skills & Support for Every Age",
   description:
-    "RelateWorld Primary School - Nurturing Young Minds from Grade R to Grade 7",
+    "RelateWorld brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families. 100% free to join.",
 };
 
 export default function RootLayout({
