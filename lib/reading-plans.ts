@@ -20,11 +20,20 @@ export type ReadingSection = {
   id: string;
   planSlug: string;
   title: string;
-  book: string;
-  startCh: number;
-  endCh: number;
+  book: string | null;
+  startCh: number | null;
+  endCh: number | null;
+  verseText?: string;
+  verseBy?: string;
+  blocks?: PubBlock[];
   sort: number;
 };
+
+/**
+ * PubBlock (from lib/publications / lib/editor/season) — authored content for a
+ * section: paragraphs, verse quotes, images, lists, prayers, quizzes…
+ */
+import type { PubBlock } from "@/lib/editor/season";
 
 /*
  * Pentateuch sections — the flagship Bible Reading plan. 5-chapter blocks
@@ -110,6 +119,66 @@ export function getReadingPlan(slug: string): RelateReadingPlan | undefined {
 
 export function getPlansByCategory(category: string): RelateReadingPlan[] {
   return READING_PLANS.filter((p) => p.category === category);
+}
+
+/**
+ * Load an authored plan from Supabase when it exists there (admin editor),
+ * merged with the static catalog for metadata that only the catalog carries.
+ * Returns null when Supabase isn't configured or the plan row is absent —
+ * callers then fall back to the catalog + getPlanSections().
+ */
+export async function getAuthoredPlan(
+  slug: string,
+): Promise<{ plan: RelateReadingPlan; sections: ReadingSection[] } | null> {
+  const { getSupabase } = await import("@/lib/supabase");
+  const db = getSupabase();
+  if (!db) return null;
+
+  const { data: rows, error } = await db
+    .from("reading_plans")
+    .select("slug,title,tagline,description,category,section,days,image,cover,gradient,status")
+    .eq("slug", slug)
+    .limit(1);
+
+  if (error || !rows || rows.length === 0) return null;
+  const row = rows[0] as Record<string, any>;
+
+  const base = READING_PLANS.find((p) => p.slug === slug);
+  const plan: RelateReadingPlan = {
+    slug: row.slug,
+    title: row.title,
+    tagline: row.tagline ?? base?.tagline ?? "",
+    description: row.description ?? base?.description ?? "",
+    category: row.category ?? base?.category ?? "Bible Reading",
+    section: row.section ?? base?.section ?? "",
+    days: row.days ?? base?.days ?? 5,
+    gradient: (Array.isArray(row.gradient) && row.gradient.length === 2 ? row.gradient : base?.gradient ?? ["#111827", "#1f2937"]) as [string, string],
+    image: row.image ?? row.cover ?? base?.image ?? "",
+  };
+
+  const { data: secs, error: secErr } = await db
+    .from("plan_sections")
+    .select("id,title,book,start_ch,end_ch,verse_text,verse_by,blocks,sort")
+    .eq("plan_slug", slug)
+    .order("sort", { ascending: true });
+
+  const sections: ReadingSection[] =
+    secErr || !secs || secs.length === 0
+      ? getPlanSections(plan)
+      : (secs as Array<Record<string, any>>).map((s) => ({
+          id: s.id,
+          planSlug: slug,
+          title: s.title,
+          book: s.book ?? null,
+          startCh: s.start_ch ?? null,
+          endCh: s.end_ch ?? null,
+          verseText: s.verse_text ?? undefined,
+          verseBy: s.verse_by ?? undefined,
+          blocks: Array.isArray(s.blocks) ? (s.blocks as PubBlock[]) : undefined,
+          sort: s.sort,
+        }));
+
+  return { plan, sections };
 }
 
 // ─── Progress + quiz types (Supabase-shaped) ──────────────────────────────

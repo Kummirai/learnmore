@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import PageHero from "@/components/PageHero";
-import { getReadingPlan, getPlanSections } from "@/lib/reading-plans";
+import { getReadingPlan, getPlanSections, getAuthoredPlan } from "@/lib/reading-plans";
 import BibleReadingReader from "@/components/reading/BibleReadingReader";
 
 export const dynamic = "force-dynamic";
@@ -11,10 +11,13 @@ type Props = {
 
 export default async function ReadingPlanReaderPage({ params }: Props) {
   const { slug } = await params;
-  const plan = getReadingPlan(slug);
+
+  const authored = await getAuthoredPlan(slug);
+  const plan = authored?.plan ?? getReadingPlan(slug);
   if (!plan) notFound();
 
-  const sections = getPlanSections(plan);
+  const sections = authored?.sections ?? getPlanSections(plan);
+  const isBible = sections.some((s) => s.book);
 
   return (
     <>
@@ -22,19 +25,21 @@ export default async function ReadingPlanReaderPage({ params }: Props) {
         title={plan.title}
         tagline={plan.tagline}
         description={
-          "Read five chapters of a section, mark them done, and the inline Bible Quiz for that section unlocks — you take it right here inside the plan. Your scored attempts land on your club's own top-5 board."
+          isBible
+            ? "Read the chapters of a section, mark them done, and the inline Bible Quiz for that section unlocks — you take it right here inside the plan. Your scored attempts land on your club's own top-5 board."
+            : "A guided plan, day by day — verse, reading and reflection content you can work through at your own pace."
         }
         watermark={`${plan.days}d`}
         meta={[
           { label: plan.category, value: "" },
           { label: "Sections", value: String(sections.length) },
-          { label: "Chapters / section", value: "5" },
+          { label: isBible ? "Chapters / section" : "Duration", value: isBible ? "5" : `${plan.days} days` },
         ]}
       />
 
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-4xl mx-auto">
-          <BibleReadingReader slug={plan.slug} />
+          <BibleReadingReader plan={plan} sections={sections} />
         </div>
       </section>
     </>

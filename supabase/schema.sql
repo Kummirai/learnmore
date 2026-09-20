@@ -69,7 +69,10 @@ create table if not exists public.reading_plans (
   tagline     text,
   description text,
   category    text not null,                    -- 'Bible Reading' + future categories
+  section     text,                             -- label e.g. 'Whole Bible' / 'Book of Mark'
+  days        integer not null default 5,
   cover       text,
+  image       text,
   gradient    text[] not null default '{#111827,#1f2937}',
   status      text not null default 'draft',    -- draft | published
   sort        integer not null default 0
@@ -77,17 +80,35 @@ create table if not exists public.reading_plans (
 
 -- ---------------------------------------------------------------------------
 -- 4. plan_sections — a 5-chapter block within a plan. Reading 5/5 chapters of
---    a section unlocks that section's Bible Quiz.
+--    a section unlocks that section's Bible Quiz. For non-Bible plans each
+--    section is one day of authored content (verse + blocks), with no book
+--    range. `blocks` holds the authored read material (paragraphs, quotes,
+--    images, prayers, quizzes…) as a JSON array of content blocks.
 -- ---------------------------------------------------------------------------
 create table if not exists public.plan_sections (
   id          uuid primary key default gen_random_uuid(),
   plan_slug   text not null references public.reading_plans(slug) on delete cascade,
   title       text not null,
-  book        text not null,                    -- e.g. 'Genesis'
-  start_ch    integer not null,
-  end_ch      integer not null,
+  book        text,                             -- e.g. 'Genesis' (null for topic plans)
+  start_ch    integer,                          -- null for topic plans
+  end_ch      integer,                          -- null for topic plans
+  verse_text  text,                             -- today's verse copy
+  verse_by    text,                             -- today's verse reference
+  blocks      jsonb not null default '[]',      -- authored read material
   sort        integer not null default 0
 );
+
+-- Upgrade guards: existing deployments created these tables before the
+-- authoring columns existed — add them idempotently.
+alter table public.reading_plans add column if not exists section text;
+alter table public.reading_plans add column if not exists days integer not null default 5;
+alter table public.reading_plans add column if not exists image text;
+alter table public.plan_sections alter column book drop not null;
+alter table public.plan_sections alter column start_ch drop not null;
+alter table public.plan_sections alter column end_ch drop not null;
+alter table public.plan_sections add column if not exists verse_text text;
+alter table public.plan_sections add column if not exists verse_by text;
+alter table public.plan_sections add column if not exists blocks jsonb not null default '[]';
 
 -- ---------------------------------------------------------------------------
 -- 5. Reading progress — ONE row per user per section. `completed_days` is the

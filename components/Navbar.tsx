@@ -97,6 +97,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               "text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"
             }
           />
+
           <div className="leading-none">
             <h1
               className={`text-[1.7rem] md:text-[2rem] font-extrabold ${roboto.className} tracking-tight leading-none`}
