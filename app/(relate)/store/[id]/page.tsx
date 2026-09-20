@@ -52,7 +52,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                     </nav>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
-                        <div className="bg-navy p-3 shadow-sm">
+                        <div>
                             <div className="aspect-square overflow-hidden bg-gray-100">
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
