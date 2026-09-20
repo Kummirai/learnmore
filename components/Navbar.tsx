@@ -1,18 +1,11 @@
 "use client";
 
-import { Roboto } from "next/font/google";
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
-import { FaGraduationCap } from "react-icons/fa6";
 import Link from "next/link";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
-
-const roboto = Roboto({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 type NavItem = { link: string; path: string };
 type NavGroup = { link: string; items: NavItem[] };
@@ -191,24 +184,13 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               className={"text-gray-50 flex items-center gap-2"}
               onClick={() => setMenuOpen(false)}
             >
-              <FaGraduationCap
-                className={
-                  "text-4xl text-[color:var(--club-accent)] self-center"
-                }
+              <img
+                src={"/images/relate-world-logo.png"}
+                alt={"Relate World"}
+                width={500}
+                height={500}
+                className={"h-14 md:h-16 w-auto object-contain self-center"}
               />
-              <div className="leading-none">
-                <h1
-                  className={`text-2xl font-extrabold ${roboto.className} tracking-tight leading-none`}
-                >
-                  Relate
-                  <span className="text-[color:var(--club-accent)] font-black">
-                    World
-                  </span>
-                </h1>
-                <p className="text-[9px] uppercase tracking-[0.35em] text-white/60 mt-1.5">
-                  Grow · Belong · Become
-                </p>
-              </div>
             </Link>
             <button
               onClick={() => setMenuOpen(false)}

@@ -42,11 +42,13 @@ export default function Footer() {
           className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"}
         >
           <div>
-            <h3
-              className={`text-2xl font-semibold text-white ${roboto.className} mb-4`}
-            >
-              RelateWorld
-            </h3>
+            <img
+              src={"/images/relate-world-logo.png"}
+              alt={"Relate World"}
+              width={500}
+              height={500}
+              className={"h-14 md:h-16 w-auto object-contain self-start mb-4"}
+            />
             <p className={"text-sm leading-relaxed mb-4"}>
               Skills, social and spiritual growth — all in one community. Free
               clubs for every age and season of life.
