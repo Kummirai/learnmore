@@ -90,7 +90,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             alt={"Relate World"}
             width={500}
             height={500}
-            className={`h-12 md:h-16 w-auto object-contain self-center ${overlay ? "drop-shadow" : ""}`}
+            className={`h-14 md:h-20 w-auto object-contain self-center ${overlay ? "drop-shadow-[0_2px_10px_rgba(0,0,0,0.45)]" : "drop-shadow-[0_1px_12px_rgba(97,95,255,0.25)]"}`}
           />
         </Link>
         <nav className={"hidden lg:block"}>

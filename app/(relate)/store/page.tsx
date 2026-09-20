@@ -13,46 +13,33 @@ const orderLink = (item?: {name: string; price: number}) =>
 
 export function StoreCard({item}: {item: (typeof STORE_ITEMS)[number]}) {
     return (
-        <div className={"group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col"}>
-            <Link href={`/store/${item.id}`} className={"relative aspect-square overflow-hidden bg-gray-100 block"}>
+        <div className={"flex flex-col bg-white shadow-md rounded-xl overflow-hidden group"}>
+            <Link href={`/store/${item.id}`} className={"block overflow-hidden"}>
                 <img
                     src={item.image}
                     alt={item.name}
                     loading={"lazy"}
-                    className={"w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"}
+                    className={"w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"}
                 />
-                <span className={"absolute top-3 left-3 bg-white/90 backdrop-blur text-[10px] uppercase tracking-wider text-gray-700 font-medium px-2.5 py-1 rounded-full shadow-sm"}>
-                    {item.category}
-                </span>
-                <span
-                    aria-hidden
-                    className={"absolute bottom-3 right-3 size-10 rounded-full bg-cyan text-navy hidden sm:flex items-center justify-center shadow-lg opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300"}>
-                    <FaWhatsapp className={"text-lg"}/>
-                </span>
-                <span
-                    aria-hidden
-                    className={"absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-navy/85 text-white text-xs font-semibold text-center py-2.5"}>
-                    View product
-                </span>
             </Link>
-            <div className={"p-4 flex flex-col flex-1"}>
-                <div className={"flex items-start justify-between gap-3 mb-1"}>
-                    <h3 className={"font-semibold text-gray-800 text-sm leading-snug"}>
-                        <Link href={`/store/${item.id}`} className="hover:text-cyan-dark transition-colors">{item.name}</Link>
-                    </h3>
-                    <span className={"shrink-0 font-bold text-navy text-sm"}>{formatPrice(item.price)}</span>
-                </div>
-                <p className={"text-gray-500 text-xs leading-relaxed mb-4 flex-1"}>{item.blurb}</p>
-                <div className={"flex items-center gap-2"}>
+            <div className={"p-4 text-sm"}>
+                <p className={"font-bold text-slate-800"}>{formatPrice(item.price)}</p>
+                <Link href={`/store/${item.id}`} className={"text-slate-800 font-semibold text-base my-1.5 block hover:text-cyan transition-colors"}>
+                    {item.name}
+                </Link>
+                <p className={"text-slate-500"}>{item.blurb}</p>
+                <div className={"grid grid-cols-2 gap-2 mt-3"}>
                     <Link
                         href={`/store/${item.id}`}
-                        className={"inline-flex items-center justify-center flex-1 bg-white border border-gray-200 text-navy px-3 py-2.5 rounded-lg text-xs font-semibold hover:border-navy/40 transition-colors"}>
+                        className={"bg-cyan text-navy py-2.5 rounded-lg font-medium text-center hover:bg-cyan-dark transition-colors"}>
                         Details
                     </Link>
                     <Link
-                        href={`/store/checkout?item=${item.id}`}
-                        className={"inline-flex items-center justify-center gap-2 flex-1 bg-cyan text-navy px-3 py-2.5 rounded-lg text-xs font-semibold hover:bg-cyan-dark transition-colors"}>
-                        <FaWhatsapp/> Order
+                        href={orderLink(item)}
+                        target={"_blank"}
+                        rel={"noopener noreferrer"}
+                        className={"inline-flex items-center justify-center gap-2 bg-navy text-white py-2.5 rounded-lg font-medium hover:bg-navy-dark transition-colors"}>
+                        <FaWhatsapp/> Buy now
                     </Link>
                 </div>
             </div>
