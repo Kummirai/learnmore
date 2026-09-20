@@ -22,8 +22,8 @@ function SettingsBody() {
     const [saved, setSaved] = useState(false);
 
     return (
-        <section className="flex-1 px-4 py-10 md:py-14" style={{ background: "linear-gradient(115deg, #151f3a 0%, #1d2a4d 60%, #2a4070 100%)" }}>
-            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-6 md:p-8">
+        <section className="flex-1 px-4 py-10 md:py-14" style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}>
+            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
                 <h1 className="text-2xl font-bold text-gray-800 mb-1">Settings</h1>
                 <p className="text-gray-500 text-sm mb-6">Update how your name appears across Relate.</p>
 

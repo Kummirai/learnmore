@@ -52,10 +52,10 @@ export default function SignInPage() {
     return (
         <section
             className="flex-1 px-4 py-12 md:py-16"
-            style={{ background: "linear-gradient(115deg, #151f3a 0%, #1d2a4d 60%, #2a4070 100%)" }}
+            style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
         >
             <div className="max-w-md mx-auto">
-                <Link href="/" className="inline-flex items-center gap-1 text-sm text-white/60 hover:text-white mb-6 transition-colors">
+                <Link href="/" className="inline-flex items-center gap-1 text-sm text-slate-gray hover:text-navy mb-6 transition-colors">
                     <LuArrowLeft /> Back to Home
                 </Link>
                 <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">

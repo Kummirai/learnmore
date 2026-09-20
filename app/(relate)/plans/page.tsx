@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import { READING_PLANS, READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
 
@@ -12,7 +13,6 @@ export default function ReadingPlansPage() {
                     "Choose a plan, read with your club, and build a daily rhythm in the Word — from a month in the Psalms to the whole Bible in a year."
                 }
                 watermark={"21"}
-                navbar={false}
                 meta={[
                     { label: "Plans", value: READING_PLANS.length },
                     { label: "Categories", value: READING_PLAN_CATEGORIES.length },
@@ -58,41 +58,55 @@ export default function ReadingPlansPage() {
                                     {plans.map((plan) => (
                                         <div
                                             key={plan.slug}
-                                            className="group rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                                            className="group rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
                                         >
-                                            <div className="relative h-36 overflow-hidden">
+                                            {/* Cover */}
+                                            <div className="relative h-44 overflow-hidden bg-alice-blue">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img
                                                     src={plan.image}
                                                     alt={plan.title}
                                                     loading="lazy"
-                                                    className="size-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                                    className="size-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                 />
+                                                {/* Light scrim at the bottom only, so the title stays readable without hiding the photo */}
                                                 <div
                                                     className="absolute inset-0"
-                                                    style={{ background: `linear-gradient(160deg, transparent 30%, ${plan.gradient[0]}cc 100%)` }}
+                                                    style={{ background: "linear-gradient(180deg, transparent 40%, rgba(21,31,58,0.82) 100%)" }}
                                                 />
                                                 <span className="absolute top-3 right-3 bg-white/90 backdrop-blur px-2.5 py-1 rounded-full text-[11px] font-bold text-navy">
                                                     {plan.days} days
                                                 </span>
-                                                <h3 className="absolute bottom-3 left-4 right-4 text-lg font-bold text-white leading-snug drop-shadow">
-                                                    {plan.title}
-                                                </h3>
-                                            </div>
-                                            <div className="flex flex-col flex-1 p-5">
-                                                <p className="text-sm font-semibold text-cyan mb-1.5">{plan.tagline}</p>
-                                                <p className="text-sm text-gray-600 leading-relaxed flex-1">{plan.description}</p>
-                                                <div className="flex flex-wrap items-center gap-2 mt-4 pt-4 border-t border-gray-50">
-                                                    <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
+                                                <div className="absolute bottom-0 left-0 right-0 p-4">
+                                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/70 mb-1">
                                                         {plan.section}
+                                                    </p>
+                                                    <h3 className="text-xl font-black tracking-tight text-white leading-tight">
+                                                        {plan.title}
+                                                    </h3>
+                                                </div>
+                                            </div>
+
+                                            {/* Body */}
+                                            <div className="flex flex-col flex-1 p-5">
+                                                <p className="text-sm font-bold mb-1.5" style={{ color: plan.gradient[0] }}>
+                                                    {plan.tagline}
+                                                </p>
+                                                <p className="text-sm text-gray-600 leading-relaxed line-clamp-3 flex-1">
+                                                    {plan.description}
+                                                </p>
+                                                <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between gap-3">
+                                                    <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
+                                                        {plan.category}
                                                     </span>
                                                     <a
                                                         href={`https://wa.me/27782677436?text=${encodeURIComponent(`Hi RelateWorld! I'd like to start the ${plan.title} reading plan (${plan.days} days).`)}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="ml-auto text-xs font-semibold text-cyan hover:text-cyan-dark transition-colors"
+                                                        className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-white transition hover:brightness-110 shrink-0"
+                                                        style={{ backgroundColor: plan.gradient[0] }}
                                                     >
-                                                        Start this plan →
+                                                        <FaWhatsapp className="text-sm" /> Start plan
                                                     </a>
                                                 </div>
                                             </div>

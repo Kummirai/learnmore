@@ -20,8 +20,8 @@ export default function RequireAuth({
 
     if (loading) {
         return (
-            <section className="flex-1 px-4 py-20 flex items-center justify-center" style={{ background: "linear-gradient(115deg, #151f3a 0%, #1d2a4d 60%, #2a4070 100%)" }}>
-                <div className="flex items-center gap-3 text-white/80">
+            <section className="flex-1 px-4 py-20 flex items-center justify-center" style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}>
+                <div className="flex items-center gap-3 text-slate-gray">
                     <LuLoaderCircle className="animate-spin text-2xl" />
                     <span className="text-sm">Checking your session…</span>
                 </div>
@@ -31,13 +31,13 @@ export default function RequireAuth({
 
     if (!user) {
         return (
-            <section className="flex-1 px-4 py-20" style={{ background: "linear-gradient(115deg, #151f3a 0%, #1d2a4d 60%, #2a4070 100%)" }}>
+            <section className="flex-1 px-4 py-20" style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}>
                 <div className="max-w-md mx-auto text-center">
-                    <div className="size-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-5">
-                        <LuLogIn className="text-3xl text-[color:var(--club-accent)]" />
+                    <div className="size-16 rounded-full bg-white flex items-center justify-center mx-auto mb-5 shadow-sm">
+                        <LuLogIn className="text-3xl text-cyan" />
                     </div>
-                    <h1 className="text-2xl font-bold text-white mb-2">{title}</h1>
-                    <p className="text-white/70 text-sm mb-6">
+                    <h1 className="text-2xl font-bold text-navy mb-2">{title}</h1>
+                    <p className="text-slate-gray text-sm mb-6">
                         Sign in to view this page — keep your clubs, reading guides and prayer rhythm in one place.
                     </p>
                     <Link

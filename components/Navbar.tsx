@@ -47,15 +47,6 @@ const navGroups: NavGroup[] = [
       { link: "Academic", path: "/plans#academic" },
     ],
   },
-  {
-    link: "Community",
-    items: [
-      { link: "News", path: "/news" },
-      { link: "Team", path: "/team" },
-      { link: "FAQ", path: "/faq" },
-      { link: "Contact", path: "/contact" },
-    ],
-  },
 ];
 
 const flatLinks = [
@@ -75,20 +66,15 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
     setExpandedGroups((prev) => ({ ...prev, [name]: !prev[name] }));
   };
 
+  // Hover accent per variant: bright cyan on dark heroes, darker cyan for contrast on white.
+  const hoverText = overlay ? "hover:text-cyan-light" : "hover:text-cyan-dark";
+
   return (
     <section
       className={
         overlay
           ? "absolute inset-x-0 top-0 z-30 pt-3 sm:pt-4 lg:pt-5"
-          : undefined
-      }
-      style={
-        overlay
-          ? undefined
-          : {
-              background:
-                "linear-gradient(90deg, var(--club-chrome-dark), var(--club-chrome))",
-            }
+          : "bg-white border-b border-gray-100"
       }
     >
       <div
@@ -98,7 +84,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
       >
         <Link
           href={"/"}
-          className={"text-white flex items-center gap-2 py-3 md:py-4"}
+          className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-3 md:py-4`}
         >
           <FaGraduationCap
             className={
@@ -112,7 +98,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               Relate
               <span className="text-[color:var(--club-accent)] font-black">World</span>
             </h1>
-            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.35em] text-white/60 mt-1.5">
+            <p className={`text-[9px] md:text-[10px] uppercase tracking-[0.35em] ${overlay ? "text-white/60" : "text-slate-gray"} mt-1.5`}>
               Grow · Belong · Become
             </p>
           </div>
@@ -120,14 +106,14 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
         <nav className={"hidden lg:block"}>
           <ul
             className={
-              "flex items-center gap-3 xl:gap-5 py-3 text-white whitespace-nowrap"
+              `flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`
             }
           >
             <li>
               <Link
                 href={"/"}
                 className={
-                  "block text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors"
+                  `block text-sm xl:text-base ${hoverText} transition-colors`
                 }
               >
                 Home
@@ -137,7 +123,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               <Link
                 href={"/about"}
                 className={
-                  "block text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors"
+                  `block text-sm xl:text-base ${hoverText} transition-colors`
                 }
               >
                 About
@@ -147,7 +133,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               <li key={group.link} className={"relative group"}>
                 <span
                   className={
-                    "flex items-center gap-1 text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors cursor-default"
+                    `flex items-center gap-1 text-sm xl:text-base ${hoverText} transition-colors cursor-default`
                   }
                 >
                   {group.link}
@@ -185,7 +171,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             <li>
               <Link
                 href={"/store"}
-                className={`block text-sm xl:text-base hover:text-[color:var(--club-accent)] transition-colors`}
+                className={`block text-sm xl:text-base ${hoverText} transition-colors`}
               >
                 Store
               </Link>
@@ -196,7 +182,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           <UserAvatar />
           <button
             onClick={() => setMenuOpen(true)}
-            className={"lg:hidden text-white p-2"}
+            className={`lg:hidden ${overlay ? "text-white" : "text-navy"} p-2`}
           >
             <LuMenu className={"text-3xl"} />
           </button>

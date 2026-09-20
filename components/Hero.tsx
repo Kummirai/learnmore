@@ -126,7 +126,6 @@ function magazineSlide(mag: RelateMagazine): Slide {
         tagline: mag.theme,
         description: mag.summary,
         watermark: "13",
-        ageRange: `${mag.clubName} · ${mag.seasonLabel}`,
         bg: {
             backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(21,31,58,0.9) 45%, rgba(21,31,58,0.55) 75%, rgba(21,31,58,0.35) 100%), url(${mag.cover})`,
             backgroundSize: "cover",

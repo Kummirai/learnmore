@@ -38,7 +38,7 @@ export default function AdminPage() {
         <RequireAuth title="Admin">
             <section
                 className="flex-1 px-4 py-10 md:py-14"
-                style={{ background: "linear-gradient(115deg, #151f3a 0%, #1d2a4d 60%, #2a4070 100%)" }}
+                style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
             >
                 <div className="max-w-5xl mx-auto">
                     <AdminBody />
@@ -66,8 +66,8 @@ function AdminBody() {
         <>
             <div className="mb-8">
                 <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">Admin Console</p>
-                <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white">Relate tools</h1>
-                <p className="mt-1 text-sm text-white/70">Manage magazines, streaks and community requests.</p>
+                <h1 className="text-2xl md:text-3xl font-black tracking-tight text-navy">Relate tools</h1>
+                <p className="mt-1 text-sm text-slate-gray">Manage magazines, streaks and community requests.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-8">
                 {tools.map((t) => (
@@ -87,13 +87,13 @@ function AdminBody() {
 
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
                 {stats.map((s) => (
-                    <div key={s.label} className="rounded-2xl bg-white/10 border border-white/15 p-4 backdrop-blur-sm">
+                    <div key={s.label} className="rounded-2xl bg-white border border-gray-100 p-4 shadow-sm">
                         <div className="flex items-center justify-between">
-                            <p className="text-[11px] uppercase tracking-widest text-white/60">{s.label}</p>
-                            <s.icon className="text-white/50" />
+                            <p className="text-[11px] uppercase tracking-widest text-slate-gray">{s.label}</p>
+                            <s.icon className="text-cyan" />
                         </div>
-                        <p className="text-2xl font-black text-white mt-1">{s.value}</p>
-                        <p className="text-xs text-white/50 mt-0.5">{s.trend}</p>
+                        <p className="text-2xl font-black text-navy mt-1">{s.value}</p>
+                        <p className="text-xs text-slate-gray mt-0.5">{s.trend}</p>
                     </div>
                 ))}
             </div>

@@ -56,10 +56,9 @@ export default function UserAvatar() {
                 aria-label={user ? "Account menu" : "Sign in"}
                 aria-expanded={open}
                 className={
-                    "size-10 rounded-full overflow-hidden flex items-center justify-center transition-all " +
-                    (open ? "ring-2 ring-[color:var(--club-accent)]" : "ring-1 ring-white/40 hover:ring-white/80")
+                    "size-10 rounded-full overflow-hidden flex items-center justify-center transition-all bg-alice-blue " +
+                    (open ? "ring-2 ring-[color:var(--club-accent)]" : "ring-1 ring-gray-200 hover:ring-gray-400")
                 }
-                style={{ backgroundColor: "rgba(255,255,255,0.12)" }}
             >
                 {user && user.avatarUrl && !imgFailed ? (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -70,9 +69,9 @@ export default function UserAvatar() {
                         onError={() => setImgFailed(true)}
                     />
                 ) : user ? (
-                    <span className="text-sm font-bold text-white">{initials}</span>
+                    <span className="text-sm font-bold text-navy">{initials}</span>
                 ) : (
-                    <LuUser className="text-xl text-white/90" />
+                    <LuUser className="text-xl text-navy/70" />
                 )}
             </button>
 

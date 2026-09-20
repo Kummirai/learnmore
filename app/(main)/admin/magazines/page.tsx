@@ -29,7 +29,7 @@ export default function AdminMagazinesPage() {
         <RequireAuth title="Magazines">
             <section
                 className="flex-1 px-4 py-10 md:py-14"
-                style={{ background: "linear-gradient(115deg, #151f3a 0%, #1d2a4d 60%, #2a4070 100%)" }}
+                style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
             >
                 <div className="max-w-5xl mx-auto">
                     <MagazinesBody />
