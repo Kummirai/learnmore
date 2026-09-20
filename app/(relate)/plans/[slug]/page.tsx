@@ -34,7 +34,7 @@ export default async function ReadingPlanReaderPage({ params }: Props) {
 
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-4xl mx-auto">
-          <BibleReadingReader plan={plan} sections={sections} accent="#065f46" />
+          <BibleReadingReader slug={plan.slug} />
         </div>
       </section>
     </>

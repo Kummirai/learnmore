@@ -15,7 +15,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaCheck, FaLock, FaFamily, FaBaby, FaCrown } from "react-icons/fa6";
+import { FaCheck, FaLock, FaUsers, FaBaby, FaCrown } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 
@@ -25,7 +25,7 @@ const CLUBS = [
   { key: "teens", label: "Sprout Teens", ages: "12–16 yrs", group: "Sprout", accent: "#f59e0b", icon: FaBaby },
   { key: "surge", label: "Surge", ages: "16–21 yrs", group: "Surge", accent: "#06b6d4", icon: FaCrown },
   { key: "pulse", label: "Pulse", ages: "21–33 yrs", group: "Pulse", accent: "#8b5cf6", icon: FaCrown },
-  { key: "adults", label: "Adults", ages: "33+ yrs", group: "Adults", accent: "#1e3a8a", icon: FaFamily },
+  { key: "adults", label: "Adults", ages: "33+ yrs", group: "Adults", accent: "#1e3a8a", icon: FaUsers },
 ];
 
 export default function RegisterPage() {
