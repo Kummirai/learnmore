@@ -48,11 +48,12 @@ export default function MagazinePage({slug}: {slug: string}) {
                 bgImage={magazine.cover}
             />
 
-            <section className={"flex-1 px-4 py-12"}>
+            <section className={"flex-1 px-4 py-12 bg-white"}>
                 <div className={"max-w-6xl mx-auto"}>
-                    <div className={"grid grid-cols-1 md:grid-cols-5 gap-6 mb-10"}>
+                    {/* Overview: cover + intro */}
+                    <div className={"grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-10 mb-12 items-start"}>
                         <div className={"md:col-span-2"}>
-                            <div className={"bg-navy rounded-2xl p-3 shadow-sm"}>
+                            <div className={"bg-navy rounded-2xl p-3 shadow-lg md:sticky md:top-24"}>
                                 <img
                                     src={magazine.cover}
                                     alt={`${magazine.series} cover`}
@@ -60,38 +61,61 @@ export default function MagazinePage({slug}: {slug: string}) {
                                 />
                             </div>
                         </div>
-                        <div className={"md:col-span-3"}>
-                            <div className={"flex flex-wrap gap-3 mb-4"}>
-                                <span className={"text-sm font-semibold text-navy bg-alice-blue px-4 py-2 rounded-lg"}>
-                                    Season Study Guide
+                        <div className={"md:col-span-3 md:pt-2"}>
+                            <p className={"text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2"}>
+                                Season Study Guide
+                            </p>
+                            <h2 className={"text-3xl md:text-4xl font-black tracking-tight text-navy mb-3"}>
+                                {magazine.series}
+                            </h2>
+                            <p className={"text-gray-600 leading-relaxed mb-5"}>{magazine.summary}</p>
+                            <div className={"flex flex-wrap gap-2 mb-7"}>
+                                <span className={"inline-flex items-center gap-2 text-xs font-semibold text-navy bg-alice-blue px-3.5 py-2 rounded-full"}>
+                                    <span className={"size-2 rounded-full bg-cyan"}/>
+                                    {magazine.clubName}
                                 </span>
-                                <span className={"text-sm font-semibold text-navy bg-alice-blue px-4 py-2 rounded-lg"}>
-                                    {magazine.editions.length} editions
+                                <span className={"inline-flex items-center gap-2 text-xs font-semibold text-navy bg-alice-blue px-3.5 py-2 rounded-full"}>
+                                    {magazine.seasonLabel}
+                                </span>
+                                <span className={"inline-flex items-center gap-2 text-xs font-semibold text-navy bg-alice-blue px-3.5 py-2 rounded-full"}>
+                                    {magazine.editions.length} {magazine.editions.length === 1 ? "edition" : "editions"}
                                 </span>
                             </div>
+                            <Link
+                                href={`/${magazine.clubSlug}`}
+                                className={"inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-navy-soft transition-colors"}>
+                                Explore {magazine.clubName} →
+                            </Link>
                         </div>
                     </div>
 
-                    {magazine.editions.map((edition) => (
-                        <div key={edition.label} className={"mb-8"}>
-                            <div className={"bg-white rounded-xl shadow-sm p-6 md:p-8"}>
-                                <div className={"flex flex-wrap items-baseline justify-between gap-2 mb-1"}>
-                                    <h2 className={"text-xl font-semibold text-gray-800"}>{edition.label}</h2>
-                                    <span className={"text-sm text-gray-500"}>{edition.ageRange}</span>
+                    {/* Editions with week grids */}
+                    <div className={"grid gap-6"}>
+                        {magazine.editions.map((edition) => (
+                            <div key={edition.label} className={"bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"}>
+                                <div className={"flex flex-wrap items-center justify-between gap-3 px-6 md:px-8 py-5 bg-alice-blue/50 border-b border-gray-100"}>
+                                    <h3 className={"text-lg font-bold text-navy"}>{edition.label}</h3>
+                                    <span className={"text-xs font-semibold text-navy bg-white border border-gray-200 px-3 py-1.5 rounded-full"}>
+                                        {edition.ageRange}
+                                    </span>
                                 </div>
-                                <p className={"text-sm text-gray-600 mb-5"}>{edition.summary}</p>
-                                <div className={"flex flex-wrap gap-2"}>
+                                <div className={"px-6 md:px-8 pt-5"}>
+                                    <p className={"text-sm text-gray-600 leading-relaxed"}>{edition.summary}</p>
+                                </div>
+                                <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 px-6 md:px-8 py-5"}>
                                     {edition.weekTitles.map((week, i) => (
-                                        <span key={week}
-                                              className={"inline-flex items-center gap-1.5 text-xs bg-alice-blue text-navy-dark px-3 py-1.5 rounded-full"}>
-                                            <span className={"text-cyan font-semibold"}>W{i + 1}</span>
-                                            {week}
-                                        </span>
+                                        <div key={week}
+                                             className={"flex items-center gap-3 rounded-xl bg-alice-blue/60 px-4 py-3 hover:bg-ice-blue/60 transition-colors"}>
+                                            <span className={"text-[11px] font-black text-cyan w-8 shrink-0"}>
+                                                W{String(i + 1).padStart(2, "0")}
+                                            </span>
+                                            <span className={"text-sm text-gray-700 leading-snug"}>{week}</span>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </section>
         </>
