@@ -1,93 +1,132 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { authClient } from "@/lib/auth-client";
 
 export type User = {
     name: string;
     email: string;
-    avatarUrl?: string;
-    role: "member" | "admin";
-    provider: "google" | "github" | "email";
+    image?: string | null;
+    role: "member" | "admin" | "facilitator" | "user";
+    emailVerified?: boolean;
 };
 
 type AuthContextType = {
     user: User | null;
     /** True while the saved session is being restored on first load. */
     loading: boolean;
-    /** Placeholder for the real OAuth redirect flow — signs in a demo profile for now. */
+    /** Starts the OAuth redirect for the given provider (Google or GitHub). */
     signInWith: (provider: "google" | "github") => void;
-    signInWithEmail: (email: string) => void;
-    signUpWithEmail: (email: string, name: string) => void;
-    signOut: () => void;
+    /** Signs in with email + password. Resolves to an error message, or null on success. */
+    signInWithEmail: (email: string, password: string) => Promise<string | null>;
+    /** Creates an account with email + password. Resolves to an error message, or null on success. */
+    signUpWithEmail: (name: string, email: string, password: string) => Promise<string | null>;
+    signOut: () => Promise<void>;
+    /** Re-reads the session from the backend after things like profile edits. */
+    refresh: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const STORAGE_KEY = "relate.auth.user";
+function toAppUser(u: {
+    name?: unknown;
+    email?: unknown;
+    image?: unknown;
+    role?: unknown;
+    emailVerified?: unknown;
+} | null | undefined): User | null {
+    if (!u) return null;
+    const raw = typeof u.role === "string" ? u.role : "user";
+    return {
+        name: typeof u.name === "string" ? u.name : "User",
+        email: typeof u.email === "string" ? u.email : "",
+        image: typeof u.image === "string" && u.image ? u.image : null,
+        role: raw === "admin" || raw === "facilitator" ? raw : "member",
+        emailVerified: Boolean(u.emailVerified),
+    };
+}
 
-/**
- * Demo profiles shown until the backend is linked up.
- * `signInWith` will become a redirect to the provider's OAuth consent screen.
- */
-const DEMO_USERS: Record<"google" | "github", Omit<User, "provider">> = {
-    google: {
-        name: "Thandi Mokoena",
-        email: "thandi.mokoena@relate.app",
-        avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&fit=crop&crop=faces",
-        role: "member",
-    },
-    github: {
-        name: "Milton Kumirai",
-        email: "milton.kumirai@relate.app",
-        avatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=96&h=96&fit=crop&crop=faces",
-        role: "admin",
-    },
-};
+function messageFor(error: unknown): string {
+    if (typeof error === "string" && error) return error;
+    return "Something went wrong. Please try again.";
+}
 
 export function AuthProvider({children}: {children: ReactNode}) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
-    // Restore the session on first load.
-    useEffect(() => {
+    const refresh = useCallback(async () => {
         try {
-            const raw = window.localStorage.getItem(STORAGE_KEY);
-            if (raw) setUser(JSON.parse(raw) as User);
+            const {data} = await authClient.getSession();
+            setUser(toAppUser(data?.user));
         } catch {
-            // Ignore corrupt storage — treat as signed out.
-        } finally {
-            setLoading(false);
+            setUser(null);
         }
     }, []);
 
-    const persist = (u: User | null) => {
-        setUser(u);
+    useEffect(() => {
+        // When loading is the very first effect these would race, so capture it.
+        let cancelled = false;
+        (async () => {
+            try {
+                const {data} = await authClient.getSession();
+                if (!cancelled) setUser(toAppUser(data?.user));
+            } catch {
+                if (!cancelled) setUser(null);
+            } finally {
+                if (!cancelled) setLoading(false);
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    const signInWith = (provider: "google" | "github") => {
+        const origin = typeof window !== "undefined" ? window.location.origin : "";
+        const next = `${origin}/auth/oauth/callback`;
+        void authClient.signIn.social({
+            provider,
+            callbackURL: next,
+            errorCallbackURL: origin + "/SignIn?error=oauth_failed",
+        });
+    };
+
+    const signInWithEmail = async (email: string, password: string) => {
         try {
-            if (u) window.localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
-            else window.localStorage.removeItem(STORAGE_KEY);
-        } catch {
-            // Storage unavailable (private mode) — session lives in memory only.
+            const {error} = await authClient.signIn.email({email, password});
+            if (error) return messageFor(error.message);
+            await refresh();
+            return null;
+        } catch (e) {
+            return messageFor((e as Error)?.message);
         }
     };
 
-    const signInWith = (provider: "google" | "github") =>
-        persist({...DEMO_USERS[provider], provider});
+    const signUpWithEmail = async (name: string, email: string, password: string) => {
+        try {
+            const {error} = await authClient.signUp.email({name, email, password});
+            if (error) return messageFor(error.message);
+            await refresh();
+            return null;
+        } catch (e) {
+            return messageFor((e as Error)?.message);
+        }
+    };
 
-    const signInWithEmail = (email: string) =>
-        persist({
-            name: email.split("@")[0].replace(/[._-]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-            email,
-            role: "member",
-            provider: "email",
-        });
-
-    const signUpWithEmail = (email: string, name: string) =>
-        persist({name: name || email.split("@")[0], email, role: "member", provider: "email"});
-
-    const signOut = () => persist(null);
+    const signOut = async () => {
+        try {
+            await authClient.signOut();
+        } catch {
+            // Still clear the session locally even if the server call fails.
+        }
+        setUser(null);
+    };
 
     return (
-        <AuthContext.Provider value={{user, loading, signInWith, signInWithEmail, signUpWithEmail, signOut}}>
+        <AuthContext.Provider
+            value={{user, loading, signInWith, signInWithEmail, signUpWithEmail, signOut, refresh}}
+        >
             {children}
         </AuthContext.Provider>
     );

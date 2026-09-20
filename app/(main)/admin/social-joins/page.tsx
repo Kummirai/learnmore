@@ -1,36 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RequireAuth from "@/components/RequireAuth";
-import { Badge, AdminHeader } from "@/components/admin/ui";
+import { Badge, AdminHeader, Select } from "@/components/admin/ui";
 import { LuUserPlus } from "react-icons/lu";
 
+type JoinFilter = "all" | "pending" | "approved" | "rejected";
+
 type JoinRequest = {
-    id: string;
+    _id: string;
     name: string;
     relationship: string;
     skill: string;
     source: string;
     ageRange: string;
-    phone: string;
-    gender: string;
+    phone: string | null;
+    countryCode: string;
+    gender: string | null;
     status: "pending" | "approved" | "rejected";
-    date: string;
+    createdAt: string;
 };
-
-/* Demo data — swap for GET /api/admin/social-joins when the backend is linked. */
-const DEMO_REQUESTS: JoinRequest[] = [
-    { id: "r1", name: "Kudzai M.", relationship: "Single", skill: "Football coaching", source: "Instagram", ageRange: "16–21 yrs", phone: "+27 71 234 5678", gender: "Female", status: "pending", date: "Sep 18, 2026" },
-    { id: "r2", name: "Tino B.", relationship: "Married", skill: "Sound & media", source: "WhatsApp", ageRange: "21–33 yrs", phone: "+27 82 345 6789", gender: "Male", status: "pending", date: "Sep 17, 2026" },
-    { id: "r3", name: "Rudo N.", relationship: "In a relationship", skill: "Children's crafts", source: "Friend referral", ageRange: "21–33 yrs", phone: "+27 83 456 7890", gender: "Female", status: "approved", date: "Sep 15, 2026" },
-    { id: "r4", name: "Farai C.", relationship: "Single", skill: "Mentoring", source: "Sunday event", ageRange: "33+ yrs", phone: "+27 84 567 8901", gender: "Male", status: "rejected", date: "Sep 14, 2026" },
-];
 
 const RELATIONSHIP_LABELS: Record<string, string> = {
-    "Single": "Single",
-    "Married": "Married",
-    "In a relationship": "In a relationship",
+    single: "Single",
+    married: "Married",
+    in_a_relationship: "In a relationship",
 };
+
+function label(item: JoinRequest): string {
+    return RELATIONSHIP_LABELS[item.relationship] ?? item.relationship;
+}
+
+function dateText(value: string): string {
+    const d = new Date(value);
+    return Number.isNaN(d.getTime())
+        ? ""
+        : d.toLocaleDateString(undefined, {month: "short", day: "numeric", year: "numeric"});
+}
 
 export default function AdminSocialJoinsPage() {
     return (
@@ -47,18 +53,77 @@ export default function AdminSocialJoinsPage() {
     );
 }
 
-function SocialJoinsBody() {
-    const [requests, setRequests] = useState(DEMO_REQUESTS);
-    const [filter, setFilter] = useState<"all" | "pending" | "approved" | "rejected">("pending");
-    const [processing, setProcessing] = useState<string | null>(null);
+async function fetchJoins(status: JoinFilter): Promise<JoinRequest[]> {
+    const query = status === "all" ? "" : `?status=${status}`;
+    const res = await fetch(`/api/community/social-join${query}`);
+    const json = await res.json();
+    if (!res.ok) {
+        throw new Error(typeof json?.error === "string" ? json.error : "Couldn't load requests.");
+    }
+    return Array.isArray(json?.data) ? json.data : [];
+}
 
-    const setStatus = (id: string, status: JoinRequest["status"]) => {
-        setProcessing(id);
-        setRequests((prev) => prev.map((r) => (r.id === id ? { ...r, status } : r)));
-        setTimeout(() => setProcessing(null), 300);
+function SocialJoinsBody() {
+    const [requests, setRequests] = useState<JoinRequest[] | null>(null);
+    const [filter, setFilter] = useState<JoinFilter>("pending");
+    const [processing, setProcessing] = useState<string | null>(null);
+    const [error, setError] = useState("");
+
+    const load = async (status: JoinFilter) => {
+        try {
+            setRequests(await fetchJoins(status));
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Couldn't reach the API. Is the backend up?");
+            setRequests([]);
+        }
     };
 
-    const visible = requests.filter((r) => filter === "all" || r.status === filter);
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const data = await fetchJoins(filter);
+                if (cancelled) return;
+                setRequests(data);
+            } catch (e) {
+                if (cancelled) return;
+                setError(e instanceof Error ? e.message : "Couldn't reach the API. Is the backend up?");
+                setRequests([]);
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, [filter]);
+
+    const setStatus = async (item: JoinRequest, action: "approve" | "reject") => {
+        setProcessing(item._id);
+        setError("");
+        try {
+            const res = await fetch(`/api/community/social-join/${item._id}`, {
+                method: "PATCH",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({action}),
+            });
+            const json = await res.json().catch(() => null);
+            if (!res.ok) {
+                setError(
+                    typeof json?.error === "string"
+                        ? json.error
+                        : action === "approve"
+                            ? "Couldn't approve this request."
+                            : "Couldn't reject this request.",
+                );
+                return;
+            }
+            // On success the card drops out of a "pending" view; refetch to stay exact.
+            void load(filter);
+        } catch {
+            setError("Update failed. Try again.");
+        } finally {
+            setProcessing(null);
+        }
+    };
 
     return (
         <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
@@ -67,27 +132,28 @@ function SocialJoinsBody() {
                 title="Social Joins"
                 sub="Review WhatsApp community join requests before approving them into club groups."
                 actions={
-                    <select
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value as typeof filter)}
-                        className="rounded-xl border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-700"
-                    >
+                    <Select value={filter} onChange={(e) => setFilter(e.target.value as typeof filter)}>
                         <option value="all">All</option>
                         <option value="pending">Pending</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
-                    </select>
+                    </Select>
                 }
             />
-            {visible.length === 0 ? (
+
+            {error && <p className="mb-4 rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
+
+            {requests !== null && requests.length === 0 ? (
                 <div className="rounded-2xl border border-dashed border-gray-300 bg-alice-blue/40 py-12 text-center">
                     <LuUserPlus className="mx-auto text-2xl text-slate-gray mb-2" />
-                    <p className="text-sm text-slate-gray">No {filter === "all" ? "" : filter + " "}join requests.</p>
+                    <p className="text-sm text-slate-gray">
+                        {requests === null ? "Loading…" : `No ${filter === "all" ? "" : filter + " "}join requests.`}
+                    </p>
                 </div>
             ) : (
                 <div className="grid gap-3">
-                    {visible.map((r) => (
-                        <div key={r.id} className="rounded-2xl border border-gray-100 p-4 md:p-5 hover:shadow-sm transition-shadow">
+                    {(requests ?? []).map((r) => (
+                        <div key={r._id} className="rounded-2xl border border-gray-100 p-4 md:p-5 hover:shadow-sm transition-shadow">
                             <div className="flex flex-wrap items-start justify-between gap-3">
                                 <div className="flex items-start gap-3">
                                     <div className="flex size-10 items-center justify-center rounded-full bg-alice-blue text-navy font-bold text-sm">
@@ -96,11 +162,12 @@ function SocialJoinsBody() {
                                     <div>
                                         <p className="font-semibold text-navy">{r.name}</p>
                                         <p className="text-xs text-slate-gray mt-0.5">
-                                            {r.ageRange} · {r.relationship} · via {r.source} · {r.date}
+                                            {r.ageRange} · {label(r)} · {r.gender ? `${r.gender} · ` : ""}via {r.source} · {dateText(r.createdAt) || "unknown date"}
                                         </p>
                                         <p className="text-sm text-gray-600 mt-1">
                                             <span className="text-[11px] uppercase tracking-widest text-slate-gray mr-2">Skill</span>
-                                            {r.skill} · {r.phone}
+                                            {r.skill}
+                                            {r.phone ? ` · ${r.countryCode}${r.phone.replace(/^\+?(\d+)$/, "$1")}` : ""}
                                         </p>
                                     </div>
                                 </div>
@@ -111,15 +178,15 @@ function SocialJoinsBody() {
                             {r.status === "pending" && (
                                 <div className="flex gap-2 mt-4 pt-4 border-t border-gray-50">
                                     <button
-                                        onClick={() => setStatus(r.id, "approved")}
-                                        disabled={processing === r.id}
+                                        onClick={() => setStatus(r, "approve")}
+                                        disabled={processing === r._id}
                                         className="rounded-lg bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-200 transition disabled:opacity-50"
                                     >
                                         Approve
                                     </button>
                                     <button
-                                        onClick={() => setStatus(r.id, "rejected")}
-                                        disabled={processing === r.id}
+                                        onClick={() => setStatus(r, "reject")}
+                                        disabled={processing === r._id}
                                         className="rounded-lg bg-red-50 px-4 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100 transition disabled:opacity-50"
                                     >
                                         Reject
@@ -130,10 +197,6 @@ function SocialJoinsBody() {
                     ))}
                 </div>
             )}
-
-            <p className="mt-4 text-xs text-gray-400">
-                Demo data shown — hooks for <code className="text-navy">/api/admin/social-joins</code> are marked in the code.
-            </p>
         </div>
     );
 }

@@ -17,6 +17,7 @@ export default function SignInPage() {
     const [password, setPassword] = useState("");
     const [showPw, setShowPw] = useState(false);
     const [error, setError] = useState("");
+    const [submitting, setSubmitting] = useState(false);
 
     const validate = () => {
         if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -35,18 +36,25 @@ export default function SignInPage() {
         return true;
     };
 
-    const submit = (e: React.FormEvent) => {
+    const submit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (submitting) return;
         if (!validate()) return;
-        if (mode === "signin") signInWithEmail(email);
-        else signUpWithEmail(email, name);
+        setSubmitting(true);
+        const err =
+            mode === "signin"
+                ? await signInWithEmail(email, password)
+                : await signUpWithEmail(name, email, password);
+        setSubmitting(false);
+        if (err) {
+            setError(err);
+            return;
+        }
         window.location.href = "/";
     };
 
     const oauth = (provider: "google" | "github") => {
         signInWith(provider);
-        window.location.href = "/";
-        // When the backend is linked: window.location.href = `/api/auth/${provider}`;
     };
 
     return (
@@ -119,8 +127,8 @@ export default function SignInPage() {
 
                         {error && <p className="rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
 
-                        <button type="submit" className="w-full rounded-lg px-4 py-3 text-sm font-semibold transition hover:brightness-95 mt-1" style={{ backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)" }}>
-                            {mode === "signin" ? "Sign in" : "Create account"}
+                        <button type="submit" disabled={submitting} className="w-full rounded-lg px-4 py-3 text-sm font-semibold transition hover:brightness-95 mt-1 disabled:opacity-60" style={{ backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)" }}>
+                            {submitting ? (mode === "signin" ? "Signing in…" : "Creating account…") : mode === "signin" ? "Sign in" : "Create account"}
                         </button>
                     </form>
 

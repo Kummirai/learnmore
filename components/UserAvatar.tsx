@@ -14,8 +14,7 @@ import { useAuth } from "./AuthProvider";
 /**
  * Avatar button in the navbar. Shows a placeholder glyph when signed out and
  * opens a dropdown: Sign in / Sign up — or Profile / Settings / Admin / Sign out when signed in.
- * Photo comes from the user record (`avatarUrl`) — swap the demo URLs for real
- * provider photos when the backend is linked.
+ * Photo comes from the better-auth user record (`image`).
  */
 export default function UserAvatar() {
     const { user, signOut } = useAuth();
@@ -60,10 +59,10 @@ export default function UserAvatar() {
                     (open ? "ring-2 ring-[color:var(--club-accent)]" : "ring-1 ring-gray-200 hover:ring-gray-400")
                 }
             >
-                {user && user.avatarUrl && !imgFailed ? (
+                {user && user.image && !imgFailed ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                        src={user.avatarUrl}
+                        src={user.image}
                         alt={user.name}
                         className="size-full object-cover"
                         onError={() => setImgFailed(true)}

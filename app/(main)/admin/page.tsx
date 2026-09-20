@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LuBookOpen, LuFlame, LuMessageSquare, LuUsers, LuShoppingBag, LuNewspaper } from "react-icons/lu";
+import { LuBookOpen, LuFlame, LuMessageSquare, LuUsers, LuNewspaper } from "react-icons/lu";
 import RequireAuth from "@/components/RequireAuth";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -26,12 +27,16 @@ const tools = [
     },
 ];
 
-const stats = [
-    { label: "Members", value: "1 240", icon: LuUsers, trend: "+18 this week" },
-    { label: "Clubs", value: "7", icon: LuBookOpen, trend: "Sprout → Nexus" },
-    { label: "Store orders", value: "36", icon: LuShoppingBag, trend: "8 awaiting WhatsApp confirmation" },
-    { label: "Join requests", value: "12", icon: LuMessageSquare, trend: "pending review" },
-];
+type PublicationItem = {
+    status?: string;
+};
+
+type DashboardStats = {
+    members: number | null;
+    publications: number;
+    drafts: number;
+    pendingJoins: number;
+};
 
 export default function AdminPage() {
     return (
@@ -50,6 +55,40 @@ export default function AdminPage() {
 
 function AdminBody() {
     const { user } = useAuth();
+    const [stats, setStats] = useState<DashboardStats>({
+        members: null,
+        publications: 0,
+        drafts: 0,
+        pendingJoins: 0,
+    });
+
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const [s, pubsRes, joinsRes] = await Promise.all([
+                    fetch("/api/stats").then((r) => r.json()),
+                    fetch("/api/admin/publications").then((r) => r.json()),
+                    fetch("/api/community/social-join?status=pending").then((r) => r.json()),
+                ]);
+                if (cancelled) return;
+                const pubs = Array.isArray(pubsRes?.data) ? (pubsRes.data as PublicationItem[]) : [];
+                const joins = Array.isArray(joinsRes?.data) ? joinsRes.data : [];
+                setStats({
+                    members:
+                        typeof s?.downloads === "number" ? s.downloads : null,
+                    publications: pubs.length,
+                    drafts: pubs.filter((p) => p.status === "draft").length,
+                    pendingJoins: joins.length,
+                });
+            } catch {
+                // Keep empty stats if the API is unreachable.
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     if (user?.role !== "admin") {
         return (
@@ -61,6 +100,33 @@ function AdminBody() {
             </div>
         );
     }
+
+    const cards = [
+        {
+            label: "Members",
+            value: stats.members === null ? "—" : String(stats.members),
+            icon: LuUsers,
+            trend: "from Relate app",
+        },
+        {
+            label: "Publications",
+            value: String(stats.publications),
+            icon: LuBookOpen,
+            trend: "magazines & guides",
+        },
+        {
+            label: "Drafts",
+            value: String(stats.drafts),
+            icon: LuNewspaper,
+            trend: "unpublished",
+        },
+        {
+            label: "Join requests",
+            value: String(stats.pendingJoins),
+            icon: LuMessageSquare,
+            trend: "awaiting review",
+        },
+    ];
 
     return (
         <>
@@ -86,7 +152,7 @@ function AdminBody() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                {stats.map((s) => (
+                {cards.map((s) => (
                     <div key={s.label} className="rounded-2xl bg-white border border-gray-100 p-4 shadow-sm">
                         <div className="flex items-center justify-between">
                             <p className="text-[11px] uppercase tracking-widest text-slate-gray">{s.label}</p>

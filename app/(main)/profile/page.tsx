@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LuArrowLeft } from "react-icons/lu";
+import { LuArrowLeft, LuFlame } from "react-icons/lu";
 import RequireAuth from "@/components/RequireAuth";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -28,16 +29,69 @@ export default function ProfilePage() {
     );
 }
 
+function localKey(d: Date): string {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+}
+
+/** Consecutive days of logging ending today (or yesterday, if today isn't logged yet). */
+function currentStreak(days: string[]): number {
+    const logged = new Set(days);
+    const cursor = new Date();
+    if (!logged.has(localKey(cursor))) {
+        cursor.setDate(cursor.getDate() - 1);
+        if (!logged.has(localKey(cursor))) return 0;
+    }
+    let streak = 0;
+    while (logged.has(localKey(cursor))) {
+        streak++;
+        cursor.setDate(cursor.getDate() - 1);
+    }
+    return streak;
+}
+
 function ProfileBody() {
     const { user } = useAuth();
+    const [prayerDays, setPrayerDays] = useState<string[]>([]);
+    const [readingDays, setReadingDays] = useState<string[]>([]);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        let cancelled = false;
+        (async () => {
+            try {
+                const [s, r] = await Promise.all([
+                    fetch("/api/streaks").then((res) => res.json()),
+                    fetch("/api/reading-streak").then((res) => res.json()),
+                ]);
+                if (!cancelled) {
+                    setPrayerDays(Array.isArray(s?.data?.prayer?.days) ? s.data.prayer.days : []);
+                    setReadingDays(Array.isArray(r?.data) ? r.data : []);
+                }
+            } catch {
+                // Leave stats empty if the API is unreachable.
+            } finally {
+                if (!cancelled) setLoaded(true);
+            }
+        })();
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
     if (!user) return null;
+
+    const prayerStreak = currentStreak(prayerDays);
+    const readingStreak = currentStreak(readingDays);
 
     return (
         <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
             <div className="flex items-center gap-4 mb-6">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                    src={user.avatarUrl ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=13c5dd&color=1d2a4d`}
+                    src={user.image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=13c5dd&color=1d2a4d`}
                     alt={user.name}
                     className="size-16 rounded-full object-cover"
                 />
@@ -50,16 +104,37 @@ function ProfileBody() {
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-alice-blue rounded-xl px-4 py-3">
                     <dt className="text-[11px] uppercase tracking-widest text-gray-500">Member role</dt>
-                    <dd className="text-sm font-semibold text-gray-800 capitalize">{user.role}</dd>
+                    <dd className="text-sm font-semibold text-gray-800 capitalize">{user.role === "facilitator" ? "Facilitator" : user.role === "admin" ? "Admin" : "Member"}</dd>
                 </div>
                 <div className="bg-alice-blue rounded-xl px-4 py-3">
-                    <dt className="text-[11px] uppercase tracking-widest text-gray-500">Signed in via</dt>
-                    <dd className="text-sm font-semibold text-gray-800 capitalize">{user.provider}</dd>
+                    <dt className="text-[11px] uppercase tracking-widest text-gray-500">Email status</dt>
+                    <dd className="text-sm font-semibold text-gray-800">{user.emailVerified ? "Verified" : "Not verified"}</dd>
                 </div>
             </dl>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                <div className="rounded-xl border border-orange-100 bg-orange-50 px-4 py-3">
+                    <dt className="text-[11px] uppercase tracking-widest text-orange-500 flex items-center gap-1">
+                        <LuFlame /> Prayer streak
+                    </dt>
+                    <dd className="text-2xl font-bold text-gray-800">
+                        {loaded ? `${prayerStreak} ${prayerStreak === 1 ? "day" : "days"}` : "…"}
+                    </dd>
+                    <dd className="text-xs text-gray-500 mt-0.5">{prayerDays.length} prayer day{prayerDays.length === 1 ? "" : "s"} logged</dd>
+                </div>
+                <div className="rounded-xl border border-cyan-100 bg-cyan-50 px-4 py-3">
+                    <dt className="text-[11px] uppercase tracking-widest text-cyan flex items-center gap-1">
+                        <LuFlame /> Reading streak
+                    </dt>
+                    <dd className="text-2xl font-bold text-gray-800">
+                        {loaded ? `${readingStreak} ${readingStreak === 1 ? "day" : "days"}` : "…"}
+                    </dd>
+                    <dd className="text-xs text-gray-500 mt-0.5">{readingDays.length} reading day{readingDays.length === 1 ? "" : "s"} logged</dd>
+                </div>
+            </div>
+
             <p className="text-xs text-gray-400 mt-6">
-                Club memberships, prayer streaks and saved reading guides will appear here once the backend is linked.
+                Streaks are synced from your mobile app. Club memberships and saved reading guides will appear here soon.
             </p>
         </div>
     );
