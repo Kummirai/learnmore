@@ -33,7 +33,7 @@ export default function FeesSection() {
                                     Most Popular
                                 </span>
                             )}
-                            <a href={`/store/${item.id}`} className={"block aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 group"}>
+                            <a href={`/store/${item.id}`} className={"block aspect-square overflow-hidden mb-4 bg-gray-100 group"}>
                                 <img
                                     src={item.image}
                                     alt={item.name}

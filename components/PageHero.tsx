@@ -50,7 +50,7 @@ export default function PageHero({title, tagline, description, watermark, chips 
             <div className={"absolute -top-10 right-4 h-px w-96"}
                  style={{background: "linear-gradient(90deg, transparent, var(--club-accent))"}}/>
             {watermark && (
-                <div className={"absolute -bottom-14 right-4 hidden select-none md:block"}>
+                <div className={"absolute bottom-0 right-4 hidden pb-0.5 select-none md:block"}>
                     <span className={"block font-black leading-none tracking-tighter text-[color:var(--club-accent)]"}
                           style={{fontSize: "clamp(9rem, 24vw, 16rem)", opacity: 0.14}}>
                         {watermark}

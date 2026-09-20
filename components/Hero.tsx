@@ -208,7 +208,7 @@ export default function Hero() {
             <div className={"absolute bottom-10 -left-24 size-96 rounded-full blur-3xl opacity-20"} style={{ backgroundColor: "var(--club-accent)" }} />
 
             {/* ── Watermark ── */}
-            <div className={"absolute -bottom-14 right-4 hidden select-none md:block"}>
+            <div className={"absolute bottom-0 right-4 hidden pb-0.5 select-none md:block"}>
                 <span
                     key={slide.key}
                     className={"block font-black leading-none tracking-tighter text-white"}
