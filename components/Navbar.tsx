@@ -92,27 +92,13 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           href={"/"}
           className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-3 md:py-4`}
         >
-          <FaGraduationCap
-            className={
-              "text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"
-            }
+          <img
+            src={"/images/relate-world-logo.png"}
+            alt={"Relate World"}
+            width={500}
+            height={500}
+            className={`h-10 md:h-12 w-auto object-contain self-center ${overlay ? "drop-shadow" : ""}`}
           />
-
-          <div className="leading-none">
-            <h1
-              className={`text-[1.7rem] md:text-[2rem] font-extrabold ${roboto.className} tracking-tight leading-none`}
-            >
-              Relate
-              <span className="text-[color:var(--club-accent)] font-black">
-                World
-              </span>
-            </h1>
-            <p
-              className={`text-[9px] md:text-[10px] uppercase tracking-[0.35em] ${overlay ? "text-white/60" : "text-slate-gray"} mt-1.5`}
-            >
-              Grow · Belong · Become
-            </p>
-          </div>
         </Link>
         <nav className={"hidden lg:block"}>
           <ul
