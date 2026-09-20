@@ -20,13 +20,13 @@ export default function PublicationCard({pub}: {pub: PubSummary}) {
                 )}
             </div>
             <div className={"shrink-0 bg-white px-3 py-3"}>
-                <span className={"block text-[9px] font-bold uppercase tracking-widest text-cyan-dark"}>
+                <span className={"block text-[9px] font-bold uppercase tracking-widest text-(--club-accent-dark)"}>
                     {meta || pub.kind}
                 </span>
                 <h3 className={"mt-1 font-bold text-navy leading-snug line-clamp-3 text-[15px]"}>
                     {pub.theme ?? pub.title ?? pub.id}
                 </h3>
-                <span className={"mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-cyan-dark group-hover:text-navy transition-colors"}>
+                <span className={"mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-(--club-accent-dark) group-hover:text-navy transition-colors"}>
                     Read <span className={"group-hover:translate-x-0.5 transition-transform"}>→</span>
                 </span>
             </div>

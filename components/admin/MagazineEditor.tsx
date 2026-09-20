@@ -504,5 +504,3 @@ function MoveButton({ children, disabled, onClick }: { children: React.ReactNode
         </button>
     );
 }
-
-{/* __TAIL__ */}

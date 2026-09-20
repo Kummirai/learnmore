@@ -2,16 +2,16 @@ import type { PubBlock, ReadingPart, ReadingBodyItem } from "@/lib/publications"
 
 function ChecklistCard({title, items}: {title?: string; items?: string[]}) {
     return (
-        <div className={"rounded-xl border border-cyan/25 bg-alice-blue/60 p-4 md:p-5"}>
+        <div className={"rounded-xl border border-(--club-accent)/25 bg-alice-blue/60 p-4 md:p-5"}>
             {title && (
-                <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-cyan mb-2.5"}>
+                <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-(--club-accent) mb-2.5"}>
                     {title}
                 </p>
             )}
             <ul className={"space-y-2"}>
                 {items?.map((item, i) => (
                     <li key={i} className={"flex gap-3 text-sm text-gray-700 leading-snug"}>
-                        <span className={"mt-0.5 size-4 shrink-0 grid place-items-center rounded border border-cyan text-cyan"}>
+                        <span className={"mt-0.5 size-4 shrink-0 grid place-items-center rounded border border-(--club-accent) text-(--club-accent)"}>
                             <span className={"text-[10px] leading-none"}>✓</span>
                         </span>
                         {item}
@@ -26,14 +26,14 @@ function PrayCard({title, items}: {title?: string; items?: string[]}) {
     return (
         <div className={"rounded-xl bg-navy text-white p-4 md:p-5"}>
             {title && (
-                <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-cyan mb-2.5"}>
+                <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-(--club-accent) mb-2.5"}>
                     {title}
                 </p>
             )}
             <ul className={"space-y-2"}>
                 {items?.map((item, i) => (
                     <li key={i} className={"flex gap-3 text-sm text-white/85 leading-snug"}>
-                        <span className={"mt-1.5 size-1.5 shrink-0 rounded-full bg-cyan"}/>
+                        <span className={"mt-1.5 size-1.5 shrink-0 rounded-full bg-(--club-accent)"}/>
                         {item}
                     </li>
                 ))}
@@ -47,7 +47,7 @@ function NewsList({items}: {items?: string[]}) {
         <ul className={"space-y-2.5"}>
             {items?.map((item, i) => (
                 <li key={i} className={"flex gap-3 text-[15px] text-gray-700 leading-relaxed"}>
-                    <span className={"mt-2.5 size-1.5 shrink-0 rounded-full bg-cyan"}/>
+                    <span className={"mt-2.5 size-1.5 shrink-0 rounded-full bg-(--club-accent)"}/>
                     {item}
                 </li>
             ))}
@@ -68,7 +68,7 @@ function ReadingInline({blocks}: {blocks?: PubBlock[]}) {
                 }
                 if (b.type === "quote") {
                     return (
-                        <figure key={i} className={"my-2 border-l-2 border-cyan pl-4"}>
+                        <figure key={i} className={"my-2 border-l-2 border-(--club-accent) pl-4"}>
                             <blockquote className={"text-[15px] md:text-base font-medium text-navy italic leading-relaxed"}>
                                 {b.text}
                             </blockquote>
@@ -96,7 +96,7 @@ function ReadingIntro({part}: {part?: ReadingPart}) {
             )}
             <ReadingInline blocks={part.afterHook}/>
             {part.thesis && (
-                <p className={"border-l-4 border-cyan pl-4 font-semibold text-navy text-[15px] md:text-base leading-relaxed"}>
+                <p className={"border-l-4 border-(--club-accent) pl-4 font-semibold text-navy text-[15px] md:text-base leading-relaxed"}>
                     {part.thesis}
                 </p>
             )}
@@ -138,7 +138,7 @@ function ReadingConclusion({part}: {part?: ReadingPart}) {
         <>
             <ReadingInline blocks={part.beforeRestate}/>
             {part.restate && (
-                <p className={"border-l-4 border-cyan pl-4 font-semibold text-navy text-[15px] md:text-base leading-relaxed"}>
+                <p className={"border-l-4 border-(--club-accent) pl-4 font-semibold text-navy text-[15px] md:text-base leading-relaxed"}>
                     {part.restate}
                 </p>
             )}
@@ -170,7 +170,7 @@ function ReadingView({block}: {block: PubBlock}) {
 function QuoteBlock({text, by}: {text?: string; by?: string}) {
     return (
         <figure className={"my-4 text-center"}>
-            <span aria-hidden className={"block text-5xl leading-none text-cyan"}>“</span>
+            <span aria-hidden className={"block text-5xl leading-none text-(--club-accent)"}>“</span>
             <blockquote className={"text-xl md:text-2xl font-medium text-navy leading-snug"}>
                 {text}
             </blockquote>
@@ -188,17 +188,17 @@ function QuizBlock({block}: {block: PubBlock}) {
     const correct = options[block.correctIndex ?? 0]
 
     return (
-        <details className={"group rounded-xl border border-dashed border-gray-300 bg-white p-4 md:p-5 open:border-cyan"}>
+        <details className={"group rounded-xl border border-dashed border-gray-300 bg-white p-4 md:p-5 open:border-(--club-accent)"}>
             <summary className={"flex items-center justify-between gap-3 cursor-pointer list-none [&::-webkit-details-marker]:hidden"}>
                 <span>
-                    <span className={"block text-[11px] font-bold uppercase tracking-[0.18em] text-cyan"}>
+                    <span className={"block text-[11px] font-bold uppercase tracking-[0.18em] text-(--club-accent)"}>
                         Daily quiz
                     </span>
                     <span className={"mt-0.5 block font-semibold text-navy text-sm"}>
                         {block.question}
                     </span>
                 </span>
-                <span className={"shrink-0 text-sm text-cyan group-open:rotate-180 transition-transform"}>▼</span>
+                <span className={"shrink-0 text-sm text-(--club-accent) group-open:rotate-180 transition-transform"}>▼</span>
             </summary>
             <div className={"mt-4 space-y-3"}>
                 <ol className={"space-y-1.5"}>
@@ -211,8 +211,8 @@ function QuizBlock({block}: {block: PubBlock}) {
                         </li>
                     ))}
                 </ol>
-                <div className={"rounded-lg bg-ice-blue/60 border border-cyan/20 p-3"}>
-                    <p className={"text-[11px] font-bold uppercase tracking-widest text-cyan"}>Correct answer</p>
+                <div className={"rounded-lg bg-ice-blue/60 border border-(--club-accent)/20 p-3"}>
+                    <p className={"text-[11px] font-bold uppercase tracking-widest text-(--club-accent)"}>Correct answer</p>
                     <p className={"text-sm text-navy mt-1 font-medium"}>{correct}</p>
                     {block.explain && (
                         <p className={"text-sm text-gray-600 mt-2 leading-relaxed"}>{block.explain}</p>
@@ -226,7 +226,7 @@ function QuizBlock({block}: {block: PubBlock}) {
 function ReflectionBlock({block}: {block: PubBlock}) {
     return (
         <div className={"rounded-xl bg-alice-blue border border-gray-100 p-4 md:p-5"}>
-            <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-cyan mb-2"}>Reflect</p>
+            <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-(--club-accent) mb-2"}>Reflect</p>
             <p className={"text-sm text-gray-700 italic leading-relaxed"}>{block.prompt}</p>
             {block.placeholder && (
                 <div className={"mt-4 rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-400 italic"}>

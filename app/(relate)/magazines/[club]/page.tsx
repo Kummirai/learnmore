@@ -1,4 +1,5 @@
 import {notFound} from "next/navigation"
+import type {CSSProperties} from "react"
 import PageHero from "@/components/PageHero"
 import PublicationLibrary from "@/components/publications/PublicationLibrary"
 import {getClub, getClubClass} from "@/constants/relate"
@@ -20,6 +21,10 @@ export default async function ClubMagazinesPage({
 
     const publications = await getPublications(club.slug)
     const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null
+    const clubVars = {
+        "--club-accent": club.color,
+        "--club-accent-dark": club.colorDark,
+    } as CSSProperties
 
     return (
         <>
@@ -31,9 +36,9 @@ export default async function ClubMagazinesPage({
                 bgImage={club.heroImage}
             />
 
-            <section className={"flex-1 px-4 py-12"}>
+            <section style={clubVars} className={"flex-1 px-4 py-12"}>
                 <div className={"max-w-6xl mx-auto"}>
-                    <span className={"text-xs uppercase tracking-widest text-cyan font-medium"}>Library</span>
+                    <span className={"text-xs uppercase tracking-widest text-(--club-accent) font-medium"}>Library</span>
                     <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"}>
                         Magazines &amp; Bulletins
                     </h2>

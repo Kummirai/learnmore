@@ -1,4 +1,5 @@
 import Link from "next/link"
+import type {CSSProperties} from "react"
 import {LuArrowLeft} from "react-icons/lu"
 import {FaWhatsapp} from "react-icons/fa"
 import PageHero from "@/components/PageHero"
@@ -28,6 +29,10 @@ export default async function ClubPage({slug}: {slug: string}) {
     const classes = getClubClasses(club.slug)
     const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null
     const parent = club.parentSlug ? getClub(club.parentSlug) : undefined
+    const clubVars = {
+        "--club-accent": club.color,
+        "--club-accent-dark": club.colorDark,
+    } as CSSProperties
 
     return (
         <>
@@ -176,8 +181,8 @@ export default async function ClubPage({slug}: {slug: string}) {
                     )}
 
                     {publications.length > 0 && (
-                        <div id={"library"} className={"mt-12 mb-12 scroll-mt-8"}>
-                            <span className={"text-xs uppercase tracking-widest text-cyan font-medium"}>Library</span>
+                        <div id={"library"} style={clubVars} className={"mt-12 mb-12 scroll-mt-8"}>
+                            <span className={"text-xs uppercase tracking-widest text-(--club-accent) font-medium"}>Library</span>
                             <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"}>
                                 Reading for {club.name}
                             </h2>

@@ -1,3 +1,4 @@
+import type {CSSProperties} from "react"
 import PageHero from "@/components/PageHero"
 import MagazineReader from "@/components/publications/MagazineReader"
 import {PubBlocks} from "@/components/publications/PublicationBlocks"
@@ -13,6 +14,12 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
     const isMagazine = doc.kind === "magazine"
     const seasonLabel = doc.season?.label ?? doc.issue
     const heading = doc.theme ?? doc.title ?? doc.series ?? "Publication"
+    const clubVars = club
+        ? ({
+              "--club-accent": club.color,
+              "--club-accent-dark": club.colorDark,
+          } as CSSProperties)
+        : undefined
 
     return (
         <>
@@ -29,7 +36,7 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
                 bgImage={doc.cover}
             />
 
-            <section className={"flex-1 px-4 py-12"}>
+            <section style={clubVars} className={"flex-1 px-4 py-12"}>
                 {isMagazine && doc.weeks && doc.weeks.length > 0 ? (
                     <MagazineReader key={doc.id} doc={doc}/>
                 ) : (

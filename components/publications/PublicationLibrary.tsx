@@ -3,7 +3,7 @@ import PublicationCard from "@/components/publications/PublicationCard"
 
 function Label({children}: {children: React.ReactNode}) {
     return (
-        <p className={"text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-3"}>
+        <p className={"text-[11px] font-bold uppercase tracking-[0.2em] text-(--club-accent) mb-3"}>
             {children}
         </p>
     )

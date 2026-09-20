@@ -79,12 +79,12 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                     <button
                         onClick={() => setPos(pos - 1)}
                         disabled={pos <= 0}
-                        className={`${navBtn} border border-gray-200 text-navy hover:bg-alice-blue hover:border-cyan`}
+                        className={`${navBtn} border border-gray-200 text-navy hover:bg-alice-blue hover:border-(--club-accent)`}
                     >
                         <span aria-hidden>←</span> Prev
                     </button>
                     <div className={"text-center"}>
-                        <span className={"block text-[10px] uppercase tracking-[0.2em] text-cyan font-bold"}>
+                        <span className={"block text-[10px] uppercase tracking-[0.2em] text-(--club-accent) font-bold"}>
                             Now reading
                         </span>
                         <p className={"font-bold text-navy mt-0.5 whitespace-nowrap"}>
@@ -95,7 +95,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                     <button
                         onClick={() => setPos(pos + 1)}
                         disabled={pos < 0 || pos >= days.length - 1}
-                        className={`${navBtn} border border-gray-200 text-navy hover:bg-alice-blue hover:border-cyan`}
+                        className={`${navBtn} border border-gray-200 text-navy hover:bg-alice-blue hover:border-(--club-accent)`}
                     >
                         Next <span aria-hidden>→</span>
                     </button>
@@ -131,7 +131,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                                         onClick={() => jumpTo(current?.weekIndex ?? 0, di)}
                                         className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
                                             di === current?.dayIndex
-                                                ? "bg-cyan text-navy"
+                                                ? "bg-(--club-accent) text-navy"
                                                 : "bg-alice-blue text-navy hover:bg-ice-blue"
                                         }`}
                                     >
@@ -146,7 +146,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
 
             {week && week.intro && week.intro.length > 0 && (
                 <div className={"rounded-2xl bg-alice-blue/50 border border-gray-100 p-5 md:p-6 mb-6"}>
-                    <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-cyan mb-2"}>
+                    <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-(--club-accent) mb-2"}>
                         {week.title ?? `Week ${(current?.weekIndex ?? 0) + 1}`}
                     </p>
                     <div className={"space-y-3"}>
@@ -157,7 +157,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
 
             {!current ? (
                 <div className={"rounded-3xl border border-dashed border-gray-200 bg-alice-blue/40 px-6 py-14 md:py-16 text-center"}>
-                    <span className={"mx-auto grid size-16 place-items-center rounded-2xl bg-white border border-gray-100 shadow-sm text-cyan"}>
+                    <span className={"mx-auto grid size-16 place-items-center rounded-2xl bg-white border border-gray-100 shadow-sm text-(--club-accent)"}>
                         <LuBookOpen className={"text-2xl"}/>
                     </span>
                     <h2 className={"mt-5 font-black tracking-tight text-navy text-2xl"}>
@@ -185,7 +185,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                 <article className={"pb-8"}>
                     <header className={"flex flex-wrap items-baseline gap-x-3 gap-y-1"}>
                         <h2 className={"font-black tracking-tight text-navy text-2xl md:text-3xl"}>{current.day.title}</h2>
-                        <span className={"text-[11px] uppercase tracking-widest text-cyan font-bold"}>
+                        <span className={"text-[11px] uppercase tracking-widest text-(--club-accent) font-bold"}>
                             {current.day.weekday ? `${current.day.weekday} · ` : ""}Day {current.day.day ?? current.dayIndex + 1}
                         </span>
                         {current.day.date && (
@@ -196,12 +196,12 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                     </header>
 
                     {current.day.verse?.text && (
-                        <figure className={"my-5 rounded-r-xl border-l-[3px] border-cyan bg-alice-blue/40 py-3 pl-4 pr-3"}>
+                        <figure className={"my-5 rounded-r-xl border-l-[3px] border-(--club-accent) bg-alice-blue/40 py-3 pl-4 pr-3"}>
                             <blockquote className={"text-[15px] italic text-gray-700 leading-relaxed"}>
                                 {current.day.verse.text}
                             </blockquote>
                             {current.day.verse.by && (
-                                <figcaption className={"mt-1.5 text-[11px] uppercase tracking-[0.18em] text-cyan font-bold"}>
+                                <figcaption className={"mt-1.5 text-[11px] uppercase tracking-[0.18em] text-(--club-accent) font-bold"}>
                                     {current.day.verse.by}
                                 </figcaption>
                             )}
