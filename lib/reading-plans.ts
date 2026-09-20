@@ -92,8 +92,13 @@ function buildGenericSections(plan: RelateReadingPlan): ReadingSection[] {
 }
 
 /** Supabase-shaped accessor over the single reading-plans catalog. */
+const PENTATEUCH_SLUGS = new Set([
+  "pentateuch-in-60-days",
+  "old-testament-in-180-days",
+]);
+
 export function getPlanSections(plan: RelateReadingPlan): ReadingSection[] {
-  if (plan.slug === "bible-reading-pentateuch" || plan.slug === "pentateuch") {
+  if (PENTATEUCH_SLUGS.has(plan.slug)) {
     return buildSections(plan.slug);
   }
   return buildGenericSections(plan);

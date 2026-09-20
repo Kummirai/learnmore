@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaBookOpen, FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import { READING_PLANS, READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
 
@@ -99,15 +99,13 @@ export default function ReadingPlansPage() {
                                                     <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
                                                         {plan.category}
                                                     </span>
-                                                    <a
-                                                        href={`https://wa.me/27782677436?text=${encodeURIComponent(`Hi RelateWorld! I'd like to start the ${plan.title} reading plan (${plan.days} days).`)}`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
+                                                    <Link
+                                                        href={`/plans/${plan.slug}`}
                                                         className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-white transition hover:brightness-110 shrink-0"
                                                         style={{ backgroundColor: plan.gradient[0] }}
                                                     >
-                                                        <FaWhatsapp className="text-sm" /> Start plan
-                                                    </a>
+                                                        <FaBookOpen className="text-sm" /> Start plan
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>

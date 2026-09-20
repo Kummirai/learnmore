@@ -6,6 +6,7 @@ import PageHero from "@/components/PageHero"
 import {CLUBS, getClub, getClubClass, getClubClasses} from "@/constants/relate"
 import {getPublications} from "@/lib/publications"
 import PublicationLibrary from "@/components/publications/PublicationLibrary"
+import ClubQuizBoard from "@/components/bible-quiz/ClubQuizBoard"
 
 export default async function ClubPage({slug}: {slug: string}) {
     const club = getClub(slug) ?? getClubClass(slug)
@@ -192,6 +193,13 @@ export default async function ClubPage({slug}: {slug: string}) {
                             <PublicationLibrary publications={publications}/>
                         </div>
                     )}
+
+                    <div style={clubVars}>
+                        <ClubQuizBoard
+                            clubSlug={club.slug}
+                            accent={club.color}
+                        />
+                    </div>
 
                     {CLUBS.length > 1 && (
                         <div className={"mt-12 bg-alice-blue rounded-xl p-8 text-center"}>

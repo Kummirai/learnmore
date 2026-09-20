@@ -182,10 +182,90 @@ function questionsForSection(clubSlug: string, section: { book: string; startCh:
   });
 }
 
+/** Club-colored demo rosters so club pages render a board TODAY. */
+const CLUB_ROSTERS: Record<string, { name: string; score: number; correct: number; total: number }[]> = {
+  "sprout-kids": [
+    { name: "Amara", score: 420, correct: 6, total: 7 },
+    { name: "Liam", score: 380, correct: 5, total: 7 },
+    { name: "Noa", score: 355, correct: 5, total: 7 },
+    { name: "Zuri", score: 300, correct: 4, total: 7 },
+    { name: "Kai", score: 275, correct: 4, total: 7 },
+  ],
+  "sprout-tweens": [
+    { name: "Grace", score: 500, correct: 7, total: 7 },
+    { name: "Ethan", score: 455, correct: 6, total: 7 },
+    { name: "Maya", score: 410, correct: 6, total: 7 },
+    { name: "Noah", score: 370, correct: 5, total: 7 },
+    { name: "Chloe", score: 330, correct: 5, total: 7 },
+  ],
+  "sprout-teens": [
+    { name: "Sage", score: 540, correct: 7, total: 7 },
+    { name: "Ryan", score: 495, correct: 6, total: 7 },
+    { name: "Nala", score: 460, correct: 6, total: 7 },
+    { name: "Jordan", score: 420, correct: 6, total: 7 },
+    { name: "Skye", score: 385, correct: 5, total: 7 },
+  ],
+  surge: [
+    { name: "Tumi", score: 610, correct: 7, total: 7 },
+    { name: "Jason", score: 570, correct: 6, total: 7 },
+    { name: "Yola", score: 535, correct: 6, total: 7 },
+    { name: "Keanu", score: 500, correct: 6, total: 7 },
+    { name: "Busi", score: 465, correct: 5, total: 7 },
+  ],
+  pulse: [
+    { name: "Naledi", score: 680, correct: 7, total: 7 },
+    { name: "Sipho", score: 640, correct: 6, total: 7 },
+    { name: "Amara", score: 605, correct: 6, total: 7 },
+    { name: "Leon", score: 570, correct: 6, total: 7 },
+    { name: "Fikile", score: 530, correct: 5, total: 7 },
+  ],
+  adults: [
+    { name: "Pastor D", score: 720, correct: 7, total: 7 },
+    { name: "Mrs Khumalo", score: 685, correct: 6, total: 7 },
+    { name: "Oupa", score: 650, correct: 6, total: 7 },
+    { name: "Auntie Pearl", score: 615, correct: 6, total: 7 },
+    { name: "Bro Samuel", score: 580, correct: 5, total: 7 },
+  ],
+};
+
+const CLUB_ACCENTS: Record<string, string> = {
+  "sprout-kids": "#f97316",
+  "sprout-tweens": "#f59e0b",
+  "sprout-teens": "#f59e0b",
+  surge: "#06b6d4",
+  pulse: "#8b5cf6",
+  adults: "#1e3a8a",
+  prime: "#1e3a8a",
+  anchor: "#1e3a8a",
+  base: "#1e3a8a",
+  nexus: "#1e3a8a",
+};
+
 /** Deterministic per-club seed so boards/logs render on every reload. */
 export function seedForClub(clubSlug: string): BibleQuizSectionBoard {
-  const rows: QuizBoardRow[] = []; // built from logs below
-  return { sectionId: "seed", rows, logs: [] };
+  const roster = CLUB_ROSTERS[clubSlug] ?? CLUB_ROSTERS[CLUB_ACCENTS[clubSlug] ? "adults" : "surge"] ?? [];
+  const accent = CLUB_ACCENTS[clubSlug] ?? "#06b6d4";
+  const rows: QuizBoardRow[] = roster.map((r, i) => ({
+    rank: (i + 1) as 1 | 2 | 3 | 4 | 5,
+    playerId: `seed-${clubSlug}-${i + 1}`,
+    name: r.name,
+    clubSlug,
+    accent,
+    laurel: i === 0,
+  }));
+  const logs: QuizLogRow[] = roster.map((r, i) => ({
+    id: `seed-log-${clubSlug}-${i + 1}`,
+    clubSlug,
+    sectionId: "seed",
+    playerId: `seed-${clubSlug}-${i + 1}`,
+    name: r.name,
+    score: r.score,
+    correct: r.correct,
+    total: r.total,
+    milliseconds: 42000 + i * 1300,
+    at: new Date(Date.now() - i * 6.48e7).toISOString(),
+  }));
+  return { sectionId: "seed", rows, logs };
 }
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
