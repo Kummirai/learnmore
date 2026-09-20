@@ -96,13 +96,16 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               "text-4xl md:text-5xl text-[color:var(--club-accent)] self-center"
             }
           />
-          <div>
+          <div className="leading-none">
             <h1
-              className={`text-2xl md:text-3xl font-semibold ${roboto.className} leading-5`}
+              className={`text-[1.7rem] md:text-[2rem] font-extrabold ${roboto.className} tracking-tight leading-none`}
             >
               Relate
+              <span className="text-[color:var(--club-accent)] font-black">World</span>
             </h1>
-            <p className={"text-xs md:text-sm text-white/70"}>World</p>
+            <p className="text-[9px] md:text-[10px] uppercase tracking-[0.35em] text-white/60 mt-1.5">
+              Grow · Belong · Become
+            </p>
           </div>
         </Link>
         <nav className={"hidden lg:block"}>
@@ -209,13 +212,16 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                   "text-4xl text-[color:var(--club-accent)] self-center"
                 }
               />
-              <div>
+              <div className="leading-none">
                 <h1
-                  className={`text-2xl font-semibold ${roboto.className} leading-5`}
+                  className={`text-2xl font-extrabold ${roboto.className} tracking-tight leading-none`}
                 >
-                  RelateWorld
+                  Relate
+                  <span className="text-[color:var(--club-accent)] font-black">World</span>
                 </h1>
-                <p className={"text-xs text-gray-50"}>Primary School</p>
+                <p className="text-[9px] uppercase tracking-[0.35em] text-white/60 mt-1.5">
+                  Grow · Belong · Become
+                </p>
               </div>
             </Link>
             <button

@@ -234,7 +234,7 @@ export default function Hero() {
                     </div>
 
                     {slide.eyebrow && (
-                        <p key={`eb-${slide.key}`} className="text-[11px] uppercase tracking-[0.2em] text-white/70 font-medium">
+                        <p key={`eb-${slide.key}`} className="-mb-[18px] md:-mb-[22px] text-[11px] uppercase tracking-[0.2em] text-white/70 font-medium">
                             {slide.eyebrow}
                         </p>
                     )}
