@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { LuBookOpen, LuFlame, LuMessageSquare, LuUsers, LuNewspaper } from "react-icons/lu";
+import { LuBookOpen, LuFlame, LuMessageSquare, LuUsers, LuNewspaper, LuBookMarked } from "react-icons/lu";
 import RequireAuth from "@/components/RequireAuth";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -24,6 +24,12 @@ const tools = [
         icon: LuMessageSquare,
         title: "Social Joins",
         desc: "Review WhatsApp community join requests.",
+    },
+    {
+        href: "/admin/reading-plans",
+        icon: LuBookMarked,
+        title: "Reading Plans",
+        desc: "Create, edit and manage reading plans across every category.",
     },
 ];
 
