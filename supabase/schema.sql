@@ -12,12 +12,13 @@
 -- 1. Clubs — grouped by age into SIX registration choices (source of truth).
 --    Adults is ONE registration choice; the underlying Prime/Anchor/Base/Nexus
 --    slugs each still keep their own club page + own quiz board.
+--    group_key is NOT unique: adults shares one key across four club rows.
 -- ---------------------------------------------------------------------------
 create table if not exists public.clubs (
   id          uuid primary key default gen_random_uuid(),
   slug        text not null unique,            -- e.g. 'sprout-kids'
   name        text not null,
-  group_key   text not null unique,            -- registration group: kids|tweens|teens|surge|pulse|adults
+  group_key   text not null,                   -- registration group: kids|tweens|teens|surge|pulse|adults
   age_min     integer not null,
   age_max     integer not null,
   sort        integer not null default 0
@@ -38,13 +39,24 @@ on conflict (slug) do update
       sort = excluded.sort;
 
 -- ---------------------------------------------------------------------------
--- 2. profiles — one row per auth user. `club` is chosen once at registration
---    and is IMMUTABLE from the user side; only an admin can change it.
---    (Guard column on the row so accidental profile edits can't touch it.)
+-- 2. profiles — one row per auth user. Created if the app hasn't made one yet;
+--    `club` is chosen once at registration and is IMMUTABLE from the user side;
+--    only an admin can change it. (Guard column on the row so accidental
+--    profile edits can't touch it.)
 -- ---------------------------------------------------------------------------
+create table if not exists public.profiles (
+  id            uuid primary key references auth.users(id) on delete cascade,
+  full_name     text,
+  avatar_url    text,
+  created_at    timestamptz not null default now()
+);
 alter table public.profiles add column if not exists club text;
 alter table public.profiles add column if not exists club_guard integer not null default 1
   check (club_guard = 1);
+alter table public.profiles enable row level security;
+create policy "profiles are public for admin reads" on public.profiles for select using (true);
+create policy "own profile update" on public.profiles for update using (auth.uid() = id)
+  with check (auth.uid() = id);
 
 -- ---------------------------------------------------------------------------
 -- 3. Reading plans — the seeded (and soon admin-created) plans across every
