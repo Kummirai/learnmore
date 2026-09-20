@@ -2,9 +2,10 @@ import Link from "next/link"
 import {LuArrowLeft} from "react-icons/lu"
 import {FaWhatsapp} from "react-icons/fa"
 import PageHero from "@/components/PageHero"
-import {CLUBS, getClub, getClubClass, getClubClasses, getMagazinesForClub} from "@/constants/relate"
+import {CLUBS, getClub, getClubClass, getClubClasses} from "@/constants/relate"
+import {getPublications} from "@/lib/publications"
 
-export default function ClubPage({slug}: {slug: string}) {
+export default async function ClubPage({slug}: {slug: string}) {
     const club = getClub(slug) ?? getClubClass(slug)
 
     if (!club) {
@@ -21,7 +22,8 @@ export default function ClubPage({slug}: {slug: string}) {
         )
     }
 
-    const magazines = getMagazinesForClub(club.slug)
+    const publications = await getPublications(club.slug)
+    const magazines = publications.filter((p) => p.kind === "magazine")
     const classes = getClubClasses(club.slug)
     const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null
     const parent = club.parentSlug ? getClub(club.parentSlug) : undefined
@@ -64,10 +66,10 @@ export default function ClubPage({slug}: {slug: string}) {
                             </Link>
                         )}
                         {!parent && magazines.map((m) => (
-                            <Link key={m.slug} href={`/${m.slug}`}
+                            <Link key={m.id} href={`/library/${m.id}`}
                                   className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}>
                                 <span className={"text-[11px] uppercase tracking-widest text-white/50"}>Reading guide</span>
-                                {m.series} →
+                                {m.series ?? m.title} →
                             </Link>
                         ))}
                     </>
@@ -170,6 +172,58 @@ export default function ClubPage({slug}: {slug: string}) {
                                 ))}
                             </div>
                         </>
+                    )}
+
+                    {publications.length > 0 && (
+                        <div className={"mt-12 mb-12"}>
+                            <span className={"text-xs uppercase tracking-widest text-cyan font-medium"}>Library</span>
+                            <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"}>
+                                Reading for {club.name}
+                            </h2>
+                            <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+                                This season’s study guide and bulletin — open to read, no account needed.
+                            </p>
+                            <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"}>
+                                {publications.map((p) => (
+                                    <Link key={p.id} href={`/library/${p.id}`}
+                                          className={"group flex flex-col rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-sm hover:shadow-md hover:border-cyan transition-all"}>
+                                        <div className={"relative aspect-[3/4] overflow-hidden bg-navy"}>
+                                            {p.cover ? (
+                                                <img src={p.cover} alt={`${p.title ?? p.id} cover`}
+                                                     className={"w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"}/>
+                                            ) : (
+                                                <div className={"w-full h-full grid place-items-center"}>
+                                                    <span className={"text-4xl font-black text-white/25"}>
+                                                        {p.series?.charAt(0) ?? p.kind.charAt(0)}
+                                                    </span>
+                                                </div>
+                                            )}
+                                            <span
+                                                className={"absolute top-3 left-3 text-[10px] font-bold uppercase tracking-widest text-white bg-navy/80 backdrop-blur px-2.5 py-1 rounded-full"}>
+                                                {p.kind}
+                                            </span>
+                                        </div>
+                                        <div className={"p-4 flex-1 flex flex-col"}>
+                                            <span className={"text-[11px] font-bold uppercase tracking-widest text-cyan"}>
+                                                {p.series ?? p.kind}
+                                            </span>
+                                            <h3 className={"font-bold text-navy mt-1 line-clamp-2 leading-snug"}>
+                                                {p.title ?? p.id}
+                                            </h3>
+                                            {p.summary && (
+                                                <p className={"text-sm text-gray-500 line-clamp-2 mt-1.5 leading-snug"}>
+                                                    {p.summary}
+                                                </p>
+                                            )}
+                                            <span className={"mt-auto pt-3 text-sm font-semibold text-cyan group-hover:text-cyan-dark transition-colors"}>
+                                                Read
+                                                <span className={"inline-block ml-1 group-hover:translate-x-1 transition-transform"}>→</span>
+                                            </span>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
+                        </div>
                     )}
 
                     {CLUBS.length > 1 && (
