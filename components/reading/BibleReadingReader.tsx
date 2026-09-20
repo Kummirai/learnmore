@@ -25,7 +25,8 @@ import {
 } from "react-icons/fa6";
 import type { RelateReadingPlan } from "@/lib/reading-plans";
 import type { ReadingSection } from "@/lib/reading-plans";
-import type { PubBlock } from "@/lib/editor/season";
+import type { PubBlock, ReadingMedia, ReadingStructure } from "@/lib/editor/season";
+import { emptyReading } from "@/lib/editor/season";
 
 type Props = {
   plan: RelateReadingPlan;
@@ -183,8 +184,78 @@ export default function BibleReadingReader({ plan, sections }: Props) {
 
 const EYEBROW = "#13c5dd";
 
+function ReadingMediaView({ media }: { media: ReadingMedia }) {
+  if (media.type === "image") {
+    return (
+      <figure className="overflow-hidden rounded-xl ring-1 ring-gray-100">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={media.uri} alt={media.caption || ""} className="w-full" />
+        {media.caption ? (
+          <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-xs text-slate-gray">
+            {media.caption}
+          </figcaption>
+        ) : null}
+      </figure>
+    );
+  }
+  return (
+    <blockquote className="rounded-r-xl border-l-4 bg-alice-blue/60 px-3 py-2 text-sm italic leading-6 text-gray-700" style={{ borderLeftColor: EYEBROW }}>
+      &ldquo;{media.text}&rdquo;
+      {media.by || media.source ? (
+        <footer className="mt-1 text-xs not-italic text-slate-gray">
+          {media.by ? `— ${media.by}` : ""}
+          {media.source ? ` · ${media.source}` : ""}
+        </footer>
+      ) : null}
+    </blockquote>
+  );
+}
+
+function ReadingView({ structure }: { structure: ReadingStructure }) {
+  const s = structure ?? emptyReading();
+  const intro = s.intro ?? emptyReading().intro;
+  const body = Array.isArray(s.body) ? s.body : [];
+  const conclusion = s.conclusion ?? emptyReading().conclusion;
+  const media = (m?: ReadingMedia[]) => (m || []).map((x, j) => <ReadingMediaView key={j} media={x} />);
+  return (
+    <div className="space-y-1.5">
+      {media(intro.beforeHook)}
+      {intro.hook ? <p className="text-sm leading-6 text-gray-700">{intro.hook}</p> : null}
+      {media(intro.afterHook)}
+      {intro.thesis ? <p className="text-sm leading-6 text-gray-700">{intro.thesis}</p> : null}
+      {media(intro.afterThesis)}
+      {body.map((item, j) => (
+        <div key={j}>
+          {media(item.beforeTopic)}
+          {item.topic ? <p className="text-sm leading-6 text-gray-700">{item.topic}</p> : null}
+          {media(item.afterTopic)}
+          {item.support.length ? (
+            <p className="mt-1 text-sm leading-6 italic text-slate-gray">{item.support.join(" ")}</p>
+          ) : null}
+          {media(item.afterSupport)}
+          {item.closing ? <p className="mt-1 text-sm leading-6 text-gray-700">{item.closing}</p> : null}
+          {media(item.afterClosing)}
+        </div>
+      ))}
+      {media(conclusion.beforeRestate)}
+      {conclusion.restate ? <p className="text-sm leading-6 text-gray-700">{conclusion.restate}</p> : null}
+      {media(conclusion.afterRestate)}
+      {conclusion.whyItMatters ? (
+        <p className="text-sm leading-6 text-gray-700">{conclusion.whyItMatters}</p>
+      ) : null}
+      {media(conclusion.afterWhyItMatters)}
+      {conclusion.closing ? (
+        <p className="text-[13px] italic leading-5 text-gray-700">{conclusion.closing}</p>
+      ) : null}
+      {media(conclusion.afterClosing)}
+    </div>
+  );
+}
+
 function BlockView({ b }: { b: PubBlock }) {
   switch (b.type) {
+    case "reading":
+      return <ReadingView structure={b.structure ?? emptyReading()} />;
     case "paragraph":
       return <p className="text-sm leading-6 text-gray-700">{b.text}</p>;
     case "heading":
