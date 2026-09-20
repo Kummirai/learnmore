@@ -27,28 +27,34 @@ export default function FeesSection() {
                 <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"}>
                     {items.map(({item, featured}) => (
                         <div key={item.id}
-                             className={`bg-white rounded-xl p-6 shadow-sm border-2 text-center ${featured ? "border-cyan relative" : "border-transparent"}`}>
+                             className={`bg-white rounded-xl p-6 shadow-sm border-2 text-center flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ${featured ? "border-cyan relative" : "border-transparent"}`}>
                             {featured && (
-                                <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-navy text-white text-xs font-medium px-4 py-1 rounded-full"}>
+                                <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-navy text-white text-xs font-medium px-4 py-1 rounded-full z-10"}>
                                     Most Popular
                                 </span>
                             )}
-                            <div className={"aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100"}>
+                            <a href={`/store/${item.id}`} className={"block aspect-square rounded-lg overflow-hidden mb-4 bg-gray-100 group"}>
                                 <img
                                     src={item.image}
                                     alt={item.name}
-                                    className={"size-full object-cover"}
+                                    className={"size-full object-cover group-hover:scale-105 transition-transform duration-500"}
                                 />
-                            </div>
-                            <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>{item.name}</h3>
-                            <p className={"text-3xl font-bold text-cyan mb-1"}>{formatPrice(item.price)}</p>
-                            <p className={"text-sm text-gray-500 mb-4"}>{item.blurb}</p>
-                            <a href={`https://wa.me/27782677436?text=${encodeURIComponent(`Hi RelateWorld! I'd like to order the ${item.name} (${formatPrice(item.price)}).`)}`}
-                               target={"_blank"}
-                               rel={"noopener noreferrer"}
-                               className={`block text-sm font-medium py-2.5 rounded transition-colors ${featured ? "bg-navy text-white hover:bg-navy-dark" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
-                                Order on WhatsApp
                             </a>
+                            <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>
+                                <a href={`/store/${item.id}`} className="hover:text-cyan-dark transition-colors">{item.name}</a>
+                            </h3>
+                            <p className={"text-3xl font-bold text-cyan mb-1"}>{formatPrice(item.price)}</p>
+                            <p className={"text-sm text-gray-500 mb-4 flex-1"}>{item.blurb}</p>
+                            <div className={"flex flex-col gap-2 mt-auto"}>
+                                <a href={`/store/checkout?item=${item.id}`}
+                                   className={`block text-sm font-medium py-2.5 rounded transition-colors ${featured ? "bg-navy text-white hover:bg-navy-dark" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                                    Order now
+                                </a>
+                                <a href={`/store/${item.id}`}
+                                   className="block text-xs font-medium text-slate-gray hover:text-navy transition-colors">
+                                    View details
+                                </a>
+                            </div>
                         </div>
                     ))}
                 </div>

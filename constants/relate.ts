@@ -515,6 +515,10 @@ export function getClub(slug: string): RelateClub | undefined {
   return CLUBS.find((c) => c.slug === slug);
 }
 
+export function getStoreItem(id: string): StoreItem | undefined {
+  return STORE_ITEMS.find((s) => s.id === id);
+}
+
 const SPROUT_CLASS_PROGRAMS: RelateProgram[] = [
   {
     name: "Bible Quiz",
