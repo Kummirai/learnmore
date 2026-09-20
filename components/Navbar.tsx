@@ -72,7 +72,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
     <section
       className={
         overlay
-          ? "absolute inset-x-0 top-0 z-30 pt-3 sm:pt-4 lg:pt-5"
+          ? "absolute inset-x-0 top-0 z-30 pt-2"
           : "bg-white border-b border-gray-100"
       }
     >
