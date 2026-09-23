@@ -183,45 +183,18 @@ function clubSlide(club: RelateClub): Slide {
     };
 }
 
-/* ── Seasonal Bible Quiz slide (Southern Hemisphere seasons) ── */
-type SeasonName = "Summer" | "Autumn" | "Winter" | "Spring";
-
-function currentSeason(): SeasonName {
-    const m = new Date().getMonth() + 1; // 1–12
-    if (m === 12 || m <= 2) return "Summer";
-    if (m <= 5) return "Autumn";
-    if (m <= 8) return "Winter";
-    return "Spring";
-}
-
-const SEASON_QUIZ_COPY: Record<SeasonName, { blurb: string; image: string }> = {
-    Summer: {
-        blurb: "Soak up Genesis in the sun — every class reads five chapters a week and the quiz unlocks as soon as the reading's done. Best score owns the summer board.",
-        image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1600&q=80",
-    },
-    Autumn: {
-        blurb: "Fresh chapters, fresh chances — read Genesis as the leaves turn, unlock each weekly quiz, and let a new high score keep climbing the class board.",
-        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80",
-    },
-    Winter: {
-        blurb: "Warm minds this winter — read Genesis by the fire, unlock the quiz after every five chapters, and beat the cold with the best score on the board.",
-        image: "https://images.unsplash.com/photo-1516192518150-0d8fee5425e3?w=1600&q=80",
-    },
-    Spring: {
-        blurb: "New season, new growth — Genesis is in full bloom, the quizzes unlock as you read, and the season's best scorers claim the board before summer.",
-        image: "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=1600&q=80",
-    },
-};
+/* ── Seasonal Bible Quiz slide (shared season logic in lib/season) ── */
+import { currentSeason, SEASON_QUIZ } from "@/lib/season";
 
 function bibleQuizSlide(): Slide {
     const season = currentSeason();
-    const copy = SEASON_QUIZ_COPY[season];
+    const copy = SEASON_QUIZ[season];
     return {
         key: "bible-quiz",
         chips: [],
         eyebrow: `${season} season`,
         title: `${season} Bible Quiz`,
-        tagline: "one book · five chapters · the quiz unlocks when the read is done",
+        tagline: `${copy.book.toLowerCase()} · five chapters a week · the quiz unlocks when the read is done`,
         description: copy.blurb,
         watermark: season,
         bg: {
@@ -231,8 +204,8 @@ function bibleQuizSlide(): Slide {
         },
         actions: (
             <>
-                <Link href={"/sprout-kids"} className={btnPrimary}>Play the {season} quiz</Link>
-                <Link href={"/plans/pentateuch-in-60-days"} className={btnGhost}>Start reading Genesis</Link>
+                <Link href={"/bible-quiz"} className={btnPrimary}>Play the {season} quiz</Link>
+                <Link href={`/plans/${copy.planSlug}`} className={btnGhost}>Start reading {copy.book}</Link>
             </>
         ),
     };

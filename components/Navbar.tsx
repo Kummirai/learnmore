@@ -47,6 +47,21 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    link: "Bible Quiz",
+    items: [
+      { link: "Season Overview", path: "/bible-quiz" },
+      { link: "Sprout Board", path: "/bible-quiz#sprout" },
+      { link: "Surge Board", path: "/bible-quiz#surge" },
+      { link: "Pulse Board", path: "/bible-quiz#pulse" },
+      { link: "Prime Board", path: "/bible-quiz#prime" },
+      { link: "Anchor Board", path: "/bible-quiz#anchor" },
+      {
+        link: "Read the Book",
+        path: "/plans/pentateuch-in-60-days",
+      },
+    ],
+  },
+  {
     link: "Prayer",
     items: [
       { link: "Today's Prayer Times", path: "/prayer" },

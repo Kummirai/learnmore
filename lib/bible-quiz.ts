@@ -226,6 +226,20 @@ const CLUB_ROSTERS: Record<string, { name: string; score: number; correct: numbe
     { name: "Auntie Pearl", score: 615, correct: 6, total: 7 },
     { name: "Bro Samuel", score: 580, correct: 5, total: 7 },
   ],
+  prime: [
+    { name: "Dr Molefe", score: 610, correct: 7, total: 7 },
+    { name: "Thandi", score: 575, correct: 6, total: 7 },
+    { name: "Pieter", score: 540, correct: 6, total: 7 },
+    { name: "Lerato", score: 505, correct: 6, total: 7 },
+    { name: "Sibusiso", score: 470, correct: 5, total: 7 },
+  ],
+  anchor: [
+    { name: "Mama Rose", score: 605, correct: 7, total: 7 },
+    { name: "Auntie V", score: 570, correct: 6, total: 7 },
+    { name: "Dumisani", score: 535, correct: 6, total: 7 },
+    { name: "Refilwe", score: 500, correct: 6, total: 7 },
+    { name: "Cindy", score: 465, correct: 5, total: 7 },
+  ],
 };
 
 const CLUB_ACCENTS: Record<string, string> = {
@@ -266,6 +280,27 @@ export function seedForClub(clubSlug: string): BibleQuizSectionBoard {
     at: new Date(Date.now() - i * 6.48e7).toISOString(),
   }));
   return { sectionId: "seed", rows, logs };
+}
+
+/**
+ * Merge several club boards into one group board (e.g. Sprout Kids + Tweens +
+ * Teens = "Sprout"). Logs are combined newest-first; the top-5 row set is
+ * re-ranked by score across the group so a single board reads naturally.
+ */
+export function mergeGroupBoard(clubSlugs: string[]): BibleQuizSectionBoard {
+  const logs = clubSlugs
+    .flatMap((slug) => seedForClub(slug).logs)
+    .sort((a, b) => new Date(b.at).getTime() - new Date(a.at).getTime());
+  const top = [...logs].sort((a, b) => b.score - a.score).slice(0, 5);
+  const rows: QuizBoardRow[] = top.map((log, i) => ({
+    rank: (i + 1) as 1 | 2 | 3 | 4 | 5,
+    playerId: log.playerId,
+    name: log.name,
+    clubSlug: log.clubSlug,
+    accent: CLUB_ACCENTS[log.clubSlug] ?? "#06b6d4",
+    laurel: i === 0,
+  }));
+  return { sectionId: clubSlugs.join("+"), rows, logs };
 }
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
