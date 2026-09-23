@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import { CLUBS, MAGAZINES, type RelateClub, type RelateMagazine } from "@/constants/relate";
 
@@ -156,8 +156,8 @@ function clubSlide(club: RelateClub): Slide {
         },
         actions: (
             <>
-                <a href={club.whatsappGroupLink} target={"_blank"} rel={"noopener noreferrer"} className={btnPrimary}>
-                    <FaWhatsapp /> Join on WhatsApp
+                <a href={"/relate-app.apk"} download className={btnPrimary}>
+                    <FaAndroid /> Download App Apk
                 </a>
                 <Link href={`/${club.slug}`} className={btnGhost}>Explore {club.name}</Link>
             </>
@@ -237,7 +237,7 @@ export default function Hero() {
                             {slide.eyebrow}
                         </p>
                     )}
-                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(3rem, 10vw, 7.5rem)" }}>
+                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(3.75rem, 12vw, 7.5rem)" }}>
                         {slide.title}
                     </h1>
                     <p key={`tg-${slide.key}`} className={"text-xl md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)" }}>

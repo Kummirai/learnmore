@@ -4,11 +4,14 @@ import { API_BASE } from "@/lib/config";
 /**
  * Returns from the provider's OAuth consent screen.
  *
- * For the social flows the backend diverts the final redirect here (via the
- * web-session-bridge) carrying a one-time `bridgeToken` instead of setting its
- * own session cookie. This route exchanges that token for the real session
- * cookie and re-issues it on this site's domain — so the cookie is first-party
- * here rather than pinned to the API origin.
+ * Two flows arrive here:
+ *  - oauth-proxy: the backend already issued a first-party session cookie
+ *    through the /api proxy, so we just verify it and continue.
+ *  - web-session-bridge: the backend diverted the final redirect carrying a
+ *    one-time `bridgeToken` instead of setting its own session cookie. This
+ *    route exchanges that token for the real session cookie and re-issues it
+ *    on this site's domain — so the cookie is first-party here rather than
+ *    pinned to the API origin.
  */
 export async function GET(request: NextRequest) {
     const {searchParams} = request.nextUrl;
@@ -22,9 +25,14 @@ export async function GET(request: NextRequest) {
     }
 
     const token = searchParams.get("bridgeToken");
+
     if (!token) {
-        // Reached the page without a bridge token — nothing to redeem.
-        return NextResponse.redirect(new URL("/SignIn?error=no_session", origin));
+        // Two cases land here with no bridge token:
+        //  1. oauth-proxy flow: the backend has already issued a first-party
+        //     session cookie through the /api proxy, so nothing to redeem.
+        //  2. Reached the page without a session — nothing to do.
+        const ok = await hasSession(request);
+        return NextResponse.redirect(new URL(ok ? next : "/SignIn?error=no_session", origin));
     }
 
     try {
@@ -90,4 +98,18 @@ function attrNumber(v: string | undefined): number | undefined {
     if (!v || v === "true") return undefined;
     const n = Number(v);
     return Number.isFinite(n) ? n : undefined;
+}
+
+async function hasSession(request: NextRequest): Promise<boolean> {
+    try {
+        const res = await fetch(`${API_BASE}/api/auth/get-session`, {
+            headers: {cookie: request.headers.get("cookie") ?? ""},
+            cache: "no-store",
+        });
+        if (!res.ok) return false;
+        const json = await res.json().catch(() => null);
+        return Boolean(json?.user);
+    } catch {
+        return false;
+    }
 }
