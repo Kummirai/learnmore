@@ -6,52 +6,8 @@ import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import { CLUBS, MAGAZINES, type RelateClub, type RelateMagazine } from "@/constants/relate";
 
-/* ── Next prayer time (mirrors the mobile app: sunrise-sunset.org + 6 derived moments) ── */
-const PRAYER_COORDS = { lat: -25.7, lng: 28.2 }; // Johannesburg — the app's default when there's no location.
-
-type PrayerEntry = { label: string; date: Date };
-
-function dayMins(d: Date): number {
-    return d.getHours() * 60 + d.getMinutes();
-}
-
-function dateAtMins(m: number, ref: Date): Date {
-    const d = new Date(ref);
-    d.setHours(Math.floor(m / 60), m % 60, 0, 0);
-    return d;
-}
-
-function buildPrayerTimes(sunrise: Date, noon: Date, sunset: Date, ref: Date): PrayerEntry[] {
-    const r = dayMins(sunrise);
-    const n = dayMins(noon);
-    const u = dayMins(sunset);
-    return [
-        { label: "Dawn", date: dateAtMins(r - 90, ref) },
-        { label: "Sunrise", date: new Date(sunrise) },
-        { label: "Noon", date: new Date(noon) },
-        { label: "Afternoon", date: dateAtMins(Math.floor((n + u) / 2), ref) },
-        { label: "Sunset", date: new Date(sunset) },
-        { label: "Evening", date: dateAtMins(u + 90, ref) },
-    ];
-}
-
-function nextPrayerEntry(times: PrayerEntry[], now: Date): PrayerEntry {
-    const upcoming = times.filter((t) => t.date > now).sort((a, b) => a.date.getTime() - b.date.getTime());
-    if (upcoming.length) return upcoming[0];
-    const dawn = times.find((t) => t.label === "Dawn") ?? times[0];
-    const date = new Date(dawn.date);
-    date.setDate(date.getDate() + 1);
-    return { label: dawn.label, date };
-}
-
-function fallbackPrayer(now: Date) {
-    const at = (h: number, m: number) => {
-        const d = new Date(now);
-        d.setHours(h, m, 0, 0);
-        return d;
-    };
-    return { sunrise: at(6, 15), noon: at(12, 0), sunset: at(18, 30) };
-}
+/* ── Next prayer time (shared math in lib/prayer-times, mirrors the mobile app) ── */
+import { PRAYER_COORDS, buildPrayerTimes, fallbackPrayer, nextPrayerEntry, type PrayerEntry } from "@/lib/prayer-times";
 
 function useNextPrayer() {
     const [next, setNext] = useState<{ label: string; countdown: string } | null>(null);
@@ -151,7 +107,7 @@ function prayerSlide(prayer: { label: string; countdown: string } | null): Slide
         },
         actions: (
             <>
-                <Link href={"/enroll"} className={btnPrimary}>Start praying</Link>
+                <Link href={"/prayer"} className={btnPrimary}>Start praying</Link>
                 <Link href={"/about"} className={btnGhost}>About the rhythm</Link>
             </>
         ),
