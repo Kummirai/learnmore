@@ -6,42 +6,104 @@ import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import { CLUBS, MAGAZINES, type RelateClub, type RelateMagazine } from "@/constants/relate";
 
-/* ── Next prayer time (mirrors the app's 6 daily prayer times) ── */
-type Prayer = { label: string; hour: number; minute: number };
-const PRAYERS: Prayer[] = [
-    { label: "Dawn", hour: 5, minute: 0 },
-    { label: "Sunrise", hour: 6, minute: 30 },
-    { label: "Noon", hour: 12, minute: 0 },
-    { label: "Afternoon", hour: 15, minute: 30 },
-    { label: "Sunset", hour: 18, minute: 0 },
-    { label: "Evening", hour: 19, minute: 30 },
-];
+/* ── Next prayer time (mirrors the mobile app: sunrise-sunset.org + 6 derived moments) ── */
+const PRAYER_COORDS = { lat: -25.7, lng: 28.2 }; // Johannesburg — the app's default when there's no location.
+
+type PrayerEntry = { label: string; date: Date };
+
+function dayMins(d: Date): number {
+    return d.getHours() * 60 + d.getMinutes();
+}
+
+function dateAtMins(m: number, ref: Date): Date {
+    const d = new Date(ref);
+    d.setHours(Math.floor(m / 60), m % 60, 0, 0);
+    return d;
+}
+
+function buildPrayerTimes(sunrise: Date, noon: Date, sunset: Date, ref: Date): PrayerEntry[] {
+    const r = dayMins(sunrise);
+    const n = dayMins(noon);
+    const u = dayMins(sunset);
+    return [
+        { label: "Dawn", date: dateAtMins(r - 90, ref) },
+        { label: "Sunrise", date: new Date(sunrise) },
+        { label: "Noon", date: new Date(noon) },
+        { label: "Afternoon", date: dateAtMins(Math.floor((n + u) / 2), ref) },
+        { label: "Sunset", date: new Date(sunset) },
+        { label: "Evening", date: dateAtMins(u + 90, ref) },
+    ];
+}
+
+function nextPrayerEntry(times: PrayerEntry[], now: Date): PrayerEntry {
+    const upcoming = times.filter((t) => t.date > now).sort((a, b) => a.date.getTime() - b.date.getTime());
+    if (upcoming.length) return upcoming[0];
+    const dawn = times.find((t) => t.label === "Dawn") ?? times[0];
+    const date = new Date(dawn.date);
+    date.setDate(date.getDate() + 1);
+    return { label: dawn.label, date };
+}
+
+function fallbackPrayer(now: Date) {
+    const at = (h: number, m: number) => {
+        const d = new Date(now);
+        d.setHours(h, m, 0, 0);
+        return d;
+    };
+    return { sunrise: at(6, 15), noon: at(12, 0), sunset: at(18, 30) };
+}
 
 function useNextPrayer() {
-    const [next, setNext] = useState<{ label: string; time: string; time12: string; countdown: string } | null>(null);
+    const [next, setNext] = useState<{ label: string; countdown: string } | null>(null);
+    const timesRef = useRef<PrayerEntry[] | null>(null);
+
     useEffect(() => {
-        const compute = () => {
+        let cancelled = false;
+
+        const refreshTimes = async () => {
+            let base = fallbackPrayer(new Date());
+            try {
+                const res = await fetch(
+                    `https://api.sunrise-sunset.org/json?lat=${PRAYER_COORDS.lat}&lng=${PRAYER_COORDS.lng}&formatted=0`,
+                );
+                const data = await res.json();
+                if (data?.results) {
+                    base = {
+                        sunrise: new Date(data.results.sunrise),
+                        noon: new Date(data.results.solar_noon),
+                        sunset: new Date(data.results.sunset),
+                    };
+                }
+            } catch {
+                // offline — keep the sane fallback
+            }
+            if (!cancelled) timesRef.current = buildPrayerTimes(base.sunrise, base.noon, base.sunset, new Date());
+        };
+
+        const tick = () => {
             const now = new Date();
-            const soonest = PRAYERS.map((p) => {
-                const d = new Date(now);
-                d.setHours(p.hour, p.minute, 0, 0);
-                if (d < now) d.setDate(d.getDate() + 1);
-                return { ...p, date: d };
-            }).sort((a, b) => a.date.getTime() - b.date.getTime())[0];
-            const diff = soonest.date.getTime() - now.getTime();
+            const fb = fallbackPrayer(now);
+            const times = timesRef.current ?? buildPrayerTimes(fb.sunrise, fb.noon, fb.sunset, now);
+            const n = nextPrayerEntry(times, now);
+            const diff = Math.max(0, n.date.getTime() - now.getTime());
             const h = Math.floor(diff / 3600000);
             const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
             setNext({
-                label: soonest.label,
-                time: soonest.date.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }),
-                time12: soonest.date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }),
-                countdown: h > 0 ? `${h}h ${m}m remaining` : `${m}m remaining`,
+                label: n.label,
+                countdown: h > 0 ? `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s` : `${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`,
             });
         };
-        compute();
-        const t = setInterval(compute, 30000);
-        return () => clearInterval(t);
+
+        refreshTimes();
+        tick();
+        const timer = setInterval(tick, 1000);
+        return () => {
+            cancelled = true;
+            clearInterval(timer);
+        };
     }, []);
+
     return next;
 }
 
@@ -73,14 +135,14 @@ function hexA(hex: string, a: number): string {
     return `rgba(${r},${g},${b},${a})`;
 }
 
-function prayerSlide(prayer: { label: string; time12: string } | null): Slide {
+function prayerSlide(prayer: { label: string; countdown: string } | null): Slide {
     return {
         key: "prayer",
         chips: [],
         eyebrow: prayer ? `${prayer.label} Prayer` : undefined,
-        title: prayer ? prayer.time12 : "Pray with us",
+        title: prayer ? prayer.countdown : "Pray with us",
         tagline: "six moments, every day",
-        description: "Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm of prayer, with a verse for each moment.",
+        description: "A live countdown to the next prayer moment. Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm, with a verse for each.",
         watermark: "6",
         bg: {
             backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.92) 45%, rgba(15,163,196,0.55) 75%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
@@ -165,6 +227,61 @@ function clubSlide(club: RelateClub): Slide {
     };
 }
 
+/* ── Seasonal Bible Quiz slide (Southern Hemisphere seasons) ── */
+type SeasonName = "Summer" | "Autumn" | "Winter" | "Spring";
+
+function currentSeason(): SeasonName {
+    const m = new Date().getMonth() + 1; // 1–12
+    if (m === 12 || m <= 2) return "Summer";
+    if (m <= 5) return "Autumn";
+    if (m <= 8) return "Winter";
+    return "Spring";
+}
+
+const SEASON_QUIZ_COPY: Record<SeasonName, { blurb: string; image: string }> = {
+    Summer: {
+        blurb: "Soak up Genesis in the sun — every class reads five chapters a week and the quiz unlocks as soon as the reading's done. Best score owns the summer board.",
+        image: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1600&q=80",
+    },
+    Autumn: {
+        blurb: "Fresh chapters, fresh chances — read Genesis as the leaves turn, unlock each weekly quiz, and let a new high score keep climbing the class board.",
+        image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1600&q=80",
+    },
+    Winter: {
+        blurb: "Warm minds this winter — read Genesis by the fire, unlock the quiz after every five chapters, and beat the cold with the best score on the board.",
+        image: "https://images.unsplash.com/photo-1516192518150-0d8fee5425e3?w=1600&q=80",
+    },
+    Spring: {
+        blurb: "New season, new growth — Genesis is in full bloom, the quizzes unlock as you read, and the season's best scorers claim the board before summer.",
+        image: "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=1600&q=80",
+    },
+};
+
+function bibleQuizSlide(): Slide {
+    const season = currentSeason();
+    const copy = SEASON_QUIZ_COPY[season];
+    return {
+        key: "bible-quiz",
+        chips: [],
+        eyebrow: `${season} season`,
+        title: `${season} Bible Quiz`,
+        tagline: "one book · five chapters · the quiz unlocks when the read is done",
+        description: copy.blurb,
+        watermark: season,
+        bg: {
+            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(255,196,46,0.5) 78%, rgba(255,196,46,0.2) 100%), url(${copy.image})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+        },
+        actions: (
+            <>
+                <Link href={"/sprout-kids"} className={btnPrimary}>Play the {season} quiz</Link>
+                <Link href={"/plans/pentateuch-in-60-days"} className={btnGhost}>Start reading Genesis</Link>
+            </>
+        ),
+    };
+}
+
 const AUTOPLAY_MS = 6000;
 
 export default function Hero() {
@@ -172,6 +289,7 @@ export default function Hero() {
     const slides: Slide[] = [
         brandSlide(),
         prayerSlide(prayer),
+        bibleQuizSlide(),
         ...MAGAZINES.map(magazineSlide),
         ...CLUBS.map(clubSlide),
     ];
@@ -283,6 +401,7 @@ export default function Hero() {
                         ))}
                         <span className={"ml-2 text-[11px] uppercase tracking-widest text-white/50"}>
                             {slide.key === "prayer" && "Prayer rhythm"}
+                            {slide.key === "bible-quiz" && "Season quiz"}
                             {MAGAZINES.some((m) => m.slug === slide.key) && "Reading guides"}
                             {CLUBS.some((c) => c.slug === slide.key) && "Clubs"}
                         </span>
