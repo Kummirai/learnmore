@@ -158,14 +158,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                 Store
               </Link>
             </li>
-            <li>
-              <Link
-                href={"/developers"}
-                className={`block text-sm  ${hoverText} transition-colors`}
-              >
-                Developers
-              </Link>
-            </li>
           </ul>
         </nav>
         <div className={"flex items-center gap-3"}>
@@ -230,15 +222,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               }
             >
               About
-            </Link>
-            <Link
-              href={"/developers"}
-              onClick={() => setMenuOpen(false)}
-              className={
-                "text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
-              }
-            >
-              Developers
             </Link>
             {navGroups.map((group) => (
               <div key={group.link} className={"w-full max-w-xs"}>
