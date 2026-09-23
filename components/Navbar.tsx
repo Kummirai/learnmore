@@ -55,10 +55,7 @@ const navGroups: NavGroup[] = [
       { link: "Pulse Board", path: "/bible-quiz#pulse" },
       { link: "Prime Board", path: "/bible-quiz#prime" },
       { link: "Anchor Board", path: "/bible-quiz#anchor" },
-      {
-        link: "Read the Book",
-        path: "/plans/pentateuch-in-60-days",
-      },
+      { link: "Quiz in the App", path: "/#download" },
     ],
   },
   {

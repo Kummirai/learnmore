@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { FaArrowRight, FaBookOpen, FaCircleCheck, FaCrown, FaMedal, FaTrophy } from "react-icons/fa6";
+import { FaArrowRight, FaBookOpen, FaCircleCheck, FaCrown, FaTrophy } from "react-icons/fa6";
 import { LuChevronDown } from "react-icons/lu";
 import { mergeGroupBoard, seedForClub, type BibleQuizSectionBoard } from "@/lib/bible-quiz";
-import { currentSeason, SEASON_QUIZ } from "@/lib/season";
-import type { QuizLogRow } from "@/lib/reading-plans";
+import { SEASON_QUIZ } from "@/lib/season";
+import { BoardTable, LogsList, RankMedal, ScoreChip } from "./quiz-rows";
+
+const { season, year, book, chapters, bookLabel, windowLabel, blurb, image } = SEASON_QUIZ;
 
 type ClubSection = {
   slug: string;
@@ -33,21 +35,10 @@ const SECTIONS: ClubSection[] = [
 const SLUG_TO_SECTION = new Map<string, ClubSection>();
 for (const s of SECTIONS) for (const g of s.group) SLUG_TO_SECTION.set(g, s);
 
-const PLAN_SLUG = "pentateuch-in-60-days";
-const MEDALS = ["🥇", "🥈", "🥉", "4", "5"];
 const VISIBLE_LOGS = 3;
 
 function boardFor(section: ClubSection): BibleQuizSectionBoard {
   return section.group.length === 1 ? seedForClub(section.group[0]) : mergeGroupBoard(section.group);
-}
-
-function fmtDate(iso: string): string {
-  return new Date(iso).toLocaleString("en-GB", { weekday: "short", day: "numeric", month: "short" });
-}
-
-function fmtTime(ms: number): string {
-  const s = Math.round(ms / 1000);
-  return `${Math.floor(s / 60)}m ${s % 60}s`;
 }
 
 type OverviewRow = { rank: number; name: string; club: ClubSection; score: number; correct: number; total: number };
@@ -68,37 +59,7 @@ function buildOverview(boards: { section: ClubSection; board: BibleQuizSectionBo
     .map((row, i) => ({ rank: i + 1, ...row }));
 }
 
-function TopFiveRows({ board }: { board: BibleQuizSectionBoard }) {
-  return (
-    <ul className="divide-y divide-gray-50">
-      {board.rows.map((row) => {
-        const log = board.logs.find((l) => l.playerId === row.playerId);
-        return (
-          <li key={row.playerId} className="flex items-center gap-4 px-5 py-3">
-            <span className="w-5 text-center text-sm font-black" style={{ color: row.accent }}>
-              {row.rank}
-            </span>
-            <span className="text-sm">{MEDALS[row.rank - 1]}</span>
-            <span className="flex-1 text-sm font-medium text-gray-800">{row.name}</span>
-            {row.laurel && (
-              <span className="text-[10px] uppercase tracking-widest font-bold" style={{ color: row.accent }}>
-                laurel
-              </span>
-            )}
-            <span className="text-xs text-gray-400">{log ? `${log.correct}/${log.total} correct` : "—"}</span>
-            <span className="w-14 text-right text-sm font-black" style={{ color: row.accent }}>
-              {log ? log.score : "—"}
-            </span>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
 export default function SeasonQuizHub() {
-  const season = currentSeason();
-  const meta = SEASON_QUIZ[season];
   const boards = SECTIONS.map((section) => ({ section, board: boardFor(section) }));
   const overview = buildOverview(boards);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
@@ -112,7 +73,7 @@ export default function SeasonQuizHub() {
             <div
               className="relative min-h-72 bg-navy-dark"
               style={{
-                backgroundImage: `linear-gradient(120deg, rgba(21,31,58,0.98) 0%, rgba(29,42,77,0.85) 45%, rgba(245,184,46,0.55) 85%, rgba(245,184,46,0.25) 100%), url(${meta.image})`,
+                backgroundImage: `linear-gradient(120deg, rgba(21,31,58,0.98) 0%, rgba(29,42,77,0.85) 45%, rgba(245,184,46,0.55) 85%, rgba(245,184,46,0.25) 100%), url(${image})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
               }}
@@ -120,20 +81,21 @@ export default function SeasonQuizHub() {
               <div className="absolute inset-0 flex items-end p-8">
                 <div>
                   <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#f5b82e]">Book of the season</span>
-                  <p className="text-5xl font-black tracking-tight text-white mt-1">{meta.book}</p>
-                  <p className="text-white/70 text-sm mt-2">read in 60 days · one section at a time</p>
+                  <p className="text-5xl font-black tracking-tight text-white mt-1">{book}</p>
+                  <p className="text-xl font-bold text-white/80 mt-1">chapters {chapters}</p>
+                  <p className="text-white/70 text-sm mt-2">{windowLabel}</p>
                 </div>
               </div>
             </div>
             <div className="p-8 md:p-10 flex flex-col justify-center">
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#f5b82e]">{season} · {new Date().getFullYear()}</span>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mt-2">Read the book. Unlock the quiz. Top the board.</h2>
-              <p className="text-gray-500 text-sm leading-relaxed mt-3">{meta.blurb}</p>
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#f5b82e]">{season} {year} · one book, five clubs</span>
+              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mt-2">Read the book of the season. Take the quiz. Top the board.</h2>
+              <p className="text-gray-500 text-sm leading-relaxed mt-3">{blurb}</p>
 
               <ol className="mt-6 space-y-3">
                 {[
-                  ["Read", "five chapters of a section inside a reading plan"],
-                  ["Unlock", "the inline quiz the moment the reading is done"],
+                  ["Read", `${book} ${chapters} — the year's book, week by week`],
+                  ["Quiz", "weekly rounds at each club on the chapters you covered"],
                   ["Claim", "a top-five seat on your club's board"],
                 ].map(([verb, rest], i) => (
                   <li key={i} className="flex items-start gap-3">
@@ -149,16 +111,16 @@ export default function SeasonQuizHub() {
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
-                  href={`/plans/${PLAN_SLUG}`}
+                  href="#overview"
                   className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-navy-dark transition-colors"
                 >
-                  <FaBookOpen /> Start reading {meta.book} <FaArrowRight className="text-xs" />
+                  See the season&apos;s top 5 <FaArrowRight className="text-xs" />
                 </Link>
                 <Link
-                  href="#overview"
+                  href="#sprout"
                   className="inline-flex items-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:border-gray-300 transition-colors"
                 >
-                  See the season&apos;s top 5
+                  Jump to the club boards
                 </Link>
               </div>
             </div>
@@ -176,30 +138,31 @@ export default function SeasonQuizHub() {
           <p className="text-sm text-slate-gray mb-6">The best scores across Sprout, Surge, Pulse, Prime and Anchor this week.</p>
 
           <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-4 bg-[#f5b82e]/15">
-              <div className="flex items-center gap-2">
-                <FaCrown className="text-sm text-[#b8860b]" />
-                <p className="text-[11px] font-bold uppercase tracking-widest text-[#8a6d1a]">All clubs · combined</p>
+              <div className="flex items-center justify-between px-5 py-4" style={{ background: "linear-gradient(90deg, rgba(245,184,46,0.28), rgba(245,184,46,0.05))" }}>
+                <div className="flex items-center gap-2">
+                  <FaCrown className="text-sm text-[#b8860b]" />
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#8a6d1a]">All clubs · combined</p>
+                </div>
+                <span className="text-[11px] text-gray-400">{overview.length} scored this week</span>
               </div>
-              <span className="text-[11px] text-gray-400">{overview.length} scored this week</span>
+              <ul className="divide-y divide-gray-100/80">
+                {overview.map((row) => (
+                  <li
+                    key={`${row.club.slug}-${row.name}`}
+                    className="flex items-center gap-3 px-4 py-3.5 md:px-5"
+                    style={row.rank <= 3 ? { background: "linear-gradient(90deg, rgba(240,180,41,0.12), transparent 55%)" } : undefined}
+                  >
+                    <RankMedal rank={row.rank as 1 | 2 | 3 | 4 | 5} accent="#1d2a4d" />
+                    <span className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold" style={{ backgroundColor: `${row.club.accent}1a`, color: row.club.accent }}>
+                      {row.club.name}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">{row.name}</span>
+                    <span className="hidden text-xs tabular-nums text-gray-400 sm:block">{row.correct}/{row.total} correct</span>
+                    <ScoreChip score={row.score} accent="#1d2a4d" />
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="divide-y divide-gray-50">
-              {overview.map((row) => (
-                <li key={`${row.club.slug}-${row.name}`} className="flex items-center gap-4 px-5 py-3">
-                  <span className="w-5 text-center text-sm font-black text-navy">{row.rank}</span>
-                  <span className="text-sm">{MEDALS[row.rank - 1]}</span>
-                  <span className="text-xs font-medium px-2 py-0.5 rounded-full" style={{ backgroundColor: `${row.club.accent}14`, color: row.club.accent }}>
-                    {row.club.name}
-                  </span>
-                  <span className="flex-1 text-sm font-medium text-gray-800">{row.name}</span>
-                  <span className="text-xs text-gray-400">
-                    {row.correct}/{row.total} correct
-                  </span>
-                  <span className="w-14 text-right text-sm font-black text-navy">{row.score}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
         </div>
       </section>
 
@@ -227,52 +190,30 @@ export default function SeasonQuizHub() {
                 <div className="grid lg:grid-cols-2 gap-6">
                   {/* Top 5 board */}
                   <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-                    <div className="flex items-center justify-between px-5 py-4" style={{ backgroundColor: `${section.accent}14` }}>
+                    <div className="flex items-center justify-between px-5 py-4" style={{ background: `linear-gradient(90deg, ${section.accent}22, ${section.accent}05)` }}>
                       <div className="flex items-center gap-2">
                         <FaCrown className="text-sm" style={{ color: section.accent }} />
                         <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: section.accent }}>
                           Top 5 · {section.name}
                         </p>
                       </div>
-                      <Link
-                        href={`/plans/${PLAN_SLUG}`}
-                        className="inline-flex items-center gap-1.5 text-xs font-semibold transition-colors"
-                        style={{ color: section.accent }}
-                      >
-                        <FaMedal className="text-[11px]" /> Open the plan <FaArrowRight className="text-[10px]" />
-                      </Link>
+                      <span className="inline-flex items-center gap-1.5 text-xs font-semibold" style={{ color: section.accent }}>
+                        <FaBookOpen className="text-[11px]" /> {bookLabel}
+                      </span>
                     </div>
-                    <TopFiveRows board={board} />
+                    <BoardTable board={board} accent={section.accent} />
                     <div className="px-5 py-3 border-t border-gray-50 bg-gray-50/60">
-                      <p className="text-[11px] text-gray-400">board refreshes every Sunday · quiz unlocks inside the reading plan</p>
+                      <p className="text-[11px] text-gray-400">board refreshes every Sunday · quiz rounds are on {bookLabel}</p>
                     </div>
                   </div>
 
                   {/* Logs + view more */}
                   <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
-                    <div className="px-5 py-4 border-b border-gray-50">
+                    <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
                       <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">This week&apos;s attempts</p>
+                      <span className="text-[11px] text-gray-300">{board.logs.length} so far</span>
                     </div>
-                    <ul className="divide-y divide-gray-50">
-                      {visibleLogs.map((log: QuizLogRow) => {
-                        const club = SLUG_TO_SECTION.get(log.clubSlug);
-                        return (
-                          <li key={log.id} className="flex items-center gap-3 px-5 py-3">
-                            <span className="size-8 grid place-items-center rounded-full text-xs font-bold" style={{ backgroundColor: `${club?.accent ?? "#999"}14`, color: club?.accent ?? "#666" }}>
-                              {log.name.charAt(0)}
-                            </span>
-                            <span className="flex-1 min-w-0">
-                              <span className="block text-sm font-medium text-gray-800 truncate">{log.name}</span>
-                              <span className="block text-[11px] text-gray-400">{fmtDate(log.at)} · {fmtTime(log.milliseconds)}</span>
-                            </span>
-                            <span className="text-xs text-gray-400">{log.correct}/{log.total} correct</span>
-                            <span className="w-14 text-right text-sm font-black" style={{ color: club?.accent ?? "#333" }}>
-                              {log.score}
-                            </span>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    <LogsList logs={visibleLogs} accent={section.accent} />
                     <div className="px-5 py-3 border-t border-gray-50 bg-gray-50/60 flex items-center justify-between">
                       <p className="text-[11px] text-gray-400">
                         {board.logs.length} attempt{board.logs.length === 1 ? "" : "s"} · {isOpen ? "full log" : "showing latest"}
@@ -291,14 +232,14 @@ export default function SeasonQuizHub() {
 
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link
-                    href={`/plans/${PLAN_SLUG}`}
+                    href={`/${section.slug}`}
                     className="inline-flex items-center gap-2 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity"
                     style={{ backgroundColor: section.accent }}
                   >
-                    Play the {season} quiz for {section.name} <FaArrowRight className="text-xs" />
+                    Join {section.name} <FaArrowRight className="text-xs" />
                   </Link>
                   <span className="inline-flex items-center gap-2 text-xs text-gray-400">
-                    <FaCircleCheck className="text-[#4ade80]" /> read five chapters in a section first
+                    <FaCircleCheck className="text-[#4ade80]" /> quiz rounds run on {bookLabel} · {windowLabel}
                   </span>
                 </div>
               </div>

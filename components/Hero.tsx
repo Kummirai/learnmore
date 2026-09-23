@@ -184,28 +184,27 @@ function clubSlide(club: RelateClub): Slide {
 }
 
 /* ── Seasonal Bible Quiz slide (shared season logic in lib/season) ── */
-import { currentSeason, SEASON_QUIZ } from "@/lib/season";
+import { SEASON_QUIZ } from "@/lib/season";
 
 function bibleQuizSlide(): Slide {
-    const season = currentSeason();
-    const copy = SEASON_QUIZ[season];
+    const { season, year, bookLabel, windowLabel, blurb, image } = SEASON_QUIZ;
     return {
         key: "bible-quiz",
         chips: [],
-        eyebrow: `${season} season`,
+        eyebrow: `${season} ${year} season`,
         title: `${season} Bible Quiz`,
-        tagline: `${copy.book.toLowerCase()} · five chapters a week · the quiz unlocks when the read is done`,
-        description: copy.blurb,
+        tagline: `${bookLabel} · quiz rounds run weekly across the clubs · ${windowLabel}`,
+        description: blurb,
         watermark: season,
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(255,196,46,0.5) 78%, rgba(255,196,46,0.2) 100%), url(${copy.image})`,
+            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(255,196,46,0.5) 78%, rgba(255,196,46,0.2) 100%), url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
         actions: (
             <>
                 <Link href={"/bible-quiz"} className={btnPrimary}>Play the {season} quiz</Link>
-                <Link href={`/plans/${copy.planSlug}`} className={btnGhost}>Start reading {copy.book}</Link>
+                <Link href={"/bible-quiz#overview"} className={btnGhost}>See the season&apos;s top 5</Link>
             </>
         ),
     };
