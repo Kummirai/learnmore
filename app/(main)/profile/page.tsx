@@ -36,6 +36,9 @@ function localKey(d: Date): string {
     return `${y}-${m}-${day}`;
 }
 
+/** Daily prayers needed for a day to count toward the prayer streak (matches backend). */
+const PRAYER_THRESHOLD = 3;
+
 /** Consecutive days of logging ending today (or yesterday, if today isn't logged yet). */
 function currentStreak(days: string[]): number {
     const logged = new Set(days);
@@ -50,6 +53,18 @@ function currentStreak(days: string[]): number {
         cursor.setDate(cursor.getDate() - 1);
     }
     return streak;
+}
+
+/** Days that hit the daily prayer completion threshold — matches mobile + backend. */
+function qualifyingPrayerDays(data: unknown): string[] {
+    if (!data || typeof data !== "object") return [];
+    return Object.entries(data as Record<string, unknown>)
+        .filter(([, value]) => {
+            if (!value || typeof value !== "object") return false;
+            const completed = Object.values(value as Record<string, unknown>).filter(Boolean).length;
+            return completed >= PRAYER_THRESHOLD;
+        })
+        .map(([date]) => date);
 }
 
 function ProfileBody() {
@@ -67,7 +82,7 @@ function ProfileBody() {
                     fetch("/api/reading-streak").then((res) => res.json()),
                 ]);
                 if (!cancelled) {
-                    setPrayerDays(Array.isArray(s?.data?.prayer?.days) ? s.data.prayer.days : []);
+                    setPrayerDays(qualifyingPrayerDays(s?.data));
                     setReadingDays(Array.isArray(r?.data) ? r.data : []);
                 }
             } catch {
