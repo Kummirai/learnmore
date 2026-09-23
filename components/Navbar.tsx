@@ -49,6 +49,7 @@ const navGroups: NavGroup[] = [
   {
     link: "Bible Quiz",
     items: [
+      { link: "Play the Quiz", path: "/bible-quiz/play" },
       { link: "Season Overview", path: "/bible-quiz" },
       { link: "Sprout Board", path: "/bible-quiz#sprout" },
       { link: "Surge Board", path: "/bible-quiz#surge" },

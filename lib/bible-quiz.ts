@@ -88,6 +88,82 @@ const BASE_QUESTIONS: BibleQuizQuestion[] = [
   },
 ];
 
+/** Genesis 1–25 fallback bank (offline/dev play) — mirrors the hub's live bank. */
+const GENESIS_EXTRA: BibleQuizQuestion[] = [
+  {
+    id: "q-gen13",
+    book: "Genesis",
+    chapter: 13,
+    question: "Abraham let Lot choose first — Lot chose the well-watered plains of…",
+    options: ["Jordan", "Canaan", "Ur", "Sinai"],
+    correct: 0,
+  },
+  {
+    id: "q-gen15",
+    book: "Genesis",
+    chapter: 15,
+    question: "God promised Abraham descendants as many as the…",
+    options: ["stars in the sky", "grains of salt", "leaves of the vine", "waves of the sea"],
+    correct: 0,
+  },
+  {
+    id: "q-gen17",
+    book: "Genesis",
+    chapter: 17,
+    question: "God changed Abram's name to…",
+    options: ["Abraham", "Israel", "Isaac", "Nathan"],
+    correct: 0,
+  },
+  {
+    id: "q-gen18",
+    book: "Genesis",
+    chapter: 18,
+    question: "How many visitors told Abraham that Sarah would have a son?",
+    options: ["Three", "Two", "Seven", "Twelve"],
+    correct: 0,
+  },
+  {
+    id: "q-gen22",
+    book: "Genesis",
+    chapter: 22,
+    question: "On the mountain, God provided a… to take Isaac's place.",
+    options: ["ram", "lamb", "calf", "goat"],
+    correct: 0,
+  },
+  {
+    id: "q-gen24",
+    book: "Genesis",
+    chapter: 24,
+    question: "Abraham's servant found Rebekah as a wife for Isaac near…",
+    options: ["a well", "a market", "a gate", "a feast"],
+    correct: 0,
+  },
+  {
+    id: "q-gen25",
+    book: "Genesis",
+    chapter: 25,
+    question: "Esau sold his birthright to Jacob for a bowl of…",
+    options: ["stew", "gold", "wheat", "wine"],
+    correct: 0,
+  },
+];
+
+/** Hub quiz bank — the Genesis 1–25 window, with club-specific swaps applied. */
+export function hubQuestionsForClub(clubSlug: string, count = 10): BibleQuizQuestion[] {
+  const bank = [
+    ...BASE_QUESTIONS.filter((q) => q.book === "Genesis"),
+    ...GENESIS_EXTRA,
+  ];
+  const swaps = CLUB_QUESTION_SWAPS[clubSlug] ?? [];
+  return bank
+    .map((q) => {
+      const swap = swaps.find((s) => s.book === q.book && s.chapter === q.chapter);
+      return swap ? { ...q, ...swap } : q;
+    })
+    .filter((q) => q.chapter >= 1 && q.chapter <= 25)
+    .slice(0, count);
+}
+
 type ClubQuestion = {
   book: string;
   chapter: number;
@@ -242,7 +318,7 @@ const CLUB_ROSTERS: Record<string, { name: string; score: number; correct: numbe
   ],
 };
 
-const CLUB_ACCENTS: Record<string, string> = {
+export const CLUB_ACCENTS: Record<string, string> = {
   "sprout-kids": "#f97316",
   "sprout-tweens": "#f59e0b",
   "sprout-teens": "#f59e0b",

@@ -203,7 +203,7 @@ function bibleQuizSlide(): Slide {
         },
         actions: (
             <>
-                <Link href={"/bible-quiz"} className={btnPrimary}>Play the {season} quiz</Link>
+                <Link href={"/bible-quiz/play"} className={btnPrimary}>Play the {season} quiz</Link>
                 <Link href={"/bible-quiz#overview"} className={btnGhost}>See the season&apos;s top 5</Link>
             </>
         ),

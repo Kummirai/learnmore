@@ -1,36 +1,20 @@
 "use client"
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaArrowRight, FaBookOpen, FaCircleCheck, FaCrown, FaTrophy } from "react-icons/fa6";
 import { LuChevronDown } from "react-icons/lu";
 import { mergeGroupBoard, seedForClub, type BibleQuizSectionBoard } from "@/lib/bible-quiz";
 import { SEASON_QUIZ } from "@/lib/season";
+import { fetchHubBoard, fetchHubOverview, mergeLiveBoard, type LiveBoard, type LiveOverview } from "@/lib/quiz-api";
 import { BoardTable, LogsList, RankMedal, ScoreChip } from "./quiz-rows";
+import { QUIZ_CLUBS, quizClubBySlug, type QuizClub } from "./quiz-clubs";
 
 const { season, year, book, chapters, bookLabel, windowLabel, blurb, image } = SEASON_QUIZ;
 
-type ClubSection = {
-  slug: string;
-  name: string;
-  tagline: string;
-  accent: string;
-  group: string[];
-};
+type ClubSection = QuizClub;
 
-const SECTIONS: ClubSection[] = [
-  {
-    slug: "sprout",
-    name: "Sprout",
-    tagline: "Children · 6–15",
-    accent: "#f97316",
-    group: ["sprout-kids", "sprout-tweens", "sprout-teens"],
-  },
-  { slug: "surge", name: "Surge", tagline: "Young Youth · 16–21", accent: "#06b6d4", group: ["surge"] },
-  { slug: "pulse", name: "Pulse", tagline: "Youth · 21–33", accent: "#8b5cf6", group: ["pulse"] },
-  { slug: "prime", name: "Prime", tagline: "Singles · 33+", accent: "#1e3a8a", group: ["prime"] },
-  { slug: "anchor", name: "Anchor", tagline: "Single Parents", accent: "#1e3a8a", group: ["anchor"] },
-];
+const SECTIONS: ClubSection[] = QUIZ_CLUBS;
 
 const SLUG_TO_SECTION = new Map<string, ClubSection>();
 for (const s of SECTIONS) for (const g of s.group) SLUG_TO_SECTION.set(g, s);
@@ -60,8 +44,45 @@ function buildOverview(boards: { section: ClubSection; board: BibleQuizSectionBo
 }
 
 export default function SeasonQuizHub() {
-  const boards = SECTIONS.map((section) => ({ section, board: boardFor(section) }));
-  const overview = buildOverview(boards);
+  const [live, setLive] = useState<Record<string, LiveBoard | null>>({});
+  const [liveOverview, setLiveOverview] = useState<LiveOverview | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const entries = await Promise.all(
+        SECTIONS.map(async (s) => [s.slug, await fetchHubBoard(s.slug)] as const),
+      );
+      if (cancelled) return;
+      const map: Record<string, LiveBoard | null> = {};
+      for (const [slug, board] of entries) map[slug] = board;
+      setLive(map);
+      const overview = await fetchHubOverview();
+      if (!cancelled) setLiveOverview(overview);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  function displayBoard(section: ClubSection): BibleQuizSectionBoard {
+    const seed = boardFor(section);
+    const board = live[section.slug];
+    return board ? mergeLiveBoard(seed, board, section.slug) : seed;
+  }
+
+  const boards = SECTIONS.map((section) => ({ section, board: displayBoard(section) }));
+  const overview =
+    liveOverview && liveOverview.rows.length > 0
+      ? liveOverview.rows.map((row) => ({
+          rank: row.rank,
+          name: row.name,
+          club: quizClubBySlug(row.club) ?? SECTIONS[0],
+          score: row.score,
+          correct: row.correct,
+          total: row.total,
+        }))
+      : buildOverview(boards);
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
 
   return (
@@ -232,11 +253,17 @@ export default function SeasonQuizHub() {
 
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Link
-                    href={`/${section.slug}`}
-                    className="inline-flex items-center gap-2 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity"
-                    style={{ backgroundColor: section.accent }}
+                    href={`/bible-quiz/play?club=${section.slug}`}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-transform hover:-translate-y-0.5"
+                    style={{ backgroundColor: section.accent, color: "#ffffff" }}
                   >
-                    Join {section.name} <FaArrowRight className="text-xs" />
+                    Play the {season} quiz <FaArrowRight className="text-xs" />
+                  </Link>
+                  <Link
+                    href={`/${section.slug}`}
+                    className="inline-flex items-center gap-2 rounded-lg border border-gray-200 text-navy px-6 py-3 font-semibold text-sm hover:border-gray-300 transition-colors"
+                  >
+                    Join {section.name}
                   </Link>
                   <span className="inline-flex items-center gap-2 text-xs text-gray-400">
                     <FaCircleCheck className="text-[#4ade80]" /> quiz rounds run on {bookLabel} · {windowLabel}

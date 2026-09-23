@@ -1,7 +1,11 @@
+"use client"
+
 import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { FaArrowRight, FaCrown, FaTrophy } from "react-icons/fa6";
-import { seedForClub } from "@/lib/bible-quiz";
+import { seedForClub, type BibleQuizSectionBoard } from "@/lib/bible-quiz";
 import { SEASON_QUIZ } from "@/lib/season";
+import { fetchHubBoard, mergeLiveBoard } from "@/lib/quiz-api";
 import { BoardTable } from "./quiz-rows";
 
 type Props = {
@@ -11,15 +15,30 @@ type Props = {
 
 /**
  * Per-club Bible Quiz board — the top-5 + attempt logs for ONE club, rendered
- * in that club's accent. Every club page shows its own board.
- *
- * The season is decoupled from reading plans: it's a single book (`lib/season`)
- * covered in quiz rounds at each club, so the board links to the season hub
- * rather than into a reading plan.
+ * in that club's accent. Every club page shows its own board. The live board is
+ * fetched from the hub API and falls back to the seeded board when no live
+ * attempts exist yet (or the API is unreachable).
  */
 export default function ClubQuizBoard({ clubSlug, accent }: Props) {
-  const { rows, logs } = seedForClub(clubSlug) ?? { rows: [], logs: [] };
+  const seed: BibleQuizSectionBoard = useMemo(
+    () => seedForClub(clubSlug) ?? { sectionId: "seed", rows: [], logs: [] },
+    [clubSlug],
+  );
+  const [board, setBoard] = useState<BibleQuizSectionBoard>(seed);
   const { season, bookLabel } = SEASON_QUIZ;
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const live = await fetchHubBoard(clubSlug);
+      if (!cancelled && live) setBoard(mergeLiveBoard(seed, live, clubSlug));
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [clubSlug, seed]);
+
+  const { rows, logs } = board;
 
   return (
     <div id={"bible-quiz"} className={"mt-12 mb-12 scroll-mt-8"}>
@@ -58,7 +77,7 @@ export default function ClubQuizBoard({ clubSlug, accent }: Props) {
           </p>
         ) : (
           <>
-            <BoardTable board={{ sectionId: "seed", rows, logs }} accent={accent} />
+            <BoardTable board={board} accent={accent} />
             <div className={"px-5 py-3 border-t border-gray-50 bg-gray-50/60"}>
               <p className={"text-[11px] text-gray-400"}>
                 {logs.length} attempt{logs.length === 1 ? "" : "s"} this week · board refreshes every Sunday
