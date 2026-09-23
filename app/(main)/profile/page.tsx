@@ -127,7 +127,7 @@ function ProfileBody() {
                 </div>
             </dl>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <div id="streaks" className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4 scroll-mt-28">
                 <div className="rounded-xl border border-orange-100 bg-orange-50 px-4 py-3">
                     <dt className="text-[11px] uppercase tracking-widest text-orange-500 flex items-center gap-1">
                         <LuFlame /> Prayer streak

@@ -46,6 +46,14 @@ const navGroups: NavGroup[] = [
       { link: "Academic", path: "/plans#academic" },
     ],
   },
+  {
+    link: "Prayer",
+    items: [
+      { link: "Today's Prayer Times", path: "/prayer" },
+      { link: "My Prayer Streak", path: "/profile#streaks" },
+      { link: "Read & Pray Plans", path: "/plans" },
+    ],
+  },
 ];
 
 const flatLinks = [
