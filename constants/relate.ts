@@ -791,7 +791,14 @@ export type StoreItem = {
   price: number;
   image: string;
   blurb: string;
+  offerPrice?: number;
+  rating?: number;
+  sizes?: string[];
+  images?: string[];
+  details?: string[];
 };
+
+const MERCH = (src: string) => `/images/store/relate-tee/${src}`;
 
 export const STORE_CATEGORIES: StoreCategory[] = [
   "All",
@@ -807,10 +814,27 @@ export const STORE_ITEMS: StoreItem[] = [
   {
     id: "relate-tee",
     category: "Apparel",
-    name: "Relate Tee",
-    price: 220,
-    image: PHOTO("photo-1576566588028-4147f3842f27"),
-    blurb: "Soft cotton tee with the gold Relate emblem.",
+    name: "Relate Tee (Black)",
+    price: 160,
+    image: MERCH("t-shirt-1.png"),
+    images: [
+      "t-shirt-1.png",
+      "t-shirt-2.png",
+      "t-shirt-3.png",
+      "t-shirt-4.png",
+      "t-shirt-5.png",
+      "t-shirt-6.png",
+      "t-shirt-7.png",
+    ].map(MERCH),
+    sizes: ["XS", "S", "M", "L", "XL"],
+    details: [
+      "Heavyweight 100% ringspun cotton in black",
+      "Gold Relate emblem printed on the chest",
+      "Unisex fit — sizes XS to XL",
+      "Every purchase funds Relate clubs & programs",
+      "Order on WhatsApp — pay on delivery or EFT",
+    ],
+    blurb: "Heavyweight black tee in soft ringspun cotton with the gold Relate emblem — sizes XS to XL.",
   },
   {
     id: "club-hoodie",

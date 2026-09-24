@@ -1,12 +1,28 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft, LuChevronRight } from "react-icons/lu";
 import PageHero from "@/components/PageHero";
-import OrderBox from "@/components/store/OrderBox";
+import ProductPanel from "@/components/store/ProductPanel";
 import { STORE_ITEMS, getStoreItem } from "@/constants/relate";
 
 export function generateStaticParams() {
   return STORE_ITEMS.map((item) => ({ id: item.id }));
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  return params.then(({ id }) => {
+    const item = getStoreItem(id);
+    if (!item) return { title: "Product Not Found · Relate Store" };
+    return {
+      title: `${item.name} · Relate Store`,
+      description: item.blurb,
+    };
+  });
 }
 
 export default async function ProductPage({
@@ -48,9 +64,13 @@ export default async function ProductPage({
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
           <nav
-            className="flex items-center gap-1.5 text-xs text-slate-gray mb-8"
+            className="flex items-center gap-1.5 text-xs text-slate-gray mb-8 flex-wrap"
             aria-label="Breadcrumb"
           >
+            <Link href="/" className="hover:text-navy transition-colors">
+              Home
+            </Link>
+            <LuChevronRight className="text-[10px]" />
             <Link href="/store" className="hover:text-navy transition-colors">
               Store
             </Link>
@@ -65,48 +85,10 @@ export default async function ProductPage({
             <span className="text-navy font-semibold">{item.name}</span>
           </nav>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
-            <div>
-              <div className="aspect-square overflow-hidden bg-gray-100">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">
-                {item.category}
-              </p>
-              <h2 className="text-3xl font-black tracking-tight text-navy mb-2">
-                {item.name}
-              </h2>
-              <p className="text-3xl font-bold text-cyan mb-4">{`R${item.price.toLocaleString("en-ZA")}`}</p>
-              <p className="text-gray-600 leading-relaxed mb-6">{item.blurb}</p>
-              <ul className="space-y-2 text-sm text-gray-600 mb-8">
-                <li className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-cyan" /> Wears the
-                  Relate gold emblem
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-cyan" /> Every
-                  purchase funds Relate clubs &amp; programs
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="size-1.5 rounded-full bg-cyan" /> Order via
-                  WhatsApp — pay on delivery or EFT
-                </li>
-              </ul>
-              <div className="mt-auto">
-                <OrderBox item={item} />
-              </div>
-            </div>
-          </div>
+          <ProductPanel item={item} />
 
           {(related.length > 0 || others.length > 0) && (
-            <div>
+            <div className="mb-10">
               <h3 className="text-xl font-bold text-navy mb-5">
                 You may also like
               </h3>
@@ -116,18 +98,20 @@ export default async function ProductPage({
                     <div className="max-w-64">
                       <div className="group">
                         <img
-                          className="group-hover:hidden rounded-lg"
+                          className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
                           src={r.image}
-                          alt="img1"
+                          alt={r.name}
                         />
                         <img
-                          className="hidden group-hover:block rounded-lg"
+                          className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
                           src={r.image}
-                          alt="img2"
+                          alt={r.name}
                         />
                       </div>
-                      <p className="text-sm mt-2">{r.name}</p>
-                      <p className="text-xl">R{r.price}</p>
+                      <p className="text-sm mt-2 font-semibold text-navy">
+                        {r.name}
+                      </p>
+                      <p className="text-lg font-bold text-cyan">R{r.price}</p>
                     </div>
                   </Link>
                 ))}
@@ -135,14 +119,12 @@ export default async function ProductPage({
             </div>
           )}
 
-          <div className="mt-10">
-            <Link
-              href="/store"
-              className="inline-flex items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
-            >
-              <LuArrowLeft /> Back to all products
-            </Link>
-          </div>
+          <Link
+            href="/store"
+            className="inline-flex items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
+          >
+            <LuArrowLeft /> Back to all products
+          </Link>
         </div>
       </section>
     </>
