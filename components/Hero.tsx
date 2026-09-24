@@ -210,6 +210,30 @@ function bibleQuizSlide(): Slide {
     };
 }
 
+function charitySlide(): Slide {
+    return {
+        key: "charity",
+        chips: [],
+        title: "Care",
+        tagline: "share it — we can help",
+        description: "Our charity arm stands with orphans, widows and child-headed families — food relief, school fees, uniforms, childcare and counselling. Share your need and we will review, refer or help. Send your request through the app.",
+        watermark: "Care",
+        bg: {
+            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(15,163,196,0.5) 78%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+        },
+        actions: (
+            <>
+                <Link href={"/requests"} className={btnPrimary}>Give or get help</Link>
+                <a href={"/relate-app.apk"} download className={btnGhost}>
+                    <FaAndroid /> Send it in the app
+                </a>
+            </>
+        ),
+    };
+}
+
 const AUTOPLAY_MS = 6000;
 
 export default function Hero() {
@@ -218,6 +242,7 @@ export default function Hero() {
         brandSlide(),
         prayerSlide(prayer),
         bibleQuizSlide(),
+        charitySlide(),
         ...MAGAZINES.map(magazineSlide),
         ...CLUBS.map(clubSlide),
     ];
@@ -330,6 +355,7 @@ export default function Hero() {
                         <span className={"ml-2 text-[11px] uppercase tracking-widest text-white/50"}>
                             {slide.key === "prayer" && "Prayer rhythm"}
                             {slide.key === "bible-quiz" && "Season quiz"}
+                            {slide.key === "charity" && "Charity & care"}
                             {MAGAZINES.some((m) => m.slug === slide.key) && "Reading guides"}
                             {CLUBS.some((c) => c.slug === slide.key) && "Clubs"}
                         </span>

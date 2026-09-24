@@ -69,8 +69,10 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    link: "Prayer",
+    link: "Prayer & Requests",
     items: [
+      { link: "Prayer Requests", path: "/prayer-requests" },
+      { link: "Requests", path: "/requests" },
       { link: "Today's Prayer Times", path: "/prayer" },
       { link: "My Prayer Streak", path: "/profile#streaks" },
       { link: "Read & Pray Plans", path: "/plans" },

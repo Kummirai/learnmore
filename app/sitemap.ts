@@ -14,6 +14,8 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/enroll", changeFrequency: "monthly", priority: 0.8 },
   { path: "/fees", changeFrequency: "monthly", priority: 0.7 },
   { path: "/prayer", changeFrequency: "daily", priority: 0.7 },
+  { path: "/prayer-requests", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/requests", changeFrequency: "monthly", priority: 0.7 },
   { path: "/calendar", changeFrequency: "weekly", priority: 0.6 },
   { path: "/events", changeFrequency: "weekly", priority: 0.6 },
   { path: "/events/clubs", changeFrequency: "weekly", priority: 0.5 },
