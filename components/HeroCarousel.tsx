@@ -52,23 +52,19 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.96) 0%, rgba(21,31,58,0.88) 40%, rgba(21,31,58,0.45) 75%, rgba(21,31,58,0.25) 100%), url(${slide.image})`,
+          backgroundImage: `url(${slide.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       />
 
       <div
-        className="absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"
-        style={{ backgroundColor: slide.accent }}
+        aria-hidden
+        className="absolute -top-24 -left-20 size-72 md:size-96 rounded-full bg-navy/50 opacity-70 blur-3xl"
       />
       <div
-        className="absolute bottom-10 -left-24 size-96 rounded-full blur-3xl opacity-20"
-        style={{ backgroundColor: slide.accent }}
-      />
-      <div
-        className="absolute -right-20 -top-28 size-[30rem] rounded-full border"
-        style={{ borderColor: "color-mix(in srgb, white 15%, transparent)" }}
+        aria-hidden
+        className="absolute left-1/2 top-1/2 -translate-x-[55%] -translate-y-1/2 size-96 md:size-[32rem] rounded-full bg-navy/40 blur-3xl"
       />
 
       <Navbar overlay />
@@ -77,12 +73,18 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <div className="max-w-2xl">
           <h1
             className="font-black tracking-tight leading-none text-white mt-6"
-            style={{ fontSize: "clamp(2.75rem, 8vw, 5.5rem)" }}
+            style={{
+              fontSize: "clamp(2.75rem, 8vw, 5.5rem)",
+              textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
+            }}
           >
             {slide.title}
           </h1>
 
-          <p className="mt-5 text-white/80 leading-relaxed text-base md:text-lg max-w-xl">
+          <p
+            className="mt-5 text-white leading-relaxed text-base md:text-lg max-w-xl"
+            style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}
+          >
             {slide.description}
           </p>
 
@@ -99,7 +101,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 {...(slide.secondary.href.startsWith("http")
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className="inline-flex items-center justify-center gap-2 border border-white/30 text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/10 transition-colors"
+                className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
               >
                 {slide.secondary.href.startsWith("https://wa.me") && (
                   <FaWhatsapp />

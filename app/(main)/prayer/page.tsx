@@ -84,7 +84,7 @@ export default function PrayerPage() {
                     className="absolute inset-0"
                     style={{
                         backgroundImage:
-                            "linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(15,163,196,0.5) 78%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)",
+                            "url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)",
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                     }}

@@ -81,15 +81,7 @@ type Slide = {
 };
 
 const btnPrimary = "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors";
-const btnGhost = "inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors";
-
-/** #RRGGBB + alpha → rgba() so gradients can sit over photos and keep text legible on the dark side. */
-function hexA(hex: string, a: number): string {
-    const n = hex.replace("#", "");
-    if (n.length !== 6) return hex;
-    const r = parseInt(n.slice(0, 2), 16), g = parseInt(n.slice(2, 4), 16), b = parseInt(n.slice(4, 6), 16);
-    return `rgba(${r},${g},${b},${a})`;
-}
+const btnGhost = "inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors";
 
 function prayerSlide(prayer: { label: string; countdown: string } | null): Slide {
     return {
@@ -101,7 +93,7 @@ function prayerSlide(prayer: { label: string; countdown: string } | null): Slide
         description: "A live countdown to the next prayer moment. Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm, with a verse for each.",
         watermark: "6",
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.92) 45%, rgba(15,163,196,0.55) 75%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
+            backgroundImage: `url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
@@ -124,7 +116,7 @@ function brandSlide(): Slide {
         description: "Share your gifts. Connect with your community. Deepen your faith. Relate brings it all together.",
         watermark: "Relate",
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.92) 45%, rgba(15,163,196,0.55) 75%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
+            backgroundImage: `url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
@@ -146,7 +138,7 @@ function magazineSlide(mag: RelateMagazine): Slide {
         description: mag.summary,
         watermark: "13",
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(21,31,58,0.9) 45%, rgba(21,31,58,0.55) 75%, rgba(21,31,58,0.35) 100%), url(${mag.cover})`,
+            backgroundImage: `url(${mag.cover})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
@@ -169,7 +161,7 @@ function clubSlide(club: RelateClub): Slide {
         description: club.description,
         watermark: numericAge ?? club.name,
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.96) 0%, ${hexA(club.colorDark, 0.9)} 45%, ${hexA(club.color, 0.55)} 78%, ${hexA(club.color, 0.3)} 100%), url(${club.heroImage})`,
+            backgroundImage: `url(${club.heroImage})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
@@ -198,7 +190,7 @@ function bibleQuizSlide(): Slide {
         description: blurb,
         watermark: season,
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(255,196,46,0.5) 78%, rgba(255,196,46,0.2) 100%), url(${image})`,
+            backgroundImage: `url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
@@ -220,7 +212,7 @@ function charitySlide(): Slide {
         description: "Our charity arm stands with orphans, widows and child-headed families — food relief, school fees, uniforms, childcare and counselling. Share your need and we will review, refer or help. Send your request through the app.",
         watermark: "Care",
         bg: {
-            backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(15,163,196,0.5) 78%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80)`,
+            backgroundImage: `url(https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80)`,
             backgroundSize: "cover",
             backgroundPosition: "center",
         },
@@ -258,7 +250,6 @@ export default function Hero() {
         return () => { if (timer.current) clearInterval(timer.current); };
     }, [paused, slides.length]);
 
-    const go = (dir: 1 | -1) => setIndex((i) => (i + dir + slides.length) % slides.length);
     const slide = slides[index];
 
     return (
@@ -275,16 +266,16 @@ export default function Hero() {
                     style={{ ...s.bg, opacity: i === index ? 1 : 0 }}
                 />
             ))}
-            {/* Ambient glows (constant, like the other heroes) */}
-            <div className={"absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"} style={{ backgroundColor: "var(--club-accent)" }} />
-            <div className={"absolute bottom-10 -left-24 size-96 rounded-full blur-3xl opacity-20"} style={{ backgroundColor: "var(--club-accent)" }} />
-
+            <div aria-hidden={"true"}
+                 className={"absolute -top-24 -left-20 size-72 md:size-96 rounded-full bg-navy/50 opacity-70 blur-3xl"}/>
+            <div aria-hidden={"true"}
+                 className={"absolute left-1/2 top-1/2 -translate-x-[55%] -translate-y-1/2 size-96 md:size-[32rem] rounded-full bg-navy/40 blur-3xl"}/>
             {/* ── Watermark ── */}
             <div className={"absolute bottom-0 right-4 hidden pb-0.5 select-none md:block"}>
                 <span
                     key={slide.key}
                     className={"block font-black leading-none tracking-tighter text-white"}
-                    style={{ fontSize: "clamp(9rem, 24vw, 16rem)", opacity: 0.14 }}
+                    style={{ fontSize: "clamp(9rem, 24vw, 16rem)", opacity: 0.14, textShadow: "0 0 28px rgba(21,31,58,0.7)" }}
                 >
                     {slide.watermark}
                 </span>
@@ -309,20 +300,20 @@ export default function Hero() {
                             {slide.eyebrow}
                         </p>
                     )}
-                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(3.75rem, 12vw, 7.5rem)" }}>
+                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(3.75rem, 12vw, 7.5rem)", textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)" }}>
                         {slide.title}
                     </h1>
-                    <p key={`tg-${slide.key}`} className={"text-xl md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)" }}>
+                    <p key={`tg-${slide.key}`} className={"text-xl md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)", textShadow: "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)" }}>
                         {slide.tagline}
                     </p>
-                    <p key={`d-${slide.key}`} className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white/80 leading-relaxed"}>
+                    <p key={`d-${slide.key}`} className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white leading-relaxed"} style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}>
                         {slide.description}
                     </p>
 
                     <div className={"flex flex-col items-center gap-3 mt-2 md:flex-row md:items-center md:justify-start"}>{slide.actions}</div>
 
                     {/* Meta bar */}
-                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}>
+                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"} style={{ textShadow: "0 1px 6px rgba(21,31,58,0.6)" }}>
                         <div>
                             <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>Clubs</span>
                             <span className={"font-semibold text-white"}>7</span>

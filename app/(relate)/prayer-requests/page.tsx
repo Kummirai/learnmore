@@ -59,7 +59,7 @@ export default function PrayerRequestsPage() {
             </a>
             <a
               href={"#how-it-works"}
-              className={"inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"}
+              className={"inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors"}
             >
               How it works
             </a>

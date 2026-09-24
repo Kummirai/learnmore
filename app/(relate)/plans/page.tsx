@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { FaBookOpen, FaWhatsapp } from "react-icons/fa";
+import { FaBookOpen } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import { READING_PLANS, READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
 
@@ -21,6 +21,9 @@ export default function ReadingPlansPage() {
                     "Choose a plan, read with your club, and build a daily rhythm in the Word — from a month in the Psalms to the whole Bible in a year."
                 }
                 watermark={"21"}
+                bgImage={
+                    "https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=1600&q=80"
+                }
                 meta={[
                     { label: "Plans", value: READING_PLANS.length },
                     { label: "Categories", value: READING_PLAN_CATEGORIES.length },
@@ -66,10 +69,10 @@ export default function ReadingPlansPage() {
                                     {plans.map((plan) => (
                                         <div
                                             key={plan.slug}
-                                            className="group rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden flex flex-col hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300"
+                                            className="group overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-300"
                                         >
                                             {/* Cover */}
-                                            <div className="relative h-44 overflow-hidden bg-alice-blue">
+                                            <div className="relative h-56 overflow-hidden bg-alice-blue">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img
                                                     src={plan.image}

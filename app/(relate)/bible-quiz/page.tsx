@@ -32,7 +32,7 @@ export default function BibleQuizPage() {
                         </Link>
                         <Link
                             href="#overview"
-                            className="inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"
+                            className="inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors"
                         >
                             See the season&apos;s top 5
                         </Link>

@@ -14,7 +14,7 @@ type PageHeroProps = {
     metaEnd?: React.ReactNode
     titleSize?: string
     extra?: React.ReactNode
-    /** Optional full-bleed photo background (fades to dark on the left for text legibility). */
+    /** Optional full-bleed photo background (shown clean, with no scrim). */
     bgImage?: string
     /** Optional pill pinned to the far right of the chips row (like the homepage carousel). */
     chipsEnd?: React.ReactNode
@@ -30,29 +30,41 @@ export default function PageHero({title, tagline, description, watermark, action
             className={"relative min-h-screen w-full overflow-hidden"}
             style={bgImage
                 ? {
-                    backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(21,31,58,0.9) 45%, rgba(21,31,58,0.55) 75%, rgba(21,31,58,0.35) 100%), url(${bgImage})`,
+                    backgroundImage: `url(${bgImage})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }
                 : {background: "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)"}}>
             {navbar && <Navbar overlay/>}
 
-            <div className={"absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"}
-                 style={{backgroundColor: "var(--club-accent)"}}/>
-            <div className={"absolute bottom-10 -left-24 size-96 rounded-full blur-3xl opacity-20"}
-                 style={{backgroundColor: "var(--club-accent)"}}/>
-            <div className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[560px] rounded-full opacity-10 blur-3xl"}
-                 style={{backgroundColor: "var(--club-accent)"}}/>
-            <div className={"absolute -right-20 -top-28 size-[30rem] rounded-full border"}
-                 style={{borderColor: "color-mix(in srgb, var(--club-accent) 40%, transparent)"}}/>
-            <div className={"absolute -right-12 -top-20 size-[21rem] rounded-full border"}
-                 style={{borderColor: "color-mix(in srgb, var(--club-accent) 22%, transparent)"}}/>
-            <div className={"absolute -top-10 right-4 h-px w-96"}
-                 style={{background: "linear-gradient(90deg, transparent, var(--club-accent))"}}/>
+            {!bgImage && (
+                <>
+                    <div className={"absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"}
+                         style={{backgroundColor: "var(--club-accent)"}}/>
+                    <div className={"absolute bottom-10 -left-24 size-96 rounded-full blur-3xl opacity-20"}
+                         style={{backgroundColor: "var(--club-accent)"}}/>
+                    <div className={"absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-[560px] rounded-full opacity-10 blur-3xl"}
+                         style={{backgroundColor: "var(--club-accent)"}}/>
+                    <div className={"absolute -right-20 -top-28 size-[30rem] rounded-full border"}
+                         style={{borderColor: "color-mix(in srgb, var(--club-accent) 40%, transparent)"}}/>
+                    <div className={"absolute -right-12 -top-20 size-[21rem] rounded-full border"}
+                         style={{borderColor: "color-mix(in srgb, var(--club-accent) 22%, transparent)"}}/>
+                    <div className={"absolute -top-10 right-4 h-px w-96"}
+                         style={{background: "linear-gradient(90deg, transparent, var(--club-accent))"}}/>
+                </>
+            )}
+            {bgImage && (
+                <>
+                    <div aria-hidden={"true"}
+                         className={"absolute -top-24 -left-20 size-72 md:size-96 rounded-full bg-navy/50 opacity-70 blur-3xl"}/>
+                    <div aria-hidden={"true"}
+                         className={"absolute left-1/2 top-1/2 -translate-x-[55%] -translate-y-1/2 size-96 md:size-[32rem] rounded-full bg-navy/40 blur-3xl"}/>
+                </>
+            )}
             {watermark && (
                 <div className={"absolute bottom-0 right-4 hidden pb-0.5 select-none md:block"}>
                     <span className={"block font-black leading-none tracking-tighter text-[color:var(--club-accent)]"}
-                          style={{fontSize: "clamp(9rem, 24vw, 16rem)", opacity: 0.14}}>
+                          style={{fontSize: "clamp(9rem, 24vw, 16rem)", opacity: 0.14, textShadow: "0 0 28px rgba(21,31,58,0.7)"}}>
                         {watermark}
                     </span>
                 </div>
@@ -65,17 +77,19 @@ export default function PageHero({title, tagline, description, watermark, action
                         <span className={"block h-[30px]"}/>
                     </div>
 
-                    <h1 className={"font-black tracking-tight leading-none text-white"} style={{fontSize: titleSize}}>
+                    <h1 className={"font-black tracking-tight leading-none text-white"}
+                        style={{fontSize: titleSize, textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)"}}>
                         {title}
                     </h1>
                     {tagline && (
                         <p className={"text-xl md:text-2xl font-medium"}
-                           style={{color: "var(--club-accent)", filter: "brightness(1.15)"}}>
+                           style={{color: "var(--club-accent)", filter: "brightness(1.15)", textShadow: "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)"}}>
                             {tagline}
                         </p>
                     )}
                     {description && (
-                        <p className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white/80 leading-relaxed"}>
+                        <p className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white leading-relaxed"}
+                           style={{textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)"}}>
                             {description}
                         </p>
                     )}
@@ -87,7 +101,8 @@ export default function PageHero({title, tagline, description, watermark, action
                     )}
 
                     {showMetaBar && (
-                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}>
+                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}
+                             style={{textShadow: "0 1px 6px rgba(21,31,58,0.6)"}}>
                             {meta?.map((m) => (
                                 <div key={m.label}>
                                     <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>{m.label}</span>

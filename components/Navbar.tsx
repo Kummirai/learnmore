@@ -99,6 +99,10 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
 
   // Hover accent per variant: bright cyan on dark heroes, darker cyan for contrast on white.
   const hoverText = overlay ? "hover:text-cyan-light" : "hover:text-cyan-dark";
+  // Kept off the dropdown panels (white bg) — only the triggers that sit over the hero.
+  const triggerShadow = overlay
+    ? { textShadow: "0 1px 8px rgba(21,31,58,0.6)" }
+    : undefined;
 
   return (
     <section
@@ -108,12 +112,24 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           : "bg-white border-b border-gray-100"
       }
     >
+      {overlay && (
+        <div
+          aria-hidden={true}
+          className={
+            "pointer-events-none absolute inset-x-0 top-0 h-32 -z-10"
+          }
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(21,31,58,0.65) 0%, rgba(21,31,58,0.25) 60%, transparent 100%)",
+          }}
+        />
+      )}
       <div
         className={
           "max-w-6xl mx-auto px-4 md:px-0 flex items-center justify-between gap-4"
         }
       >
-        <Link
+<Link
           href={"/"}
           className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-3 md:py-4`}
         >
@@ -122,17 +138,18 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             alt={"Relate World"}
             width={500}
             height={500}
-            className={`h-14 md:h-20 w-auto object-contain self-center ${overlay ? "" : ""}`}
+            className={`relative h-14 md:h-20 w-auto object-contain self-center`}
           />
         </Link>
-        <nav className={"hidden lg:block"}>
-          <ul
-            className={`flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`}
-          >
+      <nav className={"hidden lg:block"}>
+        <ul
+          className={`flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`}
+        >
             <li>
               <Link
                 href={"/"}
                 className={`block text-sm  ${hoverText} transition-colors`}
+                style={triggerShadow}
               >
                 Home
               </Link>
@@ -141,6 +158,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               <Link
                 href={"/about"}
                 className={`block text-sm  ${hoverText} transition-colors`}
+                style={triggerShadow}
               >
                 About
               </Link>
@@ -149,6 +167,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               <li key={group.link} className={"relative group"}>
                 <span
                   className={`flex items-center gap-1 text-sm  ${hoverText} transition-colors cursor-default`}
+                  style={triggerShadow}
                 >
                   {group.link}
                   <LuChevronDown
@@ -186,6 +205,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               <Link
                 href={"/store"}
                 className={`block text-sm  ${hoverText} transition-colors`}
+                style={triggerShadow}
               >
                 Store
               </Link>
@@ -196,7 +216,9 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           <UserAvatar />
           <button
             onClick={() => setMenuOpen(true)}
-            className={`lg:hidden ${overlay ? "text-white" : "text-navy"} p-2`}
+            className={`lg:hidden ${overlay ? "text-white" : "text-navy"} p-2 ${
+              overlay ? "drop-shadow-[0_1px_4px_rgba(21,31,58,0.6)]" : ""
+            }`}
           >
             <LuMenu className={"text-3xl"} />
           </button>
