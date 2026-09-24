@@ -42,6 +42,7 @@ export default async function ClubMagazinesPage({
         <>
             <PageHero
                 title={`${club.name} Magazines`}
+                mobileTitle={club.name.split(/\s+/)[0]}
                 tagline={club.tagline}
                 description={`Read ${club.name}’s season study guide and bulletin — open to everyone, no account needed.`}
                 watermark={numericAge ? numericAge.replace(" yrs", "").trim() : undefined}

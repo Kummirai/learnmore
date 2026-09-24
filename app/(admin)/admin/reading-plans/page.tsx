@@ -177,6 +177,7 @@ export default function AdminReadingPlansPage() {
     <>
       <PageHero
         title={"Admin · Reading Plans"}
+        mobileTitle={"Admin"}
         tagline={"Create and manage plans across every category"}
         description={
           "Open any plan in the full-page editor — author Bible chapters per day with commentary, or topic days with verses and reading content — with a live preview as you type."

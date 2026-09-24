@@ -16,6 +16,7 @@ export default function ReadingPlansPage() {
         <>
             <PageHero
                 title={"Reading Plans"}
+                mobileTitle={"Plans"}
                 tagline={"A verse, a read and a prayer for every day"}
                 description={
                     "Choose a plan, read with your club, and build a daily rhythm in the Word — from a month in the Psalms to the whole Bible in a year."

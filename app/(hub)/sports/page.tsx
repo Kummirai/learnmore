@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 const SPORT_SLIDES: HeroSlide[] = [
   {
     title: "Football squads",
+    shortTitle: "Football",
     description:
       "Five teams from Sprout Kids to Pulse — train midweek, play at the weekend.",
     image:
@@ -30,6 +31,7 @@ const SPORT_SLIDES: HeroSlide[] = [
   },
   {
     title: "Netball teams",
+    shortTitle: "Netball",
     description:
       "Saturday league games and summer tournaments across every club.",
     image:
@@ -40,6 +42,7 @@ const SPORT_SLIDES: HeroSlide[] = [
   },
   {
     title: "Volleyball teams",
+    shortTitle: "Volleyball",
     description:
       "Friday court sessions and weekend tournaments — all levels welcome.",
     image:

@@ -44,6 +44,7 @@ export default function RegisterPage() {
     <>
       <PageHero
         title={"Join a club"}
+        mobileTitle={"Join"}
         tagline={"Pick your club. It stays yours."}
         description={
           "Your club is set at registration — by age band, matched to the member you are today. Once you pick, it can only be changed by an admin."

@@ -19,6 +19,7 @@ export default function BibleQuizPage() {
         <div style={{ "--club-accent": "#f5b82e", "--club-accent-dark": "#c9961c" } as CSSProperties}>
             <PageHero
                 title={`${season} Bible Quiz`}
+                mobileTitle={"Quiz"}
                 description={blurb}
                 watermark={season}
                 bgImage={image}

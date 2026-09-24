@@ -30,6 +30,7 @@ export default async function ReadingPlanReaderPage({ params }: Props) {
     <>
       <PageHero
         title={plan.title}
+        mobileTitle={plan.title.split(/\s+/).slice(0, 1).join(" ")}
         tagline={plan.tagline}
         description={
           isBible

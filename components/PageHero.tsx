@@ -13,6 +13,8 @@ type PageHeroProps = {
     meta?: MetaItem[]
     metaEnd?: React.ReactNode
     titleSize?: string
+    /** Compact title shown on small screens (kept to two words max). */
+    mobileTitle?: string
     extra?: React.ReactNode
     /** Optional full-bleed photo background (shown clean, with no scrim). */
     bgImage?: string
@@ -22,7 +24,7 @@ type PageHeroProps = {
     navbar?: boolean
 }
 
-export default function PageHero({title, tagline, description, watermark, actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra, bgImage, navbar = true}: PageHeroProps) {
+export default function PageHero({title, tagline, description, watermark, actions, meta, metaEnd, titleSize = "clamp(4.8rem, 11vw, 7.5rem)", mobileTitle, extra, bgImage, navbar = true}: PageHeroProps) {
     const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd
 
     return (
@@ -71,7 +73,7 @@ export default function PageHero({title, tagline, description, watermark, action
             )}
 
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
-                <div className={"flex flex-col gap-5 md:gap-6 text-center md:text-left"}>
+                <div className={"flex flex-col gap-5 md:gap-7 text-center md:text-left"}>
                     {/* Reserved whitespace where tag pills used to sit — titles stay aligned without the tags. */}
                     <div aria-hidden={"true"}>
                         <span className={"block h-[30px]"}/>
@@ -79,29 +81,30 @@ export default function PageHero({title, tagline, description, watermark, action
 
                     <h1 className={"font-black tracking-tight leading-none text-white"}
                         style={{fontSize: titleSize, textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)"}}>
-                        {title}
+                        <span className={"hidden sm:inline"}>{title}</span>
+                        <span className={"sm:hidden"}>{mobileTitle ?? title}</span>
                     </h1>
                     {tagline && (
-                        <p className={"text-xl md:text-2xl font-medium"}
+                        <p className={"text-lg md:text-2xl font-medium"}
                            style={{color: "var(--club-accent)", filter: "brightness(1.15)", textShadow: "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)"}}>
                             {tagline}
                         </p>
                     )}
                     {description && (
-                        <p className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white leading-relaxed"}
+                        <p className={"max-w-[90%] mx-auto sm:max-w-sm sm:mx-0 text-sm md:text-base text-white leading-relaxed"}
                            style={{textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)"}}>
                             {description}
                         </p>
                     )}
 
                     {actions && (
-                        <div className={"flex flex-col items-center gap-3 mt-2 md:flex-row md:items-center md:justify-start"}>
+                        <div className={"flex flex-col items-center gap-5 mt-3 md:flex-row md:items-center md:justify-start"}>
                             {actions}
                         </div>
                     )}
 
                     {showMetaBar && (
-                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}
+                        <div className={"mt-9 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}
                              style={{textShadow: "0 1px 6px rgba(21,31,58,0.6)"}}>
                             {meta?.map((m) => (
                                 <div key={m.label}>

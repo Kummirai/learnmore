@@ -47,7 +47,7 @@ function useNextPrayer() {
             const s = Math.floor((diff % 60000) / 1000);
             setNext({
                 label: n.label,
-                countdown: h > 0 ? `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s` : `${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s`,
+                countdown: h > 0 ? `${h}ʰ ${String(m).padStart(2, "0")}ᵐ ${String(s).padStart(2, "0")}ˢ` : `${String(m).padStart(2, "0")}ᵐ ${String(s).padStart(2, "0")}ˢ`,
             });
         };
 
@@ -68,7 +68,9 @@ function useNextPrayer() {
 type Slide = {
     key: string;
     chips: { dot?: boolean; label: string }[];
-    title: string;
+    title: React.ReactNode;
+    /** Compact title shown on small screens (kept to two words max). */
+    shortTitle?: React.ReactNode;
     tagline: string;
     description: string;
     watermark: string;
@@ -83,12 +85,15 @@ type Slide = {
 const btnPrimary = "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors";
 const btnGhost = "inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors";
 
+const firstWord = (s: string) => s.split(/[\s–—,·]+/).filter(Boolean).slice(0, 1).join(" ");
+
 function prayerSlide(prayer: { label: string; countdown: string } | null): Slide {
     return {
         key: "prayer",
         chips: [],
         eyebrow: prayer ? `${prayer.label} Prayer` : undefined,
         title: prayer ? prayer.countdown : "Pray with us",
+        shortTitle: prayer ? undefined : "Pray",
         tagline: "six moments, every day",
         description: "A live countdown to the next prayer moment. Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm, with a verse for each.",
         watermark: "6",
@@ -134,6 +139,7 @@ function magazineSlide(mag: RelateMagazine): Slide {
         key: mag.slug,
         chips: [],
         title: mag.series,
+        shortTitle: firstWord(mag.series),
         tagline: mag.theme,
         description: mag.summary,
         watermark: "13",
@@ -157,6 +163,7 @@ function clubSlide(club: RelateClub): Slide {
         key: club.slug,
         chips: [],
         title: club.name,
+        shortTitle: firstWord(club.name),
         tagline: club.tagline,
         description: club.description,
         watermark: numericAge ?? club.name,
@@ -186,6 +193,7 @@ function bibleQuizSlide(): Slide {
         chips: [],
         eyebrow: `${season} ${year} season`,
         title: `${season} Bible Quiz`,
+        shortTitle: "Quiz",
         tagline: `${bookLabel} · quiz rounds run weekly across the clubs · ${windowLabel}`,
         description: blurb,
         watermark: season,
@@ -285,7 +293,7 @@ export default function Hero() {
 
             {/* ── Content ── */}
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
-                <div className={"flex flex-col gap-5 md:gap-6 text-center md:text-left"}>
+                <div className={"flex flex-col gap-5 md:gap-7 text-center md:text-left"}>
                     {/* Chips row + age-range pill on the far right of the same row */}
                     <div className={"flex flex-wrap items-center justify-center gap-3 md:justify-start"}>
                         {slide.ageRange && (
@@ -300,20 +308,21 @@ export default function Hero() {
                             {slide.eyebrow}
                         </p>
                     )}
-                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(3.75rem, 12vw, 7.5rem)", textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)" }}>
-                        {slide.title}
-                    </h1>
-                    <p key={`tg-${slide.key}`} className={"text-xl md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)", textShadow: "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)" }}>
+                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(4.8rem, 11vw, 7.5rem)", textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)" }}>
+                            <span className={"hidden sm:inline"}>{slide.title}</span>
+                            <span className={"sm:hidden"}>{slide.shortTitle ?? slide.title}</span>
+                        </h1>
+                    <p key={`tg-${slide.key}`} className={"text-lg md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)", textShadow: "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)" }}>
                         {slide.tagline}
                     </p>
-                    <p key={`d-${slide.key}`} className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white leading-relaxed"} style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}>
+                    <p key={`d-${slide.key}`} className={"max-w-[90%] mx-auto sm:max-w-sm sm:mx-0 text-sm md:text-base text-white leading-relaxed"} style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}>
                         {slide.description}
                     </p>
 
-                    <div className={"flex flex-col items-center gap-3 mt-2 md:flex-row md:items-center md:justify-start"}>{slide.actions}</div>
+                    <div className={"flex flex-col items-center gap-5 mt-3 md:flex-row md:items-center md:justify-start"}>{slide.actions}</div>
 
                     {/* Meta bar */}
-                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"} style={{ textShadow: "0 1px 6px rgba(21,31,58,0.6)" }}>
+                    <div className={"mt-9 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"} style={{ textShadow: "0 1px 6px rgba(21,31,58,0.6)" }}>
                         <div>
                             <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>Clubs</span>
                             <span className={"font-semibold text-white"}>7</span>

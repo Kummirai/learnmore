@@ -41,13 +41,14 @@ export default function PrayerRequestsPage() {
     <main className="min-h-screen bg-ghost-white">
       <PageHero
         title={"Prayer Requests"}
+        mobileTitle={"Prayers"}
         tagline={"share the load — we stand with you"}
         description={
           "We would love to pray with you. Share a prayer request and our prayer team will pray for it through the six daily prayer moments. Every request is read, reviewed with care and kept confidential."
         }
         watermark={"Pray"}
         bgImage={"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80"}
-        titleSize={"clamp(3.75rem, 12vw, 7.5rem)"}
+        titleSize={"clamp(4.8rem, 11vw, 7.5rem)"}
         actions={
           <>
             <a

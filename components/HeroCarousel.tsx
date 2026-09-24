@@ -8,6 +8,8 @@ import Navbar from "@/components/Navbar";
 
 export type HeroSlide = {
   title: string;
+  /** One-word title shown on small screens. */
+  shortTitle?: string;
   description: string;
   image: string;
   accent: string;
@@ -69,26 +71,27 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
       <Navbar overlay />
 
-      <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center pt-24 pb-44 sm:pb-24">
-        <div className="max-w-2xl">
+      <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center pt-28 pb-44 sm:pb-24">
+        <div className="max-w-2xl mx-auto sm:mx-0 text-center sm:text-left flex flex-col gap-4 sm:gap-7">
           <h1
-            className="font-black tracking-tight leading-none text-white mt-6"
+            className="font-black tracking-tight leading-none text-white"
             style={{
-              fontSize: "clamp(2.75rem, 8vw, 5.5rem)",
+              fontSize: "clamp(4.8rem, 10vw, 7.5rem)",
               textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
             }}
           >
-            {slide.title}
+            <span className="hidden sm:inline">{slide.title}</span>
+            <span className="sm:hidden">{slide.shortTitle ?? slide.title}</span>
           </h1>
 
           <p
-            className="mt-5 text-white leading-relaxed text-base md:text-lg max-w-xl"
+            className="text-white leading-relaxed text-base md:text-lg max-w-[90%] mx-auto sm:max-w-sm sm:mx-0"
             style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}
           >
             {slide.description}
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-start mt-3">
             <Link
               href={slide.cta.href}
               className="inline-flex items-center justify-center gap-2 bg-white text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-white/90 transition-colors"

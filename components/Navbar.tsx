@@ -8,11 +8,12 @@ import UserAvatar from "./UserAvatar";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
 
 type NavItem = { link: string; path: string };
-type NavGroup = { link: string; items: NavItem[] };
+type NavGroup = { link: string; short: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
     link: "Events & Sports",
+    short: "Events",
     items: [
       { link: "Events", path: "/events" },
       { link: "Club Events", path: "/events/clubs" },
@@ -22,6 +23,7 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Clubs",
+    short: "Clubs",
     items: [
       { link: "Sprout", path: "/sprout" },
       { link: "Surge", path: "/surge" },
@@ -34,6 +36,7 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Magazines",
+    short: "Magazines",
     items: [...CLUBS.filter((c) => c.slug !== "sprout"), ...SUB_CLUBS].map(
       (c) => ({
         link: `${c.name} Magazines`,
@@ -43,6 +46,7 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Reading Plans",
+    short: "Plans",
     items: [
       { link: "All Reading Plans", path: "/plans" },
       { link: "Bible Reading", path: "/plans#bible-reading" },
@@ -57,6 +61,7 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Bible Quiz",
+    short: "Quiz",
     items: [
       { link: "Play the Quiz", path: "/bible-quiz/play" },
       { link: "Season Overview", path: "/bible-quiz" },
@@ -70,6 +75,7 @@ const navGroups: NavGroup[] = [
   },
   {
     link: "Prayer & Requests",
+    short: "Prayer",
     items: [
       { link: "Prayer Requests", path: "/prayer-requests" },
       { link: "Requests", path: "/requests" },
@@ -254,69 +260,67 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             </button>
           </div>
 
-          <nav
-            className={
-              "flex-1 flex flex-col items-center justify-center gap-5 py-8"
-            }
-          >
-            <Link
-              href={"/"}
-              onClick={() => setMenuOpen(false)}
-              className={
-                "text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
-              }
-            >
-              Home
-            </Link>
-            <Link
-              href={"/about"}
-              onClick={() => setMenuOpen(false)}
-              className={
-                "text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
-              }
-            >
-              About
-            </Link>
-            {navGroups.map((group) => (
-              <div key={group.link} className={"w-full max-w-xs"}>
-                <button
-                  onClick={() => toggleGroup(group.link)}
-                  className={
-                    "w-full flex items-center justify-center gap-2 text-white text-2xl font-medium hover:text-[color:var(--club-accent)] transition-colors"
-                  }
-                >
-                  {group.link}
-                  <LuChevronDown
-                    className={`text-lg transition-transform duration-200 ${expandedGroups[group.link] ? "rotate-180" : ""}`}
-                  />
-                </button>
-                {expandedGroups[group.link] && (
-                  <div className={"flex flex-col items-center gap-3 mt-3"}>
-                    {group.items.map((item) => (
-                      <Link
-                        key={item.path}
-                        href={item.path}
-                        onClick={() => setMenuOpen(false)}
-                        className={
-                          "text-white/80 text-lg hover:text-[color:var(--club-accent)] transition-colors"
-                        }
-                      >
-                        {item.link}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-            <Link
-              href={"/enroll"}
-              onClick={() => setMenuOpen(false)}
-              className={
-                "mt-4 bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-10 py-3 text-lg font-semibold"
-              }
-            >
-              Enroll with us
-            </Link>
+          <nav className={"flex-1 overflow-y-auto px-6 py-6"}>
+            <div className={"max-w-md mx-auto w-full flex flex-col gap-0.5"}>
+              <Link
+                href={"/"}
+                onClick={() => setMenuOpen(false)}
+                className={
+                  "py-2 text-[14px] font-normal text-white/95 hover:text-[color:var(--club-accent)] transition-colors"
+                }
+              >
+                Home
+              </Link>
+              <Link
+                href={"/about"}
+                onClick={() => setMenuOpen(false)}
+                className={
+                  "py-2 text-[14px] font-normal text-white/95 hover:text-[color:var(--club-accent)] transition-colors"
+                }
+              >
+                About
+              </Link>
+              {navGroups.map((group) => (
+                <div key={group.link} className={"border-b border-white/10"}>
+                  <button
+                    onClick={() => toggleGroup(group.link)}
+                    className={
+                      "w-full flex items-center justify-between gap-2 py-2.5 text-[14px] font-normal text-white/95 hover:text-[color:var(--club-accent)] transition-colors"
+                    }
+                  >
+                    {group.short}
+                    <LuChevronDown
+                      className={`text-base shrink-0 transition-transform duration-200 ${expandedGroups[group.link] ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {expandedGroups[group.link] && (
+                    <div className={"flex flex-col gap-1 pb-3"}>
+                      {group.items.map((item) => (
+                        <Link
+                          key={item.path}
+                          href={item.path}
+                          onClick={() => setMenuOpen(false)}
+                          className={
+                            "border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-[color:var(--club-accent)] hover:text-white transition-colors"
+                          }
+                        >
+                          {item.link}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+              <Link
+                href={"/enroll"}
+                onClick={() => setMenuOpen(false)}
+                className={
+                  "mt-6 w-full rounded-full bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-8 py-3 text-center text-[14px] font-normal"
+                }
+              >
+                Enroll with us
+              </Link>
+            </div>
           </nav>
 
           <div

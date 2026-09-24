@@ -25,6 +25,7 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
         <>
             <PageHero
                 title={heading}
+                mobileTitle={heading.split(/\s+/).slice(0, 1).join(" ")}
                 tagline={doc.series}
                 description={doc.summary}
                 watermark={doc.year ? String(doc.year) : undefined}

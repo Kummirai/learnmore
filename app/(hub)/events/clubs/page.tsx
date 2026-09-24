@@ -14,6 +14,7 @@ export default function ClubEventsPage() {
     <>
       <PageHero
         title="Club Events"
+        mobileTitle="Events"
         tagline="Every club, every meetup"
         description="Events grouped by club — pick your club to see its meetups, match days, worship nights and family gatherings."
         watermark="Events"
