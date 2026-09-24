@@ -296,7 +296,7 @@ export default function Hero() {
                     <div className={"flex flex-col items-center gap-3 mt-2 md:flex-row md:items-center md:justify-start"}>{slide.actions}</div>
 
                     {/* Meta bar */}
-                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm md:justify-start"}>
+                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}>
                         <div>
                             <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>Clubs</span>
                             <span className={"font-semibold text-white"}>7</span>
@@ -309,7 +309,7 @@ export default function Hero() {
                             <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>Free</span>
                             <span className={"font-semibold text-white"}>100%</span>
                         </div>
-                        <div className={"md:ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>
+                        <div className={"hidden md:ml-auto md:flex md:flex-wrap md:items-center md:gap-x-8 md:gap-y-2"}>
                             <Link href={"/about"} className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}>
                                 <span className={"text-[11px] uppercase tracking-widest text-white/70"}>Since 2026</span>
                                 About Relate →

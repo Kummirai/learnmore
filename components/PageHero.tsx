@@ -99,14 +99,14 @@ export default function PageHero({title, tagline, description, watermark, chips 
                     )}
 
                     {showMetaBar && (
-                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm md:justify-start"}>
+                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"}>
                             {meta?.map((m) => (
                                 <div key={m.label}>
                                     <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>{m.label}</span>
                                     <span className={"font-semibold text-white"}>{m.value}</span>
                                 </div>
                             ))}
-                            {metaEnd && <div className={"md:ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>{metaEnd}</div>}
+                            {metaEnd && <div className={"w-full justify-center md:w-auto md:ml-auto md:justify-start flex flex-wrap items-center gap-x-6 gap-y-2"}>{metaEnd}</div>}
                         </div>
                     )}
 
