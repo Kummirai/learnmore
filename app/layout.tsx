@@ -21,11 +21,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "RelateWorld | Free Community Clubs, Skills & Support for Every Age",
-    template: "%s | RelateWorld",
+    default: "Relate World | Free Community Clubs, Skills & Support for Every Age",
+    template: "%s | Relate World",
   },
   description:
-    "RelateWorld brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families. 100% free to join.",
+    "Relate World brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families. 100% free to join.",
   keywords: [
     "RelateWorld",
     "Relate World",
@@ -44,17 +44,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://relateworld.org",
-    siteName: "RelateWorld",
-    title: "RelateWorld | Free Community Clubs, Skills & Support for Every Age",
+    siteName: "Relate World",
+    title: "Relate World | Free Community Clubs, Skills & Support for Every Age",
     description:
-      "Free clubs for every age with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+      "Relate World — free clubs for every age with weekly meetups, mentoring, Bible reading guides and practical support for families.",
     locale: "en_ZA",
   },
   twitter: {
     card: "summary_large_image",
-    title: "RelateWorld | Free Community Clubs, Skills & Support for Every Age",
+    title: "Relate World | Free Community Clubs, Skills & Support for Every Age",
     description:
-      "Free clubs for every age with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+      "Relate World — free clubs for every age with weekly meetups, mentoring, Bible reading guides and practical support for families.",
   },
   robots: {
     index: true,
@@ -85,18 +85,19 @@ export default function RootLayout({
                 {
                   "@type": "Organization",
                   "@id": `${SITE_URL}/#org`,
-                  name: SITE_NAME,
+                  name: "Relate World",
+                  alternateName: ["RelateWorld", "Relate World"],
                   url: SITE_URL,
                   logo: `${SITE_URL}/images/relate-world-logo.png`,
                   description:
-                    "Free community clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+                    "Relate World — free community clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families.",
                   areaServed: "ZA",
                 },
                 {
                   "@type": "WebSite",
                   "@id": `${SITE_URL}/#website`,
                   url: SITE_URL,
-                  name: SITE_NAME,
+                  name: "Relate World",
                   publisher: { "@id": `${SITE_URL}/#org` },
                 },
               ],

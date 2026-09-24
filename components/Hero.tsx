@@ -118,6 +118,7 @@ function brandSlide(): Slide {
     return {
         key: "brand",
         chips: [],
+        eyebrow: "Relate World",
         title: "Grow",
         tagline: "in every area of life",
         description: "Share your gifts. Connect with your community. Deepen your faith. Relate brings it all together.",
