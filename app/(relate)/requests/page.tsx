@@ -99,7 +99,7 @@ export default function RequestsPage() {
         }
         watermark={"Care"}
         bgImage={"https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&q=80"}
-        titleSize={"clamp(4.8rem, 11vw, 7.5rem)"}
+        titleSize={"4.8rem"}
         actions={
           <>
             <a

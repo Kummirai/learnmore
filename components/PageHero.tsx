@@ -24,7 +24,7 @@ type PageHeroProps = {
     navbar?: boolean
 }
 
-export default function PageHero({title, tagline, description, watermark, actions, meta, metaEnd, titleSize = "clamp(4.8rem, 11vw, 7.5rem)", mobileTitle, extra, bgImage, navbar = true}: PageHeroProps) {
+export default function PageHero({title, tagline, description, watermark, actions, meta, metaEnd, titleSize = "4.8rem", mobileTitle, extra, bgImage, navbar = true}: PageHeroProps) {
     const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd
 
     return (
@@ -91,7 +91,7 @@ export default function PageHero({title, tagline, description, watermark, action
                         </p>
                     )}
                     {description && (
-                        <p className={"max-w-[90%] mx-auto sm:max-w-sm sm:mx-0 text-sm md:text-base text-white leading-relaxed"}
+                        <p className={"max-w-[90%] mx-auto sm:max-w-[50vw] sm:mx-0 text-sm md:text-base text-white leading-relaxed"}
                            style={{textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)"}}>
                             {description}
                         </p>

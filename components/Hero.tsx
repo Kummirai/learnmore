@@ -311,14 +311,14 @@ export default function Hero() {
                             {slide.eyebrow}
                         </p>
                     )}
-                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "clamp(4.8rem, 11vw, 7.5rem)", textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)" }}>
+                    <h1 key={`t-${slide.key}`} className={"font-black tracking-tight leading-none text-white"} style={{ fontSize: "4.8rem", textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)" }}>
                             <span className={"hidden sm:inline"}>{slide.title}</span>
                             <span className={"sm:hidden"}>{slide.shortTitle ?? slide.title}</span>
                         </h1>
                     <p key={`tg-${slide.key}`} className={"text-lg md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)", textShadow: "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)" }}>
                         {slide.tagline}
                     </p>
-                    <p key={`d-${slide.key}`} className={"max-w-[90%] mx-auto sm:max-w-sm sm:mx-0 text-sm md:text-base text-white leading-relaxed"} style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}>
+                    <p key={`d-${slide.key}`} className={"max-w-[90%] mx-auto sm:max-w-[50vw] sm:mx-0 text-sm md:text-base text-white leading-relaxed"} style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}>
                         {slide.description}
                     </p>
 

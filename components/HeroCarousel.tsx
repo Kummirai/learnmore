@@ -76,7 +76,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           <h1
             className="font-black tracking-tight leading-none text-white"
             style={{
-              fontSize: "clamp(4.8rem, 10vw, 7.5rem)",
+              fontSize: "4.8rem",
               textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
             }}
           >
@@ -85,7 +85,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           </h1>
 
           <p
-            className="text-white leading-relaxed text-base md:text-lg max-w-[90%] mx-auto sm:max-w-sm sm:mx-0"
+            className="text-white leading-relaxed text-base md:text-lg max-w-[90%] mx-auto sm:max-w-[50vw] sm:mx-0"
             style={{ textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)" }}
           >
             {slide.description}

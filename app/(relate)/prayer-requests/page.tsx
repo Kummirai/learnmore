@@ -48,7 +48,7 @@ export default function PrayerRequestsPage() {
         }
         watermark={"Pray"}
         bgImage={"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80"}
-        titleSize={"clamp(4.8rem, 11vw, 7.5rem)"}
+        titleSize={"4.8rem"}
         actions={
           <>
             <a
