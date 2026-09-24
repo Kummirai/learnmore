@@ -15,7 +15,7 @@ import {
   SPORTS_TEAMS,
   getRelateClub,
 } from "@/constants/relate";
-import { getSquad, SPORTS_DIRECTOR } from "@/constants/squads";
+import { getSquad, imgCard, playerSlug, SPORTS_DIRECTOR } from "@/constants/squads";
 
 export function generateStaticParams() {
   return SPORTS_TEAMS.map((team) => ({ id: team.id }));
@@ -69,31 +69,35 @@ function PlayerCard({
   name,
   position,
   number,
-  gradient,
+  image,
+  teamId,
 }: {
   name: string;
   position: string;
   number: number;
-  gradient: string;
+  image: string;
+  teamId: string;
 }) {
   return (
-    <article className="flex flex-col items-center text-center bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 hover:shadow-md transition-shadow">
+    <Link
+      href={`/sports/${teamId}/${playerSlug(name)}`}
+      className="group flex flex-col items-center text-center bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 hover:shadow-md hover:border-cyan/40 transition-all"
+    >
       <div className="relative">
-        <div
-          className="size-16 md:size-20 rounded-full flex items-center justify-center text-lg md:text-xl font-black text-white ring-4 ring-white shadow-lg"
-          style={{ background: gradient }}
-        >
-          {initialsOf(name)}
+        <div className="size-16 md:size-20 rounded-full overflow-hidden ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300">
+          <img src={imgCard(image)} alt={name} className="size-full object-cover" />
         </div>
         <span className="absolute -bottom-1 -right-1 size-7 md:size-8 rounded-full bg-navy text-white text-[11px] md:text-xs font-bold flex items-center justify-center ring-2 ring-white">
           {number}
         </span>
       </div>
-      <h4 className="mt-3 text-sm font-bold text-navy leading-snug">{name}</h4>
+      <h4 className="mt-3 text-sm font-bold text-navy leading-snug group-hover:text-cyan-dark transition-colors">
+        {name}
+      </h4>
       <p className="text-[11px] text-cyan font-semibold mt-1 uppercase tracking-wider">
         {position}
       </p>
-    </article>
+    </Link>
   );
 }
 
@@ -206,7 +210,7 @@ export default async function TeamPage({
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
               {squad?.players.map((p) => (
-                <PlayerCard key={p.name} name={p.name} position={p.position} number={p.number} gradient={gradient} />
+                <PlayerCard key={playerSlug(p.name)} name={p.name} position={p.position} number={p.number} image={p.image} teamId={team.id} />
               ))}
             </div>
 
