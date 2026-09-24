@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
 import PageHero from "@/components/PageHero";
-import { CLUBS, teamsForClub } from "@/constants/relate";
+import { getRelateClub, teamsForClub } from "@/constants/relate";
 
 export const metadata: Metadata = {
   title: "Club Sports · Relate",
   description:
-    "See every Relate sports team by club — Sprout Kids, Surge and Pulse — with football, netball and volleyball squads and how to join.",
+    "See every Relate sports team by club — Sprout Kids, Sprout Tweens, Sprout Teens, Surge and Pulse — with football, netball and volleyball squads and how to join.",
 };
 
 const SPORT_ICONS: Record<string, string> = {
@@ -16,8 +16,12 @@ const SPORT_ICONS: Record<string, string> = {
   Volleyball: "🏐",
 };
 
+const SPORT_CLUBS = ["sprout-kids", "sprout-tweens", "sprout-teens", "surge", "pulse"];
+
 export default function ClubSportsPage() {
-  const clubs = CLUBS.filter((c) => ["sprout", "surge", "pulse"].includes(c.slug));
+  const clubs = SPORT_CLUBS
+    .map((slug) => getRelateClub(slug))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
     <>

@@ -8,7 +8,7 @@ import {
   LuMapPin,
   LuUsers,
 } from "react-icons/lu";
-import PageHero from "@/components/PageHero";
+import EventsHeroCarousel from "@/components/EventsHeroCarousel";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
 
 type RelateEvent = {
@@ -237,30 +237,7 @@ export default function EventsPage() {
 
   return (
     <>
-      <PageHero
-        title="Events"
-        tagline="Community · Calendars · Match days"
-        description="Everything happening across the Relate community — club meetups, worship nights, match days, family gatherings and more, sorted by date."
-        watermark="Events"
-        chips={[
-          { dot: true, label: "Weekly" },
-          { dot: true, label: "Free" },
-          { dot: true, label: "All clubs" },
-        ]}
-        meta={[
-          { label: "Live", value: live ? "Backend feed" : "Sample preview" },
-          { label: "Clubs", value: "7 clubs" },
-          { label: "Cost", value: "Free" },
-        ]}
-        actions={
-          <a
-            href="/events/clubs"
-            className="inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
-          >
-            Browse club events →
-          </a>
-        }
-      />
+      <EventsHeroCarousel />
       <section className="flex-1 px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {loading && (

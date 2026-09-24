@@ -4,7 +4,7 @@ import { LuArrowRight, LuShield } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import {
-  CLUBS,
+  getRelateClub,
   SPORTS,
   SPORTS_TEAMS,
   teamsForSport,
@@ -27,7 +27,7 @@ const sportLine: Record<RelateSport, string> = {
 };
 
 function TeamCard({ team }: { team: RelateTeam }) {
-  const club = CLUBS.find((c) => c.slug === team.clubSlug);
+  const club = getRelateClub(team.clubSlug);
   const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
     `Hi RelateWorld! I'd like to join the ${team.name}.`,
   )}`;
@@ -85,7 +85,7 @@ export default function SportsPage() {
       <PageHero
         title="Relate Sports"
         tagline="Play for your club"
-        description="Football, netball and volleyball teams for Sprout Kids, Surge and Pulse — train through the week, play at the weekend and cheer each other on."
+        description="Football, netball and volleyball teams for Sprout Kids, Sprout Tweens, Sprout Teens, Surge and Pulse — train through the week, play at the weekend and cheer each other on."
         watermark="Sports"
         chips={SPORTS.map((s) => ({ dot: true, label: s }))}
         meta={[

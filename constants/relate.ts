@@ -533,14 +533,31 @@ export type RelateTeam = {
 export const SPORTS: RelateSport[] = ["Football", "Netball", "Volleyball"];
 
 export const SPORTS_TEAMS: RelateTeam[] = [
+  // Sprout — three clubs, each with its own squads
   // Football
   {
     id: "sk-fc",
-    clubSlug: "sprout",
+    clubSlug: "sprout-kids",
     sport: "Football",
     name: "Sprout Kids FC",
     initials: "SK FC",
     tagline: "Our youngest squad — Saturday kickabouts, camps and fun skills games.",
+  },
+  {
+    id: "stw-fc",
+    clubSlug: "sprout-tweens",
+    sport: "Football",
+    name: "Sprout Tweens FC",
+    initials: "TW FC",
+    tagline: "Junior league football — skills, teamwork and match days.",
+  },
+  {
+    id: "ste-fc",
+    clubSlug: "sprout-teens",
+    sport: "Football",
+    name: "Sprout Teens FC",
+    initials: "TE FC",
+    tagline: "The senior Sprout squad — competitive fixtures all season.",
   },
   {
     id: "surge-fc",
@@ -561,11 +578,27 @@ export const SPORTS_TEAMS: RelateTeam[] = [
   // Netball
   {
     id: "sk-netball",
-    clubSlug: "sprout",
+    clubSlug: "sprout-kids",
     sport: "Netball",
     name: "Sprout Kids Netball",
     initials: "SKN",
     tagline: "Saturday morning netball for kids — all positions, all fun.",
+  },
+  {
+    id: "stw-netball",
+    clubSlug: "sprout-tweens",
+    sport: "Netball",
+    name: "Sprout Tweens Netball",
+    initials: "TWN",
+    tagline: "League netball for tweens — weekend games, weekly training.",
+  },
+  {
+    id: "ste-netball",
+    clubSlug: "sprout-teens",
+    sport: "Netball",
+    name: "Sprout Teens Netball",
+    initials: "TEN",
+    tagline: "Competitive teen netball — tournaments and club nights.",
   },
   {
     id: "surge-netball",
@@ -586,11 +619,27 @@ export const SPORTS_TEAMS: RelateTeam[] = [
   // Volleyball
   {
     id: "sk-volleyball",
-    clubSlug: "sprout",
+    clubSlug: "sprout-kids",
     sport: "Volleyball",
     name: "Sprout Kids Volleyball",
     initials: "SKV",
     tagline: "Friday-afternoon volley for the little hitters.",
+  },
+  {
+    id: "stw-volleyball",
+    clubSlug: "sprout-tweens",
+    sport: "Volleyball",
+    name: "Sprout Tweens Volleyball",
+    initials: "TWV",
+    tagline: "Learn to volley and pass — Friday courts for tweens.",
+  },
+  {
+    id: "ste-volleyball",
+    clubSlug: "sprout-teens",
+    sport: "Volleyball",
+    name: "Sprout Teens Volleyball",
+    initials: "TEV",
+    tagline: "Teen squad — weekend tournaments and social volleyball.",
   },
   {
     id: "surge-volleyball",
@@ -616,6 +665,14 @@ export function teamsForSport(sport: RelateSport): RelateTeam[] {
 
 export function teamsForClub(clubSlug: string): RelateTeam[] {
   return SPORTS_TEAMS.filter((t) => t.clubSlug === clubSlug);
+}
+
+/** Look up a club or a Sprout sub-club (kids / tweens / teens). */
+export function getRelateClub(
+  slug: string | undefined,
+): RelateClub | undefined {
+  if (!slug) return undefined;
+  return CLUBS.find((c) => c.slug === slug) ?? SUB_CLUBS.find((c) => c.slug === slug);
 }
 
 const SPROUT_CLASS_PROGRAMS: RelateProgram[] = [
