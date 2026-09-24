@@ -28,14 +28,14 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
       {/* Gallery */}
       <div className="flex flex-col-reverse md:flex-row gap-3">
-        <div className="flex md:flex-col gap-3 w-full md:w-24 overflow-x-auto md:overflow-visible">
+        <div className="flex md:flex-col gap-3 w-full md:w-24 h-10 md:h-1/2 overflow-x-auto md:overflow-visible">
           {images.map((src, i) => (
             <button
               key={src}
               type="button"
               onClick={() => setActive(src)}
               aria-label={`View image ${i + 1} of ${item.name}`}
-              className={`size-20 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
+              className={`w-20 h-10 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
                 active === src ? "border-cyan" : "border-gray-200 hover:border-cyan/60"
               } bg-alice-blue`}
             >
