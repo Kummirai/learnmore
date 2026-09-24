@@ -4,10 +4,11 @@ import { useMemo, useState } from "react";
 import {
   FaCheck,
   FaChevronRight,
+  FaPrayingHands,
   FaShieldAlt,
   FaUserLock,
 } from "react-icons/fa";
-import { LuLoaderCircle, LuUsers } from "react-icons/lu";
+import { LuBellRing, LuLoaderCircle, LuUsers } from "react-icons/lu";
 import {
   getRelateClub,
   SPORTS_TEAMS,
@@ -109,6 +110,7 @@ export default function JoinForm({
   const [drugs, setDrugs] = useState<YesNo>("");
   const [sexuallyActive, setSexuallyActive] = useState<YesNo>("");
   const [commitment, setCommitment] = useState(false);
+  const [gathering, setGathering] = useState(false);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<Done | null>(null);
@@ -190,6 +192,17 @@ export default function JoinForm({
                   — training, matches and your club&rsquo;s community.
                 </span>
               </li>
+              <li className="flex gap-3">
+                <span className="shrink-0 size-6 rounded-full bg-alice-blue text-cyan flex items-center justify-center text-xs font-bold">
+                  4
+                </span>
+                <span>
+                  You&rsquo;re added to the{" "}
+                  <strong className="text-navy">monthly Club Gathering</strong> — every second
+                  Friday of the month, for fellowship, review and prayer. Your leader shares the
+                  time and venue.
+                </span>
+              </li>
             </ol>
           </div>
         </div>
@@ -228,6 +241,10 @@ export default function JoinForm({
       return setError(
         "Please accept the commitment to the Relate community standards.",
       );
+    if (!gathering)
+      return setError(
+        "Please accept the monthly Club Gathering commitment.",
+      );
 
     setSending(true);
     const payload = {
@@ -250,6 +267,7 @@ export default function JoinForm({
         ...(isYouthClub ? { sexualActivity: sexuallyActive } : {}),
       },
       commitmentAccepted: commitment,
+      clubGatheringAccepted: gathering,
     };
 
     fetch("/api/club-join", {
@@ -559,6 +577,76 @@ export default function JoinForm({
                   : ""}
                 while part of a Relate club, and to honouring the values of the
                 community.
+              </span>
+            </label>
+          </div>
+
+          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <p className={sectionBadge}>4 · Monthly Club Gathering</p>
+            <p className="text-sm text-slate-gray leading-relaxed mb-5">
+              Relate is a <strong className="text-navy">faith-based</strong> community. Every club
+              and team comes together once a month — on the{" "}
+              <strong className="text-navy">second Friday</strong> — for its Club Gathering:
+              fellowship, review and prayer. Your club leader shares the exact time and venue.
+            </p>
+
+            <div className="rounded-xl bg-navy text-white p-5">
+              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-3">
+                <FaPrayingHands className="text-cyan" /> What happens at a Club Gathering
+              </p>
+              <ol className="space-y-2.5 text-sm text-white/85 leading-relaxed list-decimal list-inside">
+                <li>
+                  <span className="font-semibold text-white">Opening prayer</span> — we hand the
+                  evening to God.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Monthly devotional review</span> —
+                  read this month&rsquo;s devotional before you come; we share what it spoke to us.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Celebrations</span> — wins,
+                  milestones and testimonies go first.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Club &amp; team review</span> —
+                  results, training, attendance and progress.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Disciplinaries &amp; matters</span>{" "}
+                  — behaviour concerns handled in love, not in the street.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Registrations &amp; roles</span> —
+                  new members welcomed, captains and helpers confirmed.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Resolutions</span> — decisions agreed
+                  and goals set for the month ahead.
+                </li>
+                <li>
+                  <span className="font-semibold text-white">Notices &amp; closing prayer</span> —
+                  dates and announcements, then prayer to send us out.
+                </li>
+              </ol>
+            </div>
+
+            {isMinor && (
+              <p className="mt-4 flex items-center gap-2 text-xs text-slate-gray">
+                <LuBellRing className="text-cyan shrink-0" />
+                Under 18s: your parent or guardian will be told about every gathering date.
+              </p>
+            )}
+
+            <label className="mt-4 flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={gathering}
+                onChange={(e) => setGathering(e.target.checked)}
+                className="mt-0.5 size-4 accent-cyan"
+              />
+              <span className="text-sm text-navy leading-relaxed">
+                I understand every Relate club and team gathers on the second Friday of the month,
+                and I commit to attending my club&rsquo;s monthly gathering.
               </span>
             </label>
           </div>

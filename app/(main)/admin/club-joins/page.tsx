@@ -29,6 +29,7 @@ type Application = {
     sexualActivity?: string;
   };
   commitmentAccepted?: boolean;
+  clubGatheringAccepted?: boolean;
   status: Status;
   note?: string;
   reviewedAt?: string;
@@ -231,6 +232,12 @@ function ClubJoinsBody() {
                       Accepted community standards:{" "}
                       <span className={item.commitmentAccepted ? "text-emerald-700 font-semibold" : "text-red-600 font-semibold"}>
                         {item.commitmentAccepted ? "Yes" : "No"}
+                      </span>
+                    </p>
+                    <p className="text-xs text-gray-600">
+                      Club Gathering (2nd Friday):{" "}
+                      <span className={item.clubGatheringAccepted ? "text-emerald-700 font-semibold" : "text-red-600 font-semibold"}>
+                        {item.clubGatheringAccepted ? "Accepted" : "Not stated"}
                       </span>
                     </p>
                     {item.note && (
