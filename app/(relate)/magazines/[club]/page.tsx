@@ -1,4 +1,5 @@
 import {notFound} from "next/navigation"
+import type {Metadata} from "next"
 import type {CSSProperties} from "react"
 import PageHero from "@/components/PageHero"
 import PublicationLibrary from "@/components/publications/PublicationLibrary"
@@ -6,6 +7,17 @@ import {getClub, getClubClass} from "@/constants/relate"
 import {getPublications} from "@/lib/publications"
 
 export const dynamic = "force-dynamic"
+
+export async function generateMetadata({params}: {params: Promise<{club: string}>}): Promise<Metadata> {
+    const {club: slug} = await params
+    const club = getClub(slug) ?? getClubClass(slug)
+    if (!club) return {}
+    return {
+        title: `${club.name} Magazines & Study Guides`,
+        description: `Magazines, bulletins and study guides for the ${club.name} club (${club.ageRange}).`,
+        alternates: {canonical: `/magazines/${club.slug}`},
+    }
+}
 
 export default async function ClubMagazinesPage({
     params,

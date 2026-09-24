@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import PageHero from "@/components/PageHero";
 import { getReadingPlan, getPlanSections, getAuthoredPlan } from "@/lib/reading-plans";
+import { readingPlanMetadataFromSlug } from "@/lib/seo";
 import BibleReadingReader from "@/components/reading/BibleReadingReader";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +10,11 @@ export const dynamic = "force-dynamic";
 type Props = {
   params: Promise<{ slug: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  return readingPlanMetadataFromSlug(slug);
+}
 
 export default async function ReadingPlanReaderPage({ params }: Props) {
   const { slug } = await params;

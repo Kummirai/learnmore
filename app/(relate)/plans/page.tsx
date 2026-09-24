@@ -1,7 +1,15 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { FaBookOpen, FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import { READING_PLANS, READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
+
+export const metadata: Metadata = {
+  title: "Reading Plans",
+  description:
+    "Choose a Bible reading plan — from a month in the Psalms to the whole Bible in a year — with a verse, a read and a prayer for every day.",
+  alternates: { canonical: "/plans" },
+};
 
 export default function ReadingPlansPage() {
     return (

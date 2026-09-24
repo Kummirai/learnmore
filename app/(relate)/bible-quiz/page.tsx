@@ -1,8 +1,16 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import PageHero from "@/components/PageHero";
 import SeasonQuizHub from "@/components/bible-quiz/SeasonQuizHub";
 import { SEASON_QUIZ } from "@/lib/season";
+
+export const metadata: Metadata = {
+  title: "Summer Bible Quiz",
+  description:
+    "Play the RelateWorld season Bible quiz — weekly rounds, live club boards and the season's top five across every club.",
+  alternates: { canonical: "/bible-quiz" },
+};
 
 export default function BibleQuizPage() {
     const { season, windowLabel, blurb, clubs, image } = SEASON_QUIZ;
