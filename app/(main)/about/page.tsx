@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Team from "@/components/Team";
 import {
   LuArrowLeft,
   LuTarget,
@@ -146,6 +147,8 @@ export default function AboutPage() {
           </Link>
         </div>
       </div>
+
+      <Team />
     </section>
   );
 }

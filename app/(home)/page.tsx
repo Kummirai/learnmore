@@ -9,7 +9,6 @@ import PhotoHighlights from "@/components/PhotoHighlights";
 import Facilities from "@/components/Facilities";
 import NewsHighlights from "@/components/NewsHighlights";
 import FeesSection from "@/components/FeesSection";
-import Team from "@/components/Team";
 import Testimonials from "@/components/Testimonials";
 import FaqSection from "@/components/FaqSection";
 import TourCta from "@/components/TourCta";
@@ -29,7 +28,6 @@ export default function Home() {
       <Facilities />
       <NewsHighlights />
       <FeesSection />
-      <Team />
       <Testimonials />
       <FaqSection />
       <TourCta />
