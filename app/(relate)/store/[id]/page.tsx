@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LuArrowLeft, LuChevronRight } from "react-icons/lu";
-import PageHero from "@/components/PageHero";
+import Navbar from "@/components/Navbar";
 import ProductPanel from "@/components/store/ProductPanel";
 import { STORE_ITEMS, getStoreItem } from "@/constants/relate";
 
@@ -41,26 +41,7 @@ export default async function ProductPage({
 
   return (
     <>
-      <PageHero
-        title={item.name}
-        tagline={`${item.category} · Relate Store`}
-        description={item.blurb}
-        titleSize={"clamp(2.75rem, 8vw, 5.5rem)"}
-        meta={[
-          { label: "Price", value: `R${item.price}` },
-          { label: "Category", value: item.category },
-          { label: "Ordering", value: "Via WhatsApp" },
-        ]}
-        actions={
-          <a
-            href={`/store/checkout?item=${item.id}`}
-            className="inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
-          >
-            Order this item →
-          </a>
-        }
-      />
-
+      <Navbar />
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
           <nav
