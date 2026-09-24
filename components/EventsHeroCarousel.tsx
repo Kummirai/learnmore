@@ -18,52 +18,52 @@ type Slide = {
 
 const SLIDES: Slide[] = [
   {
-    label: "Football",
-    title: "Sunday football on the Relate grounds",
+    label: "Club Meetups",
+    title: "Weekly clubs for every age",
     description:
-      "Five squads across Sprout Kids, Sprout Tweens, Sprout Teens, Surge and Pulse — midweek training, weekend matches.",
+      "Sprout classes, Surge nights and Pulse meetups — free and open to all.",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80&auto=format",
+    accent: "#13c5dd",
+    cta: { href: "/events/clubs", label: "Club events" },
+    secondary: { href: "/events", label: "All events" },
+  },
+  {
+    label: "Worship & Prayer",
+    title: "Worship & prayer nights",
+    description:
+      "Surge fire nights, testimonies and evening prayer, together.",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80&auto=format",
+    accent: "#f59e0b",
+    cta: { href: "/prayer", label: "Prayer times" },
+    secondary: { href: "/events", label: "All events" },
+  },
+  {
+    label: "Match Days",
+    title: "Match days & league",
+    description:
+      "Football, netball and volleyball fixtures on the Relate grounds.",
     image:
       "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
-    accent: "#13c5dd",
-    cta: { href: "/sports#football", label: "Football teams" },
+    accent: "#4caf50",
+    cta: { href: "/sports", label: "Sports teams" },
     secondary: { href: "https://wa.me/27782677436", label: "Join a team" },
   },
   {
-    label: "Netball",
-    title: "Saturday netball — league & clinics",
+    label: "Family",
+    title: "Family gatherings",
     description:
-      "Competitive youth league running with the school term, plus Saturday-morning clinics for the youngest players.",
+      "Family tables, socials, camps and seasonal celebrations.",
     image:
-      "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=80&auto=format",
-    accent: "#4caf50",
-    cta: { href: "/sports#netball", label: "Netball teams" },
-    secondary: { href: "/events/clubs", label: "Club events" },
-  },
-  {
-    label: "Volleyball",
-    title: "Friday court sessions & weekend tournaments",
-    description:
-      "Learn the game on Friday nights, then take it to weekend tournaments — every skill level welcome.",
-    image:
-      "https://images.unsplash.com/photo-1552879674-8b1bb7e2c6c4?w=1600&q=80&auto=format",
+      "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=80&auto=format",
     accent: "#f97316",
-    cta: { href: "/sports#volleyball", label: "Volleyball teams" },
-    secondary: { href: "/sports/clubs", label: "Club sports" },
-  },
-  {
-    label: "Club Nights",
-    title: "Weekly rhythms for every age",
-    description:
-      "Sprout classes, Surge fire nights, Pulse network meetups and family tables — the community calendar, all in one place.",
-    image:
-      "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=80&auto=format",
-    accent: "#16213e",
-    cta: { href: "/events/clubs", label: "Browse club events" },
+    cta: { href: "/events/clubs", label: "Club events" },
     secondary: { href: "/events", label: "All events" },
   },
 ];
 
-const AUTOPLAY_MS = 6000;
+const AUTOPLAY_MS = 5000;
 
 export default function EventsHeroCarousel() {
   const [index, setIndex] = useState(0);
@@ -120,13 +120,8 @@ export default function EventsHeroCarousel() {
 
       <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24">
         <div className="max-w-2xl">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-white/90 font-medium">
-            <span className="size-2 rounded-full" style={{ backgroundColor: slide.accent }} />
-            {slide.label}
-          </div>
-
           <h1
-            className="mt-5 font-black tracking-tight leading-none text-white"
+            className="font-black tracking-tight leading-none text-white mt-6"
             style={{ fontSize: "clamp(2.75rem, 8vw, 5.5rem)" }}
           >
             {slide.title}
