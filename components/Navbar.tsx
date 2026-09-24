@@ -311,15 +311,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                   )}
                 </div>
               ))}
-              <Link
-                href={"/enroll"}
-                onClick={() => setMenuOpen(false)}
-                className={
-                  "mt-6 w-full rounded-full bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-8 py-3 text-center text-[14px] font-normal"
-                }
-              >
-                Enroll with us
-              </Link>
             </div>
           </nav>
 
