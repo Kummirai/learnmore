@@ -31,6 +31,12 @@ const tools = [
         title: "Reading Plans",
         desc: "Create, edit and manage reading plans across every category.",
     },
+{
+        href: "/admin/club-joins",
+        icon: LuUsers,
+        title: "Club Joins",
+        desc: "Review sports registration applications after the chaplain interview.",
+    },
 ];
 
 type PublicationItem = {

@@ -26,6 +26,14 @@ const JOIN_CLUB_SLUGS = [
 
 const YOUTH_CLUBS = ["surge", "pulse"];
 
+const CLUB_AGE_RANGES: Record<string, { min: number; max: number; label: string }> = {
+  "sprout-kids": { min: 6, max: 8, label: "6–8 yrs" },
+  "sprout-tweens": { min: 9, max: 11, label: "9–11 yrs" },
+  "sprout-teens": { min: 12, max: 15, label: "12–15 yrs" },
+  surge: { min: 16, max: 21, label: "16–21 yrs" },
+  pulse: { min: 21, max: 33, label: "21–33 yrs" },
+};
+
 type Done = { id: string; status: string; nextSteps?: string };
 
 function YesNoOption({
@@ -95,6 +103,7 @@ export default function JoinForm({
   const [area, setArea] = useState("");
   const [guardianName, setGuardianName] = useState("");
   const [guardianPhone, setGuardianPhone] = useState("");
+  const [parentConsent, setParentConsent] = useState(false);
   const [alcohol, setAlcohol] = useState<YesNo>("");
   const [smoking, setSmoking] = useState<YesNo>("");
   const [drugs, setDrugs] = useState<YesNo>("");
@@ -107,6 +116,9 @@ export default function JoinForm({
   const ageNum = Number(age);
   const isYouthClub = YOUTH_CLUBS.includes(clubSlug);
   const isMinor = Number.isInteger(ageNum) && ageNum >= 0 && ageNum < 18;
+  const ageRange = CLUB_AGE_RANGES[clubSlug];
+  const ageFitsClub =
+    !ageRange || (Number.isInteger(ageNum) && ageNum >= ageRange.min && ageNum <= ageRange.max);
 
   const clubs = useMemo(
     () =>
@@ -190,16 +202,24 @@ export default function JoinForm({
     setError("");
 
     if (!clubSlug) return setError("Please choose your club.");
+    if (!teamId) return setError("Please choose the team you'd like to join.");
     if (!name.trim()) return setError("Please enter your full name.");
     if (!Number.isInteger(ageNum) || ageNum < 6 || ageNum > 99)
       return setError("Please enter a valid age (6–99).");
+    if (ageRange && (ageNum < ageRange.min || ageNum > ageRange.max))
+      return setError(
+        `${selectedClub?.name ?? "This club"} is for ages ${ageRange.min}–${ageRange.max} — pick a club that fits your age.`,
+      );
+    if (!gender) return setError("Please select your gender.");
     const phoneDigits = phone.replace(/\D/g, "");
     if (phoneDigits.length < 9 || phoneDigits.length > 15)
-      return setError("Please enter a valid phone / WhatsApp number.");
+      return setError("Please enter a valid WhatsApp number.");
     if (isMinor && (!guardianName.trim() || guardianPhone.replace(/\D/g, "").length < 9))
       return setError(
         "Under 18s need a parent or guardian name and phone number.",
       );
+    if (isMinor && !parentConsent)
+      return setError("A parent or guardian must give consent for under 18s to join.");
     if (!alcohol || !smoking || !drugs)
       return setError("Please answer the three questions about your lifestyle.");
     if (isYouthClub && !sexuallyActive)
@@ -213,15 +233,16 @@ export default function JoinForm({
     const payload = {
       clubSlug,
       clubName: selectedClub?.name,
-      teamId: selectedTeam?.id,
+      teamId,
       teamName: selectedTeam?.name,
       sport: selectedTeam?.sport,
       name: name.trim(),
       age: ageNum,
-      gender: gender || undefined,
+      gender,
       phone: phone.trim(),
       area: area.trim() || undefined,
       guardian: isMinor ? { name: guardianName.trim(), phone: guardianPhone.trim() } : undefined,
+      parentConsent: isMinor ? parentConsent : undefined,
       conduct: {
         alcohol,
         smoking,
@@ -298,12 +319,13 @@ export default function JoinForm({
                 </label>
                 <select
                   id="team"
+                  required
                   className={input}
                   value={teamId}
                   onChange={(e) => setTeamId(e.target.value)}
                   disabled={!clubSlug}
                 >
-                  <option value="">No team yet — coach your club…</option>
+                  <option value="">Choose your team…</option>
                   {teams.map((t: RelateTeam) => (
                     <option key={t.id} value={t.id}>
                       {t.name} ({t.sport})
@@ -316,10 +338,11 @@ export default function JoinForm({
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-gray bg-alice-blue rounded-lg px-3 py-2">
                 <LuUsers className="text-cyan shrink-0" />
                 <span>
-                  {selectedClub.name} · {selectedTeam ? selectedTeam.name : "no team yet"}.{" "}
+                  {selectedClub.name} · {selectedTeam ? selectedTeam.name : "choose a team below"} ·
+                  ages {ageRange?.label ?? "—"}.
                   {isYouthClub
-                    ? "18–21s in Surge and 21–33s in Pulse join as young adults with their own conduct standards below."
-                    : "All members follow Relate's community standards."}
+                    ? " 18–21s in Surge and 21–33s in Pulse join as young adults with their own conduct standards below."
+                    : " All members follow Relate's community standards."}
                 </span>
               </div>
             )}
@@ -354,29 +377,39 @@ export default function JoinForm({
                   onChange={(e) => setAge(e.target.value)}
                   placeholder="e.g. 17"
                 />
+                {selectedClub && ageRange && (
+                  <p
+                    className={`mt-1 text-xs ${
+                      ageFitsClub ? "text-slate-gray" : "font-semibold text-red-500"
+                    }`}
+                  >
+                    {selectedClub.name} is for ages {ageRange.min}–{ageRange.max}.
+                  </p>
+                )}
               </div>
               <div>
                 <label className={label} htmlFor="gender">
-                  Gender <span className="normal-case font-normal">(optional)</span>
+                  Gender
                 </label>
                 <select
                   id="gender"
+                  required
                   className={input}
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                 >
-                  <option value="">Prefer not to say</option>
-                  <option>Female</option>
-                  <option>Male</option>
-                  <option>Other</option>
+                  <option value="">Select…</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
                 </select>
               </div>
               <div>
                 <label className={label} htmlFor="phone">
-                  Phone / WhatsApp
+                  WhatsApp number
                 </label>
                 <input
                   id="phone"
+                  required
                   className={input}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -409,6 +442,7 @@ export default function JoinForm({
                     </label>
                     <input
                       id="guardianName"
+                      required
                       className={input}
                       value={guardianName}
                       onChange={(e) => setGuardianName(e.target.value)}
@@ -420,12 +454,26 @@ export default function JoinForm({
                     </label>
                     <input
                       id="guardianPhone"
+                      required
                       className={input}
                       value={guardianPhone}
                       onChange={(e) => setGuardianPhone(e.target.value)}
                     />
                   </div>
                 </div>
+                <label className="mt-4 flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={parentConsent}
+                    onChange={(e) => setParentConsent(e.target.checked)}
+                    className="mt-0.5 size-4 accent-cyan"
+                  />
+                  <span className="text-sm text-navy leading-relaxed">
+                    As a parent or guardian, I consent to my child joining this
+                    Relate team and taking part in its activities.
+                  </span>
+                </label>
               </div>
             )}
           </div>
