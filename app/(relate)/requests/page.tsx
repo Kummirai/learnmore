@@ -1,6 +1,8 @@
 import { FaAndroid } from "react-icons/fa";
 import {
   LuBaby,
+  LuBookOpen,
+  LuHandHeart,
   LuHeartHandshake,
   LuHouse,
   LuPiggyBank,
@@ -97,7 +99,6 @@ export default function RequestsPage() {
         }
         watermark={"Care"}
         bgImage={"https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&q=80"}
-        navbar={false}
         titleSize={"clamp(3.75rem, 12vw, 7.5rem)"}
         actions={
           <>
@@ -196,6 +197,74 @@ export default function RequestsPage() {
               <p className="mt-2 text-sm text-slate-600 leading-relaxed">{step.body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="container mx-auto max-w-6xl px-6 pb-14 md:pb-16">
+        <div className="rounded-2xl bg-navy text-white p-8 md:p-10">
+          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-light">
+            <LuBookOpen /> Encouragement
+          </p>
+          <div className="mt-5 space-y-5">
+            <blockquote>
+              <p className="text-lg md:text-xl font-medium italic leading-relaxed">
+                &ldquo;Carry each other&rsquo;s burdens, and in this way you will fulfil the law
+                of Christ.&rdquo;
+              </p>
+              <footer className="mt-2 text-xs font-semibold uppercase tracking-widest text-cyan-light">
+                Galatians 6:2
+              </footer>
+            </blockquote>
+            <div className="h-px bg-white/15" />
+            <blockquote>
+              <p className="text-lg md:text-xl font-medium italic leading-relaxed">
+                &ldquo;Religion that God our Father accepts as pure and faultless is this: to
+                look after orphans and widows in their distress.&rdquo;
+              </p>
+              <footer className="mt-2 text-xs font-semibold uppercase tracking-widest text-cyan-light">
+                James 1:27
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <span className="text-cyan-dark">
+              <LuHandHeart className="text-2xl" />
+            </span>
+            <h3 className="mt-4 text-lg font-semibold text-navy-dark">Need help?</h3>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              Ask. Tell us what is happening — we read every request and either refer you to the
+              right support or help directly.
+            </p>
+            <a
+              href={"#what-you-can-request"}
+              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+            >
+              See what you can request <span aria-hidden>→</span>
+            </a>
+          </div>
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <span className="text-cyan-dark">
+              <LuHeartHandshake className="text-2xl" />
+            </span>
+            <h3 className="mt-4 text-lg font-semibold text-navy-dark">Able to help?</h3>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              Give, volunteer or refer someone in need. Many hands carry the load — every bit
+              counts.
+            </p>
+            <a
+              href={`https://wa.me/27782677436?text=${encodeURIComponent(
+                "Hi RelateWorld! I'd like to help with requests — giving, volunteering or making a referral.",
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+            >
+              Talk to the team <span aria-hidden>→</span>
+            </a>
+          </div>
         </div>
       </section>
 

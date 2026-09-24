@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { FaAndroid } from "react-icons/fa";
 import {
+  LuBookOpen,
   LuCircleCheck,
+  LuHandHeart,
   LuHeart,
+  LuHeartHandshake,
   LuSend,
   LuShieldCheck,
   LuSmartphone,
@@ -44,7 +47,6 @@ export default function PrayerRequestsPage() {
         }
         watermark={"Pray"}
         bgImage={"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80"}
-        navbar={false}
         titleSize={"clamp(3.75rem, 12vw, 7.5rem)"}
         actions={
           <>
@@ -105,6 +107,73 @@ export default function PrayerRequestsPage() {
             stay within the prayer team — nothing is shared publicly. If you would rather speak to
             someone directly, use the WhatsApp option below and we will point you to a team member.
           </p>
+        </div>
+      </section>
+
+      <section className="container mx-auto max-w-6xl px-6 pb-14 md:pb-16">
+        <div className="rounded-2xl bg-navy text-white p-8 md:p-10">
+          <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-cyan-light">
+            <LuBookOpen /> Encouragement
+          </p>
+          <div className="mt-5 space-y-5">
+            <blockquote>
+              <p className="text-lg md:text-xl font-medium italic leading-relaxed">
+                &ldquo;Come to me, all you who are weary and burdened, and I will give you
+                rest.&rdquo;
+              </p>
+              <footer className="mt-2 text-xs font-semibold uppercase tracking-widest text-cyan-light">
+                Matthew 11:28
+              </footer>
+            </blockquote>
+            <div className="h-px bg-white/15" />
+            <blockquote>
+              <p className="text-lg md:text-xl font-medium italic leading-relaxed">
+                &ldquo;Pray for one another, so that you may be healed.&rdquo;
+              </p>
+              <footer className="mt-2 text-xs font-semibold uppercase tracking-widest text-cyan-light">
+                James 5:16
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <span className="text-cyan-dark">
+              <LuHandHeart className="text-2xl" />
+            </span>
+            <h3 className="mt-4 text-lg font-semibold text-navy-dark">Need prayer?</h3>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              Share it in the app. It stays confidential and is lifted through the six daily
+              prayer moments.
+            </p>
+            <a
+              href={"/relate-app.apk"}
+              download
+              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+            >
+              Send your request <span aria-hidden>→</span>
+            </a>
+          </div>
+          <div className="rounded-2xl border border-slate-100 bg-white p-6 shadow-sm">
+            <span className="text-cyan-dark">
+              <LuHeartHandshake className="text-2xl" />
+            </span>
+            <h3 className="mt-4 text-lg font-semibold text-navy-dark">Want to pray?</h3>
+            <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+              Join the prayer team and stand with families through hard seasons.
+            </p>
+            <a
+              href={`https://wa.me/27782677436?text=${encodeURIComponent(
+                "Hi RelateWorld! I'd like to join the prayer team.",
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+            >
+              Join the prayer team <span aria-hidden>→</span>
+            </a>
+          </div>
         </div>
       </section>
 

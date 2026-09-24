@@ -35,6 +35,32 @@ const CLUB_AGE_RANGES: Record<string, { min: number; max: number; label: string 
   pulse: { min: 21, max: 33, label: "21–33 yrs" },
 };
 
+const GATHERING_ORDER: { title: string; body: string }[] = [
+  { title: "Opening prayer", body: "we hand the evening to God." },
+  {
+    title: "Monthly devotional review",
+    body: "read this month's devotional before you come; we share what it spoke to us.",
+  },
+  { title: "Celebrations", body: "wins, milestones and testimonies go first." },
+  {
+    title: "Club & team review",
+    body: "results, training, attendance and progress.",
+  },
+  {
+    title: "Disciplinaries & matters",
+    body: "behaviour concerns handled in love, not in the street.",
+  },
+  {
+    title: "Registrations & roles",
+    body: "new members welcomed, captains and helpers confirmed.",
+  },
+  { title: "Resolutions", body: "decisions agreed and goals set for the month ahead." },
+  {
+    title: "Notices & closing prayer",
+    body: "dates and announcements, then prayer to send us out.",
+  },
+];
+
 type Done = { id: string; status: string; nextSteps?: string };
 
 function YesNoOption({
@@ -594,39 +620,21 @@ export default function JoinForm({
               <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-3">
                 <FaPrayingHands className="text-cyan" /> What happens at a Club Gathering
               </p>
-              <ol className="space-y-2.5 text-sm text-white/85 leading-relaxed list-decimal list-inside">
-                <li>
-                  <span className="font-semibold text-white">Opening prayer</span> — we hand the
-                  evening to God.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Monthly devotional review</span> —
-                  read this month&rsquo;s devotional before you come; we share what it spoke to us.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Celebrations</span> — wins,
-                  milestones and testimonies go first.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Club &amp; team review</span> —
-                  results, training, attendance and progress.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Disciplinaries &amp; matters</span>{" "}
-                  — behaviour concerns handled in love, not in the street.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Registrations &amp; roles</span> —
-                  new members welcomed, captains and helpers confirmed.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Resolutions</span> — decisions agreed
-                  and goals set for the month ahead.
-                </li>
-                <li>
-                  <span className="font-semibold text-white">Notices &amp; closing prayer</span> —
-                  dates and announcements, then prayer to send us out.
-                </li>
+              <ol className="grid gap-2.5 sm:grid-cols-2">
+                {GATHERING_ORDER.map((item, i) => (
+                  <li
+                    key={item.title}
+                    className="flex gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
+                  >
+                    <span className="shrink-0 size-6 rounded-full bg-cyan/20 text-cyan flex items-center justify-center text-xs font-bold">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm leading-relaxed">
+                      <span className="font-semibold text-white">{item.title}</span>{" "}
+                      <span className="text-white/70">— {item.body}</span>
+                    </span>
+                  </li>
+                ))}
               </ol>
             </div>
 
