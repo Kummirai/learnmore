@@ -109,8 +109,8 @@ export default function PrayerPage() {
                                 Next · {isNextTomorrow ? "Tomorrow " : ""}{next.label} Prayer
                             </p>
                             <p className="mt-1 text-4xl md:text-5xl font-bold tabular-nums text-white">
-                                {countdown.h > 0 ? `${countdown.h}ʰ ` : ""}{String(countdown.m).padStart(2, "0")}ᵐ{" "}
-                                {String(countdown.s).padStart(2, "0")}ˢ
+                                {countdown.h > 0 ? `${countdown.h}h ` : ""}{String(countdown.m).padStart(2, "0")}m{" "}
+                                {String(countdown.s).padStart(2, "0").replace(/\d/g, (d) => "⁰¹²³⁴⁵⁶⁷⁸⁹"[Number(d)])}
                             </p>
                             <p className="mt-1 text-sm text-white/60 font-medium">
                                 counts down from sunrise &amp; sunset · Johannesburg

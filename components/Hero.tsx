@@ -47,7 +47,7 @@ function useNextPrayer() {
             const s = Math.floor((diff % 60000) / 1000);
             setNext({
                 label: n.label,
-                countdown: h > 0 ? `${h}ʰ ${String(m).padStart(2, "0")}ᵐ ${String(s).padStart(2, "0")}ˢ` : `${String(m).padStart(2, "0")}ᵐ ${String(s).padStart(2, "0")}ˢ`,
+                countdown: h > 0 ? `${h}h ${String(m).padStart(2, "0")}m ${supSeconds(s)}` : `${String(m).padStart(2, "0")}m ${supSeconds(s)}`,
             });
         };
 
@@ -86,6 +86,9 @@ const btnPrimary = "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 
 const btnGhost = "inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors";
 
 const firstWord = (s: string) => s.split(/[\s–—,·]+/).filter(Boolean).slice(0, 1).join(" ");
+
+const SUP_DIGITS = "⁰¹²³⁴⁵⁶⁷⁸⁹";
+const supSeconds = (n: number) => String(n).padStart(2, "0").replace(/\d/g, (d) => SUP_DIGITS[Number(d)]);
 
 function prayerSlide(prayer: { label: string; countdown: string } | null): Slide {
     return {
