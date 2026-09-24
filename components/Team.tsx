@@ -3,6 +3,8 @@
 import {FaFacebook, FaTwitter, FaInstagramSquare} from "react-icons/fa";
 import {LuShield, LuUsers} from "react-icons/lu";
 import {useState} from "react";
+import {SPORTS_TEAMS} from "@/constants/relate";
+import {SQUADS, SPORTS_DIRECTOR} from "@/constants/squads";
 
 type TeamMember = {
     name: string
@@ -18,6 +20,11 @@ type TeamGroup = {
 }
 
 const photo = (id: string) => `https://images.unsplash.com/${id}?w=200&h=200&fit=crop&crop=face`
+
+const coachMembers: TeamMember[] = SPORTS_TEAMS.map((t) => ({
+    name: SQUADS[t.id]?.coach.name ?? `${t.initials} Coach`,
+    role: `Head Coach · ${t.name}`,
+}))
 
 const groups: TeamGroup[] = [
     {
@@ -51,24 +58,8 @@ const groups: TeamGroup[] = [
     {
         title: "Sports Director & Coaches",
         subtitle: "Leading every Relate team — Sprout, Surge and Pulse squads",
-        featured: {name: "Farai Mabhena", role: "Sports Director", src: photo("photo-1508214751196-bcfd4ca60f91")},
-        members: [
-            {name: "Tendai Zhou", role: "Head Coach · Sprout Kids FC"},
-            {name: "Rudo Gumbo", role: "Head Coach · Sprout Tweens FC"},
-            {name: "Kudzai Moyo", role: "Head Coach · Sprout Teens FC"},
-            {name: "Musa Ndlovu", role: "Head Coach · Surge FC"},
-            {name: "Sandile Mahlangu", role: "Head Coach · Pulse FC"},
-            {name: "Chipo Sibanda", role: "Head Coach · Sprout Kids Netball"},
-            {name: "Nomsa Dube", role: "Head Coach · Sprout Tweens Netball"},
-            {name: "Zanele Khumalo", role: "Head Coach · Sprout Teens Netball"},
-            {name: "Ayanda Ngcobo", role: "Head Coach · Surge Netball"},
-            {name: "Palesa Molefe", role: "Head Coach · Pulse Netball"},
-            {name: "Sipho Ndlovu", role: "Head Coach · Sprout Kids Volleyball"},
-            {name: "Kagiso Moeketsi", role: "Head Coach · Sprout Tweens Volleyball"},
-            {name: "Thabo Selepe", role: "Head Coach · Sprout Teens Volleyball"},
-            {name: "Lwazi Mavuso", role: "Head Coach · Surge Volleyball"},
-            {name: "Nkosinathi Dlamini", role: "Head Coach · Pulse Volleyball"},
-        ]
+        featured: {name: SPORTS_DIRECTOR.name, role: SPORTS_DIRECTOR.role, src: photo("photo-1508214751196-bcfd4ca60f91")},
+        members: coachMembers
     },
 ]
 

@@ -87,12 +87,12 @@ function TeamCard({ team }: { team: RelateTeam }) {
         <p className="mt-1.5 text-sm text-gray-500 leading-relaxed flex-1">
           {team.tagline}
         </p>
-        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
+        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
           <Link
-            href={`/${club?.slug ?? ""}`}
+            href={`/sports/${team.id}`}
             className="text-xs font-semibold text-cyan hover:text-cyan-dark transition-colors"
           >
-            {club?.name ?? "Relate"} club page →
+            {team.name} page →
           </Link>
           <Link
             href={`/join?club=${team.clubSlug}&team=${team.id}`}

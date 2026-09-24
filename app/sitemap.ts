@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { CLUBS, MAGAZINES, STORE_ITEMS, SUB_CLUBS } from "@/constants/relate";
+import { CLUBS, MAGAZINES, STORE_ITEMS, SUB_CLUBS, SPORTS_TEAMS } from "@/constants/relate";
 import { READING_PLANS } from "@/constants/readingPlans";
 
 const SITE_URL = "https://relateworld.org";
@@ -71,6 +71,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
+  const sportsTeams = SPORTS_TEAMS.map((team) => ({
+    url: `${SITE_URL}/sports/${team.id}`,
+    lastModified,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
   return [
     ...main,
     ...clubs,
@@ -78,5 +85,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...magazines,
     ...plans,
     ...storeItems,
+    ...sportsTeams,
   ];
 }
