@@ -296,7 +296,7 @@ export default function Hero() {
 
             {/* ── Content ── */}
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
-                <div className={"flex flex-col gap-5 md:gap-5 text-center md:text-left"}>
+                <div className={"flex flex-col gap-5 text-center md:text-left"}>
                     {/* Chips row + age-range pill on the far right of the same row */}
                     <div className={"flex flex-wrap items-center justify-center gap-3 md:justify-start"}>
                         {slide.ageRange && (
