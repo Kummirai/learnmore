@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import {
+  LuArrowRight,
   LuCalendar,
   LuClock,
   LuLoaderCircle,
   LuMapPin,
-  LuUsers,
 } from "react-icons/lu";
 import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
@@ -54,10 +55,27 @@ const EVENT_SLIDES: HeroSlide[] = [
   },
 ];
 
-type RelateEvent = {
+export type RelateEventAgendaItem = {
+  time?: string;
+  title: string;
+  description?: string;
+  location?: string;
+  host?: string;
+  category?: string;
+  timeFrom?: string;
+  timeTo?: string;
+};
+
+export type RelateEventDetail = {
+  label: string;
+  value: string;
+};
+
+export type RelateEvent = {
   _id: string;
   title?: string;
   date?: string;
+  dateTo?: string;
   time?: string;
   timeTo?: string;
   location?: string;
@@ -68,11 +86,18 @@ type RelateEvent = {
   category?: string;
   eyebrow?: string;
   attending?: number;
+  capacity?: number;
+  host?: string;
+  tags?: string[];
+  agenda?: RelateEventAgendaItem[];
+  notes?: string;
+  details?: RelateEventDetail[];
+  hasRsvpd?: boolean;
 };
 
-const EVENTS_ENDPOINT = "/api/community/events";
+export const EVENTS_ENDPOINT = "/api/community/events";
 
-const seedEvents: RelateEvent[] = [
+export const seedEvents: RelateEvent[] = [
   {
     _id: "seed-netball-teens",
     title: "Relate Netball Teens Tournament",
@@ -89,16 +114,16 @@ const seedEvents: RelateEvent[] = [
   },
 ];
 
-const clubOf = (slug?: string) =>
+export const clubOf = (slug?: string) =>
   SUB_CLUBS.find((c) => c.slug === slug) ?? CLUBS.find((c) => c.slug === slug);
 
-const parentOf = (slug?: string) => {
+export const parentOf = (slug?: string) => {
   const sub = SUB_CLUBS.find((c) => c.slug === slug);
   const parentSlug = sub?.parentSlug ?? slug;
   return CLUBS.find((c) => c.slug === parentSlug) ?? CLUBS.find((c) => c.slug === slug);
 };
 
-const formatLongDate = (iso?: string) => {
+export const formatLongDate = (iso?: string) => {
   if (!iso) return "";
   const d = new Date(`${iso}T00:00:00`);
   return d.toLocaleDateString("en-ZA", {
@@ -109,7 +134,7 @@ const formatLongDate = (iso?: string) => {
   });
 };
 
-const formatShortDate = (iso?: string) => {
+export const formatShortDate = (iso?: string) => {
   if (!iso) return "";
   const d = new Date(`${iso}T00:00:00`);
   return d.toLocaleDateString("en-ZA", {
@@ -119,20 +144,84 @@ const formatShortDate = (iso?: string) => {
   });
 };
 
+export async function fetchEvents(): Promise<RelateEvent[]> {
+  try {
+    const res = await fetch(EVENTS_ENDPOINT);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    const list = Array.isArray(json) ? json : json?.data;
+    if (!Array.isArray(list) || list.length === 0) throw new Error("empty");
+    return list.map((e: Record<string, unknown>) => ({
+      _id: String(e._id ?? e.id ?? Math.random()),
+      title: String(e.title ?? "Relate Event"),
+      date: String(e.date ?? e.starts_at ?? "").slice(0, 10),
+      dateTo: e.dateTo ? String(e.dateTo).slice(0, 10) : undefined,
+      time: e.time ? String(e.time) : undefined,
+      timeTo: e.timeTo ? String(e.timeTo) : undefined,
+      location: e.location ? String(e.location) : undefined,
+      description: e.description ? String(e.description) : undefined,
+      fee: e.fee ? String(e.fee) : undefined,
+      imageUrl:
+        typeof e.imageUrl === "string"
+          ? e.imageUrl
+          : typeof e.image === "string"
+            ? e.image
+            : undefined,
+      clubSlug: e.clubSlug ? String(e.clubSlug) : undefined,
+      category: e.category ? String(e.category) : undefined,
+      eyebrow: e.eyebrow ? String(e.eyebrow) : undefined,
+      attending:
+        typeof e.attending === "number"
+          ? e.attending
+          : typeof e.rsvpCount === "number"
+            ? e.rsvpCount
+            : undefined,
+      capacity:
+        typeof e.capacity === "number" ? e.capacity : undefined,
+      host: e.host ? String(e.host) : undefined,
+      tags: Array.isArray(e.tags)
+        ? e.tags.map((t) => String(t))
+        : undefined,
+      notes: e.notes ? String(e.notes) : undefined,
+      agenda: Array.isArray(e.agenda)
+        ? e.agenda.map((a: Record<string, unknown>) => ({
+            time: a.time ? String(a.time) : undefined,
+            title: String(a.title ?? ""),
+            description: a.description ? String(a.description) : undefined,
+            location: a.location ? String(a.location) : undefined,
+            host: a.host ? String(a.host) : undefined,
+            category: a.category ? String(a.category) : undefined,
+            timeFrom: a.timeFrom ? String(a.timeFrom) : undefined,
+            timeTo: a.timeTo ? String(a.timeTo) : undefined,
+          }))
+        : undefined,
+      details: Array.isArray(e.details)
+        ? e.details.map((d: Record<string, unknown>) => ({
+            label: String(d.label ?? ""),
+            value: String(d.value ?? ""),
+          }))
+        : undefined,
+      hasRsvpd: Boolean(e.hasRsvpd),
+    }));
+  } catch {
+    return seedEvents;
+  }
+}
+
 const dateKey = (iso?: string) => (iso ? new Date(`${iso}T23:59:59`).getTime() : 0);
 const isUpcoming = (iso?: string) => dateKey(iso) >= Date.now();
 
-function EventCard({ event }: { event: RelateEvent }) {
+export function EventCard({ event }: { event: RelateEvent }) {
   const club = clubOf(event.clubSlug);
-  const parent = parentOf(event.clubSlug);
   const gradient = club?.color
     ? `linear-gradient(135deg, ${club.color}, ${club.colorDark})`
     : "linear-gradient(135deg, #16213E, #0891B2)";
 
   return (
-    <article className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="relative h-40 overflow-hidden">
+    <article className="group flex flex-col">
+      <div className="relative h-56 rounded-2xl overflow-hidden">
         {event.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={event.imageUrl}
             alt={event.title ?? "Relate event"}
@@ -147,13 +236,7 @@ function EventCard({ event }: { event: RelateEvent }) {
             <LuCalendar className="text-white/40 text-6xl" />
           </div>
         )}
-        <span
-          className="absolute top-3 left-3 flex items-center gap-1.5 text-white text-[11px] px-2.5 py-1 rounded-full font-medium backdrop-blur"
-          style={{ backgroundColor: `${club?.colorDark ?? "#0E7490"}cc` }}
-        >
-          <LuUsers className="text-xs" />
-          {club?.name ?? (parent?.name ?? "Relate")}
-        </span>
+
       </div>
 
       <div className="flex flex-col flex-1 p-5">
@@ -192,9 +275,19 @@ function EventCard({ event }: { event: RelateEvent }) {
           <span className="text-[11px] uppercase tracking-wide text-gray-400">
             {event.category ?? event.eyebrow ?? "Relate Event"}
           </span>
-          {event.fee && (
-            <span className="text-sm font-semibold text-navy">{event.fee}</span>
-          )}
+          <span className="flex items-center gap-3">
+            {event.fee && (
+              <span className="text-sm font-semibold text-navy">{event.fee}</span>
+            )}
+            <Link
+              href={`/events/${event._id}`}
+              aria-label={`View details for ${event.title ?? "this event"}`}
+              title="View details"
+              className="text-cyan hover:text-cyan-dark transition-colors"
+            >
+              <LuArrowRight className="text-lg" />
+            </Link>
+          </span>
         </div>
       </div>
     </article>
@@ -209,46 +302,11 @@ export default function EventsPage() {
   useEffect(() => {
     let alive = true;
     (async () => {
-      try {
-        const res = await fetch(EVENTS_ENDPOINT);
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        const list = Array.isArray(json) ? json : json?.data;
-        if (!Array.isArray(list) || list.length === 0) throw new Error("empty");
-        if (alive) {
-          setEvents(
-            list.map((e: Record<string, unknown>) => ({
-              _id: String(e._id ?? e.id ?? Math.random()),
-              title: String(e.title ?? "Relate Event"),
-              date: String(e.date ?? e.starts_at ?? "").slice(0, 10),
-              time: e.time ? String(e.time) : undefined,
-              timeTo: e.timeTo ? String(e.timeTo) : undefined,
-              location: e.location ? String(e.location) : undefined,
-              description: e.description ? String(e.description) : undefined,
-              fee: e.fee ? String(e.fee) : undefined,
-              imageUrl:
-                typeof e.imageUrl === "string"
-                  ? e.imageUrl
-                  : typeof e.image === "string"
-                    ? e.image
-                    : undefined,
-              clubSlug: e.clubSlug ? String(e.clubSlug) : undefined,
-              category: e.category ? String(e.category) : undefined,
-              eyebrow: e.eyebrow ? String(e.eyebrow) : undefined,
-              attending:
-                typeof e.attending === "number"
-                  ? e.attending
-                  : typeof e.rsvpCount === "number"
-                    ? e.rsvpCount
-                    : undefined,
-            })),
-          );
-          setLive(true);
-        }
-      } catch {
-        if (alive) setEvents(seedEvents);
-      } finally {
-        if (alive) setLoading(false);
+      const list = await fetchEvents();
+      if (alive) {
+        setEvents(list);
+        setLive(list !== seedEvents);
+        setLoading(false);
       }
     })();
     return () => {

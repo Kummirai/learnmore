@@ -46,7 +46,7 @@ export default function ClubEventsPage() {
               <a
                 key={club.slug}
                 href={`/events#club-${club.slug}`}
-                className="group flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition-shadow"
+                className="group flex flex-col bg-white rounded-2xl overflow-hidden"
               >
                 <div
                   className="relative h-24 flex items-center justify-between px-5 text-white overflow-hidden"
