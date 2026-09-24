@@ -46,7 +46,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
         </div>
         <div className="flex-1 aspect-square rounded-xl overflow-hidden bg-alice-blue border border-gray-200">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={active} alt={item.name} className="w-full h-full object-cover" />
+          <img src={active} alt={item.name} className="w-full h-full object-contain p-2 md:p-4" />
         </div>
       </div>
 
