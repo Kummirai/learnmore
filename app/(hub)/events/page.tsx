@@ -15,6 +15,7 @@ import { CLUBS, SUB_CLUBS } from "@/constants/relate";
 const EVENT_SLIDES: HeroSlide[] = [
   {
     title: "Weekly clubs for every age",
+    shortTitle: "Clubs",
     description:
       "Sprout classes, Surge nights and Pulse meetups — free and open to all.",
     image:
@@ -25,6 +26,7 @@ const EVENT_SLIDES: HeroSlide[] = [
   },
   {
     title: "Worship & prayer nights",
+    shortTitle: "Worship",
     description:
       "Surge fire nights, testimonies and evening prayer, together.",
     image:
@@ -35,6 +37,7 @@ const EVENT_SLIDES: HeroSlide[] = [
   },
   {
     title: "Match days & league",
+    shortTitle: "Matchdays",
     description:
       "Football, netball and volleyball fixtures on the Relate grounds.",
     image:
@@ -45,6 +48,7 @@ const EVENT_SLIDES: HeroSlide[] = [
   },
   {
     title: "Family gatherings",
+    shortTitle: "Family",
     description:
       "Family tables, socials, camps and seasonal celebrations.",
     image:

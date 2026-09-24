@@ -114,16 +114,14 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
     <section
       className={
         overlay
-          ? "absolute inset-x-0 top-0 z-30 pt-2"
+          ? "absolute inset-x-0 top-0 z-30 pt-0 sm:mb-30"
           : "bg-white border-b border-gray-100"
       }
     >
       {overlay && (
         <div
           aria-hidden={true}
-          className={
-            "pointer-events-none absolute inset-x-0 top-0 h-32 -z-10"
-          }
+          className={"pointer-events-none absolute inset-x-0 top-0 h-32 -z-10"}
           style={{
             background:
               "linear-gradient(180deg, rgba(21,31,58,0.65) 0%, rgba(21,31,58,0.25) 60%, transparent 100%)",
@@ -135,7 +133,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           "max-w-6xl mx-auto px-4 md:px-0 flex items-center justify-between gap-4"
         }
       >
-<Link
+        <Link
           href={"/"}
           className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-3 md:py-4`}
         >
@@ -147,10 +145,10 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             className={`relative h-14 md:h-20 w-auto object-contain self-center`}
           />
         </Link>
-      <nav className={"hidden lg:block"}>
-        <ul
-          className={`flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`}
-        >
+        <nav className={"hidden lg:block"}>
+          <ul
+            className={`flex items-center gap-3 xl:gap-5 py-3 ${overlay ? "text-white" : "text-navy"} whitespace-nowrap`}
+          >
             <li>
               <Link
                 href={"/"}

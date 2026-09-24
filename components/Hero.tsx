@@ -295,7 +295,7 @@ export default function Hero() {
             <Navbar overlay />
 
             {/* ── Content ── */}
-            <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-16"}>
+            <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-16 mt-15"}>
                 <div className={"flex flex-col gap-3 text-center md:text-left"}>
                     {/* Chips row + age-range pill on the far right of the same row */}
                     <div className={"flex flex-wrap items-center justify-center gap-3 md:justify-start"}>
