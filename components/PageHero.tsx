@@ -59,9 +59,9 @@ export default function PageHero({title, tagline, description, watermark, chips 
             )}
 
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
-                <div className={"flex flex-col gap-5 md:gap-6"}>
+                <div className={"flex flex-col gap-5 md:gap-6 text-center md:text-left"}>
                     {/* Always render the chips row (like the homepage hero) so titles start at the same height; an empty row reserves the pill height for whitespace. */}
-                    <div className={"flex flex-wrap items-center gap-3"}>
+                    <div className={"flex flex-wrap items-center justify-center gap-3 md:justify-start"}>
                         {chips.map((chip, i) => (
                             <span key={i}
                                   className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-white/90 font-medium"}>
@@ -70,7 +70,7 @@ export default function PageHero({title, tagline, description, watermark, chips 
                             </span>
                         ))}
                         {chipsEnd && (
-                            <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
+                            <span className={"md:ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
                                 {chipsEnd}
                             </span>
                         )}
@@ -87,26 +87,26 @@ export default function PageHero({title, tagline, description, watermark, chips 
                         </p>
                     )}
                     {description && (
-                        <p className={"max-w-xl text-sm md:text-base text-white/80 leading-relaxed"}>
+                        <p className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white/80 leading-relaxed"}>
                             {description}
                         </p>
                     )}
 
                     {actions && (
-                        <div className={"flex flex-wrap items-center gap-3 mt-2"}>
+                        <div className={"flex flex-col items-center gap-3 mt-2 md:flex-row md:items-center md:justify-start"}>
                             {actions}
                         </div>
                     )}
 
                     {showMetaBar && (
-                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center gap-x-10 gap-y-4 text-sm"}>
+                        <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm md:justify-start"}>
                             {meta?.map((m) => (
                                 <div key={m.label}>
                                     <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>{m.label}</span>
                                     <span className={"font-semibold text-white"}>{m.value}</span>
                                 </div>
                             ))}
-                            {metaEnd && <div className={"ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>{metaEnd}</div>}
+                            {metaEnd && <div className={"md:ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>{metaEnd}</div>}
                         </div>
                     )}
 

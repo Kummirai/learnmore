@@ -268,11 +268,11 @@ export default function Hero() {
 
             {/* ── Content ── */}
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
-                <div className={"flex flex-col gap-5 md:gap-6"}>
+                <div className={"flex flex-col gap-5 md:gap-6 text-center md:text-left"}>
                     {/* Chips row + age-range pill on the far right of the same row */}
-                    <div className={"flex flex-wrap items-center gap-3"}>
+                    <div className={"flex flex-wrap items-center justify-center gap-3 md:justify-start"}>
                         {slide.ageRange && (
-                            <span className={"ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
+                            <span className={"md:ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
                                 {slide.ageRange}
                             </span>
                         )}
@@ -289,14 +289,14 @@ export default function Hero() {
                     <p key={`tg-${slide.key}`} className={"text-xl md:text-2xl font-medium"} style={{ color: "var(--club-accent)", filter: "brightness(1.15)" }}>
                         {slide.tagline}
                     </p>
-                    <p key={`d-${slide.key}`} className={"max-w-xl text-sm md:text-base text-white/80 leading-relaxed"}>
+                    <p key={`d-${slide.key}`} className={"max-w-xl mx-auto md:mx-0 text-sm md:text-base text-white/80 leading-relaxed"}>
                         {slide.description}
                     </p>
 
-                    <div className={"flex flex-wrap items-center gap-3 mt-2"}>{slide.actions}</div>
+                    <div className={"flex flex-col items-center gap-3 mt-2 md:flex-row md:items-center md:justify-start"}>{slide.actions}</div>
 
                     {/* Meta bar */}
-                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center gap-x-10 gap-y-4 text-sm"}>
+                    <div className={"mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-10 gap-y-4 text-sm md:justify-start"}>
                         <div>
                             <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>Clubs</span>
                             <span className={"font-semibold text-white"}>7</span>
@@ -309,7 +309,7 @@ export default function Hero() {
                             <span className={"block text-[11px] uppercase tracking-widest text-white/70 mb-0.5"}>Free</span>
                             <span className={"font-semibold text-white"}>100%</span>
                         </div>
-                        <div className={"ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>
+                        <div className={"md:ml-auto flex flex-wrap items-center gap-x-8 gap-y-2"}>
                             <Link href={"/about"} className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}>
                                 <span className={"text-[11px] uppercase tracking-widest text-white/70"}>Since 2026</span>
                                 About Relate →
@@ -318,7 +318,7 @@ export default function Hero() {
                     </div>
 
                     {/* ── Carousel progress dots ── */}
-                    <div className={"flex items-center gap-1.5 mt-4"}>
+                    <div className={"flex items-center justify-center gap-1.5 mt-4 md:justify-start"}>
                         {slides.map((s, i) => (
                             <button
                                 key={s.key}
