@@ -73,7 +73,7 @@ export default function PageHero({title, tagline, description, watermark, action
             )}
 
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
-                <div className={"flex flex-col gap-5 md:gap-7 text-center md:text-left"}>
+                <div className={"flex flex-col gap-5 md:gap-5 text-center md:text-left"}>
                     {/* Reserved whitespace where tag pills used to sit — titles stay aligned without the tags. */}
                     <div aria-hidden={"true"}>
                         <span className={"block h-[30px]"}/>
