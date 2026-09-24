@@ -143,7 +143,7 @@ export default function Footer() {
                   placeholder="Your Email"
                   required
                   className={
-                    "bg-navy-soft text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-[color:var(--club-accent)] text-white placeholder:text-cyan-light/60"
+                    "bg-navy-soft text-base md:text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-[color:var(--club-accent)] text-white placeholder:text-cyan-light/60"
                   }
                 />
                 <button

@@ -67,7 +67,7 @@ export default function ContactPage() {
                     name={"name"}
                     required
                     className={
-                      "w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan"
+                      "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan"
                     }
                   />
                 </div>
@@ -84,7 +84,7 @@ export default function ContactPage() {
                     type={"email"}
                     required
                     className={
-                      "w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan"
+                      "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan"
                     }
                   />
                 </div>
@@ -99,7 +99,7 @@ export default function ContactPage() {
                     id={"subject"}
                     name={"subject"}
                     className={
-                      "w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan bg-white"
+                      "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan bg-white"
                     }
                   >
                     <option>General Enquiry</option>
@@ -121,7 +121,7 @@ export default function ContactPage() {
                     rows={4}
                     required
                     className={
-                      "w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan resize-none"
+                      "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan resize-none"
                     }
                   />
                 </div>

@@ -73,7 +73,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
       <Navbar overlay />
 
-      <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24">
+      <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center pt-24 pb-44 sm:pb-24">
         <div className="max-w-2xl">
           <h1
             className="font-black tracking-tight leading-none text-white mt-6"

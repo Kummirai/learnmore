@@ -20,7 +20,7 @@ function Field({label, name, type = "text", error, ...props}: {
                 id={name}
                 name={name}
                 type={type}
-                className={`w-full px-4 py-2.5 rounded border ${error ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition`}
+                className={`w-full px-4 py-2.5 rounded border ${error ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition`}
                 {...props}
             />
             {error && <p className={"text-red-500 text-xs mt-1"}>{error}</p>}
@@ -102,7 +102,7 @@ export default function EnrollPage() {
                                            className={"block text-sm font-medium text-gray-700 mb-1"}>Current
                                         Grade</label>
                                     <select id={"grade"} name={"grade"}
-                                            className={`w-full px-4 py-2.5 rounded border ${state?.errors?.grade ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition bg-white`}>
+                                            className={`w-full px-4 py-2.5 rounded border ${state?.errors?.grade ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition bg-white`}>
                                         <option value="">Select grade...</option>
                                         {grades.map(g => (
                                             <option key={g} value={g}>Grade {g}</option>
@@ -122,7 +122,7 @@ export default function EnrollPage() {
                                    className={"block text-sm font-medium text-gray-700 mb-1"}>Additional Notes
                                 (optional)</label>
                             <textarea id={"notes"} name={"notes"} rows={3}
-                                      className={"w-full px-4 py-2.5 rounded border border-gray-300 text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition resize-none"}
+                                      className={"w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition resize-none"}
                                       placeholder={"Any special requirements or information..."}/>
                         </div>
 

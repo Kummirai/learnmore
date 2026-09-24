@@ -7,7 +7,7 @@ import {useState} from "react";
 type TeamMember = {
     name: string
     role: string
-    src: string
+    src?: string
 }
 
 type TeamGroup = {
@@ -48,16 +48,45 @@ const groups: TeamGroup[] = [
             {name: "Base Director", role: "Couples · socials & retreats", src: photo("photo-1516589178581-6cd7833ae3b2")},
         ]
     },
+    {
+        title: "Sports Director & Coaches",
+        subtitle: "Leading every Relate team — Sprout, Surge and Pulse squads",
+        featured: {name: "Farai Mabhena", role: "Sports Director", src: photo("photo-1508214751196-bcfd4ca60f91")},
+        members: [
+            {name: "Tendai Zhou", role: "Head Coach · Sprout Kids FC"},
+            {name: "Rudo Gumbo", role: "Head Coach · Sprout Tweens FC"},
+            {name: "Kudzai Moyo", role: "Head Coach · Sprout Teens FC"},
+            {name: "Musa Ndlovu", role: "Head Coach · Surge FC"},
+            {name: "Sandile Mahlangu", role: "Head Coach · Pulse FC"},
+            {name: "Chipo Sibanda", role: "Head Coach · Sprout Kids Netball"},
+            {name: "Nomsa Dube", role: "Head Coach · Sprout Tweens Netball"},
+            {name: "Zanele Khumalo", role: "Head Coach · Sprout Teens Netball"},
+            {name: "Ayanda Ngcobo", role: "Head Coach · Surge Netball"},
+            {name: "Palesa Molefe", role: "Head Coach · Pulse Netball"},
+            {name: "Sipho Ndlovu", role: "Head Coach · Sprout Kids Volleyball"},
+            {name: "Kagiso Moeketsi", role: "Head Coach · Sprout Tweens Volleyball"},
+            {name: "Thabo Selepe", role: "Head Coach · Sprout Teens Volleyball"},
+            {name: "Lwazi Mavuso", role: "Head Coach · Surge Volleyball"},
+            {name: "Nkosinathi Dlamini", role: "Head Coach · Pulse Volleyball"},
+        ]
+    },
 ]
 
 function MemberCard({member, featured = false}: {member: TeamMember; featured?: boolean}) {
+    const initials = member.name.split(" ").map((w) => w[0]).slice(0, 2).join("")
     return (
         <div className={`text-center group bg-white rounded-xl border p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full
             ${featured ? "border-cyan shadow-md" : "border-gray-200"}`}>
             <div
                 className={"size-36 sm:size-40 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300"}>
-                <img src={member.src} alt={member.name}
-                     className={"size-full object-cover"}/>
+                {member.src ? (
+                    <img src={member.src} alt={member.name}
+                         className={"size-full object-cover"}/>
+                ) : (
+                    <div className={"size-full flex items-center justify-center bg-gradient-to-br from-navy to-cyan text-white text-4xl font-black"}>
+                        {initials}
+                    </div>
+                )}
             </div>
             <h4 className={"text-xl font-semibold text-gray-800"}>{member.name}</h4>
             <p className={"text-cyan text-sm mb-3 flex-1"}>{member.role}</p>

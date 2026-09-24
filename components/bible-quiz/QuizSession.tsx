@@ -177,7 +177,7 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
                             value={name}
                             onChange={(e) => setName(e.target.value.slice(0, 40))}
                             placeholder="How your club board should show you"
-                            className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-3 text-sm outline-none focus:border-[#f5b82e] focus:ring-2 focus:ring-[#f5b82e]/30 bg-white"
+                            className="mt-2 w-full rounded-lg border border-gray-200 px-4 py-3 text-base md:text-sm outline-none focus:border-[#f5b82e] focus:ring-2 focus:ring-[#f5b82e]/30 bg-white"
                         />
                     </label>
 

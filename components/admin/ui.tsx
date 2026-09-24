@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 /* Shared admin UI primitives — styled with the site's navy/cyan palette. */
 
 export const inputCls =
-    "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan focus:ring-2 focus:ring-cyan/20 placeholder:text-gray-400";
+    "w-full rounded-xl border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 shadow-sm outline-none transition focus:border-cyan focus:ring-2 focus:ring-cyan/20 placeholder:text-gray-400";
 
 export function Field({
     label,

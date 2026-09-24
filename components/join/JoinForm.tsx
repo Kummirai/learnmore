@@ -267,7 +267,7 @@ export default function JoinForm({
   }
 
   const input =
-    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm focus:outline-none focus:border-cyan";
+    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm focus:outline-none focus:border-cyan";
   const label = "block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5";
   const sectionBadge = "text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1";
 

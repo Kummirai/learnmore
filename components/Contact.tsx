@@ -72,7 +72,7 @@ export default function Contact() {
                   placeholder="Your Name"
                   required
                   className={
-                    "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
+                    "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
                   }
                 />
                 <input
@@ -80,7 +80,7 @@ export default function Contact() {
                   placeholder="Your Email"
                   required
                   className={
-                    "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
+                    "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
                   }
                 />
               </div>
@@ -88,7 +88,7 @@ export default function Contact() {
                 type="text"
                 placeholder="Subject"
                 className={
-                  "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
+                  "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
                 }
               />
               <textarea
@@ -96,7 +96,7 @@ export default function Contact() {
                 placeholder="Your Message"
                 required
                 className={
-                  "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan resize-none"
+                  "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan resize-none"
                 }
               />
               <Link

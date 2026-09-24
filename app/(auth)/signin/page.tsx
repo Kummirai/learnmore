@@ -7,7 +7,7 @@ import { LuMail, LuEye, LuEyeOff, LuArrowLeft } from "react-icons/lu";
 import { useAuth } from "@/components/AuthProvider";
 
 const inputCls =
-    "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-[color:var(--club-accent)] focus:ring-2 focus:ring-[color:var(--club-accent)]/25 transition";
+    "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-base md:text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-[color:var(--club-accent)] focus:ring-2 focus:ring-[color:var(--club-accent)]/25 transition";
 
 export default function SignInPage() {
     const { signInWith, signInWithEmail, signUpWithEmail } = useAuth();
