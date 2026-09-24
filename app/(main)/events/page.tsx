@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import {
-  LuArrowLeft,
   LuCalendar,
   LuClock,
   LuLoaderCircle,
   LuMapPin,
   LuUsers,
 } from "react-icons/lu";
+import PageHero from "@/components/PageHero";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
 
 type RelateEvent = {
@@ -28,7 +27,7 @@ type RelateEvent = {
   attending?: number;
 };
 
-const EVENTS_ENDPOINT = "https://relate-iota.vercel.app/api/community/events";
+const EVENTS_ENDPOINT = "/api/community/events";
 
 const seedEvents: RelateEvent[] = [
   {
@@ -237,35 +236,41 @@ export default function EventsPage() {
   );
 
   return (
-    <section className="flex-1 px-4 py-12">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-12 flex-wrap gap-4">
-          <div>
-            <Link
-              href="/"
-              className="inline-flex items-center gap-1.5 text-sm text-cyan hover:text-cyan-dark transition-colors"
-            >
-              <LuArrowLeft /> Back to Home
-            </Link>
-            <h1 className="mt-3 text-3xl md:text-4xl font-semibold text-gray-800">
-              Events
-            </h1>
-            <p className="mt-2 text-gray-500 max-w-lg">
-              {live
-                ? "Live from the Relate community — grouped by club, sorted by date."
-                : "Community events across Relate clubs, sorted by date."}
-            </p>
-          </div>
-
+    <>
+      <PageHero
+        title="Events"
+        tagline="Community · Calendars · Match days"
+        description="Everything happening across the Relate community — club meetups, worship nights, match days, family gatherings and more, sorted by date."
+        watermark="Events"
+        chips={[
+          { dot: true, label: "Weekly" },
+          { dot: true, label: "Free" },
+          { dot: true, label: "All clubs" },
+        ]}
+        meta={[
+          { label: "Live", value: live ? "Backend feed" : "Sample preview" },
+          { label: "Clubs", value: "7 clubs" },
+          { label: "Cost", value: "Free" },
+        ]}
+        actions={
+          <a
+            href="/events/clubs"
+            className="inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
+          >
+            Browse club events →
+          </a>
+        }
+      />
+      <section className="flex-1 px-4 py-12">
+        <div className="max-w-6xl mx-auto">
           {loading && (
-            <div className="flex items-center gap-2 text-sm text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
               <LuLoaderCircle className="animate-spin" />
               Loading events…
             </div>
           )}
-        </div>
 
-        {loading ? (
+          {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 3 }).map((_, i) => (
               <div
@@ -340,18 +345,10 @@ export default function EventsPage() {
                 </div>
               </div>
             )}
-
-            <div className="mt-12 text-center">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-1.5 text-sm text-cyan hover:text-cyan-dark transition-colors"
-              >
-                <LuArrowLeft /> Back to Home
-              </Link>
-            </div>
           </>
         )}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

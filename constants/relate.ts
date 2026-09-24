@@ -519,6 +519,105 @@ export function getStoreItem(id: string): StoreItem | undefined {
   return STORE_ITEMS.find((s) => s.id === id);
 }
 
+export type RelateSport = "Football" | "Netball" | "Volleyball";
+
+export type RelateTeam = {
+  id: string;
+  clubSlug: string;
+  sport: RelateSport;
+  name: string;
+  initials: string;
+  tagline: string;
+};
+
+export const SPORTS: RelateSport[] = ["Football", "Netball", "Volleyball"];
+
+export const SPORTS_TEAMS: RelateTeam[] = [
+  // Football
+  {
+    id: "sk-fc",
+    clubSlug: "sprout",
+    sport: "Football",
+    name: "Sprout Kids FC",
+    initials: "SK FC",
+    tagline: "Our youngest squad — Saturday kickabouts, camps and fun skills games.",
+  },
+  {
+    id: "surge-fc",
+    clubSlug: "surge",
+    sport: "Football",
+    name: "Surge FC",
+    initials: "SFC",
+    tagline: "Youth league team — midweek training, weekend matches.",
+  },
+  {
+    id: "pulse-fc",
+    clubSlug: "pulse",
+    sport: "Football",
+    name: "Pulse FC",
+    initials: "PFC",
+    tagline: "Sunday fixtures under the lights at the Relate grounds.",
+  },
+  // Netball
+  {
+    id: "sk-netball",
+    clubSlug: "sprout",
+    sport: "Netball",
+    name: "Sprout Kids Netball",
+    initials: "SKN",
+    tagline: "Saturday morning netball for kids — all positions, all fun.",
+  },
+  {
+    id: "surge-netball",
+    clubSlug: "surge",
+    sport: "Netball",
+    name: "Surge Netball",
+    initials: "SN",
+    tagline: "Competitive youth netball running with the school term.",
+  },
+  {
+    id: "pulse-netball",
+    clubSlug: "pulse",
+    sport: "Netball",
+    name: "Pulse Netball",
+    initials: "PN",
+    tagline: "Evening netball clinic — every skill level welcome.",
+  },
+  // Volleyball
+  {
+    id: "sk-volleyball",
+    clubSlug: "sprout",
+    sport: "Volleyball",
+    name: "Sprout Kids Volleyball",
+    initials: "SKV",
+    tagline: "Friday-afternoon volley for the little hitters.",
+  },
+  {
+    id: "surge-volleyball",
+    clubSlug: "surge",
+    sport: "Volleyball",
+    name: "Surge Volleyball",
+    initials: "SV",
+    tagline: "Friday court sessions — learn the game, make the team.",
+  },
+  {
+    id: "pulse-volleyball",
+    clubSlug: "pulse",
+    sport: "Volleyball",
+    name: "Pulse Volleyball",
+    initials: "PV",
+    tagline: "Weekend tournaments and social volleyball.",
+  },
+];
+
+export function teamsForSport(sport: RelateSport): RelateTeam[] {
+  return SPORTS_TEAMS.filter((t) => t.sport === sport);
+}
+
+export function teamsForClub(clubSlug: string): RelateTeam[] {
+  return SPORTS_TEAMS.filter((t) => t.clubSlug === clubSlug);
+}
+
 const SPROUT_CLASS_PROGRAMS: RelateProgram[] = [
   {
     name: "Bible Quiz",

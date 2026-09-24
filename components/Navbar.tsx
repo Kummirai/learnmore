@@ -12,6 +12,15 @@ type NavGroup = { link: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
+    link: "Events & Sports",
+    items: [
+      { link: "Events", path: "/events" },
+      { link: "Club Events", path: "/events/clubs" },
+      { link: "Sports", path: "/sports" },
+      { link: "Club Sports", path: "/sports/clubs" },
+    ],
+  },
+  {
     link: "Clubs",
     items: [
       { link: "Sprout", path: "/sprout" },

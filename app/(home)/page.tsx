@@ -4,7 +4,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import Stats from "@/components/Stats";
 import Courses from "@/components/Courses";
 import EnrollCta from "@/components/EnrollCta";
-import Events from "@/components/Events";
+import EventsSports from "@/components/EventsSports";
 import PhotoHighlights from "@/components/PhotoHighlights";
 import Facilities from "@/components/Facilities";
 import NewsHighlights from "@/components/NewsHighlights";
@@ -24,7 +24,7 @@ export default function Home() {
       <Stats />
       <Courses />
       <EnrollCta />
-      <Events />
+      <EventsSports />
       <PhotoHighlights />
       <Facilities />
       <NewsHighlights />
