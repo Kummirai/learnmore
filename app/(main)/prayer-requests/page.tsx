@@ -1,12 +1,13 @@
 import Link from "next/link";
+import { FaAndroid } from "react-icons/fa";
 import {
-  LuArrowLeft,
   LuCircleCheck,
   LuHeart,
   LuSend,
   LuShieldCheck,
   LuSmartphone,
 } from "react-icons/lu";
+import PageHero from "@/components/PageHero";
 import RequestAppCta from "@/components/RequestAppCta";
 
 const STEPS = [
@@ -35,36 +36,52 @@ const STEPS = [
 export default function PrayerRequestsPage() {
   return (
     <main className="min-h-screen bg-ghost-white">
-      <section className="relative overflow-hidden bg-navy-dark">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(15,163,196,0.5) 78%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="relative container mx-auto max-w-6xl px-6 py-14 md:py-20">
+      <PageHero
+        title={"Prayer Requests"}
+        tagline={"share the load — we stand with you"}
+        description={
+          "We would love to pray with you. Share a prayer request and our prayer team will pray for it through the six daily prayer moments. Every request is read, reviewed with care and kept confidential."
+        }
+        watermark={"Pray"}
+        bgImage={"https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1600&q=80"}
+        navbar={false}
+        titleSize={"clamp(3.75rem, 12vw, 7.5rem)"}
+        actions={
+          <>
+            <a
+              href={"/relate-app.apk"}
+              download
+              className={"inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"}
+            >
+              <FaAndroid /> Download the app
+            </a>
+            <a
+              href={"#how-it-works"}
+              className={"inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"}
+            >
+              How it works
+            </a>
+          </>
+        }
+        meta={[
+          { label: "Prayer team", value: "Reads every request" },
+          { label: "Confidential", value: "Always" },
+          { label: "Daily moments", value: "6" },
+        ]}
+        metaEnd={
           <Link
-            href={"/"}
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors"
+            href={"/prayer"}
+            className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}
           >
-            <LuArrowLeft /> Back to home
+            <span className={"text-[11px] uppercase tracking-widest text-white/70"}>
+              Prayer &amp; Requests
+            </span>
+            Today&apos;s Prayer Times →
           </Link>
-          <p className="mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-light">
-            Prayer &amp; Requests
-          </p>
-          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-white">Prayer Requests</h1>
-          <p className="mt-4 max-w-2xl text-white/80 leading-relaxed">
-            We would love to pray with you. Share a prayer request and our prayer team will stand
-            with you through the six daily prayer moments. Every request is read, reviewed with
-            care and kept confidential.
-          </p>
-        </div>
-      </section>
+        }
+      />
 
-      <section className="container mx-auto max-w-6xl px-6 py-14 md:py-20">
+      <section id="how-it-works" className="container mx-auto max-w-6xl px-6 py-14 md:py-20">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {STEPS.map((step, i) => (
             <div

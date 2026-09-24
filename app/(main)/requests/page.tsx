@@ -1,16 +1,15 @@
-import Link from "next/link";
+import { FaAndroid } from "react-icons/fa";
 import {
-  LuArrowLeft,
   LuBaby,
   LuHeartHandshake,
   LuHouse,
   LuPiggyBank,
   LuSend,
-  LuShirt,
   LuShieldCheck,
   LuSmartphone,
   LuUtensils,
 } from "react-icons/lu";
+import PageHero from "@/components/PageHero";
 import RequestAppCta from "@/components/RequestAppCta";
 
 const PRIORITIES = [
@@ -46,11 +45,6 @@ const REQUEST_TYPES = [
     icon: <LuUtensils className={"text-2xl"} />,
     title: "Food relief",
     body: "Food parcels and meals when the table is empty.",
-  },
-  {
-    icon: <LuShirt className={"text-2xl"} />,
-    title: "School fees & uniforms",
-    body: "Help keeping a child in school — fees, stationery and uniforms.",
   },
   {
     icon: <LuHouse className={"text-2xl"} />,
@@ -95,36 +89,52 @@ const STEPS = [
 export default function RequestsPage() {
   return (
     <main className="min-h-screen bg-ghost-white">
-      <section className="relative overflow-hidden bg-navy-dark">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(100deg, rgba(21,31,58,0.97) 0%, rgba(29,42,77,0.9) 45%, rgba(15,163,196,0.5) 78%, rgba(19,197,221,0.25) 100%), url(https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&q=80)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className="relative container mx-auto max-w-6xl px-6 py-14 md:py-20">
-          <Link
-            href={"/"}
-            className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors"
+      <PageHero
+        title={"Requests"}
+        tagline={"share it — we can help"}
+        description={
+          "Life is hard sometimes. When an emergency hits — or a season just will not lift — tell us. Financial help, food relief, childcare, counselling and more. We review every request and refer you to the right help, or help directly."
+        }
+        watermark={"Care"}
+        bgImage={"https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=1600&q=80"}
+        navbar={false}
+        titleSize={"clamp(3.75rem, 12vw, 7.5rem)"}
+        actions={
+          <>
+            <a
+              href={"/relate-app.apk"}
+              download
+              className={"inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"}
+            >
+              <FaAndroid /> Download the app
+            </a>
+            <a
+              href={"#what-you-can-request"}
+              className={"inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"}
+            >
+              What you can request
+            </a>
+          </>
+        }
+        meta={[
+          { label: "Main priority", value: "Orphans & widows" },
+          { label: "Every request", value: "Reviewed" },
+          { label: "Response", value: "Refer or help" },
+        ]}
+        metaEnd={
+          <a
+            href={"#who-we-stand-with"}
+            className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}
           >
-            <LuArrowLeft /> Back to home
-          </Link>
-          <p className="mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-light">
-            Charity &amp; support
-          </p>
-          <h1 className="mt-3 text-4xl md:text-5xl font-bold text-white">Requests</h1>
-          <p className="mt-4 max-w-2xl text-white/80 leading-relaxed">
-            Life is hard sometimes. When an emergency hits — or a season just will not lift — tell
-            us. Financial help, food relief, school fees, childcare, counselling: we will review
-            your request and refer you to the right help, or help directly.
-          </p>
-        </div>
-      </section>
+            <span className={"text-[11px] uppercase tracking-widest text-white/70"}>
+              Charity &amp; support
+            </span>
+            Who we stand with →
+          </a>
+        }
+      />
 
-      <section className="container mx-auto max-w-6xl px-6 py-14 md:py-16">
+      <section id="who-we-stand-with" className="container mx-auto max-w-6xl px-6 py-14 md:py-16">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-dark">
           Who we stand with
         </p>
@@ -142,7 +152,7 @@ export default function RequestsPage() {
         </div>
       </section>
 
-      <section className="bg-white py-14 md:py-16">
+      <section id="what-you-can-request" className="bg-white py-14 md:py-16">
         <div className="container mx-auto max-w-6xl px-6">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-dark">
             What you can request

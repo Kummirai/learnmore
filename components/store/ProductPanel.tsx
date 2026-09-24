@@ -10,7 +10,7 @@ const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`;
 const WHATSAPP_NUMBER = "27782677436";
 
 export default function ProductPanel({ item }: { item: StoreItem }) {
-  const images = item.images?.length ? item.images : [item.image];
+  const images = (item.images?.length ? item.images : [item.image]).slice(0, 4);
   const [active, setActive] = useState(images[0]);
   const [size, setSize] = useState<string | null>(item.sizes?.[0] ?? null);
   const [qty, setQty] = useState(1);
@@ -28,14 +28,14 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
       {/* Gallery */}
       <div className="flex flex-col-reverse md:flex-row gap-3">
-        <div className="flex md:flex-col gap-3 md:max-w-24 max-w-full md:basis-full">
+        <div className="flex md:flex-col gap-3 w-full md:w-24 overflow-x-auto md:overflow-visible">
           {images.map((src, i) => (
             <button
               key={src}
               type="button"
               onClick={() => setActive(src)}
               aria-label={`View image ${i + 1} of ${item.name}`}
-              className={`size-20 md:size-24 shrink-0 rounded-lg overflow-hidden border-2 transition-colors ${
+              className={`size-20 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
                 active === src ? "border-cyan" : "border-gray-200 hover:border-cyan/60"
               } bg-alice-blue`}
             >
@@ -44,7 +44,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
             </button>
           ))}
         </div>
-        <div className="flex-1 aspect-square rounded-xl overflow-hidden bg-alice-blue border border-gray-200">
+        <div className="flex-1 aspect-square rounded-xl overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={active} alt={item.name} className="w-full h-full object-contain p-2 md:p-4" />
         </div>
