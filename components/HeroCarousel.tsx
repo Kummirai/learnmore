@@ -6,8 +6,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { LuArrowRight, LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 
-type Slide = {
-  label: string;
+export type HeroSlide = {
   title: string;
   description: string;
   image: string;
@@ -16,67 +15,24 @@ type Slide = {
   secondary?: { href: string; label: string };
 };
 
-const SLIDES: Slide[] = [
-  {
-    label: "Club Meetups",
-    title: "Weekly clubs for every age",
-    description:
-      "Sprout classes, Surge nights and Pulse meetups — free and open to all.",
-    image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80&auto=format",
-    accent: "#13c5dd",
-    cta: { href: "/events/clubs", label: "Club events" },
-    secondary: { href: "/events", label: "All events" },
-  },
-  {
-    label: "Worship & Prayer",
-    title: "Worship & prayer nights",
-    description:
-      "Surge fire nights, testimonies and evening prayer, together.",
-    image:
-      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80&auto=format",
-    accent: "#f59e0b",
-    cta: { href: "/prayer", label: "Prayer times" },
-    secondary: { href: "/events", label: "All events" },
-  },
-  {
-    label: "Match Days",
-    title: "Match days & league",
-    description:
-      "Football, netball and volleyball fixtures on the Relate grounds.",
-    image:
-      "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
-    accent: "#4caf50",
-    cta: { href: "/sports", label: "Sports teams" },
-    secondary: { href: "https://wa.me/27782677436", label: "Join a team" },
-  },
-  {
-    label: "Family",
-    title: "Family gatherings",
-    description:
-      "Family tables, socials, camps and seasonal celebrations.",
-    image:
-      "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=80&auto=format",
-    accent: "#f97316",
-    cta: { href: "/events/clubs", label: "Club events" },
-    secondary: { href: "/events", label: "All events" },
-  },
-];
-
 const AUTOPLAY_MS = 5000;
 
-export default function EventsHeroCarousel() {
+export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const go = useCallback((next: number) => {
-    setIndex((next + SLIDES.length) % SLIDES.length);
-  }, []);
+  const go = useCallback(
+    (next: number) => setIndex((next + slides.length) % slides.length),
+    [slides.length],
+  );
 
   const restart = useCallback(() => {
     if (timer.current) clearInterval(timer.current);
-    timer.current = setInterval(() => setIndex((i) => (i + 1) % SLIDES.length), AUTOPLAY_MS);
-  }, []);
+    timer.current = setInterval(
+      () => setIndex((i) => (i + 1) % slides.length),
+      AUTOPLAY_MS,
+    );
+  }, [slides.length]);
 
   useEffect(() => {
     restart();
@@ -85,7 +41,7 @@ export default function EventsHeroCarousel() {
     };
   }, [restart]);
 
-  const slide = SLIDES[index];
+  const slide = slides[index];
 
   return (
     <section
@@ -94,12 +50,11 @@ export default function EventsHeroCarousel() {
       onMouseLeave={restart}
     >
       <div
-        className="absolute inset-0 transition-opacity duration-700"
+        className="absolute inset-0"
         style={{
           backgroundImage: `linear-gradient(100deg, rgba(21,31,58,0.96) 0%, rgba(21,31,58,0.88) 40%, rgba(21,31,58,0.45) 75%, rgba(21,31,58,0.25) 100%), url(${slide.image})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          opacity: 1,
         }}
       />
 
@@ -141,10 +96,14 @@ export default function EventsHeroCarousel() {
             {slide.secondary && (
               <a
                 href={slide.secondary.href}
-                {...(slide.secondary.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                {...(slide.secondary.href.startsWith("http")
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
                 className="inline-flex items-center justify-center gap-2 border border-white/30 text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/10 transition-colors"
               >
-                {slide.secondary.href.startsWith("https://wa.me") && <FaWhatsapp />}
+                {slide.secondary.href.startsWith("https://wa.me") && (
+                  <FaWhatsapp />
+                )}
                 {slide.secondary.label}
               </a>
             )}
@@ -165,7 +124,7 @@ export default function EventsHeroCarousel() {
           <LuChevronLeft />
         </button>
         <div className="flex items-center gap-2">
-          {SLIDES.map((_, i) => (
+          {slides.map((_, i) => (
             <button
               key={i}
               type="button"
@@ -174,8 +133,13 @@ export default function EventsHeroCarousel() {
                 go(i);
                 restart();
               }}
-              className={`h-2 rounded-full transition-all ${i === index ? "w-6" : "w-2"}`}
-              style={{ backgroundColor: i === index ? slide.accent : "rgba(255,255,255,0.4)" }}
+              className={`h-2 rounded-full transition-all ${
+                i === index ? "w-6" : "w-2"
+              }`}
+              style={{
+                backgroundColor:
+                  i === index ? slide.accent : "rgba(255,255,255,0.4)",
+              }}
             />
           ))}
         </div>

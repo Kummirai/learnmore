@@ -17,7 +17,7 @@ const navGroups: NavGroup[] = [
       { link: "Events", path: "/events" },
       { link: "Club Events", path: "/events/clubs" },
       { link: "Sports", path: "/sports" },
-      { link: "Club Sports", path: "/sports/clubs" },
+      { link: "Join a Team", path: "/join" },
     ],
   },
   {

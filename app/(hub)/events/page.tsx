@@ -8,8 +8,51 @@ import {
   LuMapPin,
   LuUsers,
 } from "react-icons/lu";
-import EventsHeroCarousel from "@/components/EventsHeroCarousel";
+import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
+
+const EVENT_SLIDES: HeroSlide[] = [
+  {
+    title: "Weekly clubs for every age",
+    description:
+      "Sprout classes, Surge nights and Pulse meetups — free and open to all.",
+    image:
+      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&q=80&auto=format",
+    accent: "#13c5dd",
+    cta: { href: "/events/clubs", label: "Club events" },
+    secondary: { href: "/events", label: "All events" },
+  },
+  {
+    title: "Worship & prayer nights",
+    description:
+      "Surge fire nights, testimonies and evening prayer, together.",
+    image:
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80&auto=format",
+    accent: "#f59e0b",
+    cta: { href: "/prayer", label: "Prayer times" },
+    secondary: { href: "/events", label: "All events" },
+  },
+  {
+    title: "Match days & league",
+    description:
+      "Football, netball and volleyball fixtures on the Relate grounds.",
+    image:
+      "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
+    accent: "#4caf50",
+    cta: { href: "/sports", label: "Sports teams" },
+    secondary: { href: "https://wa.me/27782677436", label: "Join a team" },
+  },
+  {
+    title: "Family gatherings",
+    description:
+      "Family tables, socials, camps and seasonal celebrations.",
+    image:
+      "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=80&auto=format",
+    accent: "#f97316",
+    cta: { href: "/events/clubs", label: "Club events" },
+    secondary: { href: "/events", label: "All events" },
+  },
+];
 
 type RelateEvent = {
   _id: string;
@@ -237,7 +280,7 @@ export default function EventsPage() {
 
   return (
     <>
-      <EventsHeroCarousel />
+      <HeroCarousel slides={EVENT_SLIDES} />
       <section className="flex-1 px-4 py-12">
         <div className="max-w-6xl mx-auto">
           {loading && (

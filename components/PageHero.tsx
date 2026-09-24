@@ -22,7 +22,7 @@ type PageHeroProps = {
     navbar?: boolean
 }
 
-export default function PageHero({title, tagline, description, watermark, chips = [], actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra, bgImage, chipsEnd, navbar = true}: PageHeroProps) {
+export default function PageHero({title, tagline, description, watermark, actions, meta, metaEnd, titleSize = "clamp(3rem, 10vw, 7.5rem)", extra, bgImage, navbar = true}: PageHeroProps) {
     const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd
 
     return (
@@ -60,21 +60,9 @@ export default function PageHero({title, tagline, description, watermark, chips 
 
             <div className={"relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-24"}>
                 <div className={"flex flex-col gap-5 md:gap-6 text-center md:text-left"}>
-                    {/* Always render the chips row (like the homepage hero) so titles start at the same height; an empty row reserves the pill height for whitespace. */}
-                    <div className={"flex flex-wrap items-center justify-center gap-3 md:justify-start"}>
-                        {chips.map((chip, i) => (
-                            <span key={i}
-                                  className={"inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] uppercase tracking-widest text-white/90 font-medium"}>
-                                {chip.dot && <span className={"size-2 rounded-full"} style={{backgroundColor: "var(--club-accent)"}}/>}
-                                {chip.label}
-                            </span>
-                        ))}
-                        {chipsEnd && (
-                            <span className={"md:ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"}>
-                                {chipsEnd}
-                            </span>
-                        )}
-                        {chips.length === 0 && !chipsEnd && <span aria-hidden className={"h-[30px]"}/>}
+                    {/* Reserved whitespace where tag pills used to sit — titles stay aligned without the tags. */}
+                    <div aria-hidden={"true"}>
+                        <span className={"block h-[30px]"}/>
                     </div>
 
                     <h1 className={"font-black tracking-tight leading-none text-white"} style={{fontSize: titleSize}}>

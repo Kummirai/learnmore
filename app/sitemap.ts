@@ -17,7 +17,7 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/events", changeFrequency: "weekly", priority: 0.6 },
   { path: "/events/clubs", changeFrequency: "weekly", priority: 0.5 },
   { path: "/sports", changeFrequency: "weekly", priority: 0.7 },
-  { path: "/sports/clubs", changeFrequency: "weekly", priority: 0.5 },
+  { path: "/join", changeFrequency: "monthly", priority: 0.6 },
   { path: "/news", changeFrequency: "weekly", priority: 0.6 },
   { path: "/announcements", changeFrequency: "daily", priority: 0.6 },
   { path: "/gallery", changeFrequency: "monthly", priority: 0.5 },

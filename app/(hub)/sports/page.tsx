@@ -2,11 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LuArrowRight, LuShield } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
-import PageHero from "@/components/PageHero";
+import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
 import {
   getRelateClub,
   SPORTS,
-  SPORTS_TEAMS,
   teamsForSport,
   type RelateSport,
   type RelateTeam,
@@ -18,6 +17,39 @@ export const metadata: Metadata = {
     "Football, netball and volleyball teams for Sprout Kids, Surge and Pulse — train through the week and play at the weekend on the Relate grounds.",
 };
 
+const SPORT_SLIDES: HeroSlide[] = [
+  {
+    title: "Football squads",
+    description:
+      "Five teams from Sprout Kids to Pulse — train midweek, play at the weekend.",
+    image:
+      "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
+    accent: "#13c5dd",
+    cta: { href: "/sports#football", label: "Football teams" },
+    secondary: { href: "/join", label: "Join a team" },
+  },
+  {
+    title: "Netball teams",
+    description:
+      "Saturday league games and summer tournaments across every club.",
+    image:
+      "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=80&auto=format",
+    accent: "#4caf50",
+    cta: { href: "/sports#netball", label: "Netball teams" },
+    secondary: { href: "/join", label: "Join a team" },
+  },
+  {
+    title: "Volleyball teams",
+    description:
+      "Friday court sessions and weekend tournaments — all levels welcome.",
+    image:
+      "https://images.unsplash.com/photo-1552879674-8b1bb7e2c6c4?w=1600&q=80&auto=format",
+    accent: "#f97316",
+    cta: { href: "/sports#volleyball", label: "Volleyball teams" },
+    secondary: { href: "/join", label: "Join a team" },
+  },
+];
+
 const WHATSAPP = "27782677436";
 
 const sportLine: Record<RelateSport, string> = {
@@ -28,9 +60,6 @@ const sportLine: Record<RelateSport, string> = {
 
 function TeamCard({ team }: { team: RelateTeam }) {
   const club = getRelateClub(team.clubSlug);
-  const waLink = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-    `Hi RelateWorld! I'd like to join the ${team.name}.`,
-  )}`;
   const gradient = club
     ? `linear-gradient(135deg, ${club.color}, ${club.colorDark})`
     : "linear-gradient(135deg, #16213E, #0891B2)";
@@ -65,14 +94,12 @@ function TeamCard({ team }: { team: RelateTeam }) {
           >
             {club?.name ?? "Relate"} club page →
           </Link>
-          <a
-            href={waLink}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/join?club=${team.clubSlug}&team=${team.id}`}
             className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-3 py-1.5 rounded-full transition-colors"
           >
-            <FaWhatsapp /> Join
-          </a>
+            Join
+          </Link>
         </div>
       </div>
     </article>
@@ -82,26 +109,7 @@ function TeamCard({ team }: { team: RelateTeam }) {
 export default function SportsPage() {
   return (
     <>
-      <PageHero
-        title="Relate Sports"
-        tagline="Play for your club"
-        description="Football, netball and volleyball teams for Sprout Kids, Sprout Tweens, Sprout Teens, Surge and Pulse — train through the week, play at the weekend and cheer each other on."
-        watermark="Sports"
-        chips={SPORTS.map((s) => ({ dot: true, label: s }))}
-        meta={[
-          { label: "Teams", value: String(SPORTS_TEAMS.length) },
-          { label: "Sports", value: String(SPORTS.length) },
-          { label: "Training", value: "Tue – Sat" },
-        ]}
-        actions={
-          <Link
-            href="/sports/clubs"
-            className="inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
-          >
-            Explore club teams <LuArrowRight />
-          </Link>
-        }
-      />
+      <HeroCarousel slides={SPORT_SLIDES} />
 
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
@@ -130,17 +138,25 @@ export default function SportsPage() {
                 Want to play for a Relate team?
               </h2>
               <p className="mt-2 text-white/70 max-w-xl mx-auto">
-                Message us on WhatsApp with your name, age and the sport you
-                love — we&rsquo;ll get you on a team.
+                Register your details and we&rsquo;ll set up a short chat with a
+                chaplain before you join.
               </p>
-              <a
-                href={`https://wa.me/${WHATSAPP}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 bg-cyan text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-cyan-light transition-colors"
-              >
-                <FaWhatsapp className="text-lg" /> Join a team on WhatsApp
-              </a>
+              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
+                <Link
+                  href="/join"
+                  className="inline-flex items-center gap-2 bg-cyan text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-cyan-light transition-colors"
+                >
+                  Register to join <LuArrowRight />
+                </Link>
+                <a
+                  href={`https://wa.me/${WHATSAPP}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-white/30 text-white px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-white/10 transition-colors"
+                >
+                  <FaWhatsapp className="text-lg" /> Ask a question
+                </a>
+              </div>
             </div>
           </div>
         </div>
