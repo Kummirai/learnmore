@@ -1,3 +1,4 @@
+import type {CSSProperties} from "react";
 import Navbar from "@/components/Navbar";
 
 type Chip = { dot?: boolean; label: string };
@@ -18,6 +19,8 @@ type PageHeroProps = {
   extra?: React.ReactNode;
   /** Optional full-bleed photo background (shown clean, with no scrim). */
   bgImage?: string;
+  /** Custom properties (e.g. --club-accent) so the gradient hero uses club colours. */
+  style?: CSSProperties;
   /** Optional pill pinned to the far right of the chips row (like the homepage carousel). */
   chipsEnd?: React.ReactNode;
   /** Set false on pages whose layout already renders a Navbar (avoids a double navbar). */
@@ -36,6 +39,7 @@ export default function PageHero({
   mobileTitle,
   extra,
   bgImage,
+  style,
   navbar = true,
 }: PageHeroProps) {
   const showMetaBar = (meta?.length ?? 0) > 0 || metaEnd;
@@ -44,16 +48,19 @@ export default function PageHero({
     <section
       className={"relative min-h-screen w-full overflow-hidden"}
       style={
-        bgImage
-          ? {
-              backgroundImage: `url(${bgImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
-          : {
-              background:
-                "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)",
-            }
+        {
+          ...style,
+          ...(bgImage
+            ? {
+                backgroundImage: `url(${bgImage})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : {
+                background:
+                  "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)",
+              }),
+        }
       }
     >
       {navbar && <Navbar overlay />}

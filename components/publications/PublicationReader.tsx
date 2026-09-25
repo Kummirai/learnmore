@@ -14,12 +14,12 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
     const isMagazine = doc.kind === "magazine"
     const seasonLabel = doc.season?.label ?? doc.issue
     const heading = doc.theme ?? doc.title ?? doc.series ?? "Publication"
-    const clubVars = club
-        ? ({
-              "--club-accent": club.color,
-              "--club-accent-dark": club.colorDark,
-          } as CSSProperties)
-        : undefined
+    // The hero paints the club gradient rather than the cover, so the club
+    // colours have to be in scope on the hero itself, not just the body below.
+    const clubVars = {
+        "--club-accent": club?.color,
+        "--club-accent-dark": club?.colorDark,
+    } as CSSProperties
 
     return (
         <>
@@ -34,7 +34,7 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
                     {label: "Club", value: club?.name ?? doc.clubSlug ?? "—"},
                     {label: "Season", value: seasonLabel ?? "—"},
                 ]}
-                bgImage={doc.cover}
+                style={clubVars}
             />
 
             <section style={clubVars} className={"flex-1 px-4 py-12"}>
