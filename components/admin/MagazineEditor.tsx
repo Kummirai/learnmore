@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Badge, Button, Card, Field, Input, Select, TextArea } from "@/components/admin/ui";
 import BlockEditor from "./BlockEditor";
+import ImageUpload from "./ImageUpload";
 import ReadEditor from "./ReadEditor";
 import { DayPreview, DayPreviewModal } from "./ReadPreview";
 import type { DayPreviewData } from "./ReadPreview";
@@ -294,7 +295,7 @@ export default function MagazineEditor({
                                 {SERIES.map((s) => <option key={s} value={s}>{s}</option>)}
                             </Select>
                         </Field>
-                        <Field label="Club" hint="Who is this magazine for?">
+                        <Field label="Club" hint="Who is this season guide for?">
                             <Select value={draft.clubSlug} onChange={(e) => set({ clubSlug: e.target.value })}>
                                 <option value="">Relate (everyone)</option>
                                 {CLUBS.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
@@ -338,20 +339,12 @@ export default function MagazineEditor({
                     </div>
 
                     <div className="mt-5 grid grid-cols-1 gap-4">
-                        <Field label="Cover image URL" hint="Paste a direct image URL (Unsplash, etc.)">
-                            <Input value={draft.cover} onChange={(e) => set({ cover: e.target.value })} placeholder="https://images.unsplash.com/…" />
+                        <ImageUpload value={draft.cover}
+                                     onChange={(url) => set({ cover: url })}
+                                     hint="Uploads go to Supabase Storage (JPEG/PNG/WebP, 4 MB), or paste a direct image URL."/>
+                        <Field label="Theme">
+                            <Input value={draft.theme} onChange={(e) => set({ theme: e.target.value })} placeholder="Season theme" />
                         </Field>
-                        <div className="flex items-start gap-4">
-                            <div className="flex-1">
-                                <Field label="Theme">
-                                    <Input value={draft.theme} onChange={(e) => set({ theme: e.target.value })} placeholder="Season theme" />
-                                </Field>
-                            </div>
-                            {draft.cover ? (
-                                <img src={draft.cover} alt="cover preview"
-                                     className="mt-6 h-[72px] w-[52px] shrink-0 rounded-md object-cover ring-1 ring-gray-200" />
-                            ) : null}
-                        </div>
                         {draft.coverLines.map((line, i) => (
                             <Field key={i} label={`Cover line ${i + 1}`}>
                                 <Input value={line} onChange={(e) => set({ coverLines: draft.coverLines.map((l, j) => (j === i ? e.target.value : l)) })} />
@@ -410,7 +403,7 @@ export default function MagazineEditor({
                     <div className="mb-3 flex items-center justify-between gap-3">
                         <div>
                             <h3 className="text-lg font-black tracking-tight text-navy">Sections</h3>
-                            <p className="mt-0.5 text-sm text-slate-gray">The magazine front matter — paragraphs, headings, quotes, images, lists…</p>
+                            <p className="mt-0.5 text-sm text-slate-gray">The season guide front matter — paragraphs, headings, quotes, images, lists…</p>
                         </div>
                         <AddBlockButton onAdd={(t) => set({ blocks: [...draft.blocks, blankBlock(t)] })} />
                     </div>
@@ -562,7 +555,7 @@ export default function MagazineEditor({
                     {saved ? <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Saved.</p> : null}
                     <div className="flex gap-3">
                         <Button onClick={save} disabled={saving}>
-                            {saving ? "Saving…" : initial ? "Save changes" : "Create magazine"}
+                            {saving ? "Saving…" : initial ? "Save changes" : "Create season guide"}
                         </Button>
                         <Button variant="ghost" onClick={() => router.push("/admin/magazines")}>Cancel</Button>
                     </div>
