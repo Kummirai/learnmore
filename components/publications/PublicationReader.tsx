@@ -1,5 +1,5 @@
 import type {CSSProperties} from "react"
-import PageHero from "@/components/PageHero"
+import Navbar from "@/components/Navbar"
 import MagazineReader from "@/components/publications/MagazineReader"
 import {PubBlocks} from "@/components/publications/PublicationBlocks"
 import type {PubDocument} from "@/lib/publications"
@@ -14,8 +14,8 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
     const isMagazine = doc.kind === "magazine"
     const seasonLabel = doc.season?.label ?? doc.issue
     const heading = doc.theme ?? doc.title ?? doc.series ?? "Publication"
-    // The hero paints the club gradient rather than the cover, so the club
-    // colours have to be in scope on the hero itself, not just the body below.
+    // Readers arrive ready to read, so the page opens on the content itself.
+    // The accent vars stay for the club-coloured rules and icons below.
     const clubVars = {
         "--club-accent": club?.color,
         "--club-accent-dark": club?.colorDark,
@@ -23,21 +23,30 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
 
     return (
         <>
-            <PageHero
-                title={heading}
-                mobileTitle={heading.split(/\s+/).slice(0, 1).join(" ")}
-                tagline={doc.series}
-                description={doc.summary}
-                watermark={doc.year ? String(doc.year) : undefined}
-                meta={[
-                    {label: "Kind", value: isMagazine ? "Season Study Guide" : "Bulletin"},
-                    {label: "Club", value: club?.name ?? doc.clubSlug ?? "—"},
-                    {label: "Season", value: seasonLabel ?? "—"},
-                ]}
-                style={clubVars}
-            />
+            <Navbar/>
 
-            <section style={clubVars} className={"flex-1 px-4 py-12"}>
+            <section style={clubVars} className={"flex-1 px-4 pt-8 pb-12"}>
+                <header className={"max-w-3xl mx-auto mb-8"}>
+                    <p className={"text-[11px] font-bold uppercase tracking-[0.2em] text-(--club-accent-dark)"}>
+                        {[isMagazine ? "Season Guide" : "Bulletin", club?.name ?? doc.clubSlug, seasonLabel]
+                            .filter(Boolean)
+                            .join(" · ")}
+                    </p>
+                    <h1 className={"mt-2 text-4xl md:text-6xl font-black tracking-tight leading-[1.05] text-navy"}>
+                        {heading}
+                    </h1>
+                    {doc.series && (
+                        <p className={"mt-2 text-base font-semibold text-(--club-accent-dark)"}>
+                            {doc.series}
+                        </p>
+                    )}
+                    {doc.summary && (
+                        <p className={"mt-3 text-sm leading-relaxed text-slate-gray"}>
+                            {doc.summary}
+                        </p>
+                    )}
+                </header>
+
                 {isMagazine && doc.weeks && doc.weeks.length > 0 ? (
                     <MagazineReader key={doc.id} doc={doc}/>
                 ) : (
