@@ -17,7 +17,7 @@ export default function AdminReadingPlanNewPage() {
               <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">Reading plans</p>
               <h1 className="text-xl md:text-2xl font-black tracking-tight text-navy">New reading plan</h1>
               <p className="mt-0.5 text-sm text-slate-gray">
-                Author days, verses and reading content — like a magazine, but built day-by-day.
+                Author days, verses and reading content — like a season guide, but built day-by-day.
               </p>
             </div>
             <Link

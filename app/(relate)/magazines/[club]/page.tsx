@@ -13,8 +13,8 @@ export async function generateMetadata({params}: {params: Promise<{club: string}
     const club = getClub(slug) ?? getClubClass(slug)
     if (!club) return {}
     return {
-        title: `${club.name} Magazines & Study Guides`,
-        description: `Magazines, bulletins and study guides for the ${club.name} club (${club.ageRange}).`,
+        title: `${club.name} Season Guides`,
+        description: `Season guides, magazines and bulletins for the ${club.name} club (${club.ageRange}).`,
         alternates: {canonical: `/magazines/${club.slug}`},
     }
 }
@@ -41,7 +41,7 @@ export default async function ClubMagazinesPage({
     return (
         <>
             <PageHero
-                title={`${club.name} Magazines`}
+                title={`${club.name} Season Guides`}
                 mobileTitle={club.name.split(/\s+/)[0]}
                 tagline={club.tagline}
                 description={`Read ${club.name}’s season study guide and bulletin — open to everyone, no account needed.`}
@@ -53,13 +53,13 @@ export default async function ClubMagazinesPage({
                 <div className={"max-w-6xl mx-auto"}>
                     <span className={"text-xs uppercase tracking-widest text-(--club-accent) font-medium"}>Library</span>
                     <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"}>
-                        Magazines &amp; Bulletins
+                        Season Guides &amp; Bulletins
                     </h2>
                     {publications.length > 0 ? (
-                        <PublicationLibrary publications={publications}/>
+                        <PublicationLibrary publications={publications} clubName={club.name}/>
                     ) : (
                         <p className={"text-gray-500 text-sm mt-4"}>
-                            No magazines published for {club.name} yet — check back soon.
+                            No season guides published for {club.name} yet — check back soon.
                         </p>
                     )}
                 </div>

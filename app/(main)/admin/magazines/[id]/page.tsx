@@ -55,7 +55,7 @@ function EditBody({ params }: { params: Promise<{ id: string }> }) {
                 <div className="min-w-0">
                     <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">Library</p>
                     <h1 className="truncate text-xl md:text-2xl font-black tracking-tight text-navy">
-                        {doc ? `Edit ${doc.kind === "bulletin" ? "bulletin" : "magazine"}` : "Editing…"}
+                        {doc ? `Edit ${doc.kind === "bulletin" ? "bulletin" : "season guide"}` : "Editing…"}
                     </h1>
                     <p className="mt-0.5 truncate text-sm text-slate-gray">{id}</p>
                 </div>

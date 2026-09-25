@@ -23,7 +23,7 @@ export default async function MagazinePage({slug}: {slug: string}) {
                           className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
                         Back to Home
                     </Link>
-                    <h1 className={"text-3xl font-semibold text-gray-800"}>Magazine not found</h1>
+                    <h1 className={"text-3xl font-semibold text-gray-800"}>Season guide not found</h1>
                 </div>
             </section>
         )

@@ -48,7 +48,7 @@ function displayClub(slug: string | undefined): string {
 
 export default function AdminMagazinesPage() {
     return (
-        <RequireAuth title="Magazines">
+        <RequireAuth title="Season Guides">
             <section
                 className="flex-1 px-4 py-10 md:py-14"
                 style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
@@ -163,7 +163,7 @@ function MagazinesBody() {
         <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
             <AdminHeader
                 eyebrow="Library"
-                title="Magazines"
+                title="Season Guides"
                 sub="Drafts and published issues, newest first."
                 actions={
                     <>
@@ -173,7 +173,7 @@ function MagazinesBody() {
                             <option value="draft">Drafts</option>
                         </Select>
                         <Button onClick={() => setCreating(true)}>
-                            <LuPlus /> New magazine
+                            <LuPlus /> New season guide
                         </Button>
                     </>
                 }
@@ -243,7 +243,7 @@ function MagazinesBody() {
                         {visible.length === 0 && (
                             <tr>
                                 <td colSpan={5} className="px-4 py-10 text-center text-sm text-slate-gray">
-                                    {rows === null ? "Loading…" : "No magazines in this view. Adjust the filter or create one."}
+                                    {rows === null ? "Loading…" : "No season guides in this view. Adjust the filter or create one."}
                                 </td>
                             </tr>
                         )}
@@ -261,7 +261,7 @@ function MagazinesBody() {
             )}
 
             <p className="mt-4 text-xs text-gray-400">
-                Creating a magazine here makes a draft. Add its reading plan from the API before publishing.
+                Creating a season guide here makes a draft. Add its reading plan from the API before publishing.
             </p>
         </div>
     );
@@ -313,12 +313,12 @@ function NewMagazineModal({onDone}: {onDone: (created: boolean) => void}) {
             });
             const json = await res.json().catch(() => null);
             if (!res.ok) {
-                setError(typeof json?.error === "string" ? json.error : "Couldn't create the magazine.");
+                setError(typeof json?.error === "string" ? json.error : "Couldn't create the season guide.");
                 return;
             }
             onDone(true);
         } catch {
-            setError("Couldn't create the magazine. Try again.");
+            setError("Couldn't create the season guide. Try again.");
         } finally {
             setBusy(false);
         }
@@ -328,7 +328,7 @@ function NewMagazineModal({onDone}: {onDone: (created: boolean) => void}) {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/40 p-4">
             <div className="w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-navy">New magazine</h3>
+                    <h3 className="font-bold text-navy">New season guide</h3>
                     <button onClick={() => onDone(false)} aria-label="Close" className="text-gray-400 hover:text-gray-600">
                         <LuX />
                     </button>

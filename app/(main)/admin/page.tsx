@@ -10,8 +10,8 @@ const tools = [
     {
         href: "/admin/magazines",
         icon: LuNewspaper,
-        title: "Magazines",
-        desc: "Create, edit and publish magazines and seasonal study guides.",
+        title: "Season Guides",
+        desc: "Create, edit and publish season guides, magazines and bulletins.",
     },
     {
         href: "/admin/streaks",
@@ -124,7 +124,7 @@ function AdminBody() {
             label: "Publications",
             value: String(stats.publications),
             icon: LuBookOpen,
-            trend: "magazines & guides",
+            trend: "guides & magazines",
         },
         {
             label: "Drafts",
@@ -145,7 +145,7 @@ function AdminBody() {
             <div className="mb-8">
                 <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">Admin Console</p>
                 <h1 className="text-2xl md:text-3xl font-black tracking-tight text-navy">Relate tools</h1>
-                <p className="mt-1 text-sm text-slate-gray">Manage magazines, streaks and community requests.</p>
+                <p className="mt-1 text-sm text-slate-gray">Manage season guides, streaks and community requests.</p>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 mb-8">
                 {tools.map((t) => (

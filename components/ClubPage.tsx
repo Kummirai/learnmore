@@ -191,7 +191,7 @@ export default async function ClubPage({slug}: {slug: string}) {
                             <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
                                 This season’s study guide and bulletin — open to read, no account needed.
                             </p>
-                            <PublicationLibrary publications={publications}/>
+                            <PublicationLibrary publications={publications} clubName={club.name}/>
                         </div>
                     )}
 

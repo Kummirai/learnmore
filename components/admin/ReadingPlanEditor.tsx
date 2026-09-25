@@ -438,7 +438,7 @@ export default function ReadingPlanEditor({
                     </div>
                     {day.blocks.length === 0 ? (
                       <p className="rounded-xl border border-dashed border-gray-200 px-4 py-4 text-center text-sm text-gray-400">
-                        Add quotes, images, lists, prayers or quizzes — like a magazine section.
+                        Add quotes, images, lists, prayers or quizzes — like a season guide section.
                       </p>
                     ) : (
                       <div className="space-y-2.5">

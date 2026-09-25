@@ -35,11 +35,11 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    link: "Magazines",
-    short: "Magazines",
+    link: "Season Guides",
+    short: "Guides",
     items: [...CLUBS.filter((c) => c.slug !== "sprout"), ...SUB_CLUBS].map(
       (c) => ({
-        link: `${c.name} Magazines`,
+        link: `${c.name} S.G`,
         path: `/magazines/${c.slug}`,
       }),
     ),

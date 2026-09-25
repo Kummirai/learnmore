@@ -9,7 +9,15 @@ function Label({children}: {children: React.ReactNode}) {
     )
 }
 
-export default function PublicationLibrary({publications}: {publications: PubSummary[]}) {
+const GRID = "grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-5"
+
+export default function PublicationLibrary({
+                                           publications,
+                                           clubName,
+                                       }: {
+    publications: PubSummary[]
+    clubName: string
+}) {
     const byYear = new Map<string, {magazines: PubSummary[]; bulletins: PubSummary[]}>()
 
     for (const pub of publications) {
@@ -44,7 +52,7 @@ export default function PublicationLibrary({publications}: {publications: PubSum
                         <h3 className={"text-xl md:text-2xl font-semibold text-navy"}>{label}</h3>
                         {magazines.length > 0 && (
                             <span className={"text-sm text-gray-400"}>
-                                {magazines.length} magazine{magazines.length > 1 ? "s" : ""}
+                                {magazines.length} guide{magazines.length > 1 ? "s" : ""}
                             </span>
                         )}
                         {bulletins.length > 0 && (
@@ -56,10 +64,10 @@ export default function PublicationLibrary({publications}: {publications: PubSum
 
                     {magazines.length > 0 && (
                         <div className={"mb-6"}>
-                            <Label>Magazines</Label>
-                            <div className={"flex flex-wrap gap-3 md:gap-4"}>
+                            <Label>Season Guides</Label>
+                            <div className={GRID}>
                                 {magazines.map((pub) => (
-                                    <PublicationCard key={pub.id} pub={pub}/>
+                                    <PublicationCard key={pub.id} pub={pub} clubName={clubName}/>
                                 ))}
                             </div>
                         </div>
@@ -68,9 +76,9 @@ export default function PublicationLibrary({publications}: {publications: PubSum
                     {bulletins.length > 0 && (
                         <div>
                             <Label>Bulletins</Label>
-                            <div className={"flex flex-wrap gap-3 md:gap-4"}>
+                            <div className={GRID}>
                                 {bulletins.map((pub) => (
-                                    <PublicationCard key={pub.id} pub={pub}/>
+                                    <PublicationCard key={pub.id} pub={pub} clubName={clubName}/>
                                 ))}
                             </div>
                         </div>
