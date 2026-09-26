@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import RequireAuth from "@/components/RequireAuth";
 import { Badge, AdminHeader, Select } from "@/components/admin/ui";
 import { LuUserPlus } from "react-icons/lu";
 
@@ -40,16 +39,14 @@ function dateText(value: string): string {
 
 export default function AdminSocialJoinsPage() {
     return (
-        <RequireAuth title="Social Joins">
-            <section
-                className="flex-1 px-4 py-10 md:py-14"
-                style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
-            >
-                <div className="max-w-5xl mx-auto">
-                    <SocialJoinsBody />
-                </div>
-            </section>
-        </RequireAuth>
+  <section
+      className="flex-1 px-4 py-10 md:py-14"
+      style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
+  >
+      <div className="max-w-5xl mx-auto">
+          <SocialJoinsBody />
+      </div>
+  </section>
     );
 }
 
@@ -171,7 +168,7 @@ function SocialJoinsBody() {
                                         </p>
                                     </div>
                                 </div>
-                                <Badge tone={r.status === "approved" ? "green" : r.status === "pending" ? "amber" : "slate"}>
+                                <Badge tone={r.status === "approved" ? "gold" : r.status === "pending" ? "amber" : "slate"}>
                                     {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                                 </Badge>
                             </div>
@@ -180,7 +177,7 @@ function SocialJoinsBody() {
                                     <button
                                         onClick={() => setStatus(r, "approve")}
                                         disabled={processing === r._id}
-                                        className="rounded-lg bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-200 transition disabled:opacity-50"
+                                        className="rounded-lg bg-gold-100 px-4 py-1.5 text-xs font-semibold text-gold-800 hover:bg-gold-200 transition disabled:opacity-50"
                                     >
                                         Approve
                                     </button>

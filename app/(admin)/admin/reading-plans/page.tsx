@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { FaBookBookmark, FaPlus, FaTrash, FaXmark, FaPencil } from "react-icons/fa6";
-import PageHero from "@/components/PageHero";
+import { AdminHeader } from "@/components/admin/ui";
 import {
   READING_PLANS,
   READING_PLAN_CATEGORIES,
@@ -175,25 +175,18 @@ export default function AdminReadingPlansPage() {
 
   return (
     <>
-      <PageHero
-        title={"Admin · Reading Plans"}
-        mobileTitle={"Admin"}
-        tagline={"Create and manage plans across every category"}
-        description={
-          "Open any plan in the full-page editor — author Bible chapters per day with commentary, or topic days with verses and reading content — with a live preview as you type."
-        }
-        watermark={"RF"}
-        meta={[
-          { label: "Plans", value: plans.length },
-          { label: "Categories", value: READING_PLAN_CATEGORIES.length },
-          { label: "Storage", value: "Supabase-ready" },
-        ]}
-      />
+      <div className="mx-auto max-w-5xl px-4 pt-8 md:px-0">
+        <AdminHeader
+          eyebrow="Content"
+          title="Reading Plans"
+          sub="Create and manage plans across every category. Open any plan in the full-page editor to author daily chapters or topic days."
+        />
+      </div>
 
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-5xl mx-auto">
           {notice && (
-            <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 flex items-center justify-between gap-4">
+            <div className="mb-6 rounded-xl border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800 flex items-center justify-between gap-4">
               <span>{notice}</span>
               <button onClick={() => setNotice(null)} aria-label="dismiss">
                 <FaXmark />
@@ -218,7 +211,7 @@ export default function AdminReadingPlansPage() {
               const list = categoryPlans(cat);
               return (
                 <div key={cat} className="mb-10">
-                  <h3 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">
+                  <h3 className="text-[11px] font-medium uppercase tracking-[0.2em] text-gray-400 mb-3">
                     {cat} ({list.length})
                   </h3>
                   {list.length === 0 ? (

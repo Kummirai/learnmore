@@ -7,7 +7,7 @@ export default function Facilities() {
         {icon: <LuMoonStar className={"text-3xl text-white"}/>, label: "Bible Reading Guides", color: "bg-amber-600"},
         {icon: <LuSun className={"text-3xl text-white"}/>, label: "Daily Prayer Times", color: "bg-purple-600"},
         {icon: <LuHandHeart className={"text-3xl text-white"}/>, label: "Ask for Help", color: "bg-cyan-600"},
-        {icon: <LuUsers className={"text-3xl text-white"}/>, label: "WhatsApp Communities", color: "bg-emerald-600"},
+        {icon: <LuUsers className={"text-3xl text-white"}/>, label: "WhatsApp Communities", color: "bg-gold-700"},
     ]
 
     return (

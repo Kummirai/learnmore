@@ -1,6 +1,7 @@
 import type {Metadata} from "next"
 import Link from "next/link"
 import PageHero from "@/components/PageHero"
+import VolunteerApplyForm from "@/components/admin/VolunteerApplyForm"
 import {
     LuArrowRight,
     LuCalendarCheck,
@@ -281,17 +282,30 @@ export default function VolunteerPage() {
                         ))}
                     </ol>
                     <div className={"text-center"}>
-                        <Link href={"/contact"}
-                              className={
-                                  "inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy-soft transition-colors"
-                              }>
-                            Get in touch <LuArrowRight/>
-                        </Link>
+                        <a href="#apply"
+                           className={
+                               "inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy-soft transition-colors"
+                           }>
+                            Apply to volunteer <LuArrowRight/>
+                        </a>
                         <p className={"text-gray-400 text-xs mt-3"}>
                             Positions listed here are illustrative — tell us what you can do and we
                             will find you a place.
                         </p>
                     </div>
+                </div>
+            </section>
+
+            <section id="apply" className={"px-4 py-16 bg-[#f5f8fb] border-t border-gray-100 scroll-mt-20"}>
+                <div className={"max-w-3xl mx-auto"}>
+                    <VolunteerApplyForm/>
+                    <p className={"mt-6 text-center text-xs text-gray-400"}>
+                        Prefer to talk to someone first?{" "}
+                        <Link href={"/contact"} className={"text-cyan hover:text-cyan-dark underline"}>
+                            Contact the team
+                        </Link>
+                        .
+                    </p>
                 </div>
             </section>
         </>

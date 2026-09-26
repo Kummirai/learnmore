@@ -5,23 +5,32 @@ import Link from "next/link"
 import {FaWhatsapp} from "react-icons/fa"
 import {LuArrowRight, LuBadgeCheck, LuShoppingBag} from "react-icons/lu"
 import Navbar from "@/components/Navbar"
-import {STORE_CATEGORIES, STORE_ITEMS, getStoreItem, type StoreCategory} from "@/constants/relate"
+import {useStoreItems} from "@/components/store/useStoreItems"
+import {STORE_CATEGORIES, type StoreCategory, type StoreItem} from "@/constants/relate"
 
 const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`
 
 const orderLink = (item?: {name: string; price: number}) =>
     `https://wa.me/27782677436${item ? `?text=${encodeURIComponent(`Hi RelateWorld! I'd like to order the ${item.name} (${formatPrice(item.price)}).`)}` : ""}`
 
-export function StoreCard({item}: {item: (typeof STORE_ITEMS)[number]}) {
+export function StoreCard({item}: {item: StoreItem}) {
+    const onSale = item.offerPrice != null && item.offerPrice < item.price
+    const ratingLabel = item.rating ? `Rated ${item.rating} out of 5` : undefined
     return (
         <div className={"flex flex-col group"}>
-            <Link href={`/store/${item.id}`} className={"block overflow-hidden rounded-xl"}>
-                <img
-                    src={item.image}
-                    alt={item.name}
-                    loading={"lazy"}
-                    className={"w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"}
-                />
+            <Link href={`/store/${item.id}`} className={"block overflow-hidden rounded-xl bg-alice-blue"}>
+                {item.image ? (
+                    <img
+                        src={item.image}
+                        alt={item.name}
+                        loading={"lazy"}
+                        className={"w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"}
+                    />
+                ) : (
+                    <div className={"w-full h-48 flex items-center justify-center text-slate-gray"}>
+                        <LuShoppingBag className={"text-2xl"}/>
+                    </div>
+                )}
             </Link>
             <div className={"p-4 text-sm"}>
                 <div className={"flex items-start justify-between gap-2"}>
@@ -29,7 +38,7 @@ export function StoreCard({item}: {item: (typeof STORE_ITEMS)[number]}) {
                         {item.name}
                     </Link>
                     <Link
-                        href={orderLink(item)}
+                        href={orderLink({name: item.name, price: onSale ? item.offerPrice! : item.price})}
                         target={"_blank"}
                         rel={"noopener noreferrer"}
                         aria-label={`Order ${item.name} on WhatsApp`}
@@ -38,20 +47,29 @@ export function StoreCard({item}: {item: (typeof STORE_ITEMS)[number]}) {
                         <LuShoppingBag className="text-lg" />
                     </Link>
                 </div>
-                <p className={"font-bold text-cyan text-lg mt-1"}>{formatPrice(item.price)}</p>
-                <div className="flex items-center gap-0.5 mt-1.5 text-amber-500" aria-label={`Rated ${item.rating} out of 5`}>
-                    {Array.from({length: 5}, (_, i) => (
-                        <Star key={i} filled={item.rating! > i} />
-                    ))}
-                </div>
+                {onSale ? (
+                    <p className={"font-bold text-cyan text-lg mt-1 flex items-baseline gap-1.5"}>
+                        {formatPrice(item.offerPrice!)}
+                        <span className={"text-xs font-medium text-slate-gray line-through"}>{formatPrice(item.price)}</span>
+                    </p>
+                ) : (
+                    <p className={"font-bold text-cyan text-lg mt-1"}>{formatPrice(item.price)}</p>
+                )}
+                {item.rating ? (
+                    <div className={"flex items-center gap-0.5 mt-1.5 text-amber-500"} aria-label={ratingLabel}>
+                        {Array.from({length: 5 }, (_, i) => (
+                            <Star key={i} filled={item.rating! > i} />
+                        ))}
+                    </div>
+                ) : null}
                 <p className={"text-slate-500 mt-1.5"}>{item.blurb}</p>
             </div>
         </div>
     )
 }
 
-function HeroShowcase() {
-    const tee = getStoreItem("relate-tee")
+function HeroShowcase({items}: {items: StoreItem[]}) {
+    const tee = items.find((i) => i.id === "relate-tee")
     const allSlides = tee?.images?.length ? tee.images : tee ? [tee.image] : []
     const slides = allSlides.filter(
         (src) => src.includes("t-shirt-1") || src.includes("t-shirt-3"),
@@ -119,8 +137,9 @@ function HeroShowcase() {
 
 export default function StorePage() {
     const [category, setCategory] = useState<StoreCategory>("All")
+    const {items: allItems} = useStoreItems()
 
-    const items = category === "All" ? STORE_ITEMS : STORE_ITEMS.filter((i) => i.category === category)
+    const items = category === "All" ? allItems : allItems.filter((i) => i.category === category)
 
     return (
         <>
@@ -166,7 +185,7 @@ export default function StorePage() {
                     </div>
 
                     <div className="relative">
-                        <HeroShowcase />
+                        <HeroShowcase items={allItems} />
                     </div>
                 </div>
             </header>

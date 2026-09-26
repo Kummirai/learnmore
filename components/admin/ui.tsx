@@ -31,8 +31,11 @@ export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     return <input {...props} className={inputCls} />;
 }
 
-export function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-    return <textarea {...props} className={`${inputCls} min-h-[84px]`} />;
+export function TextArea({
+    className = "",
+    ...props
+}: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+    return <textarea {...props} className={`${inputCls} min-h-[84px] ${className}`} />;
 }
 
 export function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
@@ -64,12 +67,14 @@ export function Badge({
     tone = "slate",
     children,
 }: {
-    tone?: "green" | "amber" | "slate" | "sky";
+    tone?: "gold" | "amber" | "slate" | "sky";
     children: ReactNode;
 }) {
     const colors: Record<string, string> = {
-        green: "bg-emerald-100 text-emerald-800",
-        amber: "bg-amber-100 text-amber-800",
+        gold: "bg-gold-100 text-gold-800",
+        // Orange, not amber: amber sits too close to the brand gold to read as a
+        // distinct warning state.
+        amber: "bg-orange-100 text-orange-800",
         slate: "bg-alice-blue text-slate-gray",
         sky: "bg-ice-blue text-navy",
     };
@@ -103,8 +108,8 @@ export function AdminHeader({
     return (
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
-                <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">{eyebrow}</p>
-                <h1 className="text-2xl md:text-3xl font-black tracking-tight text-navy">{title}</h1>
+                <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-cyan">{eyebrow}</p>
+                <h1 className="text-2xl md:text-3xl font-black leading-none tracking-tight text-navy">{title}</h1>
                 {sub ? <p className="mt-1 text-sm text-slate-gray">{sub}</p> : null}
             </div>
             {actions ? <div className="flex flex-wrap items-center gap-3">{actions}</div> : null}

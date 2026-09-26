@@ -5,9 +5,12 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { LuMinus, LuPlus, LuTrash2, LuArrowLeft, LuLoaderCircle } from "react-icons/lu";
-import { STORE_ITEMS, getStoreItem, type StoreItem } from "@/constants/relate";
+import { useStoreItems } from "@/components/store/useStoreItems";
+import { type StoreItem } from "@/constants/relate";
 
 const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`;
+/** What the shopper actually pays — an offer price wins over the list price. */
+const payable = (item: StoreItem) => item.offerPrice ?? item.price;
 const WHATSAPP_NUMBER = "27782677436";
 
 type Line = { item: StoreItem; qty: number };
@@ -15,9 +18,10 @@ type Line = { item: StoreItem; qty: number };
 function CheckoutInner() {
     const searchParams = useSearchParams();
     const initialId = searchParams.get("item");
+    const { items: catalog } = useStoreItems();
 
     const [lines, setLines] = useState<Line[]>(() => {
-        const start = initialId ? STORE_ITEMS.filter((i) => i.id === initialId).map((item) => ({ item, qty: 1 })) : [];
+        const start = initialId ? catalog.filter((i) => i.id === initialId).map((item) => ({ item, qty: 1 })) : [];
         return start;
     });
 
@@ -26,10 +30,10 @@ function CheckoutInner() {
     const [notes, setNotes] = useState("");
     const [added, setAdded] = useState(false);
 
-    const total = useMemo(() => lines.reduce((sum, l) => sum + l.item.price * l.qty, 0), [lines]);
+    const total = useMemo(() => lines.reduce((sum, l) => sum + payable(l.item) * l.qty, 0), [lines]);
 
     const addItem = (id: string) => {
-        const item = getStoreItem(id);
+        const item = catalog.find((i) => i.id === id);
         if (!item) return;
         setLines((prev) => {
             const existing = prev.find((l) => l.item.id === id);
@@ -46,7 +50,7 @@ function CheckoutInner() {
     const removeLine = (id: string) => setLines((prev) => prev.filter((l) => l.item.id !== id));
 
     const orderText = useMemo(() => {
-        const items = lines.map((l) => `• ${l.item.name} × ${l.qty} — ${formatPrice(l.item.price * l.qty)}`).join("\n");
+        const items = lines.map((l) => `• ${l.item.name} × ${l.qty} — ${formatPrice(payable(l.item) * l.qty)}`).join("\n");
         return [
             "Hi RelateWorld! I'd like to place a store order:",
             items || "(no items selected)",
@@ -106,7 +110,7 @@ function CheckoutInner() {
                                                 <LuPlus className="text-sm" />
                                             </button>
                                         </div>
-                                        <span className="w-20 text-right font-bold text-navy text-sm shrink-0">{formatPrice(item.price * qty)}</span>
+                                        <span className="w-20 text-right font-bold text-navy text-sm shrink-0">{formatPrice(payable(item) * qty)}</span>
                                         <button onClick={() => removeLine(item.id)} aria-label={`Remove ${item.name}`} className="text-slate-gray hover:text-red-600 transition-colors shrink-0">
                                             <LuTrash2 className="text-sm" />
                                         </button>
@@ -119,7 +123,7 @@ function CheckoutInner() {
                         <div className="rounded-2xl border border-gray-100 p-4">
                             <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-3">Add more items</p>
                             <div className="flex flex-wrap gap-2">
-                                {STORE_ITEMS.filter((i) => !lines.some((l) => l.item.id === i.id)).map((i) => (
+                                {catalog.filter((i) => !lines.some((l) => l.item.id === i.id)).map((i) => (
                                     <button
                                         key={i.id}
                                         onClick={() => addItem(i.id)}

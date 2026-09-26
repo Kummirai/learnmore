@@ -168,8 +168,8 @@ export default function JoinForm({
     return (
       <section className="flex-1 px-4 py-16 bg-white">
         <div className="max-w-xl mx-auto text-center">
-          <div className="mx-auto size-16 rounded-full flex items-center justify-center bg-emerald-50 mb-5">
-            <FaCheck className="text-3xl text-emerald-600" />
+          <div className="mx-auto size-16 rounded-full flex items-center justify-center bg-gold-50 mb-5">
+            <FaCheck className="text-3xl text-gold-700" />
           </div>
           <h2 className="text-3xl font-black tracking-tight text-navy mb-2">
             Application received

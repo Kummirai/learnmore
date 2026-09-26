@@ -82,7 +82,7 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
       <div className="rounded-2xl border border-green-200 bg-green-50/50 p-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="size-11 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <FaCheck className="text-xl text-emerald-600" />
+            <FaCheck className="text-xl text-gold-700" />
           </div>
           <div>
             <h3 className="font-bold text-navy">You&rsquo;re on the list</h3>
@@ -114,7 +114,7 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
       <div className="rounded-2xl border border-green-200 bg-green-50/50 p-6">
         <div className="flex items-center gap-3 mb-3">
           <div className="size-11 rounded-full bg-white flex items-center justify-center shadow-sm">
-            <FaCheck className="text-xl text-emerald-600" />
+            <FaCheck className="text-xl text-gold-700" />
           </div>
           <div>
             <h3 className="font-bold text-navy">You&rsquo;re going</h3>

@@ -83,8 +83,8 @@ export default function RegisterPage() {
             </>
           ) : (
             <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm text-center">
-              <div className="mx-auto size-14 rounded-full flex items-center justify-center bg-emerald-50 mb-4">
-                <FaCheck className="text-2xl text-emerald-600" />
+              <div className="mx-auto size-14 rounded-full flex items-center justify-center bg-gold-50 mb-4">
+                <FaCheck className="text-2xl text-gold-700" />
               </div>
               <h2 className="text-2xl font-black text-navy mb-1">Club locked</h2>
               <p className="text-sm text-slate-gray mb-6">

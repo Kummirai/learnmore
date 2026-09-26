@@ -2,23 +2,20 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import RequireAuth from "@/components/RequireAuth";
 import ReadingPlanEditor from "@/components/admin/ReadingPlanEditor";
 import { Button } from "@/components/admin/ui";
 import { getAuthoredPlan, getReadingPlan, getPlanSections } from "@/lib/reading-plans";
 
 export default function AdminReadingPlanEditPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
-    <RequireAuth title="Edit reading plan">
-      <section
-        className="flex-1 px-4 py-10 md:py-14"
-        style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
-      >
-        <div className="max-w-7xl mx-auto">
-          <EditBody params={params} />
-        </div>
-      </section>
-    </RequireAuth>
+<section
+  className="flex-1 px-4 py-10 md:py-14"
+  style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
+>
+  <div className="max-w-7xl mx-auto">
+    <EditBody params={params} />
+  </div>
+</section>
   );
 }
 
@@ -61,7 +58,7 @@ function EditBody({ params }: { params: Promise<{ slug: string }> }) {
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">Reading plans</p>
+          <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-cyan">Reading plans</p>
           <h1 className="truncate text-xl md:text-2xl font-black tracking-tight text-navy">
             {initial ? (initial.slug ? "Edit plan" : "Resolve plan") : "Loading…"}
           </h1>

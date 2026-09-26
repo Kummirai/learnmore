@@ -316,7 +316,7 @@ function BlockView({ b }: { b: PubBlock }) {
           <ul className="space-y-1.5">
             {(b.options || []).map((opt, i) => (
               <li key={i} className="flex gap-2 text-sm text-gray-600">
-                <span className={`size-2.5 shrink-0 rounded-full border ${i === b.correctIndex ? "border-emerald-500 bg-emerald-500" : "border-gray-300 bg-white"}`} />
+                <span className={`size-2.5 shrink-0 rounded-full border ${i === b.correctIndex ? "border-gold-500 bg-gold-500" : "border-gray-300 bg-white"}`} />
                 {opt}
               </li>
             ))}

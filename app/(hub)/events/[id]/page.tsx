@@ -251,7 +251,7 @@ export default function EventDetailPage() {
                   onClick={() => setRsvpOpen((o) => !o)}
                   className={`flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-bold transition-colors ${
                     event.hasRsvpd
-                      ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                      ? "bg-gold-700 text-white hover:bg-gold-800"
                       : "bg-cyan text-white hover:bg-cyan-dark"
                   }`}
                 >

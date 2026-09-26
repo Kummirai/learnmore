@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import RequireAuth from "@/components/RequireAuth";
 import { AdminHeader, Badge, Button } from "@/components/admin/ui";
 import { LuFlame, LuSearch, LuX, LuHistory } from "react-icons/lu";
 
@@ -41,16 +40,14 @@ type RestoreTarget = {
 
 export default function AdminStreaksPage() {
     return (
-        <RequireAuth title="Restore Streaks">
-            <section
-                className="flex-1 px-4 py-10 md:py-14"
-                style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
-            >
-                <div className="max-w-5xl mx-auto">
-                    <StreaksBody />
-                </div>
-            </section>
-        </RequireAuth>
+  <section
+      className="flex-1 px-4 py-10 md:py-14"
+      style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
+  >
+      <div className="max-w-5xl mx-auto">
+          <StreaksBody />
+      </div>
+  </section>
     );
 }
 
@@ -210,7 +207,7 @@ function StreaksBody() {
                 }
             />
 
-            {success && <p className="mb-4 rounded-lg bg-emerald-50 text-emerald-700 text-sm px-4 py-2.5">{success}</p>}
+            {success && <p className="mb-4 rounded-lg bg-gold-50 text-gold-700 text-sm px-4 py-2.5">{success}</p>}
             {error && <p className="mb-4 rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
 
             {logs && (

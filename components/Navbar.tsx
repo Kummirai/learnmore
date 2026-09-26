@@ -123,7 +123,10 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
       className={
         overlay
           ? "absolute inset-x-0 top-0 z-30 pt-0 sm:mb-30"
-          : "bg-white border-b border-gray-100"
+          : // Relative + a high z-index keeps the bar above hero art and other
+            // decorative layers on every page that renders the Navbar outside a
+            // PageHero, without pinning it and changing the scroll behaviour.
+            "relative z-40 bg-white border-b border-gray-100"
       }
     >
       {overlay && (

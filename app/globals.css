@@ -14,6 +14,16 @@
   --color-ice-blue: #d4eef5;
   --color-ink: #1d2a4d;
   --color-slate-gray: #6b7a8d;
+  /* Brand gold — the Relate emblem gold, previously hardcoded in the quiz medal. */
+  --color-gold-50: #fdf9ee;
+  --color-gold-100: #faefcd;
+  --color-gold-200: #f4dfa0;
+  --color-gold-300: #efc93b;
+  --color-gold-400: #f0b429;
+  --color-gold-500: #f0b429;
+  --color-gold-600: #cf9c14;
+  --color-gold-700: #a57d10;
+  --color-gold-800: #8a680d;
 }
 
 :root {

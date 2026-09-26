@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import RequireAuth from "@/components/RequireAuth";
 import { Badge, AdminHeader, Select } from "@/components/admin/ui";
 import { LuUserPlus } from "react-icons/lu";
 
@@ -58,16 +57,14 @@ function dateText(value?: string): string {
 
 export default function AdminClubJoinsPage() {
   return (
-    <RequireAuth title="Club Joins">
-      <section
-        className="flex-1 px-4 py-10 md:py-14"
-        style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
-      >
-        <div className="max-w-5xl mx-auto">
-          <ClubJoinsBody />
-        </div>
-      </section>
-    </RequireAuth>
+<section
+  className="flex-1 px-4 py-10 md:py-14"
+  style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
+>
+  <div className="max-w-5xl mx-auto">
+    <ClubJoinsBody />
+  </div>
+</section>
   );
 }
 
@@ -188,7 +185,7 @@ function ClubJoinsBody() {
                   <Badge
                     tone={
                       item.status === "accepted"
-                        ? "green"
+                        ? "gold"
                         : item.status === "pending_interview"
                           ? "amber"
                           : "slate"
@@ -230,13 +227,13 @@ function ClubJoinsBody() {
                     </p>
                     <p className="text-xs text-gray-600">
                       Accepted community standards:{" "}
-                      <span className={item.commitmentAccepted ? "text-emerald-700 font-semibold" : "text-red-600 font-semibold"}>
+                      <span className={item.commitmentAccepted ? "text-gold-700 font-semibold" : "text-red-600 font-semibold"}>
                         {item.commitmentAccepted ? "Yes" : "No"}
                       </span>
                     </p>
                     <p className="text-xs text-gray-600">
                       Club Gathering (2nd Friday):{" "}
-                      <span className={item.clubGatheringAccepted ? "text-emerald-700 font-semibold" : "text-red-600 font-semibold"}>
+                      <span className={item.clubGatheringAccepted ? "text-gold-700 font-semibold" : "text-red-600 font-semibold"}>
                         {item.clubGatheringAccepted ? "Accepted" : "Not stated"}
                       </span>
                     </p>
@@ -251,7 +248,7 @@ function ClubJoinsBody() {
                     <button
                       onClick={() => decide(item, "accept")}
                       disabled={processing === item._id}
-                      className="rounded-lg bg-emerald-100 px-4 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-200 transition disabled:opacity-50"
+                      className="rounded-lg bg-gold-100 px-4 py-1.5 text-xs font-semibold text-gold-800 hover:bg-gold-200 transition disabled:opacity-50"
                     >
                       Accept after interview
                     </button>

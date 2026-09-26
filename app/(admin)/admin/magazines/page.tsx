@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { LuPlus, LuX, LuPencil } from "react-icons/lu";
-import RequireAuth from "@/components/RequireAuth";
 import { Badge, AdminHeader, Button, Field, Input, Select } from "@/components/admin/ui";
 
 type Row = {
@@ -48,16 +47,14 @@ function displayClub(slug: string | undefined): string {
 
 export default function AdminMagazinesPage() {
     return (
-        <RequireAuth title="Season Guides">
-            <section
-                className="flex-1 px-4 py-10 md:py-14"
-                style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
-            >
-                <div className="max-w-5xl mx-auto">
-                    <MagazinesBody />
-                </div>
-            </section>
-        </RequireAuth>
+  <section
+      className="flex-1 px-4 py-10 md:py-14"
+      style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
+  >
+      <div className="max-w-5xl mx-auto">
+          <MagazinesBody />
+      </div>
+  </section>
     );
 }
 
@@ -206,7 +203,7 @@ function MagazinesBody() {
                                 <td className="px-4 py-3.5 text-gray-600">{row.clubName}</td>
                                 <td className="hidden px-4 py-3.5 text-gray-500 md:table-cell">{row.seasonLabel || "—"}</td>
                                 <td className="px-4 py-3.5">
-                                    <Badge tone={row.status === "published" ? "green" : "amber"}>
+                                    <Badge tone={row.status === "published" ? "gold" : "amber"}>
                                         {row.status === "published" ? "Published" : "Draft"}
                                     </Badge>
                                 </td>
@@ -224,7 +221,7 @@ function MagazinesBody() {
                                             className={`rounded-lg px-2.5 py-1.5 text-xs font-semibold transition disabled:opacity-50 ${
                                                 row.status === "published"
                                                     ? "bg-amber-100 text-amber-800 hover:bg-amber-200"
-                                                    : "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
+                                                    : "bg-gold-100 text-gold-800 hover:bg-gold-200"
                                             }`}
                                         >
                                             {row.status === "published" ? "Unpublish" : "Publish"}

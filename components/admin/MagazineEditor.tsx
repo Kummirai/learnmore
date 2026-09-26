@@ -552,7 +552,7 @@ export default function MagazineEditor({
                 {/* Actions */}
                 <div className="flex flex-col items-start gap-3">
                     {error ? <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
-                    {saved ? <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">Saved.</p> : null}
+                    {saved ? <p className="rounded-xl bg-gold-50 px-4 py-3 text-sm text-gold-700">Saved.</p> : null}
                     <div className="flex gap-3">
                         <Button onClick={save} disabled={saving}>
                             {saving ? "Saving…" : initial ? "Save changes" : "Create season guide"}

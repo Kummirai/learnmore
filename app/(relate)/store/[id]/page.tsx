@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LuArrowLeft, LuChevronRight } from "react-icons/lu";
+import { LuArrowLeft, LuChevronRight, LuShoppingBag } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import ProductPanel from "@/components/store/ProductPanel";
-import { STORE_ITEMS, getStoreItem } from "@/constants/relate";
+import { getStoreItemById, getStoreItems } from "@/lib/store";
+import { STORE_ITEMS } from "@/constants/relate";
 
 export function generateStaticParams() {
   return STORE_ITEMS.map((item) => ({ id: item.id }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  return params.then(({ id }) => {
-    const item = getStoreItem(id);
-    if (!item) return { title: "Product Not Found · Relate Store" };
-    return {
-      title: `${item.name} · Relate Store`,
-      description: item.blurb,
-    };
-  });
+  const { id } = await params;
+  const item = await getStoreItemById(id);
+  if (!item) return { title: "Product Not Found · Relate Store" };
+  return {
+    title: `${item.name} · Relate Store`,
+    description: item.blurb,
+  };
 }
 
 export default async function ProductPage({
@@ -31,13 +31,14 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const item = getStoreItem(id);
+  const item = await getStoreItemById(id);
   if (!item) notFound();
 
-  const related = STORE_ITEMS.filter(
-    (i) => i.category === item.category && i.id !== item.id,
-  ).slice(0, 4);
-  const others = STORE_ITEMS.filter((i) => i.id !== item.id).slice(0, 4);
+  const all = await getStoreItems();
+  const related = all
+    .filter((i) => i.category === item.category && i.id !== item.id)
+    .slice(0, 4);
+  const others = all.filter((i) => i.id !== item.id).slice(0, 4);
 
   return (
     <>
@@ -77,22 +78,32 @@ export default async function ProductPage({
                 {(related.length > 0 ? related : others).map((r) => (
                   <Link key={r.id} href={`/store/${r.id}`}>
                     <div className="max-w-64">
-                      <div className="group">
-                        <img
-                          className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
-                          src={r.image}
-                          alt={r.name}
-                        />
-                        <img
-                          className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
-                          src={r.image}
-                          alt={r.name}
-                        />
+                      <div className="group rounded-lg overflow-hidden bg-alice-blue">
+                        {r.image ? (
+                          <>
+                            <img
+                              className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
+                              src={r.image}
+                              alt={r.name}
+                            />
+                            <img
+                              className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
+                              src={r.image}
+                              alt=""
+                            />
+                          </>
+                        ) : (
+                          <div className="aspect-square flex items-center justify-center text-slate-gray">
+                            <LuShoppingBag />
+                          </div>
+                        )}
                       </div>
                       <p className="text-sm mt-2 font-semibold text-navy">
                         {r.name}
                       </p>
-                      <p className="text-lg font-bold text-cyan">R{r.price}</p>
+                      <p className="text-lg font-bold text-cyan">
+                        R{(r.offerPrice ?? r.price).toLocaleString("en-ZA")}
+                      </p>
                     </div>
                   </Link>
                 ))}
