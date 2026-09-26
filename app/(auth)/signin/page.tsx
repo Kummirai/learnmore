@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { FaGithub } from "react-icons/fa6";
-import { LuMail, LuEye, LuEyeOff, LuArrowLeft } from "react-icons/lu";
+import { LuMail, LuEye, LuEyeOff } from "react-icons/lu";
 import { useAuth } from "@/components/AuthProvider";
 
 const inputCls =
@@ -63,9 +62,7 @@ export default function SignInPage() {
             style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
         >
             <div className="max-w-md mx-auto">
-                <Link href="/" className="inline-flex items-center gap-1 text-sm text-slate-gray hover:text-navy mb-6 transition-colors">
-                    <LuArrowLeft /> Back to Home
-                </Link>
+
                 <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
                         {mode === "signin" ? "Welcome back" : "Create your account"}

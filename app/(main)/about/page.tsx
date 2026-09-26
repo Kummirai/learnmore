@@ -1,7 +1,5 @@
 import Link from "next/link";
-import Team from "@/components/Team";
 import {
-  LuArrowLeft,
   LuTarget,
   LuHeart,
   LuHandHeart,
@@ -44,15 +42,6 @@ export default function AboutPage() {
   return (
     <section className={"flex-1 px-4 py-12"}>
       <div className={"max-w-4xl mx-auto"}>
-        <Link
-          href={"/"}
-          className={
-            "inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"
-          }
-        >
-          <LuArrowLeft/> Back to Home
-        </Link>
-
         <div className={"text-center mb-12"}>
           <h1
             className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}
@@ -125,6 +114,36 @@ export default function AboutPage() {
           </div>
         </div>
 
+        <div className={"mt-12"}>
+          <h2 className={"text-xl font-semibold text-gray-800 mb-1 text-center"}>
+            Guiding Principles
+          </h2>
+          <p className={"text-gray-500 text-sm text-center mb-6 max-w-lg mx-auto"}>
+            The commitments that shape how we work with every person we serve.
+          </p>
+          <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
+            {principles.map((p) => {
+              const Icon = p.icon;
+              return (
+                <div
+                  key={p.title}
+                  className={"bg-white rounded-xl p-6 shadow-sm flex items-start gap-4"}
+                >
+                  <Icon className={"text-2xl text-cyan shrink-0 mt-0.5"}/>
+                  <div>
+                    <h3 className={"font-semibold text-gray-800 mb-1.5"}>
+                      {p.title}
+                    </h3>
+                    <p className={"text-gray-600 text-sm leading-relaxed"}>
+                      {p.body}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         <div className={"mt-10"}>
           <div className={"flex items-center gap-2 mb-6"}>
             <LuFileText className={"text-xl text-cyan"}/>
@@ -146,9 +165,43 @@ export default function AboutPage() {
             Read the Relate Manual
           </Link>
         </div>
-      </div>
 
-      <Team />
+        <div className={"mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4"}>
+          <Link
+            href={"/team"}
+            className={
+              "group flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+            }
+          >
+            <LuUsers className={"text-2xl text-cyan shrink-0"}/>
+            <span>
+              <span className={"block font-semibold text-gray-800 group-hover:text-cyan transition-colors"}>
+                Our Team
+              </span>
+              <span className={"block text-gray-500 text-sm leading-snug mt-1"}>
+                Meet the Presidency, club directors and sports coaches.
+              </span>
+            </span>
+          </Link>
+
+          <Link
+            href={"/volunteer"}
+            className={
+              "group flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
+            }
+          >
+            <LuHandHeart className={"text-2xl text-cyan shrink-0"}/>
+            <span>
+              <span className={"block font-semibold text-gray-800 group-hover:text-cyan transition-colors"}>
+                Volunteer
+              </span>
+              <span className={"block text-gray-500 text-sm leading-snug mt-1"}>
+                Ways to serve across our clubs, teams and programmes.
+              </span>
+            </span>
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }

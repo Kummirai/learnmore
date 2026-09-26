@@ -1,6 +1,6 @@
 import Link from "next/link"
 import type {CSSProperties} from "react"
-import {LuArrowLeft} from "react-icons/lu"
+
 import {FaWhatsapp} from "react-icons/fa"
 import PageHero from "@/components/PageHero"
 import {CLUBS, getClub, getClubClass, getClubClasses} from "@/constants/relate"
@@ -15,10 +15,7 @@ export default async function ClubPage({slug}: {slug: string}) {
         return (
             <section className={"flex-1 px-4 py-12"}>
                 <div className={"max-w-4xl mx-auto"}>
-                    <Link href={"/"}
-                          className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                        <LuArrowLeft/> Back to Home
-                    </Link>
+
                     <h1 className={"text-3xl font-semibold text-gray-800"}>Club not found</h1>
                 </div>
             </section>

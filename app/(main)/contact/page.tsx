@@ -1,9 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import Link from "next/link";
 import {
-  LuArrowLeft,
   LuMapPin,
   LuPhone,
   LuMail,
@@ -25,15 +23,6 @@ export default function ContactPage() {
   return (
     <section className={"flex-1 px-4 py-12"}>
       <div className={"max-w-4xl mx-auto"}>
-        <Link
-          href={"/"}
-          className={
-            "inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"
-          }
-        >
-          <LuArrowLeft /> Back to Home
-        </Link>
-
         <div className={"text-center mb-10"}>
           <h1
             className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}

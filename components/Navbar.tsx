@@ -12,6 +12,15 @@ type NavGroup = { link: string; short: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
   {
+    link: "About",
+    short: "About",
+    items: [
+      { link: "About Relate", path: "/about" },
+      { link: "Our Team", path: "/team" },
+      { link: "Volunteer", path: "/volunteer" },
+    ],
+  },
+  {
     link: "Events & Sports",
     short: "Events",
     items: [
@@ -88,7 +97,6 @@ const navGroups: NavGroup[] = [
 
 const flatLinks = [
   { link: "Home", path: "/" },
-  { link: "About", path: "/about" },
   { link: "Store", path: "/store" },
   ...navGroups.flatMap((g) => g.items),
 ];
@@ -156,15 +164,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                 style={triggerShadow}
               >
                 Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href={"/about"}
-                className={`block text-sm  ${hoverText} transition-colors`}
-                style={triggerShadow}
-              >
-                About
               </Link>
             </li>
             {navGroups.map((group) => (
@@ -268,15 +267,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                 }
               >
                 Home
-              </Link>
-              <Link
-                href={"/about"}
-                onClick={() => setMenuOpen(false)}
-                className={
-                  "py-2 text-[14px] font-normal text-white/95 hover:text-[color:var(--club-accent)] transition-colors"
-                }
-              >
-                About
               </Link>
               {navGroups.map((group) => (
                 <div key={group.link} className={"border-b border-white/10"}>

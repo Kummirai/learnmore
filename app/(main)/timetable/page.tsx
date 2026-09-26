@@ -1,7 +1,6 @@
 "use client"
 
-import Link from "next/link"
-import {LuArrowLeft, LuClock} from "react-icons/lu"
+import {LuClock} from "react-icons/lu"
 import {useState} from "react"
 
 type DaySlot = {time: string; subject: string; teacher: string; room: string}
@@ -362,11 +361,6 @@ export default function TimetablePage() {
     return (
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
-                <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                    <LuArrowLeft/> Back to Home
-                </Link>
-
                 <div className={"text-center mb-8"}>
                     <div className={"flex items-center justify-center gap-3 mb-3"}>
                         <LuClock className={"text-3xl text-cyan"}/>

@@ -1,5 +1,4 @@
-import Link from "next/link"
-import {LuArrowLeft, LuStar, LuTrophy, LuAward, LuMedal} from "react-icons/lu"
+import {LuStar, LuTrophy, LuAward, LuMedal} from "react-icons/lu"
 
 type Merit = {name: string; grade: string; achievement: string; date: string; stars: number; icon: React.ReactNode}
 
@@ -28,11 +27,6 @@ export default function MeritsPage() {
     return (
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
-                <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                    <LuArrowLeft/> Back to Home
-                </Link>
-
                 <div className={"text-center mb-12"}>
                     <div className={"flex items-center justify-center gap-3 mb-3"}>
                         <LuStar className={"text-3xl text-amber-400 fill-amber-400"}/>

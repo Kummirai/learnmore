@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { LuArrowLeft, LuFlame } from "react-icons/lu";
+import { LuFlame } from "react-icons/lu";
 import RequireAuth from "@/components/RequireAuth";
 import { useAuth } from "@/components/AuthProvider";
 
@@ -10,9 +9,7 @@ function PageShell({children}: {children: React.ReactNode}) {
     return (
         <section className="flex-1 px-4 py-10 md:py-14" style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}>
             <div className="max-w-2xl mx-auto">
-                <Link href="/" className="inline-flex items-center gap-1 text-sm text-slate-gray hover:text-navy mb-6 transition-colors">
-                    <LuArrowLeft /> Back to Home
-                </Link>
+
                 {children}
             </div>
         </section>

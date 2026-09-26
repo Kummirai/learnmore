@@ -1,4 +1,3 @@
-import Link from "next/link"
 import PublicationReader from "@/components/publications/PublicationReader"
 import {getClub} from "@/constants/relate"
 import {getPublication, getPublications} from "@/lib/publications"
@@ -19,10 +18,7 @@ export default async function MagazinePage({slug}: {slug: string}) {
         return (
             <section className={"flex-1 px-4 py-12"}>
                 <div className={"max-w-4xl mx-auto"}>
-                    <Link href={"/"}
-                          className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                        Back to Home
-                    </Link>
+
                     <h1 className={"text-3xl font-semibold text-gray-800"}>Season guide not found</h1>
                 </div>
             </section>

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import {LuArrowLeft, LuSearch, LuPlus, LuShirt, LuLaptop, LuBox, LuBook} from "react-icons/lu"
+import {LuSearch, LuPlus, LuShirt, LuLaptop, LuBox, LuBook} from "react-icons/lu"
 import {GrAccessibility} from "react-icons/gr"
 
 type LostItem = {item: string; description: string; date: string; location: string; icon: React.ReactNode; status: "Lost" | "Found"}
@@ -18,11 +18,6 @@ export default function LostFoundPage() {
     return (
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
-                <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                    <LuArrowLeft/> Back to Home
-                </Link>
-
                 <div className={"text-center mb-12"}>
                     <div className={"flex items-center justify-center gap-3 mb-3"}>
                         <LuSearch className={"text-3xl text-cyan"}/>

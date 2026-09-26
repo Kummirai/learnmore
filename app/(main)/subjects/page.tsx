@@ -1,5 +1,4 @@
-import Link from "next/link"
-import {LuArrowLeft, LuBookOpen, LuFlaskConical, LuPencil, LuPalette, LuHeart, LuMusic, LuLanguages, LuCalculator} from "react-icons/lu"
+import {LuBookOpen, LuFlaskConical, LuPencil, LuPalette, LuHeart, LuMusic, LuLanguages, LuCalculator} from "react-icons/lu"
 import {FaRunning} from "react-icons/fa"
 
 const subjects = [
@@ -73,11 +72,6 @@ export default function SubjectsPage() {
     return (
         <section className={"flex-1 px-4 py-12"}>
             <div className={"max-w-6xl mx-auto"}>
-                <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                    <LuArrowLeft/> Back to Home
-                </Link>
-
                 <div className={"text-center mb-12"}>
                     <h1 className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}>Our Subjects</h1>
                     <p className={"text-gray-500 max-w-xl mx-auto"}>

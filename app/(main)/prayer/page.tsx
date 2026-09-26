@@ -1,8 +1,7 @@
 "use client"
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { LuArrowLeft, LuCloudMoon, LuMoonStar, LuSun, LuSunMedium, LuSunrise, LuSunset } from "react-icons/lu";
+import { LuCloudMoon, LuMoonStar, LuSun, LuSunMedium, LuSunrise, LuSunset } from "react-icons/lu";
 import {
     PRAYER_COORDS,
     buildPrayerTimes,
@@ -90,12 +89,7 @@ export default function PrayerPage() {
                     }}
                 />
                 <div className="relative container mx-auto max-w-6xl px-6 py-14 md:py-20">
-                    <Link
-                        href={"/"}
-                        className="inline-flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium transition-colors"
-                    >
-                        <LuArrowLeft/> Back to home
-                    </Link>
+
                     <p className={'mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-light'}>
                         Daily rhythm
                     </p>

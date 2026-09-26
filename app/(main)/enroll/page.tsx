@@ -2,8 +2,7 @@
 
 import {useActionState, useEffect} from "react"
 import {submitEnrollment} from "./actions"
-import Link from "next/link"
-import {LuArrowLeft, LuCircleCheck, LuCircleAlert} from "react-icons/lu"
+import {LuCircleCheck, LuCircleAlert} from "react-icons/lu"
 
 const grades = ["R", "1", "2", "3", "4", "5", "6", "7"]
 
@@ -44,10 +43,7 @@ export default function EnrollPage() {
                     <LuCircleCheck className={"text-6xl text-cyan mx-auto mb-4"}/>
                     <h1 className={"text-2xl md:text-3xl font-semibold text-gray-800 mb-3"}>Enrollment Submitted!</h1>
                     <p className={"text-gray-600 leading-relaxed mb-6"}>{state.message}</p>
-                    <Link href={"/"}
-                          className={"inline-block bg-navy text-white px-8 py-3 rounded text-sm font-medium hover:bg-navy-dark transition-colors"}>
-                        Back to Home
-                    </Link>
+
                 </div>
             </section>
         )
@@ -56,11 +52,6 @@ export default function EnrollPage() {
     return (
         <section className={"flex-1 flex items-center justify-center px-4 py-12"}>
             <div className={"max-w-2xl w-full"}>
-                <Link href={"/"}
-                      className={"inline-flex items-center gap-1 text-sm text-cyan hover:text-cyan-dark mb-6 transition-colors"}>
-                    <LuArrowLeft/> Back to Home
-                </Link>
-
                 <div className={"bg-white rounded-xl p-8 md:p-10 shadow-sm"}>
                     <div className={"mb-8"}>
                         <h1 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>Enroll Your Child</h1>

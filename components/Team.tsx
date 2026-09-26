@@ -28,31 +28,27 @@ const coachMembers: TeamMember[] = SPORTS_TEAMS.map((t) => ({
 
 const groups: TeamGroup[] = [
     {
-        title: "Executive Director",
-        subtitle: "Leading the Relate family day to day",
-        featured: {name: "Milton Kumirai", role: "Executive Director & Chairman", src: photo("photo-1506794778202-cad84cf45f1d")},
-        members: []
-    },
-    {
-        title: "Secretary & Treasurer",
-        subtitle: "Governance, records and fiduciary integrity",
+        title: "Presidency",
+        subtitle: "Setting direction and holding the organisation to account",
+        featured: {name: "Milton Kumirai", role: "1st President", src: photo("photo-1506794778202-cad84cf45f1d")},
         members: [
+            {name: "Moses Fusi", role: "2nd President", src: photo("photo-1500648767791-00dcc994a43e")},
+            {name: "Constance Lowani", role: "3rd President", src: photo("photo-1531123897727-8f129e1688ce")},
             {name: "Talayiwa Ngwenya", role: "Secretary", src: photo("photo-1494790108377-be9c29b29330")},
-            {name: "Anacleta Ncube", role: "Treasurer", src: photo("photo-1573497019940-1c28c88b4f3e")},
+            {name: "Anacleta Ncube", role: "Chief Finance Officer", src: photo("photo-1573497019940-1c28c88b4f3e")},
         ]
     },
     {
         title: "Directors",
         subtitle: "Leading each club and its weekly programs",
         members: [
-            {name: "Moses Fusi", role: "Nexus Director · Families", src: photo("photo-1500648767791-00dcc994a43e")},
-            {name: "Constance Lowani", role: "Nexus Director · Families", src: photo("photo-1531123897727-8f129e1688ce")},
             {name: "Sprout Director", role: "Children 6–15 · weekly clubs", src: photo("photo-1544716278-ca5e3f4abd8c")},
             {name: "Surge Director", role: "Young youth 16–21 · meetups", src: photo("photo-1521737604893-d14cc237f11d")},
             {name: "Pulse Director", role: "Youth 21–33 · networking", src: photo("photo-1576091160550-2173dba999ef")},
             {name: "Prime Director", role: "Singles 33+ · peer circles", src: photo("photo-1560250097-0b93528c311a")},
             {name: "Anchor Director", role: "Single parents · support groups", src: photo("photo-1508214751196-bcfd4ca60f91")},
             {name: "Base Director", role: "Couples · socials & retreats", src: photo("photo-1516589178581-6cd7833ae3b2")},
+            {name: "Education Director", role: "Schools & learning programmes"},
         ]
     },
     {
@@ -107,7 +103,7 @@ export default function Team() {
                     </h2>
                 </div>
                 {groups.map(group => {
-                    const icon = group.title === "Executive Director" ? <LuShield className={"text-cyan text-3xl"}/>
+                    const icon = group.title === "Presidency" ? <LuShield className={"text-cyan text-3xl"}/>
                         : <LuUsers className={"text-cyan text-3xl"}/>
                     const hasShowMore = group.members.length > 6
                     const visible = hasShowMore && !showAll ? group.members.slice(0, 6) : group.members
