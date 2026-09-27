@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
-import { FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import {
   CLUBS,
@@ -50,16 +49,14 @@ export default async function ClubPage({ slug }: { slug: string }) {
         }
         actions={
           <>
-            <a
-              href={club.whatsappGroupLink}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
+            <Link
+              href={`/join?club=${club.slug}`}
               className={
                 "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
               }
             >
-              <FaWhatsapp /> Join on WhatsApp
-            </a>
+              Join {club.name}
+            </Link>
             <a
               href={"#programs"}
               className={
@@ -263,16 +260,14 @@ export default async function ClubPage({ slug }: { slug: string }) {
                   </p>
                 </div>
                 <div className={"shrink-0 self-start md:self-center"}>
-                  <a
-                    href={club.whatsappGroupLink}
-                    target={"_blank"}
-                    rel={"noopener noreferrer"}
+                  <Link
+                    href={`/join?club=${club.slug}`}
                     className={
                       "inline-flex items-center gap-2 bg-white text-navy px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
                     }
                   >
-                    <FaWhatsapp /> Join {club.name}
-                  </a>
+                    Join {club.name}
+                  </Link>
                 </div>
               </div>
             </div>

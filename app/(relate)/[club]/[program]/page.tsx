@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 
-import { FaWhatsapp } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
 import {
   CLUBS,
@@ -94,16 +93,14 @@ export default async function ClubProgramPage({
         description={program.blurb}
         actions={
           <>
-            <a
-              href={club.whatsappGroupLink}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
+            <Link
+              href={`/join?club=${club.slug}`}
               className={
                 "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
               }
             >
-              <FaWhatsapp /> Join {club.name}
-            </a>
+              Join {club.name}
+            </Link>
             <Link
               href={`/${club.slug}#programs`}
               className={
@@ -175,17 +172,15 @@ export default async function ClubProgramPage({
                 "mt-6 flex flex-wrap items-center gap-3"
               }
             >
-              <a
-                href={club.whatsappGroupLink}
-                target={"_blank"}
-                rel={"noopener noreferrer"}
+              <Link
+                href={`/join?club=${club.slug}`}
                 className={
                   "inline-flex items-center gap-2 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:brightness-95 transition"
                 }
                 style={{ backgroundColor: club.colorDark }}
               >
-                <FaWhatsapp /> Take part in {program.name}
-              </a>
+                Join {club.name} — take part in {program.name}
+              </Link>
               <Link
                 href={`/${club.slug}#programs`}
                 className={
