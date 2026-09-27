@@ -150,8 +150,12 @@ export default function JoinForm({
   /** Known membership record (read from the cookie) — prefills the form. */
   member?: Membership | null;
 }) {
-  const [clubSlug, setClubSlug] = useState(defaultClub || member?.clubSlug || "");
-  const [teamId, setTeamId] = useState(defaultTeam);
+  const linkedTeam = SPORTS_TEAMS.find((t) => t.id === defaultTeam) ?? null;
+  const initialClub = defaultClub || member?.clubSlug || linkedTeam?.clubSlug || "";
+  const [clubSlug, setClubSlug] = useState(initialClub);
+  const [teamId, setTeamId] = useState(
+    linkedTeam && linkedTeam.clubSlug === initialClub ? linkedTeam.id : "",
+  );
   const [name, setName] = useState(member?.name ?? "");
   const [age, setAge] = useState(member?.age ?? "");
   const [gender, setGender] = useState(member?.gender ?? "");
@@ -451,12 +455,18 @@ export default function JoinForm({
                 </label>
                 <select
                   id="team"
-                  className={input}
+                  className={`${input} disabled:opacity-60 disabled:cursor-not-allowed`}
                   value={teamId}
                   onChange={(e) => setTeamId(e.target.value)}
-                  disabled={!clubSlug}
+                  disabled={!clubSlug || teams.length === 0}
                 >
-                  <option value="">Choose your team…</option>
+                  <option value="">
+                    {!clubSlug
+                      ? "Choose a club first…"
+                      : teams.length === 0
+                        ? `No teams in ${selectedClub?.name ?? "this club"} yet`
+                        : "Choose your team…"}
+                  </option>
                   {teams.map((t: RelateTeam) => (
                     <option key={t.id} value={t.id}>
                       {t.name} ({t.sport})
