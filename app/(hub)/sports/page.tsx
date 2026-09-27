@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
-import { LuArrowRight, LuShield } from "react-icons/lu";
+import { LuArrowRight } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
 import {
@@ -64,47 +65,59 @@ const sportLine: Record<RelateSport, string> = {
 
 function TeamCard({ team }: { team: RelateTeam }) {
   const club = getRelateClub(team.clubSlug);
-  const gradient = club
-    ? `linear-gradient(135deg, ${club.color}, ${club.colorDark})`
-    : "linear-gradient(135deg, #16213E, #0891B2)";
+  const accent = club?.color ?? "#13c5dd";
 
   return (
-    <article className="group flex flex-col bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow">
-      <div
-        className="relative h-36 flex items-center justify-center overflow-hidden"
-        style={{ background: gradient }}
-      >
-        <LuShield className="absolute -right-6 -bottom-6 text-white/10 text-8xl" />
-        <div className="text-center">
-          <p className="text-3xl font-black tracking-tight text-white">
+    <article className="group flex flex-col rounded-2xl border border-gray-100 bg-white p-5 text-center shadow-[0_1px_2px_rgba(21,31,58,0.05)] transition-all hover:-translate-y-1 hover:border-navy/10 hover:shadow-[0_18px_34px_-24px_rgba(21,31,58,0.55)]">
+      <div className="relative mx-auto flex h-44 w-full items-center justify-center">
+        {team.logo ? (
+          <Image
+            src={team.logo}
+            alt={`${team.name} crest`}
+            width={440}
+            height={440}
+            sizes="(max-width: 640px) 55vw, 240px"
+            className="h-full w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.04]"
+          />
+        ) : (
+          <span
+            className="grid size-32 place-items-center rounded-full text-3xl font-black text-white"
+            style={{
+              background: `linear-gradient(135deg, ${club?.color ?? "#16213E"}, ${club?.colorDark ?? "#0891B2"})`,
+            }}
+          >
             {team.initials}
-          </p>
-          <p className="mt-1 text-[11px] uppercase tracking-widest text-white/80">
-            {club?.name ?? "Relate"} · {team.sport}
-          </p>
-        </div>
+          </span>
+        )}
       </div>
-      <div className="flex flex-col flex-1 p-5">
-        <h3 className="text-lg font-semibold text-gray-800 leading-snug">
-          {team.name}
-        </h3>
-        <p className="mt-1.5 text-sm text-gray-500 leading-relaxed flex-1">
-          {team.tagline}
-        </p>
-        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
-          <Link
-            href={`/sports/${team.id}`}
-            className="text-xs font-semibold text-cyan hover:text-cyan-dark transition-colors"
-          >
-            {team.name} page →
-          </Link>
-          <JoinCta
-            href={`/join?club=${team.clubSlug}&team=${team.id}`}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-3 py-1.5 rounded-full transition-colors"
-          >
-            Join
-          </JoinCta>
-        </div>
+
+      <p className="mt-4 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-gray">
+        <span
+          aria-hidden
+          className="size-1.5 rounded-full"
+          style={{ backgroundColor: accent }}
+        />
+        {club?.name ?? "Relate"} · {team.sport}
+      </p>
+      <h3 className="mt-1.5 text-lg font-semibold leading-snug text-gray-800">
+        {team.name}
+      </h3>
+      <p className="mt-1.5 flex-1 text-sm leading-relaxed text-gray-500">
+        {team.tagline}
+      </p>
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 border-t border-gray-100 pt-4">
+        <Link
+          href={`/sports/${team.id}`}
+          className="text-xs font-semibold text-cyan transition-colors hover:text-cyan-dark"
+        >
+          {team.name} page →
+        </Link>
+        <JoinCta
+          href={`/join?club=${team.clubSlug}&team=${team.id}`}
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-3 py-1.5 rounded-full transition-colors"
+        >
+          Join
+        </JoinCta>
       </div>
     </article>
   );

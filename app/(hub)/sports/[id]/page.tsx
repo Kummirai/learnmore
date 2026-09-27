@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
 import { notFound } from "next/navigation";
@@ -149,7 +150,19 @@ export default async function TeamPage({
               <LuArrowLeft /> All teams
             </Link>
 
-            <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            {team.logo && (
+              <div className="mt-6 inline-flex w-fit rounded-2xl bg-white p-2 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.8)] md:mt-8">
+                <Image
+                  src={team.logo}
+                  alt={`${team.name} crest`}
+                  width={240}
+                  height={240}
+                  className="size-20 object-contain md:size-28"
+                />
+              </div>
+            )}
+
+            <div className="mt-5 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:mt-8">
               <div className="max-w-2xl">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-2">
                   Relate · {club?.name ?? "Relate"} · {team.sport}

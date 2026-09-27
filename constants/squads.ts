@@ -521,9 +521,6 @@ const COACH_NAMES: Record<string, string> = {
   "ste-netball": "Zanele Khumalo",
   "surge-netball": "Ayanda Ngcobo",
   "pulse-netball": "Palesa Molefe",
-  "sk-volleyball": "Sipho Ndlovu",
-  "stw-volleyball": "Kagiso Moeketsi",
-  "ste-volleyball": "Thabo Selepe",
   "surge-volleyball": "Lwazi Mavuso",
   "pulse-volleyball": "Nkosinathi Dlamini",
 };

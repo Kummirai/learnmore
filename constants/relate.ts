@@ -507,6 +507,8 @@ export type RelateTeam = {
   name: string;
   initials: string;
   tagline: string;
+  /** Squad crest — a square image carrying the club name and the sport. */
+  logo?: string;
 };
 
 export const SPORTS: RelateSport[] = ["Football", "Netball", "Volleyball"];
@@ -521,6 +523,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Sprout Kids FC",
     initials: "SK FC",
     tagline: "Our youngest squad — Saturday kickabouts, camps and fun skills games.",
+    logo: "/images/sports/football/sprout-kids.jpg",
   },
   {
     id: "stw-fc",
@@ -529,6 +532,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Sprout Tweens FC",
     initials: "TW FC",
     tagline: "Junior league football — skills, teamwork and match days.",
+    logo: "/images/sports/football/sprout-tweens.jpg",
   },
   {
     id: "ste-fc",
@@ -537,6 +541,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Sprout Teens FC",
     initials: "TE FC",
     tagline: "The senior Sprout squad — competitive fixtures all season.",
+    logo: "/images/sports/football/sprout-teens.jpg",
   },
   {
     id: "surge-fc",
@@ -545,6 +550,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Surge FC",
     initials: "SFC",
     tagline: "Youth league team — midweek training, weekend matches.",
+    logo: "/images/sports/football/surge.jpg",
   },
   {
     id: "pulse-fc",
@@ -553,6 +559,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Pulse FC",
     initials: "PFC",
     tagline: "Sunday fixtures under the lights at the Relate grounds.",
+    logo: "/images/sports/football/pulse.jpg",
   },
   // Netball
   {
@@ -570,6 +577,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Sprout Tweens Netball",
     initials: "TWN",
     tagline: "League netball for tweens — weekend games, weekly training.",
+    logo: "/images/sports/netball/sprout-tweens.jpg",
   },
   {
     id: "ste-netball",
@@ -578,6 +586,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Sprout Teens Netball",
     initials: "TEN",
     tagline: "Competitive teen netball — tournaments and club nights.",
+    logo: "/images/sports/netball/sprout-teens.jpg",
   },
   {
     id: "surge-netball",
@@ -586,6 +595,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Surge Netball",
     initials: "SN",
     tagline: "Competitive youth netball running with the school term.",
+    logo: "/images/sports/netball/surge.jpg",
   },
   {
     id: "pulse-netball",
@@ -594,32 +604,9 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Pulse Netball",
     initials: "PN",
     tagline: "Evening netball clinic — every skill level welcome.",
+    logo: "/images/sports/netball/pulse.jpg",
   },
-  // Volleyball
-  {
-    id: "sk-volleyball",
-    clubSlug: "sprout-kids",
-    sport: "Volleyball",
-    name: "Sprout Kids Volleyball",
-    initials: "SKV",
-    tagline: "Friday-afternoon volley for the little hitters.",
-  },
-  {
-    id: "stw-volleyball",
-    clubSlug: "sprout-tweens",
-    sport: "Volleyball",
-    name: "Sprout Tweens Volleyball",
-    initials: "TWV",
-    tagline: "Learn to volley and pass — Friday courts for tweens.",
-  },
-  {
-    id: "ste-volleyball",
-    clubSlug: "sprout-teens",
-    sport: "Volleyball",
-    name: "Sprout Teens Volleyball",
-    initials: "TEV",
-    tagline: "Teen squad — weekend tournaments and social volleyball.",
-  },
+  // Volleyball — Surge and Pulse only.
   {
     id: "surge-volleyball",
     clubSlug: "surge",
@@ -627,6 +614,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Surge Volleyball",
     initials: "SV",
     tagline: "Friday court sessions — learn the game, make the team.",
+    logo: "/images/sports/volleyball/surge.jpg",
   },
   {
     id: "pulse-volleyball",
@@ -635,6 +623,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Pulse Volleyball",
     initials: "PV",
     tagline: "Weekend tournaments and social volleyball.",
+    logo: "/images/sports/volleyball/pulse.jpg",
   },
 ];
 
