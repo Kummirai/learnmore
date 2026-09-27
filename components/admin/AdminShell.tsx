@@ -194,7 +194,7 @@ function SidebarContent({
     return (
         <>
             <div className="border-b border-gray-100 px-5 py-5">
-                <Link href={"/admin"} onClick={onNavigate} className="block">
+                <Link href={"/"} onClick={onNavigate} className="block">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src={"/images/relate-world-logo.png"}
