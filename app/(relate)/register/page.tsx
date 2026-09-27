@@ -15,8 +15,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaCheck, FaLock, FaUsers, FaBaby, FaCrown } from "react-icons/fa6";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaArrowRight, FaCheck, FaLock, FaUsers, FaBaby, FaCrown } from "react-icons/fa6";
+import Link from "next/link";
 import PageHero from "@/components/PageHero";
 
 const CLUBS = [
@@ -27,6 +27,16 @@ const CLUBS = [
   { key: "pulse", label: "Pulse", ages: "21–33 yrs", group: "Pulse", accent: "#8b5cf6", icon: FaCrown },
   { key: "adults", label: "Adults", ages: "33+ yrs", group: "Adults", accent: "#1e3a8a", icon: FaUsers },
 ];
+
+/** Age-band picker groups map onto the club slugs the registration form accepts. */
+const JOIN_SLUG: Record<string, string> = {
+  kids: "sprout",
+  tweens: "sprout",
+  teens: "sprout",
+  surge: "surge",
+  pulse: "pulse",
+  adults: "prime",
+};
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -107,14 +117,12 @@ export default function RegisterPage() {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href={`https://wa.me/27782677436?text=${encodeURIComponent(`Hi RelateWorld! I've joined as ${club!.label} (${club!.ages}). Please send a link to download the Relate app.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href={`/join?club=${JOIN_SLUG[club!.key]}`}
                   className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy/90 transition-colors"
                 >
-                  <FaWhatsapp className="text-base" /> Download the app
-                </a>
+                  Complete your registration <FaArrowRight className="text-xs" />
+                </Link>
                 <button
                   onClick={() => router.push("/plans/getting-started-in-the-bible")}
                   className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"

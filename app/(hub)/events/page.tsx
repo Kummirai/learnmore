@@ -44,7 +44,7 @@ const EVENT_SLIDES: HeroSlide[] = [
       "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
     accent: "#4caf50",
     cta: { href: "/sports", label: "Sports teams" },
-    secondary: { href: "https://wa.me/27782677436", label: "Join a team" },
+    secondary: { href: "/join", label: "Join a team" },
   },
   {
     title: "Family gatherings",

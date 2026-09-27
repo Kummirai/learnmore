@@ -172,7 +172,7 @@ function brandSlide(): Slide {
     },
     actions: (
       <>
-        <Link href={"/enroll"} className={btnPrimary}>
+        <Link href={"/join"} className={btnPrimary}>
           Join a club
         </Link>
         <Link href={"/store"} className={btnGhost}>
