@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { CLUBS, MAGAZINES, STORE_ITEMS, SUB_CLUBS, SPORTS_TEAMS } from "@/constants/relate";
+import { CLUBS, MAGAZINES, STORE_ITEMS, SUB_CLUBS, SPORTS_TEAMS, programSlug } from "@/constants/relate";
 import { READING_PLANS } from "@/constants/readingPlans";
 import { getSquad, playerSlug } from "@/constants/squads";
 
@@ -49,6 +49,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
+  const clubPrograms = [...CLUBS, ...SUB_CLUBS].flatMap((club) =>
+    club.programs.map((program) => ({
+      url: `${SITE_URL}/${club.slug}/${programSlug(program.name)}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }))
+  );
+
   const clubMagazines = CLUBS.map((club) => ({
     url: `${SITE_URL}/magazines/${club.slug}`,
     lastModified,
@@ -94,6 +103,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...main,
     ...clubs,
+    ...clubPrograms,
     ...clubMagazines,
     ...magazines,
     ...plans,

@@ -24,7 +24,7 @@ export const CLUBS: RelateClub[] = [
     slug: "sprout",
     name: "Sprout",
     group: "Children",
-    ageRange: "6–15 yrs",
+    ageRange: "6 – 15 yrs",
     tagline: "Growing strong, reaching high.",
     description:
       "Children in their formative years — needing nurturing, guidance, education support and a safe environment to grow.",
@@ -40,10 +40,16 @@ export const CLUBS: RelateClub[] = [
           "Every Saturday morning children gather for games, crafts, music and stories that build character and confidence. Volunteers lead small groups by age so every child is known and celebrated.",
       },
       {
-        name: "Reading Circle",
-        blurb: "Literacy development and reading encouragement.",
+        name: "Sprout Camp",
+        blurb: "Weekend or holiday camps — low-cost.",
         detail:
-          "Children read aloud in small circles, earn reading badges and take home books each week to build a lifelong love of reading.",
+          "An overnight camp experience with hikes, campfires and team challenges, subsidised so every child can attend.",
+      },
+      {
+        name: "Bible Quiz",
+        blurb: "Read the books, then battle it out in the quiz.",
+        detail:
+          "Each season we read a few books of the Bible together. Learn the stories and characters, then join the quiz to test your knowledge — build up points on the leaderboard and win the season.",
       },
       {
         name: "Sprout Sports",
@@ -51,49 +57,13 @@ export const CLUBS: RelateClub[] = [
         detail:
           "Fun weekend sport sessions — soccer, netball and movement games — where children learn teamwork and stay active.",
       },
-      {
-        name: "Creative Arts",
-        blurb: "Art, music and drama workshops.",
-        detail:
-          "Rotating workshops in drawing, singing and drama, ending each term with a showcase for parents.",
-      },
-      {
-        name: "School Support",
-        blurb: "Uniforms, stationery and school fees.",
-        detail:
-          "We help with uniforms, stationery and school fees so no child misses school. Requests are reviewed by the club facilitator and matched with sponsors.",
-      },
-      {
-        name: "Nutrition Program",
-        blurb: "Healthy meals and snacks during programs.",
-        detail:
-          "Every program serves a healthy meal or snack, and families can join the monthly food parcel list.",
-      },
-      {
-        name: "Holiday Club",
-        blurb: "School holiday activities and outings.",
-        detail:
-          "Full-day holiday programs with themed activities, outings and guest speakers — safe, fun and free.",
-      },
-      {
-        name: "Sprout Camp",
-        blurb: "Weekend or holiday camps — low-cost.",
-        detail:
-          "An overnight camp experience with hikes, campfires and team challenges, subsidised so every child can attend.",
-      },
-      {
-        name: "Character Building",
-        blurb: "Life skills, values and confidence workshops.",
-        detail:
-          "Short workshops on honesty, courage, kindness and confidence — the soft skills school doesn't teach.",
-      },
     ],
   },
   {
     slug: "surge",
     name: "Surge",
     group: "Young Youth",
-    ageRange: "16–21 yrs",
+    ageRange: "16 – 21 yrs",
     tagline: "Rise. Build. Become.",
     description:
       "Young people stepping into adulthood — needing guidance, skills and purpose.",
@@ -515,6 +485,15 @@ export function getClub(slug: string): RelateClub | undefined {
   return CLUBS.find((c) => c.slug === slug);
 }
 
+/** URL segment for a program name, shared by the club page links, the
+ *  /[club]/[program] route and the sitemap so all three agree. */
+export function programSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function getStoreItem(id: string): StoreItem | undefined {
   return STORE_ITEMS.find((s) => s.id === id);
 }
@@ -731,7 +710,7 @@ export const SUB_CLUBS: RelateClub[] = [
     slug: "sprout-kids",
     name: "Sprout Kids",
     group: "Children",
-    ageRange: "6–8 yrs",
+    ageRange: "6 – 8 yrs",
     parentSlug: "sprout",
     tagline: "Little roots, first shoots.",
     description:
@@ -746,7 +725,7 @@ export const SUB_CLUBS: RelateClub[] = [
     slug: "sprout-tweens",
     name: "Sprout Tweens",
     group: "Children",
-    ageRange: "9–11 yrs",
+    ageRange: "9 – 11 yrs",
     parentSlug: "sprout",
     tagline: "Growing strong, finding their voice.",
     description:
@@ -761,7 +740,7 @@ export const SUB_CLUBS: RelateClub[] = [
     slug: "sprout-teens",
     name: "Sprout Teens",
     group: "Children",
-    ageRange: "12–15 yrs",
+    ageRange: "12 – 15 yrs",
     parentSlug: "sprout",
     tagline: "Reaching high, ready for more.",
     description:
