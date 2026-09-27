@@ -76,12 +76,12 @@ function MemberCard({
     .join("");
   return (
     <div
-      className={`text-center group bg-white rounded-xl border p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full
+      className={`text-center group bg-white rounded-xl border p-4 sm:p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full
             ${featured ? "border-cyan shadow-md" : "border-gray-200"}`}
     >
       <div
         className={
-          "size-36 sm:size-40 mx-auto rounded-full overflow-hidden mb-5 ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300"
+          "size-20 sm:size-36 md:size-40 mx-auto rounded-full overflow-hidden mb-3 sm:mb-5 ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300"
         }
       >
         {member.src ? (
@@ -93,16 +93,20 @@ function MemberCard({
         ) : (
           <div
             className={
-              "size-full flex items-center justify-center bg-gradient-to-br from-navy to-cyan text-white text-4xl font-black"
+              "size-full flex items-center justify-center bg-gradient-to-br from-navy to-cyan text-white text-2xl sm:text-4xl font-black"
             }
           >
             {initials}
           </div>
         )}
       </div>
-      <h4 className={"text-xl font-semibold text-gray-800"}>{member.name}</h4>
-      <p className={"text-cyan text-sm mb-3 flex-1"}>{member.role}</p>
-      <div className={"flex items-center justify-center gap-1 text-gray-400"}>
+      <h4 className={"text-sm sm:text-xl font-semibold text-gray-800 leading-snug"}>
+        {member.name}
+      </h4>
+      <p className={"text-cyan text-xs sm:text-sm mb-0 sm:mb-3 flex-1"}>
+        {member.role}
+      </p>
+      <div className={"hidden sm:flex items-center justify-center gap-1 text-gray-400"}>
         <Link
           href={"#"}
           aria-label={"Facebook"}
@@ -162,7 +166,7 @@ export default function Team() {
             <div
               key={group.title}
               className={
-                "py-12 md:py-16 px-6 md:px-12 rounded-2xl mb-10 last:mb-0"
+                "py-8 sm:py-12 md:py-16 px-4 sm:px-6 md:px-12 rounded-2xl mb-10 last:mb-0"
               }
             >
               <div className={"text-center mb-10"}>
@@ -178,23 +182,21 @@ export default function Team() {
 
               {/* Featured member on its own row — original w-72 width, centered */}
               {group.featured && (
-                <div className={"flex justify-center mb-8"}>
-                  <div className={"w-72 max-w-full flex"}>
+                <div className={"flex justify-center mb-6 sm:mb-8"}>
+                  <div className={"w-full max-w-56 sm:max-w-72"}>
                     <MemberCard member={group.featured} featured />
                   </div>
                 </div>
               )}
 
-              {/* All cards at the Executive Director's width (w-72 / 288px) — horizontal-only 16px gap so 3 fit per row on desktop */}
+              {/* Two cards per row on mobile, three from md up */}
               <div
                 className={
-                  "flex flex-wrap justify-center gap-x-4 gap-y-8 items-stretch"
+                  "grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 items-stretch"
                 }
               >
                 {visible.map((member, i) => (
-                  <div key={i} className={"w-72 max-w-full flex"}>
-                    <MemberCard member={member} />
-                  </div>
+                  <MemberCard key={i} member={member} />
                 ))}
               </div>
 
@@ -203,7 +205,7 @@ export default function Team() {
                   <button
                     onClick={() => setShowAll(!showAll)}
                     className={
-                      "px-6 py-2.5 rounded-lg bg-navy text-white font-medium text-sm hover:bg-navy-dark transition-colors"
+                      "px-6 py-3 min-h-11 rounded-lg bg-navy text-white font-medium text-sm hover:bg-navy-dark transition-colors"
                     }
                   >
                     {showAll
