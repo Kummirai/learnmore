@@ -4,6 +4,7 @@ import { useSyncExternalStore } from "react";
 import {
   MEMBER_STORAGE_KEY,
   parseMembershipJson,
+  subscribeMembershipLocal,
   type Membership,
 } from "@/lib/membership";
 import MemberDashboard from "./MemberDashboard";
@@ -36,8 +37,7 @@ function readStored(): Membership | null {
 }
 
 function subscribe(onStoreChange: () => void) {
-  window.addEventListener("storage", onStoreChange);
-  return () => window.removeEventListener("storage", onStoreChange);
+  return subscribeMembershipLocal(onStoreChange);
 }
 
 const readOnServer = () => null;

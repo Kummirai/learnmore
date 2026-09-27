@@ -7,6 +7,7 @@ import {
   MEMBER_STORAGE_KEY,
   parseMembership,
   parseMembershipJson,
+  subscribeMembershipLocal,
 } from "@/lib/membership";
 
 function readIsMember(): boolean {
@@ -48,11 +49,16 @@ export default function JoinCta({
 
   useEffect(() => {
     let cancelled = false;
-    Promise.resolve().then(() => {
-      if (!cancelled && readIsMember()) setIsMember(true);
-    });
+    // Re-check on sign-in, sign-out and writes from other tabs.
+    const sync = () => {
+      const next = readIsMember();
+      if (!cancelled) setIsMember(next);
+    };
+    Promise.resolve().then(sync);
+    const stop = subscribeMembershipLocal(sync);
     return () => {
       cancelled = true;
+      stop();
     };
   }, []);
 

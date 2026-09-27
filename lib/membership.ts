@@ -65,3 +65,37 @@ export function serializeMembership(m: Membership): string {
 export function membershipCookieString(m: Membership): string {
   return `${MEMBER_COOKIE}=${serializeMembership(m)}; path=/; max-age=${MAX_AGE}; SameSite=Lax`;
 }
+
+/** Fired on this tab whenever the local membership copy changes. */
+export const MEMBER_EVENT = "relate:membership-changed";
+
+/**
+ * Drops both local copies of the record — called when someone signs out.
+ * The MongoDB row is untouched; a leader can still look the member up by ID.
+ */
+export function clearMembershipLocal(): void {
+  if (typeof document === "undefined") return;
+  document.cookie = `${MEMBER_COOKIE}=; path=/; max-age=0; SameSite=Lax`;
+  try {
+    window.localStorage.removeItem(MEMBER_STORAGE_KEY);
+  } catch {
+    // storage unavailable — nothing to clear
+  }
+  window.dispatchEvent(new Event(MEMBER_EVENT));
+}
+
+/**
+ * Notifies this tab's members widgets that the local record changed.
+ * Same-tab writes don't fire the browser's own `storage` event, so we raise
+ * one ourselves; other tabs are covered by `storage` already.
+ */
+export function subscribeMembershipLocal(onChange: () => void): () => void {
+  if (typeof window === "undefined") return () => {};
+  const handler = () => onChange();
+  window.addEventListener(MEMBER_EVENT, handler);
+  window.addEventListener("storage", handler);
+  return () => {
+    window.removeEventListener(MEMBER_EVENT, handler);
+    window.removeEventListener("storage", handler);
+  };
+}

@@ -1,7 +1,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+import { clearMembershipLocal } from "@/lib/membership";
 
 export type User = {
     name: string;
@@ -54,6 +56,7 @@ function messageFor(error: unknown): string {
 export function AuthProvider({children}: {children: ReactNode}) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     const refresh = useCallback(async () => {
         try {
@@ -123,6 +126,10 @@ export function AuthProvider({children}: {children: ReactNode}) {
             // Still clear the session locally even if the server call fails.
         }
         setUser(null);
+        // Membership lives on the device, not the account: sign-out drops the
+        // local copies too, and the refreshed route no longer sees the cookie.
+        clearMembershipLocal();
+        router.refresh();
     };
 
     return (

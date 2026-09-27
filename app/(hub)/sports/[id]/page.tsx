@@ -130,17 +130,19 @@ export default async function TeamPage({
 
           <div className="absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"
                style={{ backgroundColor: club?.color ?? "#13c5dd" }} />
-          <div
-            className="absolute top-1/2 -translate-y-1/2 right-0 hidden select-none md:block"
-            aria-hidden="true"
-          >
-            <span
-              className="block font-black leading-none tracking-tighter text-white"
-              style={{ fontSize: "clamp(7rem, 22vw, 14rem)", opacity: 0.12 }}
+          {!team.logo && (
+            <div
+              className="absolute top-1/2 -translate-y-1/2 right-0 hidden select-none md:block"
+              aria-hidden="true"
             >
-              {team.initials.replace(" ", "")}
-            </span>
-          </div>
+              <span
+                className="block font-black leading-none tracking-tighter text-white"
+                style={{ fontSize: "clamp(7rem, 22vw, 14rem)", opacity: 0.12 }}
+              >
+                {team.initials.replace(" ", "")}
+              </span>
+            </div>
+          )}
 
           <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 pt-28 pb-12 md:pt-32 md:pb-16">
             <Link
