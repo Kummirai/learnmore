@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import { notFound } from "next/navigation";
 import {
   LuArrowLeft,
@@ -208,12 +209,12 @@ export default async function PlayerPage({
                     Register for {team.name} and join the squad.
                   </p>
                 </div>
-                <Link
+                <JoinCta
                   href={`/join?club=${team.clubSlug}&team=${team.id}`}
                   className="shrink-0 inline-flex items-center justify-center gap-2 bg-cyan text-navy px-6 py-3 rounded-lg font-bold text-sm hover:bg-cyan-light transition-colors"
                 >
                   Register to join <LuArrowRight />
-                </Link>
+                </JoinCta>
               </div>
 
               <Link

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
@@ -93,14 +94,14 @@ export default async function ClubProgramPage({
         description={program.blurb}
         actions={
           <>
-            <Link
+            <JoinCta
               href={`/join?club=${club.slug}`}
               className={
                 "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
               }
             >
               Join {club.name}
-            </Link>
+            </JoinCta>
             <Link
               href={`/${club.slug}#programs`}
               className={
@@ -172,7 +173,7 @@ export default async function ClubProgramPage({
                 "mt-6 flex flex-wrap items-center gap-3"
               }
             >
-              <Link
+              <JoinCta
                 href={`/join?club=${club.slug}`}
                 className={
                   "inline-flex items-center gap-2 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:brightness-95 transition"
@@ -180,7 +181,7 @@ export default async function ClubProgramPage({
                 style={{ backgroundColor: club.colorDark }}
               >
                 Join {club.name} — take part in {program.name}
-              </Link>
+              </JoinCta>
               <Link
                 href={`/${club.slug}#programs`}
                 className={

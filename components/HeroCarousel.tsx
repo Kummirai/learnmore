@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import { FaWhatsapp } from "react-icons/fa";
 import { LuArrowRight, LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
@@ -98,20 +99,29 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             >
               {slide.cta.label} <LuArrowRight />
             </Link>
-            {slide.secondary && (
-              <a
-                href={slide.secondary.href}
-                {...(slide.secondary.href.startsWith("http")
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-                className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
-              >
-                {slide.secondary.href.startsWith("https://wa.me") && (
-                  <FaWhatsapp />
-                )}
-                {slide.secondary.label}
-              </a>
-            )}
+            {slide.secondary &&
+              (slide.secondary.href.startsWith("/join") ? (
+                <JoinCta
+                  href={slide.secondary.href}
+                  memberLabel={null}
+                  className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
+                >
+                  {slide.secondary.label}
+                </JoinCta>
+              ) : (
+                <a
+                  href={slide.secondary.href}
+                  {...(slide.secondary.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
+                >
+                  {slide.secondary.href.startsWith("https://wa.me") && (
+                    <FaWhatsapp />
+                  )}
+                  {slide.secondary.label}
+                </a>
+              ))}
           </div>
         </div>
       </div>

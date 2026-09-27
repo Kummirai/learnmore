@@ -186,13 +186,13 @@ export default function MembershipView({ member }: { member: Membership | null }
               </dd>
             </div>
 
-            {member.id && (
+            {(member.reference || member.id) && (
               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <dt className="text-[11px] font-bold uppercase tracking-widest text-slate-gray w-28 shrink-0">
                   Reference
                 </dt>
                 <dd className="font-mono font-semibold text-navy">
-                  #{member.id}
+                  #{member.reference ?? member.id}
                 </dd>
               </div>
             )}

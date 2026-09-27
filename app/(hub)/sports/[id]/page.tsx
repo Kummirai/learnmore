@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import { notFound } from "next/navigation";
 import {
   LuArrowLeft,
@@ -175,12 +176,12 @@ export default async function TeamPage({
                 </div>
 
                 <div className="mt-7 flex flex-col sm:flex-row gap-3">
-                  <Link
+                  <JoinCta
                     href={`/join?club=${team.clubSlug}&team=${team.id}`}
                     className="inline-flex items-center justify-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-bold text-sm hover:bg-white/90 transition-colors"
                   >
                     Join this team <LuArrowRight />
-                  </Link>
+                  </JoinCta>
                   <a
                     href={`https://wa.me/${WHATSAPP}`}
                     target="_blank"
@@ -320,12 +321,12 @@ export default async function TeamPage({
                   </p>
                 </div>
               </div>
-              <Link
+              <JoinCta
                 href={`/join?club=${team.clubSlug}&team=${team.id}`}
                 className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-navy/90 transition-colors"
               >
                 Register to join <LuArrowRight />
-              </Link>
+              </JoinCta>
             </div>
           </div>
         </section>

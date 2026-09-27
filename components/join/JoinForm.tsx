@@ -87,7 +87,7 @@ const GATHERING_ORDER: { title: string; body: string }[] = [
   },
 ];
 
-type Done = { id: string; status: string; nextSteps?: string };
+type Done = { id: string; reference?: string; status: string; nextSteps?: string };
 
 function YesNoOption({
   question,
@@ -209,7 +209,7 @@ export default function JoinForm({
           <p className="text-sm text-slate-gray mb-6">
             Reference{" "}
             <span className="font-mono font-semibold text-navy">
-              #{done.id}
+              #{done.reference ?? done.id}
             </span>{" "}
             · <span className="font-semibold text-gold-700">Active member</span>
           </p>
@@ -358,6 +358,7 @@ export default function JoinForm({
             clubSlug,
             clubName: selectedClub?.name,
             interests,
+            reference: data.reference,
             teamId: teamId || undefined,
             teamName: selectedTeam?.name,
             sport: selectedTeam?.sport,
@@ -384,16 +385,28 @@ export default function JoinForm({
     <section className="flex-1 px-4 py-12 bg-white">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
-            Relate · Join a Club
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-1">
+            {selectedTeam ? "Relate · Join a Team" : "Relate · Join a Club"}
           </p>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-navy mb-2">
-            Register to join
+            {selectedTeam ? `Join ${selectedTeam.name}` : "Register to join"}
           </h2>
           <p className="text-sm text-slate-gray max-w-2xl">
-            Pick your club, tell us about yourself and we&rsquo;ll create your
-            membership record. Later, joining a squad or an activity takes
-            seconds — we already know the rest.
+            {selectedTeam ? (
+              <>
+                Signing up for the{" "}
+                <strong className="text-navy">{selectedTeam.name}</strong> squad
+                ({selectedTeam.sport}) — one form, then you&rsquo;re on the team
+                list straight away. It also creates your{" "}
+                {selectedClub?.name ?? "Relate"} membership.
+              </>
+            ) : (
+              <>
+                Pick your club, tell us about yourself and we&rsquo;ll create your
+                membership record. Later, joining a squad or an activity takes
+                seconds — we already know the rest.
+              </>
+            )}
           </p>
           {prefilled && (
             <div className="mt-4 flex items-start gap-2 rounded-lg border border-gold-200 bg-gold-50 px-3.5 py-2.5 text-sm text-gold-800">
@@ -785,11 +798,13 @@ export default function JoinForm({
           >
             {sending ? (
               <>
-                <LuLoaderCircle className="animate-spin text-lg" /> Submitting…
+                <LuLoaderCircle className="animate-spin text-lg" />{" "}
+                {selectedTeam ? "Joining…" : "Submitting…"}
               </>
             ) : (
               <>
-                Submit my registration <FaChevronRight className="text-xs" />
+                {selectedTeam ? `Join ${selectedTeam.name}` : "Submit my registration"}{" "}
+                <FaChevronRight className="text-xs" />
               </>
             )}
           </button>

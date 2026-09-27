@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import { LuArrowRight, LuShield } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
@@ -97,12 +98,12 @@ function TeamCard({ team }: { team: RelateTeam }) {
           >
             {team.name} page →
           </Link>
-          <Link
+          <JoinCta
             href={`/join?club=${team.clubSlug}&team=${team.id}`}
             className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-3 py-1.5 rounded-full transition-colors"
           >
             Join
-          </Link>
+          </JoinCta>
         </div>
       </div>
     </article>
@@ -145,12 +146,12 @@ export default function SportsPage() {
                 away — the squad fills in on your team page.
               </p>
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link
+                <JoinCta
                   href="/join"
                   className="inline-flex items-center gap-2 bg-cyan text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-cyan-light transition-colors"
                 >
                   Register to join <LuArrowRight />
-                </Link>
+                </JoinCta>
                 <a
                   href={`https://wa.me/${WHATSAPP}`}
                   target="_blank"

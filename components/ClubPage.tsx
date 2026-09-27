@@ -1,4 +1,5 @@
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
 import PageHero from "@/components/PageHero";
@@ -49,14 +50,14 @@ export default async function ClubPage({ slug }: { slug: string }) {
         }
         actions={
           <>
-            <Link
+            <JoinCta
               href={`/join?club=${club.slug}`}
               className={
                 "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
               }
             >
               Join {club.name}
-            </Link>
+            </JoinCta>
             <a
               href={"#programs"}
               className={
@@ -260,14 +261,14 @@ export default async function ClubPage({ slug }: { slug: string }) {
                   </p>
                 </div>
                 <div className={"shrink-0 self-start md:self-center"}>
-                  <Link
+                  <JoinCta
                     href={`/join?club=${club.slug}`}
                     className={
                       "inline-flex items-center gap-2 bg-white text-navy px-5 py-2.5 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
                     }
                   >
                     Join {club.name}
-                  </Link>
+                  </JoinCta>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import { useEffect, useRef, useState } from "react";
 import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
@@ -172,9 +173,9 @@ function brandSlide(): Slide {
     },
     actions: (
       <>
-        <Link href={"/join"} className={btnPrimary}>
+        <JoinCta href={"/join"} className={btnPrimary}>
           Join a club
-        </Link>
+        </JoinCta>
         <Link href={"/store"} className={btnGhost}>
           Explore the store
         </Link>

@@ -9,6 +9,7 @@ type Filter = "all" | Status;
 
 type Application = {
   _id: string;
+  reference?: string;
   clubSlug: string;
   clubName: string;
   teamId?: string;
@@ -151,6 +152,7 @@ function ClubJoinsBody() {
                     <div className="min-w-0">
                       <p className="font-semibold text-navy">{item.name}</p>
                       <p className="text-xs text-slate-gray mt-0.5">
+                        {item.reference ? `#${item.reference} · ` : ""}
                         {item.clubName} · {item.teamName ?? "no team"} · {item.sport ?? ""}
                         {item.area ? ` · ${item.area}` : ""} · {dateText(item.createdAt)}
                       </p>

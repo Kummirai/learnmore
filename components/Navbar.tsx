@@ -3,6 +3,7 @@
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import Link from "next/link";
+import JoinCta from "@/components/join/JoinCta";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
 import { CLUBS, SUB_CLUBS } from "@/constants/relate";
@@ -193,17 +194,30 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                       "bg-white rounded-lg shadow-xl border border-gray-100 py-2 min-w-44"
                     }
                   >
-                    {group.items.map((item) => (
-                      <Link
-                        key={item.path}
-                        href={item.path}
-                        className={
-                          "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
-                        }
-                      >
-                        {item.link}
-                      </Link>
-                    ))}
+                    {group.items.map((item) =>
+                      item.path === "/join" ? (
+                        <JoinCta
+                          key={item.path}
+                          href={item.path}
+                          memberLabel={null}
+                          className={
+                            "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
+                          }
+                        >
+                          {item.link}
+                        </JoinCta>
+                      ) : (
+                        <Link
+                          key={item.path}
+                          href={item.path}
+                          className={
+                            "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
+                          }
+                        >
+                          {item.link}
+                        </Link>
+                      ),
+                    )}
                   </div>
                 </div>
               </li>
@@ -287,18 +301,32 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                   </button>
                   {expandedGroups[group.link] && (
                     <div className={"flex flex-col gap-1 pb-3"}>
-                      {group.items.map((item) => (
-                        <Link
-                          key={item.path}
-                          href={item.path}
-                          onClick={() => setMenuOpen(false)}
-                          className={
-                            "border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-[color:var(--club-accent)] hover:text-white transition-colors"
-                          }
-                        >
-                          {item.link}
-                        </Link>
-                      ))}
+                      {group.items.map((item) =>
+                        item.path === "/join" ? (
+                          <JoinCta
+                            key={item.path}
+                            href={item.path}
+                            memberLabel={null}
+                            onClick={() => setMenuOpen(false)}
+                            className={
+                              "border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-[color:var(--club-accent)] hover:text-white transition-colors"
+                            }
+                          >
+                            {item.link}
+                          </JoinCta>
+                        ) : (
+                          <Link
+                            key={item.path}
+                            href={item.path}
+                            onClick={() => setMenuOpen(false)}
+                            className={
+                              "border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-[color:var(--club-accent)] hover:text-white transition-colors"
+                            }
+                          >
+                            {item.link}
+                          </Link>
+                        ),
+                      )}
                     </div>
                   )}
                 </div>
