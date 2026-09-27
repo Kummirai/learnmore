@@ -10,6 +10,11 @@ import {
 } from "react-icons/fa";
 import { LuBellRing, LuLoaderCircle, LuUsers } from "react-icons/lu";
 import {
+  MEMBER_STORAGE_KEY,
+  membershipCookieString,
+  type Membership,
+} from "@/lib/membership";
+import {
   getRelateClub,
   SPORTS_TEAMS,
   type RelateTeam,
@@ -18,16 +23,36 @@ import {
 type YesNo = "" | "yes" | "no";
 
 const JOIN_CLUB_SLUGS = [
+  "sprout",
+  "surge",
+  "pulse",
+  "prime",
+  "anchor",
+  "base",
+  "nexus",
   "sprout-kids",
   "sprout-tweens",
   "sprout-teens",
-  "surge",
-  "pulse",
+];
+
+const INTEREST_OPTIONS = [
+  "Football",
+  "Netball",
+  "Volleyball",
+  "Bible Quiz",
+  "Reading & study guides",
+  "Prayer & worship",
+  "Events & outings",
+  "Music, art & drama",
+  "Mentoring",
+  "Volunteering & helping out",
 ];
 
 const YOUTH_CLUBS = ["surge", "pulse"];
 
 const CLUB_AGE_RANGES: Record<string, { min: number; max: number; label: string }> = {
+  sprout: { min: 6, max: 15, label: "6–15 yrs" },
+  prime: { min: 33, max: 99, label: "33+ yrs" },
   "sprout-kids": { min: 6, max: 8, label: "6–8 yrs" },
   "sprout-tweens": { min: 9, max: 11, label: "9–11 yrs" },
   "sprout-teens": { min: 12, max: 15, label: "12–15 yrs" },
@@ -117,17 +142,20 @@ function YesNoField({
 export default function JoinForm({
   defaultClub = "",
   defaultTeam = "",
+  member = null,
 }: {
   defaultClub?: string;
   defaultTeam?: string;
+  /** Known membership record (read from the cookie) — prefills the form. */
+  member?: Membership | null;
 }) {
-  const [clubSlug, setClubSlug] = useState(defaultClub);
+  const [clubSlug, setClubSlug] = useState(defaultClub || member?.clubSlug || "");
   const [teamId, setTeamId] = useState(defaultTeam);
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
-  const [phone, setPhone] = useState("");
-  const [area, setArea] = useState("");
+  const [name, setName] = useState(member?.name ?? "");
+  const [age, setAge] = useState(member?.age ?? "");
+  const [gender, setGender] = useState(member?.gender ?? "");
+  const [phone, setPhone] = useState(member?.phone ?? "");
+  const [area, setArea] = useState(member?.area ?? "");
   const [guardianName, setGuardianName] = useState("");
   const [guardianPhone, setGuardianPhone] = useState("");
   const [parentConsent, setParentConsent] = useState(false);
@@ -135,11 +163,13 @@ export default function JoinForm({
   const [smoking, setSmoking] = useState<YesNo>("");
   const [drugs, setDrugs] = useState<YesNo>("");
   const [sexuallyActive, setSexuallyActive] = useState<YesNo>("");
+  const [interests, setInterests] = useState<string[]>(member?.interests ?? []);
   const [commitment, setCommitment] = useState(false);
   const [gathering, setGathering] = useState(false);
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<Done | null>(null);
+  const prefilled = Boolean(member?.name);
 
   const ageNum = Number(age);
   const isYouthClub = YOUTH_CLUBS.includes(clubSlug);
@@ -241,7 +271,6 @@ export default function JoinForm({
     setError("");
 
     if (!clubSlug) return setError("Please choose your club.");
-    if (!teamId) return setError("Please choose the team you'd like to join.");
     if (!name.trim()) return setError("Please enter your full name.");
     if (!Number.isInteger(ageNum) || ageNum < 6 || ageNum > 99)
       return setError("Please enter a valid age (6–99).");
@@ -282,6 +311,7 @@ export default function JoinForm({
       name: name.trim(),
       age: ageNum,
       gender,
+      interests,
       phone: phone.trim(),
       area: area.trim() || undefined,
       guardian: isMinor ? { name: guardianName.trim(), phone: guardianPhone.trim() } : undefined,
@@ -305,6 +335,22 @@ export default function JoinForm({
         const data = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(data?.error || "Something went wrong. Try again.");
         setDone(data);
+        try {
+          const saved: Membership = {
+            name: name.trim(),
+            age: String(ageNum),
+            gender,
+            phone: phone.trim(),
+            area: area.trim(),
+            clubSlug,
+            clubName: selectedClub?.name,
+            interests,
+          };
+          window.localStorage.setItem(MEMBER_STORAGE_KEY, JSON.stringify(saved));
+          document.cookie = membershipCookieString(saved);
+        } catch {
+          // storage unavailable — registration still succeeded
+        }
       })
       .catch((err) => setError(err.message))
       .finally(() => setSending(false));
@@ -320,15 +366,25 @@ export default function JoinForm({
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
-            Relate · Join a Team
+            Relate · Join a Club
           </p>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-navy mb-2">
             Register to join
           </h2>
           <p className="text-sm text-slate-gray max-w-2xl">
-            Pick your club and squad, tell us about yourself, then complete a
-            short chaplain interview before your place is confirmed.
+            Pick your club, tell us about yourself and we&rsquo;ll create your
+            membership record. Later, joining a squad or an activity takes
+            seconds — we already know the rest.
           </p>
+          {prefilled && (
+            <div className="mt-4 flex items-start gap-2 rounded-lg border border-gold-200 bg-gold-50 px-3.5 py-2.5 text-sm text-gold-800">
+              <FaCheck className="mt-0.5 shrink-0" />
+              <span>
+                Welcome back — we&rsquo;ve filled in what we already know.
+                Check it over and complete only what&rsquo;s missing.
+              </span>
+            </div>
+          )}
         </div>
 
         <form onSubmit={submit} className="space-y-6">
@@ -359,11 +415,10 @@ export default function JoinForm({
               </div>
               <div>
                 <label className={label} htmlFor="team">
-                  Team {clubSlug ? "(optional)" : ""}
+                  Team (optional)
                 </label>
                 <select
                   id="team"
-                  required
                   className={input}
                   value={teamId}
                   onChange={(e) => setTeamId(e.target.value)}
@@ -382,7 +437,12 @@ export default function JoinForm({
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-gray bg-alice-blue rounded-lg px-3 py-2">
                 <LuUsers className="text-cyan shrink-0" />
                 <span>
-                  {selectedClub.name} · {selectedTeam ? selectedTeam.name : "choose a team below"} ·
+                  {selectedClub.name} ·{" "}
+                  {selectedTeam
+                    ? selectedTeam.name
+                    : teams.length
+                      ? "choose a team below"
+                      : "no squads yet — join one later"} ·
                   ages {ageRange?.label ?? "—"}.
                   {isYouthClub
                     ? " 18–21s in Surge and 21–33s in Pulse join as young adults with their own conduct standards below."
@@ -520,6 +580,40 @@ export default function JoinForm({
                 </label>
               </div>
             )}
+
+            <div className="mt-5 pt-5 border-t border-gray-100">
+              <p className={label}>
+                What are you interested in?{" "}
+                <span className="font-normal normal-case tracking-normal text-gray-400">
+                  (optional — pick any)
+                </span>
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {INTEREST_OPTIONS.map((opt) => {
+                  const on = interests.includes(opt);
+                  return (
+                    <label
+                      key={opt}
+                      className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${
+                        on ? "border-cyan bg-alice-blue" : "border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="accent-cyan"
+                        checked={on}
+                        onChange={() =>
+                          setInterests((cur) =>
+                            on ? cur.filter((x) => x !== opt) : [...cur, opt],
+                          )
+                        }
+                      />
+                      <span className="text-sm text-navy">{opt}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">

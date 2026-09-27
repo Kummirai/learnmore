@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MEMBER_STORAGE_KEY, parseMembershipJson } from "@/lib/membership";
 import { FaArrowRight, FaCircleCheck, FaCrown, FaTrophy } from "react-icons/fa6";
 import { LuChevronDown, LuLoaderCircle } from "react-icons/lu";
 import { SEASON_QUIZ } from "@/lib/season";
@@ -26,7 +27,10 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
     const [club, setClub] = useState<QuizClub | null>(() => quizClubBySlug(initialClub) ?? null);
     const [name, setName] = useState<string>(() => {
         try {
-            return localStorage.getItem(NAME_KEY) ?? "";
+            const saved = localStorage.getItem(NAME_KEY);
+            if (saved) return saved;
+            // Club members are already known — start with their name.
+            return parseMembershipJson(localStorage.getItem(MEMBER_STORAGE_KEY) ?? undefined)?.name ?? "";
         } catch {
             return "";
         }
