@@ -31,7 +31,7 @@ const TIMELINE: Record<string, Step[]> = {
     {
       state: "done",
       title: "Registered",
-      body: "Your details reached Relate and a membership reference was issued in your name.",
+      body: "Your details reached Relate and a membership ID was issued in your name.",
     },
     {
       state: "done",
@@ -53,7 +53,7 @@ const TIMELINE: Record<string, Step[]> = {
     {
       state: "done",
       title: "Application received",
-      body: "Your details are with your club leader and your reference is reserved.",
+      body: "Your details are with your club leader and your membership ID is reserved.",
     },
     {
       state: "current",
@@ -75,7 +75,7 @@ const TIMELINE: Record<string, Step[]> = {
     {
       state: "done",
       title: "Application on file",
-      body: "We still hold the details you sent, under your reference.",
+      body: "We still hold the details you sent, under your membership ID.",
     },
     {
       state: "current",
@@ -134,7 +134,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
   const clubPageHref = member.clubSlug ? `/${member.clubSlug}` : "/join";
 
   const meta = [
-    { label: "Reference", value: `#${reference}`, accent: true },
+    { label: "Membership ID", value: `#${reference}`, accent: true },
     { label: "Member since", value: joinedLabel ?? "On registration" },
     { label: "Club", value: member.clubName ?? club?.name ?? "Relate" },
     {
@@ -312,18 +312,24 @@ export default function MemberDashboard({ member }: { member: Membership }) {
                 label="Squad"
                 caption={team ? `${team.sport} · ${team.initials}` : "Optional"}
               >
-                {member.teamId ? (
+                {member.teamId && team ? (
                   <Link
-                    href={`/sports/${member.teamId}`}
+                    href={`/sports/${team.id}`}
                     className="text-navy underline decoration-gold-400 decoration-2 underline-offset-4 transition-colors hover:text-cyan-dark"
                   >
-                    {member.teamName ?? team?.name ?? member.teamId}
+                    {member.teamName ?? team.name}
                   </Link>
+                ) : member.teamId ? (
+                  // Squad retired from the site — the record still names it.
+                  <span>
+                    {member.teamName ?? member.teamId}
+                    {member.sport ? ` · ${member.sport}` : ""}
+                  </span>
                 ) : (
                   <span className="text-slate-gray">Not in a squad yet</span>
                 )}
               </Field>
-              <Field label="Membership reference" caption="Quote it to your leader">
+              <Field label="Membership ID" caption="Quote it to your leader">
                 <span className="font-mono tracking-[0.12em] text-gold-700">
                   #{reference}
                 </span>
@@ -340,7 +346,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
               </Field>
               <Field
                 label="Record ID"
-                caption="Administrative ID — quote with your reference"
+                caption="Administrative ID — quote with your membership ID"
               >
                 <span className="break-all font-mono text-xs font-medium text-slate-gray">
                   {member.id ?? "—"}
@@ -381,7 +387,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
           <p className="mt-5 max-w-2xl text-xs leading-relaxed text-slate-gray">
             This copy is stored on this device; your leader holds the full
             record. Lost your device? Ask your leader to look you up by name or
-            by your reference.
+            by your membership ID.
           </p>
         </div>
       </section>

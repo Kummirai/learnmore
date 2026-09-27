@@ -18,8 +18,8 @@ const STEPS = [
     body: "Your name, age, WhatsApp number, where you're from and what you're into. Under 18s add a parent or guardian, and everyone accepts the community standards.",
   },
   {
-    title: "Card, reference, active",
-    body: "Your reference is issued the moment you submit, your leader is notified, and this page becomes your membership dashboard.",
+    title: "Card, ID, active",
+    body: "Your membership ID is issued the moment you submit, your leader is notified, and this page becomes your membership dashboard.",
   },
 ];
 
@@ -77,9 +77,9 @@ export default function MembershipJoinPrompt() {
               </h1>
               <p className="mt-5 max-w-xl text-sm leading-relaxed text-white/70 md:text-base">
                 A free record that follows you through Relate: your club, your
-                squad, your interests and a reference your leader can look you up
-                by. It starts the moment you register — and this page is where
-                you keep it.
+                squad, your interests and a membership ID your leader can look
+                you up by. It starts the moment you register — and this page is
+                where you keep it.
               </p>
 
               <dl className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-3">
@@ -151,7 +151,7 @@ export default function MembershipJoinPrompt() {
                   <dl className="mt-6 grid gap-5 border-t border-white/10 pt-5 sm:grid-cols-2">
                     <div>
                       <dt className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">
-                        Membership reference
+                        Membership ID
                       </dt>
                       <dd className="font-mono text-lg font-bold tracking-[0.15em] text-white/35">
                         #XXX0000
@@ -176,7 +176,7 @@ export default function MembershipJoinPrompt() {
                   <div className="flex items-end justify-between gap-4 px-0 pb-0 pt-4">
                     <div>
                       <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-white/35">
-                        Member since · keep this reference
+                        Member since · keep this ID
                       </p>
                       <p className="mt-1 font-mono text-xl font-bold tracking-[0.18em] text-white/35">
                         #XXX0000
@@ -283,9 +283,9 @@ export default function MembershipJoinPrompt() {
             Claim your membership card
           </h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/70">
-            Register for a club, keep your reference, and show up. Everything
-            else — gatherings, squads, reading plans, the season ahead — is
-            already waiting.
+            Register for a club, keep your membership ID, and show up.
+            Everything else — gatherings, squads, reading plans, the season
+            ahead — is already waiting.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Link

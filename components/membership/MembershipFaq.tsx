@@ -9,8 +9,8 @@ const FAQS = [
     a: "Yes — clubs, squads, reading plans, events and prayer times are all free, with no fee and no renewal. Sponsorship covers school fees, uniforms and meals for families who need a hand.",
   },
   {
-    q: "What is my membership reference for?",
-    a: "It's your lookup code: the first three letters of your club plus six characters. Quote it to your leader instead of giving out your number again — it's also printed on the tear-off stub of your card.",
+    q: "What is my membership ID for?",
+    a: "It's your lookup code: eight characters, starting with the first three letters of your club — PUL7K2M4, for example. Quote it to your leader instead of giving out your number again; it's also printed on the tear-off stub of your card.",
   },
   {
     q: "What happens right after I register?",
@@ -22,7 +22,7 @@ const FAQS = [
   },
   {
     q: "How do I change my details or my squad?",
-    a: "Go through the join form once more: it's pre-filled with everything we already know, so you only touch what's changed. Your leader receives the update against your reference.",
+    a: "Go through the join form once more: it's pre-filled with everything we already know, so you only touch what's changed. Your leader receives the update against your membership ID.",
   },
   {
     q: "Who can see my phone number?",

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { type Membership } from "@/lib/membership";
+import { SPORTS_TEAMS } from "@/constants/relate";
 import { barcodeBars, initialsOf, withAlpha } from "./shared";
 import CopyReference from "./CopyReference";
 
 /**
  * The membership card itself — printed-credential styling: club-colour edge,
- * security hatching, a perforated stub carrying the reference and a barcode
- * derived from that reference.
+ * security hatching, a perforated stub carrying the membership ID and a
+ * barcode derived from that ID.
  */
 export default function MembershipCard({
   member,
@@ -94,17 +95,20 @@ export default function MembershipCard({
               ) : (
                 (member.clubName ?? "Relate")
               )}
-              {member.teamId && (
-                <>
-                  {" · "}
-                  <Link
-                    href={`/sports/${member.teamId}`}
-                    className="text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-gold-500"
-                  >
-                    {member.teamName ?? member.teamId}
-                  </Link>
-                </>
-              )}
+              {member.teamId &&
+                (SPORTS_TEAMS.some((t) => t.id === member.teamId) ? (
+                  <>
+                    {" · "}
+                    <Link
+                      href={`/sports/${member.teamId}`}
+                      className="text-white/80 underline decoration-white/25 underline-offset-4 transition-colors hover:text-gold-500"
+                    >
+                      {member.teamName ?? member.teamId}
+                    </Link>
+                  </>
+                ) : (
+                  <>{" · "}{member.teamName ?? member.teamId}</>
+                ))}
             </p>
           </div>
         </div>
@@ -112,7 +116,7 @@ export default function MembershipCard({
         <dl className="mt-6 grid gap-5 border-t border-white/10 pt-5 sm:grid-cols-2">
           <div>
             <dt className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-white/40">
-              Membership reference
+              Membership ID
             </dt>
             <dd className="font-mono text-lg font-bold tracking-[0.15em] text-gold-500">
               {reference}
@@ -135,13 +139,13 @@ export default function MembershipCard({
         </dl>
       </div>
 
-      {/* Tear-off stub: reference, barcode and a copy action. */}
+      {/* Tear-off stub: membership ID, barcode and a copy action. */}
       <div className="relative">
         <div aria-hidden className="mx-6 sm:mx-7 border-t border-dashed border-white/25" />
         <div className="flex items-end justify-between gap-4 px-6 py-4 sm:px-7">
           <div className="min-w-0">
             <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-white/40">
-              Member since · keep this reference
+              Member since · keep this ID
             </p>
             <p className="mt-1 font-mono text-xl font-bold tracking-[0.18em] text-gold-500">
               {reference}

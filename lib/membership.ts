@@ -22,7 +22,7 @@ export type Membership = {
   teamId?: string;
   teamName?: string;
   sport?: string;
-  /** Unique membership reference — club letters + 6 characters. */
+  /** Unique membership ID — club letters, 8 characters in total (all caps). */
   reference?: string;
   /** Mongo id + live status of the record behind this copy. */
   id?: string;

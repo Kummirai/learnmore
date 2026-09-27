@@ -7,7 +7,7 @@ import { MEMBER_COOKIE, parseMembership } from "@/lib/membership";
 export const metadata: Metadata = {
   title: "My Membership · Relate",
   description:
-    "Your Relate membership in full — club, squad, interests, reference and status, plus what happens next and how to update your record.",
+    "Your Relate membership in full — club, squad, interests, membership ID and status, plus what happens next and how to update your record.",
 };
 
 export default async function MembershipPage() {

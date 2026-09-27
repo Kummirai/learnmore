@@ -211,7 +211,7 @@ export default function JoinForm({
             Welcome to {selectedClub?.name ?? "Relate"}
           </h2>
           <p className="text-sm text-slate-gray mb-6">
-            Reference{" "}
+            Membership ID{" "}
             <span className="font-mono font-semibold text-navy">
               #{done.reference ?? done.id}
             </span>{" "}
@@ -227,7 +227,8 @@ export default function JoinForm({
                 </span>
                 <span>
                   Your <strong className="text-navy">membership is active right now</strong>{" "}
-                  — keep your reference; it&rsquo;s also on your membership page.
+                  — keep your membership ID; it&rsquo;s also on your membership
+                  page.
                 </span>
               </li>
               {joinedTeam && (
