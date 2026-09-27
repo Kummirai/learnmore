@@ -173,7 +173,7 @@ export default function JoinForm({
 
   const ageNum = Number(age);
   const isYouthClub = YOUTH_CLUBS.includes(clubSlug);
-  const isMinor = Number.isInteger(ageNum) && ageNum >= 0 && ageNum < 18;
+  const isMinor = Number.isInteger(ageNum) && ageNum >= 6 && ageNum < 18;
   const ageRange = CLUB_AGE_RANGES[clubSlug];
   const ageFitsClub =
     !ageRange || (Number.isInteger(ageNum) && ageNum >= ageRange.min && ageNum <= ageRange.max);
@@ -575,7 +575,7 @@ export default function JoinForm({
                   />
                   <span className="text-sm text-navy leading-relaxed">
                     As a parent or guardian, I consent to my child joining this
-                    Relate team and taking part in its activities.
+                    Relate club and taking part in its activities.
                   </span>
                 </label>
               </div>
