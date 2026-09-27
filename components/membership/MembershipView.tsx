@@ -1,24 +1,19 @@
 import Link from "next/link";
 import { LuArrowRight, LuUsers } from "react-icons/lu";
 import { type Membership } from "@/lib/membership";
+import { getRelateClub } from "@/constants/relate";
 
 /** Legacy records predate auto-activation — map every status we've stored. */
-const STATUS_LABELS: Record<string, { label: string; badge: string }> = {
-  active: {
-    label: "Active member",
-    badge: "bg-gold-50 text-gold-700 border-gold-200",
-  },
-  accepted: {
-    label: "Active member",
-    badge: "bg-gold-50 text-gold-700 border-gold-200",
-  },
+const STATUS_LABELS: Record<string, { label: string; chip: string }> = {
+  active: { label: "Active member", chip: "bg-gold-500 text-navy-dark" },
+  accepted: { label: "Active member", chip: "bg-gold-500 text-navy-dark" },
   pending_interview: {
     label: "Under review",
-    badge: "bg-alice-blue text-cyan border-cyan/20",
+    chip: "bg-white/10 text-white ring-1 ring-white/25",
   },
   rejected: {
     label: "Not active",
-    badge: "bg-gray-100 text-slate-gray border-gray-200",
+    chip: "bg-white/10 text-white/60 ring-1 ring-white/15",
   },
 };
 
@@ -30,6 +25,12 @@ const initialsOf = (name: string) =>
     .slice(0, 2)
     .join("")
     .toUpperCase();
+
+/** "#13c5dd" + 0.4 → "#13c5dd66" (8-digit hex with alpha). */
+const withAlpha = (hex: string, alpha: number) =>
+  `${hex}${Math.round(alpha * 255)
+    .toString(16)
+    .padStart(2, "0")}`;
 
 export default function MembershipView({ member }: { member: Membership | null }) {
   if (!member) {
@@ -69,10 +70,12 @@ export default function MembershipView({ member }: { member: Membership | null }
     );
   }
 
-  const status = STATUS_LABELS[member.status ?? "active"] ?? STATUS_LABELS.active;
-  const joined = member.joinedAt
-    ? new Date(member.joinedAt)
-    : null;
+  const status =
+    STATUS_LABELS[member.status ?? "active"] ?? STATUS_LABELS.active;
+  const club = getRelateClub(member.clubSlug);
+  const accent = club?.color ?? "#13c5dd";
+  const initials = initialsOf(member.name) || "R";
+  const joined = member.joinedAt ? new Date(member.joinedAt) : null;
   const joinedLabel =
     joined && !Number.isNaN(joined.getTime())
       ? joined.toLocaleDateString("en-GB", {
@@ -83,7 +86,7 @@ export default function MembershipView({ member }: { member: Membership | null }
       : null;
 
   return (
-    <section className="flex-1 px-4 py-16 bg-white">
+    <section className="flex-1 px-4 py-14 bg-gradient-to-b from-alice-blue/70 via-white to-white">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-8">
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-2">
@@ -98,110 +101,121 @@ export default function MembershipView({ member }: { member: Membership | null }
           </p>
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-          <div className="flex items-center gap-4 pb-5 border-b border-gray-100">
-            <div className="shrink-0 size-14 rounded-full bg-navy text-white flex items-center justify-center text-lg font-black">
-              {initialsOf(member.name)}
-            </div>
-            <div className="min-w-0 flex-1">
-              <h2 className="text-lg font-black text-navy truncate">
-                {member.name}
-              </h2>
-              <p className="text-xs text-slate-gray">
-                {member.age ? `${member.age} years` : "Member"}
-                {member.gender ? ` · ${member.gender}` : ""}
+        {/* Membership credential — club-coloured glow, gold reference. */}
+        <div className="relative overflow-hidden rounded-3xl bg-navy-dark text-white shadow-xl ring-1 ring-white/10">
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background: `radial-gradient(130% 100% at 100% 0%, ${withAlpha(
+                accent,
+                0.45,
+              )} 0%, transparent 58%)`,
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-gold-500 via-gold-500/60 to-transparent"
+          />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -bottom-7 right-3 text-[7rem] font-black leading-none text-white/5 select-none"
+          >
+            {initials}
+          </span>
+
+          <div className="relative p-6 sm:p-8">
+            <div className="flex items-start justify-between gap-4">
+              <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/50">
+                Relate World
               </p>
-            </div>
-            <span
-              className={`shrink-0 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full border ${status.badge}`}
-            >
-              {status.label}
-            </span>
-          </div>
-
-          <dl className="pt-5 space-y-4 text-sm">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <dt className="text-[11px] font-bold uppercase tracking-widest text-slate-gray w-28 shrink-0">
-                Club
-              </dt>
-              <dd className="font-semibold text-navy">
-                {member.clubSlug ? (
-                  <Link
-                    href={`/${member.clubSlug}`}
-                    className="text-cyan hover:underline"
-                  >
-                    {member.clubName ?? member.clubSlug}
-                  </Link>
-                ) : (
-                  member.clubName ?? "—"
-                )}
-              </dd>
+              <span
+                className={`shrink-0 text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full ${status.chip}`}
+              >
+                {status.label}
+              </span>
             </div>
 
-            {member.teamId && (
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <dt className="text-[11px] font-bold uppercase tracking-widest text-slate-gray w-28 shrink-0">
-                  Squad
-                </dt>
-                <dd className="font-semibold text-navy">
-                  <Link
-                    href={`/sports/${member.teamId}`}
-                    className="text-cyan hover:underline"
-                  >
-                    {member.teamName ?? member.teamId}
-                  </Link>
-                  {member.sport ? (
-                    <span className="text-slate-gray font-normal">
-                      {" "}· {member.sport}
-                    </span>
-                  ) : null}
-                </dd>
-              </div>
-            )}
-
-            {member.interests && member.interests.length > 0 && (
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
-                <dt className="text-[11px] font-bold uppercase tracking-widest text-slate-gray w-28 shrink-0">
-                  Interests
-                </dt>
-                <dd className="flex flex-wrap gap-2">
-                  {member.interests.map((interest) => (
-                    <span
-                      key={interest}
-                      className="text-xs font-semibold bg-alice-blue text-cyan px-2.5 py-1 rounded-full"
+            <div className="mt-5 flex items-center gap-4">
+              <span className="grid size-14 shrink-0 place-items-center rounded-full bg-white/10 text-lg font-black ring-1 ring-white/20">
+                {initials}
+              </span>
+              <div className="min-w-0">
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight truncate">
+                  {member.name}
+                </h2>
+                <p className="text-sm text-white/60 truncate">
+                  {member.clubSlug ? (
+                    <Link
+                      href={`/${member.clubSlug}`}
+                      className="text-white/75 hover:text-gold-500 transition-colors underline decoration-white/25 underline-offset-4"
                     >
-                      {interest}
-                    </span>
-                  ))}
-                </dd>
+                      {member.clubName ?? member.clubSlug}
+                    </Link>
+                  ) : (
+                    member.clubName ?? "Relate"
+                  )}
+                  {member.teamId && (
+                    <>
+                      {" · "}
+                      <Link
+                        href={`/sports/${member.teamId}`}
+                        className="text-white/75 hover:text-gold-500 transition-colors underline decoration-white/25 underline-offset-4"
+                      >
+                        {member.teamName ?? member.teamId}
+                      </Link>
+                    </>
+                  )}
+                </p>
               </div>
-            )}
-
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <dt className="text-[11px] font-bold uppercase tracking-widest text-slate-gray w-28 shrink-0">
-                Member since
-              </dt>
-              <dd className="font-semibold text-navy">
-                {joinedLabel ?? "—"}
-              </dd>
             </div>
 
-            {(member.reference || member.id) && (
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <dt className="text-[11px] font-bold uppercase tracking-widest text-slate-gray w-28 shrink-0">
-                  Reference
+            <dl className="mt-6 grid gap-5 border-t border-white/10 pt-5 sm:grid-cols-2">
+              <div>
+                <dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1.5">
+                  Membership reference
                 </dt>
-                <dd className="font-mono font-semibold text-navy">
+                <dd className="font-mono text-lg font-bold tracking-[0.15em] text-gold-500">
                   #{member.reference ?? member.id}
                 </dd>
               </div>
-            )}
-          </dl>
+              <div>
+                <dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1.5">
+                  Member since
+                </dt>
+                <dd className="text-sm font-semibold text-white/85">
+                  {joinedLabel ?? "—"}
+                </dd>
+              </div>
+            </dl>
+          </div>
         </div>
 
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+        {member.interests && member.interests.length > 0 && (
+          <div className="mt-6">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-gray mb-3">
+              Your interests
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {member.interests.map((interest) => (
+                <span
+                  key={interest}
+                  className="text-xs font-semibold bg-white text-navy border border-gray-200 px-3 py-1.5 rounded-full"
+                >
+                  {interest}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-7 flex flex-col sm:flex-row gap-3">
           <Link
-            href={member.teamId ? `/sports/${member.teamId}` : `/${member.clubSlug ?? ""}`}
+            href={
+              member.teamId
+                ? `/sports/${member.teamId}`
+                : `/${member.clubSlug ?? ""}`
+            }
             className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy/90 transition-colors"
           >
             {member.teamId ? "Open my team page" : "Open my club page"}{" "}
@@ -209,7 +223,7 @@ export default function MembershipView({ member }: { member: Membership | null }
           </Link>
           <Link
             href="/join"
-            className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center justify-center gap-2 border border-gray-200 bg-white text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
           >
             Join an activity
           </Link>
