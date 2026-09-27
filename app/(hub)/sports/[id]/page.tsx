@@ -18,7 +18,13 @@ import {
   SPORTS_TEAMS,
   getRelateClub,
 } from "@/constants/relate";
-import { getSquad, imgCard, playerSlug, SPORTS_DIRECTOR } from "@/constants/squads";
+import {
+  MAX_PER_POSITION,
+  getSquad,
+  playerSlug,
+  SPORTS_DIRECTOR,
+} from "@/constants/squads";
+import { buildRoster, fetchRoster, type Slot } from "@/lib/squad-roster";
 
 export function generateStaticParams() {
   return SPORTS_TEAMS.map((team) => ({ id: team.id }));
@@ -68,37 +74,65 @@ const initialsOf = (name: string) =>
 
 const WHATSAPP = "27782677436";
 
-function PlayerCard({
-  name,
-  position,
-  number,
-  image,
+/**
+ * One slot on the team sheet. Filled slots show the registrant; open ones keep
+ * the generated placeholder (position name + badge) and link straight to the
+ * registration form with that position preselected.
+ */
+function SlotCard({
+  slot,
   teamId,
+  gradient,
 }: {
-  name: string;
-  position: string;
-  number: number;
-  image: string;
+  slot: Slot;
   teamId: string;
+  gradient: string;
 }) {
+  const registrant = slot.registrant;
+  const name = registrant?.name ?? slot.placeholder.name;
+  const href = registrant
+    ? `/sports/${teamId}/${playerSlug(registrant.name)}`
+    : `/sports/${teamId}/register?position=${encodeURIComponent(slot.position)}`;
+
   return (
     <Link
-      href={`/sports/${teamId}/${playerSlug(name)}`}
+      href={href}
       className="group flex flex-col items-center text-center bg-white rounded-2xl border border-gray-100 shadow-sm p-4 md:p-5 hover:shadow-md hover:border-cyan/40 transition-all"
     >
       <div className="relative">
         <div className="size-16 md:size-20 rounded-full overflow-hidden ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300">
-          <img src={imgCard(image)} alt={name} className="size-full object-cover" />
+          {registrant?.photoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={registrant.photoUrl}
+              alt={name}
+              className="size-full object-cover"
+            />
+          ) : (
+            <span
+              className="size-full flex items-center justify-center text-base md:text-xl font-black text-white uppercase"
+              style={{ background: gradient }}
+            >
+              {slot.badge}
+            </span>
+          )}
         </div>
         <span className="absolute -bottom-1 -right-1 size-7 md:size-8 rounded-full bg-navy text-white text-[11px] md:text-xs font-bold flex items-center justify-center ring-2 ring-white">
-          {number}
+          {slot.number}
         </span>
       </div>
       <h4 className="mt-3 text-sm font-bold text-navy leading-snug group-hover:text-cyan-dark transition-colors">
         {name}
       </h4>
       <p className="text-[11px] text-cyan font-semibold mt-1 uppercase tracking-wider">
-        {position}
+        {slot.position}
+      </p>
+      <p
+        className={`mt-1 text-[10px] font-bold uppercase tracking-wider ${
+          registrant ? "text-slate-gray" : "text-gold-700"
+        }`}
+      >
+        {registrant ? "Registered" : "Claim this spot"}
       </p>
     </Link>
   );
@@ -111,12 +145,17 @@ export default async function TeamPage({
 }) {
   const { id } = await params;
   const team = SPORTS_TEAMS.find((t) => t.id === id);
-  if (!team) notFound();
+  const squad = team ? getSquad(team.id) : undefined;
+  if (!team || !squad) notFound();
   const club = getRelateClub(team.clubSlug);
-  const squad = getSquad(team.id);
   const gradient = club
     ? `linear-gradient(135deg, ${club.color}, ${club.colorDark})`
     : "linear-gradient(135deg, #13c5dd, #0284c7)";
+
+  // Real registrations overlaid on the generated team sheet (empty on failure
+  // or before anyone signs up — the sheet then shows open positions).
+  const { registrations } = await fetchRoster(team.id);
+  const roster = buildRoster(squad, registrations, team.sport);
 
   return (
       <>
@@ -152,19 +191,7 @@ export default async function TeamPage({
               <LuArrowLeft /> All teams
             </Link>
 
-            {team.logo && (
-              <div className="mt-6 inline-flex w-fit rounded-2xl bg-white p-2 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.8)] md:mt-8">
-                <Image
-                  src={team.logo}
-                  alt={`${team.name} crest`}
-                  width={240}
-                  height={240}
-                  className="size-20 object-contain md:size-28"
-                />
-              </div>
-            )}
-
-            <div className="mt-5 flex flex-col md:flex-row md:items-end md:justify-between gap-6 md:mt-8">
+            <div className="mt-6 flex flex-col-reverse gap-6 md:mt-8 md:flex-row md:items-center md:justify-between">
               <div className="max-w-2xl">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-2">
                   Relate · {club?.name ?? "Relate"} · {team.sport}
@@ -178,7 +205,7 @@ export default async function TeamPage({
 
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                    <LuUsers /> {squad?.players.length ?? 0} players
+                    <LuUsers /> {roster.registered} of {squad.players.length} registered
                   </span>
                   <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
                     <LuUser /> Coach {squad?.coach.name}
@@ -191,12 +218,12 @@ export default async function TeamPage({
                 </div>
 
                 <div className="mt-7 flex flex-col sm:flex-row gap-3">
-                  <JoinCta
-                    href={`/join?club=${team.clubSlug}&team=${team.id}`}
+                  <Link
+                    href={`/sports/${team.id}/register`}
                     className="inline-flex items-center justify-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-bold text-sm hover:bg-white/90 transition-colors"
                   >
-                    Join this team <LuArrowRight />
-                  </JoinCta>
+                    Register as a player <LuArrowRight />
+                  </Link>
                   <a
                     href={`https://wa.me/${WHATSAPP}`}
                     target="_blank"
@@ -207,6 +234,18 @@ export default async function TeamPage({
                   </a>
                 </div>
               </div>
+
+              {team.logo && (
+                <div className="self-center shrink-0 rounded-2xl bg-white p-2 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.8)] sm:p-3">
+                  <Image
+                    src={team.logo}
+                    alt={`${team.name} crest`}
+                    width={320}
+                    height={320}
+                    className="size-24 object-contain sm:size-28 md:size-36"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </header>
@@ -221,14 +260,125 @@ export default async function TeamPage({
                 The {team.initials} squad
               </h2>
               <p className="text-gray-500 mt-1 text-sm max-w-2xl">
-                {squad?.players.length ?? 0} players coached by {squad?.coach.name ?? "Relate"} — positions and squad numbers for the {new Date().getFullYear()} season.
+                {roster.registered === 0
+                  ? `Open to registration — the first ${squad.players.length} players to register make up the team sheet.`
+                  : `${roster.registered} of ${squad.players.length} spots filled, coached by ${squad.coach.name}.`}
               </p>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
-              {squad?.players.map((p) => (
-                <PlayerCard key={playerSlug(p.name)} name={p.name} position={p.position} number={p.number} image={p.image} teamId={team.id} />
+              {roster.slots.map((slot, i) => (
+                <SlotCard
+                  key={`${slot.position}-${i}`}
+                  slot={slot}
+                  teamId={team.id}
+                  gradient={gradient}
+                />
               ))}
+            </div>
+
+            {roster.reserves.length > 0 && (
+              <div className="mt-8 rounded-2xl border border-gray-100 bg-alice-blue p-5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
+                  Cover
+                </p>
+                <h3 className="text-lg font-black text-navy mb-1">Reserves</h3>
+                <p className="text-xs text-slate-gray mb-4">
+                  Registered inside the {team.sport} position limit but outside the
+                  starting sheet — first up when a spot opens.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {roster.reserves.map((r) => (
+                    <Link
+                      key={r.id}
+                      href={`/sports/${team.id}/${playerSlug(r.name)}`}
+                      className="group flex items-center gap-2 rounded-full bg-white border border-gray-100 py-1.5 pl-1.5 pr-4 hover:border-cyan/40 transition-colors"
+                    >
+                      <span className="size-8 rounded-full overflow-hidden bg-navy shrink-0">
+                        {r.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={r.photoUrl}
+                            alt={r.name}
+                            className="size-full object-cover"
+                          />
+                        ) : (
+                          <span className="size-full flex items-center justify-center text-[10px] font-black text-white">
+                            {r.positionCode}
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-xs font-bold text-navy group-hover:text-cyan-dark">
+                        {r.name}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-gray">
+                        {r.positionCode}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {roster.waitlist.length > 0 && (
+              <div className="mt-4 rounded-2xl border border-gray-100 bg-white p-5">
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
+                  Queue
+                </p>
+                <h3 className="text-lg font-black text-navy mb-1">Waiting list</h3>
+                <p className="text-xs text-slate-gray mb-4">
+                  Registered after their positions filled — next in line if anyone
+                  drops out.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  {roster.waitlist.map((r) => (
+                    <Link
+                      key={r.id}
+                      href={`/sports/${team.id}/${playerSlug(r.name)}`}
+                      className="group flex items-center gap-2 rounded-full bg-alice-blue border border-gray-100 py-1.5 pl-1.5 pr-4 hover:border-cyan/40 transition-colors"
+                    >
+                      <span className="size-8 rounded-full overflow-hidden bg-navy shrink-0">
+                        {r.photoUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={r.photoUrl}
+                            alt={r.name}
+                            className="size-full object-cover"
+                          />
+                        ) : (
+                          <span className="size-full flex items-center justify-center text-[10px] font-black text-white">
+                            {r.positionCode}
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-xs font-bold text-navy group-hover:text-cyan-dark">
+                        {r.name}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-gray">
+                        {r.positionCode}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-2xl border border-gold-200 bg-gold-50 px-5 py-4">
+              <div className="flex-1">
+                <p className="text-sm font-bold text-navy">
+                  Registration is open — claim your position.
+                </p>
+                <p className="text-xs text-slate-gray mt-0.5">
+                  Photo, height, dominant foot and hand, position. First come,
+                  first picked; every position takes up to {MAX_PER_POSITION}.
+                </p>
+              </div>
+              <Link
+                href={`/sports/${team.id}/register`}
+                className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-navy-dark transition-colors"
+              >
+                Register as a player <LuArrowRight />
+              </Link>
             </div>
 
             {squad?.coach && (

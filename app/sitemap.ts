@@ -91,14 +91,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  const sportsPlayers = SPORTS_TEAMS.flatMap((team) =>
-    (getSquad(team.id)?.players ?? []).map((player) => ({
-      url: `${SITE_URL}/sports/${team.id}/${playerSlug(player.name)}`,
-      lastModified,
-      changeFrequency: "monthly" as const,
-      priority: 0.4,
-    }))
-  );
+  const sportsPlayers = SPORTS_TEAMS.flatMap((team) => {
+    const seen = new Set<string>();
+    const entries: MetadataRoute.Sitemap = [];
+    for (const player of getSquad(team.id)?.players ?? []) {
+      const url = `${SITE_URL}/sports/${team.id}/${playerSlug(player.name)}`;
+      if (seen.has(url)) continue;
+      seen.add(url);
+      entries.push({
+        url,
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.4,
+      });
+    }
+    return entries;
+  });
 
   return [
     ...main,

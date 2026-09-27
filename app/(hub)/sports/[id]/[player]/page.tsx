@@ -1,45 +1,112 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import JoinCta from "@/components/join/JoinCta";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import {
   LuArrowLeft,
   LuArrowRight,
   LuCalendar,
   LuCrosshair,
-  LuMapPin,
+  LuFootprints,
+  LuHand,
   LuRuler,
   LuShirt,
   LuUser,
+  LuUsers,
 } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import { SPORTS_TEAMS, getRelateClub } from "@/constants/relate";
-import { findPlayer, getSquad, imgDetail, playerSlug } from "@/constants/squads";
+import {
+  MAX_PER_POSITION,
+  findPlayer,
+  getSquad,
+  playerSlug,
+} from "@/constants/squads";
+import {
+  buildRoster,
+  fetchRoster,
+  type RegisteredPlayer,
+} from "@/lib/squad-roster";
+
+/** Registered players are only known at request time, so never bake them in. */
+export const dynamicParams = true;
+export const revalidate = 30;
 
 export function generateStaticParams() {
-  return SPORTS_TEAMS.flatMap((team) => {
-    const squad = getSquad(team.id);
-    return (squad?.players ?? []).map((p) => ({
-      id: team.id,
-      player: playerSlug(p.name),
-    }));
-  });
+  const seen = new Set<string>();
+  const params: { id: string; player: string }[] = [];
+  for (const team of SPORTS_TEAMS) {
+    for (const slot of getSquad(team.id)?.players ?? []) {
+      const slug = playerSlug(slot.name);
+      const key = `${team.id}:${slug}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      params.push({ id: team.id, player: slug });
+    }
+  }
+  return params;
 }
 
-export function generateMetadata({
+/** One-line role summary for an open position (falls back to a generic line). */
+const ROLE_NOTES: Record<string, string> = {
+  Goalkeeper: "Last line of defence — shot stopping, command of the box and quick distribution.",
+  "Right Back": "Covers the right flank, joins the attack and tracks the opposition winger.",
+  "Centre Back": "Wins the aerial duels, organises the line and clears the danger.",
+  "Left Back": "Covers the left flank, overlaps down the line and gets back to defend.",
+  "Defensive Midfielder": "Sits in front of the back four, breaks up play and recycles possession.",
+  "Central Midfielder": "Links defence to attack — box to box, both ways, all game.",
+  "Attacking Midfielder": "Plays between the lines, creates chances and arrives late in the box.",
+  "Right Winger": "Stretches the defence wide, takes on the full-back and delivers crosses.",
+  Striker: "Leads the line, holds the ball up and finishes the chances.",
+  "Left Winger": "Cuts inside from the left, beats the defender and goes for goal.",
+  "Goal Shooter": "Converts from under the post — the finisher of the circle.",
+  "Goal Attack": "Shoots and feeds the circle, working the space with the shooter.",
+  "Wing Attack": "Feeds the circle edge and moves the ball down the court.",
+  Centre: "The engine — restarts play, links the ends and covers both circles.",
+  "Wing Defence": "Denies the feed, disrupts the attack down the court.",
+  "Goal Defence": "Marks the shooter and drives the transition out of defence.",
+  "Goal Keeper": "Deep defender — reads the pass and cleans up inside the circle.",
+  Setter: "Runs the offence — decides who attacks and where.",
+  "Outside Hitter": "Primary attacker from the outside, serving and attacking the pin.",
+  "Middle Blocker": "Blocks across the net and attacks the quick middle.",
+  "Opposite Hitter": "Attacks from the right and backs up the block.",
+  Libero: "Defensive specialist — digs and passes, never leaves the back court.",
+};
+
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string; player: string }>;
 }): Promise<Metadata> {
-  return params.then(({ id, player }) => {
-    const team = SPORTS_TEAMS.find((t) => t.id === id);
-    const playerRecord = findPlayer(id, player);
-    if (!team || !playerRecord) return { title: "Player Not Found · Relate Sports" };
+  const { id, player } = await params;
+  const team = SPORTS_TEAMS.find((t) => t.id === id);
+  if (!team) return { title: "Player Not Found · Relate Sports" };
+
+  const { registrations } = await fetchRoster(team.id);
+  const registrant = findRegistrant(registrations, player);
+  const open = registrant ? undefined : findPlayer(id, player);
+  const claimed = open ? starterFor(registrations, open.position) : undefined;
+  const person = registrant ?? claimed;
+
+  if (person) {
     return {
-      title: `${playerRecord.name} · ${team.name}`,
-      description: `${playerRecord.name} — ${playerRecord.position} (No. ${playerRecord.number}) for ${team.name}. Age ${playerRecord.age}, ${playerRecord.height}, from ${playerRecord.hometown}.`,
+      title: `${person.name} · ${team.name}`,
+      description: `${person.name} — ${person.position} for ${team.name} (${team.sport}).`,
     };
-  });
+  }
+  if (open) {
+    return {
+      title: `${open.position} · ${team.name}`,
+      description: `The ${open.position} slot for ${team.name} — register to claim it.`,
+    };
+  }
+  return { title: "Player Not Found · Relate Sports" };
+}
+
+/** First (oldest) registrant for a position — the player holding that slot. */
+function starterFor(rows: RegisteredPlayer[], position: string) {
+  return rows
+    .filter((r) => r.status === "active" && r.position === position)
+    .sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0];
 }
 
 /** #RRGGBB + alpha → rgba() so gradients sit over the navy chrome. */
@@ -76,6 +143,11 @@ function DetailRow({
   );
 }
 
+const footLabel = (foot: "left" | "right") =>
+  foot === "left" ? "Left-footed" : "Right-footed";
+const handLabel = (hand: "left" | "right") =>
+  hand === "left" ? "Left-handed" : "Right-handed";
+
 export default async function PlayerPage({
   params,
 }: {
@@ -83,9 +155,27 @@ export default async function PlayerPage({
 }) {
   const { id, player } = await params;
   const team = SPORTS_TEAMS.find((t) => t.id === id);
-  const playerRecord = findPlayer(id, player);
-  if (!team || !playerRecord) notFound();
+  const squad = team ? getSquad(team.id) : undefined;
+  if (!team || !squad) notFound();
+
+  const { registrations } = await fetchRoster(team.id);
+  const roster = buildRoster(squad, registrations, team.sport);
+  const registrant = findRegistrant(registrations, player);
+  const open = registrant ? undefined : findPlayer(id, player);
+  if (!registrant && !open) notFound();
+
+  // A position URL keeps working once somebody holds the slot: send it to
+  // that player instead of showing an "open" page for a filled position.
+  if (!registrant && open) {
+    const claimed = starterFor(registrations, open.position);
+    if (claimed) redirect(`/sports/${team.id}/${playerSlug(claimed.name)}`);
+  }
+
   const club = getRelateClub(team.clubSlug);
+  const firstName = (registrant?.name ?? team.name).split(" ")[0];
+  const registerHref = registrant
+    ? `/sports/${team.id}/register`
+    : `/sports/${team.id}/register?position=${encodeURIComponent(open!.position)}`;
 
   return (
     <>
@@ -97,8 +187,10 @@ export default async function PlayerPage({
       >
         <Navbar overlay />
 
-        <div className="absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"
-             style={{ backgroundColor: club?.color ?? "#13c5dd" }} />
+        <div
+          className="absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"
+          style={{ backgroundColor: club?.color ?? "#13c5dd" }}
+        />
 
         <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 pt-28 pb-12 md:pt-32 md:pb-16">
           <Link
@@ -110,13 +202,26 @@ export default async function PlayerPage({
 
           <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:items-center gap-8 md:gap-10">
             <div className="relative shrink-0 self-center md:self-start">
-              <img
-                src={imgDetail(playerRecord.image)}
-                alt={playerRecord.name}
-                className="size-44 sm:size-52 md:size-60 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20"
-              />
+              {registrant ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={registrant.photoUrl}
+                  alt={registrant.name}
+                  className="size-44 sm:size-52 md:size-60 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20"
+                />
+              ) : (
+                <div
+                  className="size-44 sm:size-52 md:size-60 rounded-2xl shadow-2xl ring-4 ring-white/20 flex items-center justify-center text-6xl md:text-7xl font-black text-white uppercase"
+                  style={{ background: "linear-gradient(135deg, #1d2a4d, #13c5dd)" }}
+                >
+                  {open!.badge}
+                </div>
+              )}
               <span className="absolute -bottom-2 -right-2 size-14 rounded-2xl bg-navy text-white text-lg font-black flex items-center justify-center ring-4 ring-white/30">
-                {playerRecord.number}
+                {registrant
+                  ? (roster.slots.find((s) => s.registrant?.id === registrant.id)
+                      ?.number ?? "—")
+                  : roster.slots.find((s) => s.position === open!.position)?.number ?? "—"}
               </span>
             </div>
 
@@ -125,25 +230,47 @@ export default async function PlayerPage({
                 {club?.name ?? "Relate"} · {team.sport} · {team.name}
               </p>
               <h1 className="font-black tracking-tight leading-none text-white text-4xl sm:text-5xl md:text-6xl">
-                {playerRecord.name}
+                {registrant?.name ?? open!.position}
               </h1>
               <p className="mt-2 text-cyan text-lg sm:text-xl font-semibold">
-                {playerRecord.position}
+                {registrant
+                  ? `${registrant.position} · #${registrant.order} in the queue`
+                  : "Open position"}
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-3">
-                <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                  <LuUser /> Age {playerRecord.age}
-                </span>
-                <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                  <LuRuler /> {playerRecord.height}
-                </span>
-                <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                  <LuMapPin /> {playerRecord.hometown}
-                </span>
-                <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                  <LuCalendar /> Joined {playerRecord.joined}
-                </span>
+                {registrant ? (
+                  <>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuRuler /> {registrant.heightCm} cm
+                    </span>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuFootprints /> {footLabel(registrant.foot)}
+                    </span>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuHand /> {handLabel(registrant.hand)}
+                    </span>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuUsers />{" "}
+                      {registrant.status === "active" ? "On the team sheet" : "Waiting list"}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuShirt /> No.{" "}
+                      {roster.slots.find((s) => s.position === open!.position)?.number ?? "—"}
+                    </span>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuUsers />{" "}
+                      {roster.counts[open!.position]?.taken ?? 0} of{" "}
+                      {roster.counts[open!.position]?.capacity ?? MAX_PER_POSITION} filled
+                    </span>
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuCrosshair /> First come, first picked
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -155,66 +282,145 @@ export default async function PlayerPage({
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div className="lg:col-span-2">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
-                Player profile
+                {registrant ? "Player profile" : "Position"}
               </p>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-4">
-                At a glance
+                {registrant ? "At a glance" : "The role"}
               </h2>
               <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
-                <DetailRow icon={<LuShirt />} label="Squad number" value={`No. ${playerRecord.number}`} />
-                <DetailRow icon={<LuCrosshair />} label="Position" value={playerRecord.position} />
-                <DetailRow icon={<LuUser />} label="Age" value={`${playerRecord.age} years`} />
-                <DetailRow icon={<LuRuler />} label="Height" value={playerRecord.height} />
-                <DetailRow icon={<LuCrosshair />} label="Preferred side" value={playerRecord.side} />
-                <DetailRow icon={<LuMapPin />} label="Hometown" value={playerRecord.hometown} />
-                <DetailRow icon={<LuCalendar />} label="Joined" value={String(playerRecord.joined)} />
+                {registrant ? (
+                  <>
+                    <DetailRow
+                      icon={<LuShirt />}
+                      label="Squad number"
+                      value={
+                        roster.slots.find((s) => s.registrant?.id === registrant.id)
+                          ? `No. ${
+                              roster.slots.find((s) => s.registrant?.id === registrant.id)!
+                                .number
+                            }`
+                          : "Reserve"
+                      }
+                    />
+                    <DetailRow
+                      icon={<LuCrosshair />}
+                      label="Position"
+                      value={`${registrant.position} (${registrant.positionCode})`}
+                    />
+                    <DetailRow icon={<LuRuler />} label="Height" value={`${registrant.heightCm} cm`} />
+                    <DetailRow
+                      icon={<LuFootprints />}
+                      label="Stronger foot"
+                      value={footLabel(registrant.foot)}
+                    />
+                    <DetailRow
+                      icon={<LuHand />}
+                      label="Stronger hand"
+                      value={handLabel(registrant.hand)}
+                    />
+                    <DetailRow
+                      icon={<LuCalendar />}
+                      label="Registered"
+                      value={
+                        registrant.createdAt
+                          ? new Date(registrant.createdAt).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })
+                          : "—"
+                      }
+                    />
+                  </>
+                ) : (
+                  <>
+                    <DetailRow
+                      icon={<LuShirt />}
+                      label="Squad number"
+                      value={`No. ${
+                        roster.slots.find((s) => s.position === open!.position)?.number ?? "—"
+                      }`}
+                    />
+                    <DetailRow
+                      icon={<LuCrosshair />}
+                      label="Position"
+                      value={`${open!.position} (${open!.badge})`}
+                    />
+                    <DetailRow
+                      icon={<LuUsers />}
+                      label="Places filled"
+                      value={`${roster.counts[open!.position]?.taken ?? 0} of ${
+                        roster.counts[open!.position]?.capacity ?? MAX_PER_POSITION
+                      }`}
+                    />
+                    <DetailRow icon={<LuUser />} label="Sport" value={team.sport} />
+                    <DetailRow
+                      icon={<LuCalendar />}
+                      label="Team sheet"
+                      value={`${roster.registered} of ${squad.players.length} spots`}
+                    />
+                  </>
+                )}
               </div>
             </div>
 
             <div className="lg:col-span-3">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
-                This season
+                {registrant ? "The squad" : "How selection works"}
               </p>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-4">
-                {team.initials} stats
+                {registrant ? `${team.initials} squad` : "Claim this spot"}
               </h2>
 
-              <div className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
-                {playerRecord.stats.map((s) => (
-                  <div
-                    key={s.label}
-                    className="rounded-2xl border border-gray-100 bg-alice-blue p-4 md:p-6 text-center"
-                  >
-                    <p className="text-2xl md:text-3xl font-black tracking-tight text-navy">
-                      {s.value}
-                    </p>
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mt-1">
-                      {s.label}
-                    </p>
-                  </div>
-                ))}
+              <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 md:p-8 mb-6">
+                {registrant ? (
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                    {registrant.name} plays {registrant.position.toLowerCase()} for{" "}
+                    {team.name}, coached by {squad.coach.name}.{" "}
+                    {roster.registered} of {squad.players.length} spots on the team
+                    sheet are filled so far this season.
+                  </p>
+                ) : (
+                  <ul className="space-y-3 text-sm md:text-base text-gray-600">
+                    <li className="flex gap-3">
+                      <span className="mt-1.5 size-1.5 rounded-full bg-cyan shrink-0" />
+                      Every position holds up to {MAX_PER_POSITION} players — a
+                      starter plus cover.
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="mt-1.5 size-1.5 rounded-full bg-cyan shrink-0" />
+                      The first {squad.players.length} registrants make up the team
+                      sheet for {team.name}.
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="mt-1.5 size-1.5 rounded-full bg-cyan shrink-0" />
+                      <span>
+                        {open && (ROLE_NOTES[open.position] ??
+                          `Players register for the ${open.position} slot and compete for it.`)}
+                      </span>
+                    </li>
+                  </ul>
+                )}
               </div>
 
-              <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 md:p-8">
-                <h3 className="font-bold text-navy mb-3">About {playerRecord.name.split(" ")[0]}</h3>
-                <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                  {playerRecord.bio}
-                </p>
-              </div>
-
-              <div className="mt-6 rounded-2xl bg-navy text-white p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+              <div className="rounded-2xl bg-navy text-white p-6 md:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
                 <div>
-                  <h3 className="font-bold text-lg">Want to play alongside {playerRecord.name.split(" ")[0]}?</h3>
+                  <h3 className="font-bold text-lg">
+                    {registrant
+                      ? `Want to play alongside ${firstName}?`
+                      : `Register as ${open!.position}`}
+                  </h3>
                   <p className="text-sm text-white/70 mt-1">
-                    Register for {team.name} and join the squad.
+                    Add your photo and details — takes a minute, and you keep your
+                    place in the queue.
                   </p>
                 </div>
-                <JoinCta
-                  href={`/join?club=${team.clubSlug}&team=${team.id}`}
+                <Link
+                  href={registerHref}
                   className="shrink-0 inline-flex items-center justify-center gap-2 bg-cyan text-navy px-6 py-3 rounded-lg font-bold text-sm hover:bg-cyan-light transition-colors"
                 >
-                  Register to join <LuArrowRight />
-                </JoinCta>
+                  Register <LuArrowRight />
+                </Link>
               </div>
 
               <Link
@@ -229,4 +435,8 @@ export default async function PlayerPage({
       </section>
     </>
   );
+}
+
+function findRegistrant(rows: RegisteredPlayer[], slug: string) {
+  return rows.find((r) => playerSlug(r.name) === slug);
 }
