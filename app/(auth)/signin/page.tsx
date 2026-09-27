@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { FaGithub } from "react-icons/fa6";
 import { LuMail, LuEye, LuEyeOff } from "react-icons/lu";
 import { useAuth } from "@/components/AuthProvider";
@@ -8,8 +9,22 @@ import { useAuth } from "@/components/AuthProvider";
 const inputCls =
     "w-full rounded-lg border border-gray-200 bg-white px-4 py-3 text-base md:text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-[color:var(--club-accent)] focus:ring-2 focus:ring-[color:var(--club-accent)]/25 transition";
 
+/** Only same-site paths — never absolute or protocol-relative URLs. */
+function safeNext(raw: string | null): string {
+    return raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/";
+}
+
 export default function SignInPage() {
+    return (
+        <Suspense fallback={null}>
+            <SignInContent />
+        </Suspense>
+    );
+}
+
+function SignInContent() {
     const { signInWith, signInWithEmail, signUpWithEmail } = useAuth();
+    const next = safeNext(useSearchParams().get("next"));
     const [mode, setMode] = useState<"signin" | "signup">("signin");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -49,11 +64,11 @@ export default function SignInPage() {
             setError(err);
             return;
         }
-        window.location.href = "/";
+        window.location.href = next;
     };
 
     const oauth = (provider: "google" | "github") => {
-        signInWith(provider);
+        signInWith(provider, next);
     };
 
     return (

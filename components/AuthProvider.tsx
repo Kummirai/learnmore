@@ -16,7 +16,7 @@ type AuthContextType = {
     /** True while the saved session is being restored on first load. */
     loading: boolean;
     /** Starts the OAuth redirect for the given provider (Google or GitHub). */
-    signInWith: (provider: "google" | "github") => void;
+    signInWith: (provider: "google" | "github", next?: string) => void;
     /** Signs in with email + password. Resolves to an error message, or null on success. */
     signInWithEmail: (email: string, password: string) => Promise<string | null>;
     /** Creates an account with email + password. Resolves to an error message, or null on success. */
@@ -82,12 +82,14 @@ export function AuthProvider({children}: {children: ReactNode}) {
         };
     }, []);
 
-    const signInWith = (provider: "google" | "github") => {
+    const signInWith = (provider: "google" | "github", next?: string) => {
         const origin = typeof window !== "undefined" ? window.location.origin : "";
-        const next = `${origin}/auth/oauth/callback`;
+        const safeNext =
+            next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
+        const callback = `${origin}/auth/oauth/callback?next=${encodeURIComponent(safeNext)}`;
         void authClient.signIn.social({
             provider,
-            callbackURL: next,
+            callbackURL: callback,
             errorCallbackURL: origin + "/SignIn?error=oauth_failed",
         });
     };

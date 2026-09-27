@@ -12,11 +12,21 @@ import { useAuth } from "./AuthProvider";
 export default function RequireAuth({
     children,
     title,
+    blurb,
+    next,
 }: {
     children: React.ReactNode;
     title: string;
+    /** Optional override for the prompt under the title. */
+    blurb?: string;
+    /** Path to return to after signing in (must start with "/"). */
+    next?: string;
 }) {
     const { user, loading } = useAuth();
+    const signInHref =
+        next && next.startsWith("/") && !next.startsWith("//")
+            ? `/signin?next=${encodeURIComponent(next)}`
+            : "/signin";
 
     if (loading) {
         return (
@@ -38,10 +48,11 @@ export default function RequireAuth({
                     </div>
                     <h1 className="text-2xl font-bold text-navy mb-2">{title}</h1>
                     <p className="text-slate-gray text-sm mb-6">
-                        Sign in to view this page — keep your clubs, reading guides and prayer rhythm in one place.
+                        {blurb ??
+                            "Sign in to view this page — keep your clubs, reading guides and prayer rhythm in one place."}
                     </p>
                     <Link
-                        href="/signin"
+                        href={signInHref}
                         className="inline-flex items-center gap-2 rounded-lg px-8 py-3 text-sm font-semibold transition hover:brightness-95"
                         style={{ backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)" }}
                     >
