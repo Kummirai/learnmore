@@ -24,7 +24,6 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
         const endpoints: [string, string][] = [
             ["/admin/volunteers", "/api/admin/volunteers?status=new&countOnly=1"],
             ["/admin/help-requests", "/api/help-requests?status=open&countOnly=1"],
-            ["/admin/club-joins", "/api/admin/club-join?status=pending_interview&countOnly=1"],
             ["/admin/social-joins", "/api/community/social-join?status=pending&countOnly=1"],
         ];
         const results = await Promise.all(

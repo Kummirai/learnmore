@@ -7,7 +7,6 @@ import {
     LuHandHeart,
     LuLifeBuoy,
     LuMessageSquare,
-    LuUsers,
 } from "react-icons/lu";
 import {ADMIN_NAV} from "@/components/admin/nav";
 
@@ -16,7 +15,6 @@ type Count = number | null;
 const QUEUES = [
     {href: "/admin/volunteers", label: "Volunteer requests", icon: LuHandHeart},
     {href: "/admin/help-requests", label: "Help requests", icon: LuLifeBuoy},
-    {href: "/admin/club-joins", label: "Club joins", icon: LuUsers},
     {href: "/admin/social-joins", label: "Social joins", icon: LuMessageSquare},
 ] as const;
 
@@ -32,9 +30,14 @@ const PENDING_ADMIN_AREAS = [
 
 export default function AdminDashboardPage() {
     const [counts, setCounts] = useState<Record<string, Count>>({});
-    const [totals, setTotals] = useState<{publications: Count; drafts: Count}>({
+    const [totals, setTotals] = useState<{
+        publications: Count;
+        drafts: Count;
+        members: Count;
+    }>({
         publications: null,
         drafts: null,
+        members: null,
     });
 
     const load = useCallback(async (signal?: AbortSignal) => {
@@ -67,18 +70,19 @@ export default function AdminDashboardPage() {
             }
         };
 
-        const [volunteers, help, clubs, social, pubs] = await Promise.all([
+        const [volunteers, help, social, members, pubs] = await Promise.all([
             safe("/api/admin/volunteers?status=new&countOnly=1"),
             safe("/api/help-requests?status=open&countOnly=1"),
-            safe("/api/admin/club-join?status=pending_interview&countOnly=1"),
             safe("/api/community/social-join?status=pending&countOnly=1"),
+            safe("/api/admin/club-join?status=active&countOnly=1"),
             listPubs(),
         ]);
 
-        setCounts({volunteers, help, clubs, social});
+        setCounts({volunteers, help, social});
         setTotals({
             publications: pubs ? pubs.length : null,
             drafts: pubs ? pubs.filter((p) => p.status === "draft").length : null,
+            members,
         });
     }, []);
 
@@ -93,7 +97,6 @@ export default function AdminDashboardPage() {
     const queueFor = (href: string): Count => {
         if (href === "/admin/volunteers") return counts.volunteers ?? null;
         if (href === "/admin/help-requests") return counts.help ?? null;
-        if (href === "/admin/club-joins") return counts.clubs ?? null;
         if (href === "/admin/social-joins") return counts.social ?? null;
         return null;
     };
@@ -118,7 +121,7 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Queue summary — the thing an admin checks first */}
-            <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-3">
                 {QUEUES.map((q) => {
                     const count = queueFor(q.href);
                     const Icon = q.icon;
@@ -146,7 +149,15 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Content snapshot */}
-            <div className="mb-8 grid grid-cols-2 gap-3">
+            <div className="mb-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+                    <p className="text-[11px] uppercase tracking-widest text-slate-gray">
+                        Members
+                    </p>
+                    <p className="mt-1 text-2xl font-black text-navy">
+                        {totals.members === null ? "—" : totals.members}
+                    </p>
+                </div>
                 <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
                     <p className="text-[11px] uppercase tracking-widest text-slate-gray">
                         Publications

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   FaCheck,
@@ -8,7 +9,7 @@ import {
   FaShieldAlt,
   FaUserLock,
 } from "react-icons/fa";
-import { LuBellRing, LuLoaderCircle, LuUsers } from "react-icons/lu";
+import { LuArrowRight, LuBellRing, LuLoaderCircle, LuUsers } from "react-icons/lu";
 import {
   MEMBER_STORAGE_KEY,
   membershipCookieString,
@@ -195,6 +196,7 @@ export default function JoinForm({
   const selectedTeam = teams.find((t) => t.id === teamId);
 
   if (done) {
+    const joinedTeam = Boolean(selectedTeam);
     return (
       <section className="flex-1 px-4 py-16 bg-white">
         <div className="max-w-xl mx-auto text-center">
@@ -202,64 +204,75 @@ export default function JoinForm({
             <FaCheck className="text-3xl text-gold-700" />
           </div>
           <h2 className="text-3xl font-black tracking-tight text-navy mb-2">
-            Application received
+            Welcome to {selectedClub?.name ?? "Relate"}
           </h2>
           <p className="text-sm text-slate-gray mb-6">
             Reference{" "}
             <span className="font-mono font-semibold text-navy">
               #{done.id}
             </span>{" "}
-            · status:{" "}
-            <span className="font-semibold text-cyan">pending interview</span>
+            · <span className="font-semibold text-gold-700">Active member</span>
           </p>
 
           <div className="text-left rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-            <h3 className="font-bold text-navy mb-4">What happens next</h3>
+            <h3 className="font-bold text-navy mb-4">You&rsquo;re all set</h3>
             <ol className="space-y-4 text-sm text-slate-gray">
               <li className="flex gap-3">
-                <span className="shrink-0 size-6 rounded-full bg-alice-blue text-cyan flex items-center justify-center text-xs font-bold">
+                <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
                   1
                 </span>
                 <span>
-                  A <strong className="text-navy">chaplain interviews you</strong>{" "}
-                  — a short chat in person or on a call, so we get to know you
-                  and can support you well.
+                  Your <strong className="text-navy">membership is active right now</strong>{" "}
+                  — keep your reference; it&rsquo;s also on your membership page.
+                </span>
+              </li>
+              {joinedTeam && (
+                <li className="flex gap-3">
+                  <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
+                    2
+                  </span>
+                  <span>
+                    You&rsquo;re on the{" "}
+                    <strong className="text-navy">{selectedTeam!.name}</strong> squad —
+                    your name now shows on the team page with the rest of the members.
+                  </span>
+                </li>
+              )}
+              <li className="flex gap-3">
+                <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
+                  {joinedTeam ? 3 : 2}
+                </span>
+                <span>
+                  Your leader will get in touch with the time and venue for your
+                  first {selectedClub?.name ?? "club"} gathering.
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="shrink-0 size-6 rounded-full bg-alice-blue text-cyan flex items-center justify-center text-xs font-bold">
-                  2
+                <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
+                  {joinedTeam ? 4 : 3}
                 </span>
                 <span>
-                  The chaplain confirms your place — you&rsquo;ll be{" "}
-                  <strong className="text-navy">accepted</strong> or given warm,
-                  honest guidance on next steps.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <span className="shrink-0 size-6 rounded-full bg-alice-blue text-cyan flex items-center justify-center text-xs font-bold">
-                  3
-                </span>
-                <span>
-                  You&rsquo;re welcomed into{" "}
-                  <strong className="text-navy">
-                    {selectedClub?.name ?? "your selected club"}
-                  </strong>{" "}
-                  — training, matches and your club&rsquo;s community.
-                </span>
-              </li>
-              <li className="flex gap-3">
-                <span className="shrink-0 size-6 rounded-full bg-alice-blue text-cyan flex items-center justify-center text-xs font-bold">
-                  4
-                </span>
-                <span>
-                  You&rsquo;re added to the{" "}
-                  <strong className="text-navy">monthly Club Gathering</strong> — every second
-                  Friday of the month, for fellowship, review and prayer. Your leader shares the
-                  time and venue.
+                  You&rsquo;re part of the{" "}
+                  <strong className="text-navy">monthly Club Gathering</strong> — every
+                  second Friday of the month, for fellowship, review and prayer.
                 </span>
               </li>
             </ol>
+          </div>
+
+          <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/membership"
+              className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy/90 transition-colors"
+            >
+              View my membership <LuArrowRight className="text-xs" />
+            </Link>
+            <Link
+              href={joinedTeam ? `/sports/${selectedTeam!.id}` : `/${clubSlug}`}
+              className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
+            >
+              {joinedTeam ? "Open my team page" : "Go to my club page"}
+            </Link>
           </div>
         </div>
       </section>
@@ -345,6 +358,12 @@ export default function JoinForm({
             clubSlug,
             clubName: selectedClub?.name,
             interests,
+            teamId: teamId || undefined,
+            teamName: selectedTeam?.name,
+            sport: selectedTeam?.sport,
+            id: data.id,
+            status: data.status,
+            joinedAt: new Date().toISOString(),
           };
           window.localStorage.setItem(MEMBER_STORAGE_KEY, JSON.stringify(saved));
           document.cookie = membershipCookieString(saved);
@@ -622,7 +641,7 @@ export default function JoinForm({
               Relate is a faith-centred community. We believe you are at your
               best when you live free from drugs, alcohol and sexual immorality
               — and we walk with you, not judge you. Answer honestly so your
-              chaplain can support you well.
+              leaders can walk with you well.
             </p>
 
             <div className="space-y-4">

@@ -141,8 +141,8 @@ export default function SportsPage() {
                 Want to play for a Relate team?
               </h2>
               <p className="mt-2 text-white/70 max-w-xl mx-auto">
-                Register your details and we&rsquo;ll set up a short chat with a
-                chaplain before you join.
+                Register your details and you&rsquo;re on the team straight
+                away — the squad fills in on your team page.
               </p>
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <Link

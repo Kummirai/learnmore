@@ -18,6 +18,14 @@ export type Membership = {
   clubSlug?: string;
   clubName?: string;
   interests?: string[];
+  /** Squad joined at registration, if one was picked. */
+  teamId?: string;
+  teamName?: string;
+  sport?: string;
+  /** Mongo reference + live status of the record behind this copy. */
+  id?: string;
+  status?: string;
+  joinedAt?: string;
 };
 
 export const MEMBER_COOKIE = "relate_member";

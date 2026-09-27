@@ -11,6 +11,7 @@ import {
 } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
+import TeamMembers from "@/components/sports/TeamMembers";
 import {
   SPORTS_TEAMS,
   getRelateClub,
@@ -250,6 +251,13 @@ export default async function TeamPage({
                 </div>
               </div>
             )}
+
+            <TeamMembers
+              teamId={team.id}
+              clubSlug={team.clubSlug}
+              teamName={team.name}
+              clubName={club?.name}
+            />
 
             <div className="mt-12">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">

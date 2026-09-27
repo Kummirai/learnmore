@@ -63,10 +63,10 @@ export const ADMIN_NAV: AdminNavGroup[] = [
             },
             {
                 href: "/admin/club-joins",
-                label: "Club Joins",
-                short: "Clubs",
+                label: "Members",
+                short: "Members",
                 icon: LuUsers,
-                description: "Review sports registration after the chaplain interview.",
+                description: "Everyone who joined a club or squad — active as soon as they register.",
             },
             {
                 href: "/admin/social-joins",

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Badge, AdminHeader, Select } from "@/components/admin/ui";
 import { LuUserPlus } from "react-icons/lu";
 
-type Status = "pending_interview" | "accepted" | "rejected";
+type Status = "active" | "pending_interview" | "accepted" | "rejected";
 type Filter = "all" | Status;
 
 type Application = {
@@ -36,9 +36,18 @@ type Application = {
 };
 
 const STATUS_LABELS: Record<Status, string> = {
-  pending_interview: "Pending interview",
+  active: "Member",
+  pending_interview: "Pending",
   accepted: "Accepted",
   rejected: "Rejected",
+};
+
+const EMPTY_TEXT: Record<Filter, string> = {
+  all: "No registrations yet.",
+  active: "No members yet.",
+  pending_interview: "No records waiting for review.",
+  accepted: "No accepted records.",
+  rejected: "No rejected records.",
 };
 
 const YES_NO: Record<string, string> = { yes: "Yes", no: "No" };
@@ -80,18 +89,8 @@ async function fetchApplications(status: Filter): Promise<Application[]> {
 
 function ClubJoinsBody() {
   const [applications, setApplications] = useState<Application[] | null>(null);
-  const [filter, setFilter] = useState<Filter>("pending_interview");
-  const [processing, setProcessing] = useState<string | null>(null);
+  const [filter, setFilter] = useState<Filter>("all");
   const [error, setError] = useState("");
-
-  const load = async (status: Filter) => {
-    try {
-      setApplications(await fetchApplications(status));
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Couldn't reach the API. Is the backend up?");
-      setApplications([]);
-    }
-  };
 
   useEffect(() => {
     let cancelled = false;
@@ -111,40 +110,19 @@ function ClubJoinsBody() {
     };
   }, [filter]);
 
-  const decide = async (item: Application, action: "accept" | "reject") => {
-    setProcessing(item._id);
-    setError("");
-    try {
-      const res = await fetch(`/api/admin/club-join/${item._id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action }),
-      });
-      const json = await res.json().catch(() => null);
-      if (!res.ok) {
-        setError(typeof json?.error === "string" ? json.error : "Couldn't update this application.");
-        return;
-      }
-      void load(filter);
-    } catch {
-      setError("Update failed. Try again.");
-    } finally {
-      setProcessing(null);
-    }
-  };
-
   return (
     <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
       <AdminHeader
-        eyebrow="Sports & Chaplaincy"
-        title="Club Joins"
-        sub="Review sports registration applications and decide after the chaplain interview."
+        eyebrow="Clubs & Squads"
+        title="Members"
+        sub="Everyone who joined a club or squad — active the moment the form is submitted. No approval step."
         actions={
           <Select value={filter} onChange={(e) => setFilter(e.target.value as typeof filter)}>
-            <option value="pending_interview">Pending interview</option>
-            <option value="accepted">Accepted</option>
-            <option value="rejected">Rejected</option>
             <option value="all">All</option>
+            <option value="active">Members</option>
+            <option value="pending_interview">Pending (legacy)</option>
+            <option value="accepted">Accepted (legacy)</option>
+            <option value="rejected">Rejected</option>
           </Select>
         }
       />
@@ -155,7 +133,7 @@ function ClubJoinsBody() {
         <div className="rounded-2xl border border-dashed border-gray-300 bg-alice-blue/40 py-12 text-center">
           <LuUserPlus className="mx-auto text-2xl text-slate-gray mb-2" />
           <p className="text-sm text-slate-gray">
-            {applications === null ? "Loading…" : `No ${filter === "all" ? "" : STATUS_LABELS[filter as Status].toLowerCase() + " "}applications.`}
+            {EMPTY_TEXT[filter]}
           </p>
         </div>
       ) : (
@@ -184,7 +162,7 @@ function ClubJoinsBody() {
                   </div>
                   <Badge
                     tone={
-                      item.status === "accepted"
+                      item.status === "active" || item.status === "accepted"
                         ? "gold"
                         : item.status === "pending_interview"
                           ? "amber"
@@ -243,24 +221,6 @@ function ClubJoinsBody() {
                   </div>
                 </div>
 
-                {item.status === "pending_interview" && (
-                  <div className="flex gap-2 mt-4 pt-4 border-t border-gray-50">
-                    <button
-                      onClick={() => decide(item, "accept")}
-                      disabled={processing === item._id}
-                      className="rounded-lg bg-gold-100 px-4 py-1.5 text-xs font-semibold text-gold-800 hover:bg-gold-200 transition disabled:opacity-50"
-                    >
-                      Accept after interview
-                    </button>
-                    <button
-                      onClick={() => decide(item, "reject")}
-                      disabled={processing === item._id}
-                      className="rounded-lg bg-red-50 px-4 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-100 transition disabled:opacity-50"
-                    >
-                      Reject
-                    </button>
-                  </div>
-                )}
               </div>
             );
           })}
