@@ -28,14 +28,14 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
       {/* Gallery */}
       <div className="flex flex-col-reverse md:flex-row gap-3">
-        <div className="flex md:flex-col gap-3 w-full md:w-24 h-10 md:h-1/2 overflow-x-auto md:overflow-visible">
+        <div className="flex md:flex-col gap-3 w-full md:w-24 h-11 md:h-1/2 overflow-x-auto md:overflow-visible">
           {images.map((src, i) => (
             <button
               key={src}
               type="button"
               onClick={() => setActive(src)}
               aria-label={`View image ${i + 1} of ${item.name}`}
-              className={`w-20 h-10 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
+              className={`w-20 h-11 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
                 active === src ? "border-cyan" : "border-gray-200 hover:border-cyan/60"
               } bg-alice-blue`}
             >
@@ -44,7 +44,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
             </button>
           ))}
         </div>
-        <div className="flex-1 h-[400px] rounded-xl overflow-hidden">
+        <div className="flex-1 h-[260px] sm:h-[400px] rounded-xl overflow-hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={active} alt={item.name} className="w-full h-full object-contain p-2 md:p-4" />
         </div>
@@ -121,7 +121,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
               onClick={() => setQty((q) => Math.max(1, q - 1))}
               disabled={qty <= 1}
               aria-label="Decrease quantity"
-              className="px-3.5 py-2.5 text-navy hover:bg-alice-blue transition disabled:opacity-30"
+              className="px-3.5 py-3 min-h-11 text-navy hover:bg-alice-blue transition disabled:opacity-30"
             >
               <LuMinus />
             </button>
@@ -130,7 +130,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
               type="button"
               onClick={() => setQty((q) => Math.min(99, q + 1))}
               aria-label="Increase quantity"
-              className="px-3.5 py-2.5 text-navy hover:bg-alice-blue transition"
+              className="px-3.5 py-3 min-h-11 text-navy hover:bg-alice-blue transition"
             >
               <LuPlus />
             </button>

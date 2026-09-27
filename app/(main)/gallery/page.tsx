@@ -100,7 +100,7 @@ export default function GalleryPage() {
                     </p>
                 </div>
 
-                <div className={"grid grid-cols-2 md:grid-cols-4 gap-4 mb-16"}>
+                <div className={"grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-4 gap-4 mb-16"}>
                     {gradeStats.map((s, i) => (
                         <div key={i}
                              className={"bg-navy text-white rounded-xl p-4 md:p-6 text-center"}>

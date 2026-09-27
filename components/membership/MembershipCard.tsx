@@ -144,7 +144,7 @@ export default function MembershipCard({
         <div aria-hidden className="mx-6 sm:mx-7 border-t border-dashed border-white/25" />
         <div className="flex items-end justify-between gap-4 px-6 py-4 sm:px-7">
           <div className="min-w-0">
-            <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-white/40">
+            <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/40">
               Member since · keep this ID
             </p>
             <p className="mt-1 font-mono text-xl font-bold tracking-[0.18em] text-gold-500">

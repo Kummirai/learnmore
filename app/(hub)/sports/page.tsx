@@ -91,7 +91,7 @@ function TeamCard({ team }: { team: RelateTeam }) {
         )}
       </div>
 
-      <p className="mt-4 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-gray">
+      <p className="mt-4 flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-gray">
         <span
           aria-hidden
           className="size-1.5 rounded-full"
@@ -108,13 +108,13 @@ function TeamCard({ team }: { team: RelateTeam }) {
       <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 border-t border-gray-100 pt-4">
         <Link
           href={`/sports/${team.id}`}
-          className="text-xs font-semibold text-cyan transition-colors hover:text-cyan-dark"
+          className="inline-flex min-h-11 items-center text-xs font-semibold text-cyan transition-colors hover:text-cyan-dark"
         >
           {team.name} page →
         </Link>
         <JoinCta
           href={`/join?club=${team.clubSlug}&team=${team.id}`}
-          className="inline-flex items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-3 py-1.5 rounded-full transition-colors"
+          className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-4 py-2.5 rounded-full transition-colors"
         >
           Join
         </JoinCta>

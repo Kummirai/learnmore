@@ -70,7 +70,7 @@ export default function EventDetailPage() {
             </p>
             <Link
               href="/events"
-              className="inline-flex items-center gap-2 text-cyan font-semibold text-sm hover:text-cyan-dark transition-colors"
+              className="inline-flex min-h-11 items-center gap-2 text-cyan font-semibold text-sm hover:text-cyan-dark transition-colors"
             >
               <LuArrowLeft /> Back to all events
             </Link>
@@ -149,7 +149,7 @@ export default function EventDetailPage() {
           </nav>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
-            <div className="h-[400px] overflow-hidden">
+            <div className="h-[240px] sm:h-[400px] overflow-hidden">
               {event.imageUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -235,10 +235,10 @@ export default function EventDetailPage() {
                         key={d.label}
                         className="flex flex-col sm:flex-row sm:items-baseline"
                       >
-                        <dt className="w-44 shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-gray">
+                        <dt className="w-28 sm:w-44 shrink-0 text-xs font-semibold uppercase tracking-wide text-slate-gray">
                           {d.label}
                         </dt>
-                        <dd className="text-gray-700">{d.value}</dd>
+                        <dd className="min-w-0 text-gray-700">{d.value}</dd>
                       </div>
                     ))}
                   </dl>
@@ -349,7 +349,7 @@ export default function EventDetailPage() {
 
           <Link
             href="/events"
-            className="inline-flex items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
+            className="inline-flex min-h-11 items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
           >
             <LuArrowLeft /> Back to all events
           </Link>

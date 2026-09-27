@@ -44,7 +44,7 @@ export default function FaqSection() {
                                 <LuChevronDown
                                     className={`text-lg text-gray-400 shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}/>
                             </button>
-                            <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-60" : "max-h-0"}`}>
+                            <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-none" : "max-h-0"}`}>
                                 <div className={"px-5 pb-5 text-sm text-gray-600 leading-relaxed border-t border-gray-200 pt-4"}>
                                     {faq.a}
                                 </div>
@@ -54,7 +54,7 @@ export default function FaqSection() {
                 </div>
                 <div className={"text-center"}>
                     <Link href={"/faq"}
-                          className={"inline-flex items-center gap-2 text-cyan font-medium text-sm hover:text-cyan-dark transition-colors"}>
+                          className={"inline-flex min-h-11 items-center gap-2 text-cyan font-medium text-sm hover:text-cyan-dark transition-colors"}>
                         View All FAQs <LuArrowRight/>
                     </Link>
                 </div>

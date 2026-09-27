@@ -48,7 +48,7 @@ export default function ReadingPlansPage() {
                             <a
                                 key={cat}
                                 href={`#${cat.toLowerCase().replace(/[^a-z]+/g, "-")}`}
-                                className="inline-flex items-center gap-2 text-xs font-semibold text-navy bg-alice-blue hover:bg-ice-blue px-4 py-2 rounded-full transition-colors"
+                                className="inline-flex items-center gap-2 text-xs font-semibold text-navy bg-alice-blue hover:bg-ice-blue px-4 py-3 min-h-11 rounded-full transition-colors"
                             >
                                 {cat}
                                 <span className="text-slate-gray">{READING_PLANS.filter((p) => p.category === cat).length}</span>
@@ -113,7 +113,7 @@ export default function ReadingPlansPage() {
                                                     </span>
                                                     <Link
                                                         href={`/plans/${plan.slug}`}
-                                                        className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-bold text-white transition hover:brightness-110 shrink-0"
+                                                        className="inline-flex items-center gap-1.5 rounded-full px-4 py-3 min-h-11 text-xs font-bold text-white transition hover:brightness-110 shrink-0"
                                                         style={{ backgroundColor: plan.gradient[0] }}
                                                     >
                                                         <FaBookOpen className="text-sm" /> Start plan

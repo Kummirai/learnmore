@@ -101,7 +101,7 @@ function Field({
 }) {
   return (
     <div>
-      <dt className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-gray">
+      <dt className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-gray">
         {label}
       </dt>
       <dd className="mt-1.5 text-[15px] font-semibold text-navy">{children}</dd>
@@ -204,7 +204,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
                     key={item.label}
                     className="bg-white/[0.06] px-4 py-3"
                   >
-                    <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
+                    <dt className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/45">
                       {item.label}
                     </dt>
                     <dd
@@ -339,7 +339,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
               </Field>
               <Field label="Status" caption={status.note}>
                 <span
-                  className={`inline-block rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest ${status.chipLight}`}
+                  className={`inline-block rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-widest ${status.chipLight}`}
                 >
                   {status.label}
                 </span>
@@ -355,7 +355,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
             </dl>
 
             <div className="mt-8 border-t border-gray-100 pt-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-gray">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-slate-gray">
                 Interests you picked
               </p>
               {member.interests && member.interests.length > 0 ? (
@@ -363,7 +363,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
                   {member.interests.map((interest) => (
                     <span
                       key={interest}
-                      className="rounded-full border border-gray-200 bg-alice-blue px-3 py-1.5 text-xs font-semibold text-navy"
+                      className="rounded-full border border-gray-200 bg-alice-blue px-3 py-2.5 min-h-11 text-xs font-semibold text-navy"
                     >
                       {interest}
                     </span>
@@ -502,7 +502,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
                       <LuUsers className="text-sm" />
                     </span>
                     <div>
-                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-gray">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-gray">
                         Head coach
                       </p>
                       <p className="text-sm font-bold text-navy">
@@ -513,7 +513,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
 
                   {nextFixture && (
                     <div className="mt-4 rounded-xl border border-gold-200 bg-gold-50 px-4 py-4">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-gold-700">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-gold-700">
                         Next fixture
                       </p>
                       <p className="mt-1.5 font-mono text-sm font-bold text-navy">
@@ -554,7 +554,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
                     {club.description}
                   </p>
 
-                  <p className="mt-5 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-gray">
+                  <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-slate-gray">
                     What {club.name} runs
                   </p>
                   <ul className="mt-2 grid gap-2">

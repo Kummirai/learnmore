@@ -124,7 +124,7 @@ export default function VolunteerApplyForm() {
             </p>
 
             {serverError ? (
-                <p className="mt-4 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">{serverError}</p>
+                <p role="alert" className="mt-4 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">{serverError}</p>
             ) : null}
 
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -145,12 +145,17 @@ export default function VolunteerApplyForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="you@example.com"
                         autoComplete="email"
+                        spellCheck={false}
+                        autoCapitalize="none"
+                        autoCorrect="off"
                     />
                     {errors.email ? <ErrorText>{errors.email}</ErrorText> : null}
                 </Field>
 
                 <Field label="WhatsApp number" hint="Include your country code.">
                     <Input
+                        type="tel"
+                        inputMode="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="+27 82 123 4567"
@@ -201,7 +206,7 @@ export default function VolunteerApplyForm() {
                                 type="button"
                                 onClick={() => toggleArea(a)}
                                 aria-pressed={selected}
-                                className={`rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
+                                className={`min-h-11 rounded-full border px-3.5 py-3 text-sm font-semibold transition ${
                                     selected
                                         ? "border-navy bg-navy text-white"
                                         : "border-gray-200 bg-white text-gray-600 hover:border-cyan hover:bg-alice-blue"
@@ -240,5 +245,5 @@ export default function VolunteerApplyForm() {
 }
 
 function ErrorText({children}: {children: React.ReactNode}) {
-    return <span className="mt-1 block text-xs text-red-600">{children}</span>;
+    return <span role="alert" className="mt-1 block text-xs text-red-600">{children}</span>;
 }

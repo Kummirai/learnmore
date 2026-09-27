@@ -161,9 +161,14 @@ export default function PageHero({
           </div>
 
           <h1
-            className={"font-black tracking-tight leading-none text-white"}
+            className={
+              "font-black tracking-tight leading-none text-white break-words"
+            }
             style={{
-              fontSize: titleSize,
+              fontSize:
+                titleSize === "4.8rem"
+                  ? "clamp(2.5rem, 14vw, 4.8rem)"
+                  : titleSize,
               textShadow:
                 "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
             }}

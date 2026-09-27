@@ -53,22 +53,34 @@ export default function Footer() {
               Skills, social and spiritual growth — all in one community. Free
               clubs for every age and season of life.
             </p>
-            <div className={"flex items-center gap-3"}>
-              <FaFacebook
+            <div className={"flex items-center gap-1"}>
+              <Link
+                href={"#"}
+                aria-label={"Facebook"}
                 className={
-                  "hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
+                  "grid size-11 place-items-center hover:text-[color:var(--club-accent)] transition-colors"
                 }
-              />
-              <FaTwitter
+              >
+                <FaFacebook />
+              </Link>
+              <Link
+                href={"#"}
+                aria-label={"Twitter"}
                 className={
-                  "hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
+                  "grid size-11 place-items-center hover:text-[color:var(--club-accent)] transition-colors"
                 }
-              />
-              <FaInstagramSquare
+              >
+                <FaTwitter />
+              </Link>
+              <Link
+                href={"#"}
+                aria-label={"Instagram"}
                 className={
-                  "hover:text-[color:var(--club-accent)] cursor-pointer transition-colors"
+                  "grid size-11 place-items-center hover:text-[color:var(--club-accent)] transition-colors"
                 }
-              />
+              >
+                <FaInstagramSquare />
+              </Link>
             </div>
           </div>
           <div>
@@ -86,7 +98,7 @@ export default function Footer() {
                   <Link
                     href={link.path}
                     className={
-                      "hover:text-[color:var(--club-accent)] transition-colors"
+                      "py-2.5 min-h-11 flex items-center hover:text-[color:var(--club-accent)] transition-colors"
                     }
                   >
                     {link.label}
@@ -131,7 +143,10 @@ export default function Footer() {
               to your inbox.
             </p>
             {state?.success ? (
-              <div className={"flex items-start gap-2 text-sm text-cyan-light"}>
+              <div
+                aria-live={"polite"}
+                className={"flex items-start gap-2 text-sm text-cyan-light"}
+              >
                 <LuCircleCheck className={"mt-0.5 shrink-0"} />
                 <span>{state.message}</span>
               </div>
@@ -142,15 +157,18 @@ export default function Footer() {
                   name={"email"}
                   placeholder="Your Email"
                   required
+                  autoComplete="email"
+                  spellCheck={false}
+                  autoCapitalize="none"
                   className={
-                    "bg-navy-soft text-base md:text-sm px-4 py-2 w-full outline-none focus:ring-1 focus:ring-[color:var(--club-accent)] text-white placeholder:text-cyan-light/60"
+                    "bg-navy-soft text-base md:text-sm px-4 py-3 w-full outline-none focus:ring-1 focus:ring-[color:var(--club-accent)] text-white placeholder:text-cyan-light/60"
                   }
                 />
                 <button
                   type={"submit"}
                   disabled={pending}
                   className={
-                    "bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-4 py-2 text-sm font-medium hover:bg-[color:var(--club-accent-dark)] disabled:opacity-60 transition-colors shrink-0"
+                    "bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-4 py-3 text-sm font-medium hover:bg-[color:var(--club-accent-dark)] disabled:opacity-60 transition-colors shrink-0"
                   }
                 >
                   {pending ? "..." : "Subscribe"}
@@ -159,6 +177,7 @@ export default function Footer() {
             )}
             {state?.message && !state.success && (
               <div
+                aria-live={"polite"}
                 className={"flex items-start gap-2 text-sm text-red-400 mt-2"}
               >
                 <LuCircleAlert className={"mt-0.5 shrink-0"} />

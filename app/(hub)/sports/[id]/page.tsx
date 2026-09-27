@@ -121,14 +121,14 @@ function SlotCard({
           {slot.number}
         </span>
       </div>
-      <h4 className="mt-3 text-sm font-bold text-navy leading-snug group-hover:text-cyan-dark transition-colors">
+      <h4 className="mt-3 text-sm font-bold text-navy leading-snug line-clamp-2 min-h-[2.5rem] group-hover:text-cyan-dark transition-colors">
         {name}
       </h4>
-      <p className="text-[11px] text-cyan font-semibold mt-1 uppercase tracking-wider">
+      <p className="text-[11px] text-cyan font-semibold mt-1 uppercase tracking-wider line-clamp-2">
         {slot.position}
       </p>
       <p
-        className={`mt-1 text-[10px] font-bold uppercase tracking-wider ${
+        className={`mt-1 text-[11px] font-bold uppercase tracking-wider ${
           registrant ? "text-slate-gray" : "text-gold-700"
         }`}
       >
@@ -186,7 +186,7 @@ export default async function TeamPage({
           <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 pt-28 pb-12 md:pt-32 md:pb-16">
             <Link
               href="/sports"
-              className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors"
+              className="inline-flex min-h-11 items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors"
             >
               <LuArrowLeft /> All teams
             </Link>
@@ -196,7 +196,7 @@ export default async function TeamPage({
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-2">
                   Relate · {club?.name ?? "Relate"} · {team.sport}
                 </p>
-                <h1 className="font-black tracking-tight leading-none text-white text-4xl sm:text-5xl md:text-6xl">
+                <h1 className="font-black tracking-tight leading-tight text-white text-4xl sm:text-5xl sm:leading-none md:text-6xl">
                   {team.name}
                 </h1>
                 <p className="mt-3 text-white/80 text-sm md:text-base max-w-xl leading-relaxed">
@@ -266,7 +266,7 @@ export default async function TeamPage({
               </p>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+            <div className="grid grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
               {roster.slots.map((slot, i) => (
                 <SlotCard
                   key={`${slot.position}-${i}`}
@@ -303,7 +303,7 @@ export default async function TeamPage({
                             className="size-full object-cover"
                           />
                         ) : (
-                          <span className="size-full flex items-center justify-center text-[10px] font-black text-white">
+                          <span className="size-full flex items-center justify-center text-[11px] font-black text-white">
                             {r.positionCode}
                           </span>
                         )}
@@ -311,7 +311,7 @@ export default async function TeamPage({
                       <span className="text-xs font-bold text-navy group-hover:text-cyan-dark">
                         {r.name}
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-gray">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-gray">
                         {r.positionCode}
                       </span>
                     </Link>
@@ -346,7 +346,7 @@ export default async function TeamPage({
                             className="size-full object-cover"
                           />
                         ) : (
-                          <span className="size-full flex items-center justify-center text-[10px] font-black text-white">
+                          <span className="size-full flex items-center justify-center text-[11px] font-black text-white">
                             {r.positionCode}
                           </span>
                         )}
@@ -354,7 +354,7 @@ export default async function TeamPage({
                       <span className="text-xs font-bold text-navy group-hover:text-cyan-dark">
                         {r.name}
                       </span>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-gray">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-slate-gray">
                         {r.positionCode}
                       </span>
                     </Link>
@@ -445,7 +445,7 @@ export default async function TeamPage({
                       className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 p-4 rounded-2xl border border-gray-100 bg-white hover:shadow-md transition-shadow"
                     >
                       <div className="shrink-0 w-fit sm:w-16 text-center bg-navy text-white rounded-lg py-2 px-4 sm:px-0">
-                        <p className="text-[10px] leading-tight uppercase">{month} · {weekday}</p>
+                        <p className="text-[11px] leading-tight uppercase">{month} · {weekday}</p>
                         <p className="text-xl font-bold leading-none mt-0.5">{day}</p>
                       </div>
                       <div className="min-w-0 flex-1">

@@ -125,7 +125,7 @@ export default function RequestsPage() {
         metaEnd={
           <a
             href={"#who-we-stand-with"}
-            className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}
+            className={"inline-flex min-h-11 items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}
           >
             <span className={"text-[11px] uppercase tracking-widest text-white/70"}>
               Charity &amp; support
@@ -240,7 +240,7 @@ export default function RequestsPage() {
             </p>
             <a
               href={"#what-you-can-request"}
-              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+              className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
             >
               See what you can request <span aria-hidden>→</span>
             </a>
@@ -260,7 +260,7 @@ export default function RequestsPage() {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+              className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
             >
               Talk to the team <span aria-hidden>→</span>
             </a>

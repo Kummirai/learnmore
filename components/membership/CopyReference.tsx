@@ -40,7 +40,7 @@ export default function CopyReference({
       type="button"
       onClick={copy}
       aria-label={`Copy membership ID ${value}`}
-      className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${
+      className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-3 min-h-11 text-xs font-bold uppercase tracking-widest transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${
         copied ? "bg-gold-500 text-navy-dark" : "bg-white/10 text-white/80 hover:bg-white/20 hover:text-white"
       } ${className}`}
     >

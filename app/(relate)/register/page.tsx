@@ -132,7 +132,7 @@ export default function RegisterPage() {
               </div>
               <button
                 onClick={() => setStep("choose")}
-                className="mt-3 text-xs text-slate-gray underline hover:text-navy transition-colors"
+                className="mt-3 min-h-11 py-2.5 text-xs text-slate-gray underline hover:text-navy transition-colors"
               >
                 Change my choice (demo only — real accounts are locked)
               </button>

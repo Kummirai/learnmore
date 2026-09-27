@@ -159,7 +159,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                         {c.ageRange.split(" yrs")[0]}
                       </span>
                     </div>
-                    <div className={"flex-1"}>
+                    <div className={"flex-1 min-w-0"}>
                       <h3
                         className={
                           "font-bold text-gray-800 text-lg leading-snug"
@@ -167,7 +167,11 @@ export default async function ClubPage({ slug }: { slug: string }) {
                       >
                         {c.name}
                       </h3>
-                      <p className={"text-sm text-gray-500 leading-snug"}>
+                      <p
+                        className={
+                          "text-sm text-gray-500 leading-snug line-clamp-2"
+                        }
+                      >
                         {c.tagline}
                       </p>
                     </div>
@@ -364,7 +368,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                     key={c.slug}
                     href={`/${c.slug}`}
                     className={
-                      "inline-flex items-center gap-2 bg-white border border-gray-200 text-navy px-4 py-2 rounded-lg text-sm font-medium hover:border-cyan hover:text-cyan-dark transition-colors"
+                      "inline-flex items-center gap-2 bg-white border border-gray-200 text-navy px-4 py-3 min-h-11 rounded-lg text-sm font-medium hover:border-cyan hover:text-cyan-dark transition-colors"
                     }
                   >
                     <span

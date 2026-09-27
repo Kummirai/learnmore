@@ -117,27 +117,27 @@ function SignInContent() {
                         {mode === "signup" && (
                             <div>
                                 <label htmlFor="name" className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-1.5">Name</label>
-                                <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className={inputCls} />
+                                <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" autoComplete="name" className={inputCls} />
                             </div>
                         )}
                         <div>
                             <label htmlFor="email" className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-1.5">Email</label>
                             <div className="relative">
                                 <LuMail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" className={inputCls + " pl-10"} />
+                                <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" autoComplete="email" spellCheck={false} autoCapitalize="none" autoCorrect="off" className={inputCls + " pl-10"} />
                             </div>
                         </div>
                         <div>
                             <label htmlFor="password" className="block text-xs font-semibold uppercase tracking-widest text-gray-500 mb-1.5">Password</label>
                             <div className="relative">
-                                <input id="password" type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" className={inputCls + " pr-10"} />
-                                <button type="button" onClick={() => setShowPw((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" aria-label={showPw ? "Hide password" : "Show password"}>
+                                <input id="password" type={showPw ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" autoComplete={mode === "signup" ? "new-password" : "current-password"} className={inputCls + " pr-10"} />
+                                <button type="button" onClick={() => setShowPw((s) => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 -m-1 text-gray-400 hover:text-gray-600" aria-label={showPw ? "Hide password" : "Show password"}>
                                     {showPw ? <LuEyeOff /> : <LuEye />}
                                 </button>
                             </div>
                         </div>
 
-                        {error && <p className="rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
+                        {error && <p role="alert" className="rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
 
                         <button type="submit" disabled={submitting} className="w-full rounded-lg px-4 py-3 text-sm font-semibold transition hover:brightness-95 mt-1 disabled:opacity-60" style={{ backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)" }}>
                             {submitting ? (mode === "signin" ? "Signing in…" : "Creating account…") : mode === "signin" ? "Sign in" : "Create account"}

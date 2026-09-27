@@ -14,7 +14,7 @@ import { useAuth } from "@/components/AuthProvider";
 import type { RelateEvent } from "@/app/(hub)/events/page";
 
 const input =
-  "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm focus:outline-none focus:border-cyan";
+  "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan";
 const label = "block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5";
 
 type Props = {
@@ -130,7 +130,7 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
           <button
             type="button"
             onClick={() => setConfirmCancel(true)}
-            className="inline-flex items-center gap-2 text-sm text-red-500 hover:text-red-600 font-semibold"
+            className="inline-flex items-center gap-2 py-2.5 min-h-11 text-sm text-red-500 hover:text-red-600 font-semibold"
           >
             <LuUserMinus /> Can&rsquo;t make it? Cancel my RSVP
           </button>
@@ -172,7 +172,7 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
                     setCancelling(false);
                   }
                 }}
-                className="inline-flex items-center gap-2 bg-red-50 text-red-600 border border-red-200 rounded-lg px-5 py-2.5 text-sm font-bold hover:bg-red-100 transition-colors disabled:opacity-60"
+                className="inline-flex items-center gap-2 bg-red-50 text-red-600 border border-red-200 rounded-lg px-5 py-3 text-sm font-bold hover:bg-red-100 transition-colors disabled:opacity-60"
               >
                 {cancelling ? (
                   <LuLoaderCircle className="animate-spin" />
@@ -272,7 +272,7 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
             type="button"
             onClick={onClose}
             aria-label="Close RSVP form"
-            className="text-slate-gray hover:text-navy text-sm font-semibold"
+            className="p-2 -m-1 text-slate-gray hover:text-navy text-sm font-semibold"
           >
             Close
           </button>
@@ -295,6 +295,7 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
           <input
             id="rsvp-name"
             required
+            autoComplete="name"
             className={input}
             value={form.fullName}
             onChange={(e) => set("fullName", e.target.value)}
@@ -309,6 +310,10 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
             id="rsvp-email"
             type="email"
             required
+            autoComplete="email"
+            spellCheck={false}
+            autoCapitalize="none"
+            autoCorrect="off"
             className={input}
             value={form.email}
             onChange={(e) => set("email", e.target.value)}
@@ -322,6 +327,9 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
             </label>
             <input
               id="rsvp-phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
               required
               className={input}
               placeholder="07X XXX XXXX"
@@ -415,6 +423,9 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
                 </label>
                 <input
                   id="partner-phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
                   className={input}
                   value={form.partnerPhone}
                   onChange={(e) => set("partnerPhone", e.target.value)}
@@ -439,6 +450,10 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
                 <input
                   id="partner-email"
                   type="email"
+                  autoComplete="email"
+                  spellCheck={false}
+                  autoCapitalize="none"
+                  autoCorrect="off"
                   className={input}
                   value={form.partnerEmail}
                   onChange={(e) => set("partnerEmail", e.target.value)}
@@ -449,7 +464,10 @@ export default function RsvpForm({ event, eventId, onUpdated, onClose }: Props) 
         )}
 
         {error && (
-          <p className="rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3">
+          <p
+            role="alert"
+            className="rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3"
+          >
             {error}
           </p>
         )}

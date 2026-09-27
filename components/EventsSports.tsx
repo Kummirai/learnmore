@@ -134,7 +134,7 @@ export default function EventsSports() {
             )}
             <Link
               href="/events"
-              className="text-sm text-cyan font-medium flex items-center gap-1 hover:gap-2 transition-all"
+              className="text-sm text-cyan font-medium flex min-h-11 items-center gap-1 hover:gap-2 transition-all"
             >
               View All Events <LuChevronRight />
             </Link>
@@ -204,7 +204,7 @@ export default function EventsSports() {
               </p>
               <Link
                 href="/sports"
-                className="text-xs text-cyan font-semibold hover:underline"
+                className="text-xs text-cyan font-semibold inline-flex min-h-11 items-center hover:underline"
               >
                 Explore sports
               </Link>

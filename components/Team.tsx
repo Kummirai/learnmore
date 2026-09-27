@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FaFacebook, FaTwitter, FaInstagramSquare } from "react-icons/fa";
 import { LuShield, LuUsers } from "react-icons/lu";
 import { useState } from "react";
@@ -75,7 +76,7 @@ function MemberCard({
     .join("");
   return (
     <div
-      className={`text-center group bg-white rounded-xl border p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full
+      className={`text-center group bg-white rounded-xl border p-6 sm:p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full
             ${featured ? "border-cyan shadow-md" : "border-gray-200"}`}
     >
       <div
@@ -101,16 +102,34 @@ function MemberCard({
       </div>
       <h4 className={"text-xl font-semibold text-gray-800"}>{member.name}</h4>
       <p className={"text-cyan text-sm mb-3 flex-1"}>{member.role}</p>
-      <div className={"flex items-center justify-center gap-3 text-gray-400"}>
-        <FaFacebook
-          className={"hover:text-cyan cursor-pointer transition-colors"}
-        />
-        <FaTwitter
-          className={"hover:text-cyan cursor-pointer transition-colors"}
-        />
-        <FaInstagramSquare
-          className={"hover:text-cyan cursor-pointer transition-colors"}
-        />
+      <div className={"flex items-center justify-center gap-1 text-gray-400"}>
+        <Link
+          href={"#"}
+          aria-label={"Facebook"}
+          className={
+            "grid size-11 place-items-center hover:text-cyan transition-colors"
+          }
+        >
+          <FaFacebook />
+        </Link>
+        <Link
+          href={"#"}
+          aria-label={"Twitter"}
+          className={
+            "grid size-11 place-items-center hover:text-cyan transition-colors"
+          }
+        >
+          <FaTwitter />
+        </Link>
+        <Link
+          href={"#"}
+          aria-label={"Instagram"}
+          className={
+            "grid size-11 place-items-center hover:text-cyan transition-colors"
+          }
+        >
+          <FaInstagramSquare />
+        </Link>
       </div>
     </div>
   );

@@ -85,7 +85,7 @@ export default function ResourcesPage() {
                                 {r.items.map((item, j) => (
                                     <li key={j}>
                                         <Link href={item.url}
-                                              className={"flex items-center gap-2 text-sm text-cyan hover:text-cyan-dark transition-colors"}>
+                                              className={"py-3 min-h-11 flex items-center gap-2 text-sm text-cyan hover:text-cyan-dark transition-colors"}>
                                             <LuDownload className={"shrink-0"}/>
                                             <span>{item.name}</span>
                                         </Link>

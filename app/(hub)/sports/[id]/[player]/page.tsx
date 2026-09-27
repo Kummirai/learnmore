@@ -195,7 +195,7 @@ export default async function PlayerPage({
         <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 pt-28 pb-12 md:pt-32 md:pb-16">
           <Link
             href={`/sports/${team.id}`}
-            className="inline-flex items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors"
+            className="inline-flex min-h-11 items-center gap-1.5 text-sm text-white/70 hover:text-white transition-colors"
           >
             <LuArrowLeft /> {team.name}
           </Link>
@@ -229,7 +229,7 @@ export default async function PlayerPage({
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-2">
                 {club?.name ?? "Relate"} · {team.sport} · {team.name}
               </p>
-              <h1 className="font-black tracking-tight leading-none text-white text-4xl sm:text-5xl md:text-6xl">
+              <h1 className="font-black tracking-tight leading-tight text-white text-4xl sm:text-5xl sm:leading-none md:text-6xl">
                 {registrant?.name ?? open!.position}
               </h1>
               <p className="mt-2 text-cyan text-lg sm:text-xl font-semibold">
@@ -425,7 +425,7 @@ export default async function PlayerPage({
 
               <Link
                 href={`/sports/${team.id}`}
-                className="mt-6 inline-flex items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
+                className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
               >
                 <LuArrowLeft /> Back to the {team.name} squad
               </Link>

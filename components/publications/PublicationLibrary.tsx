@@ -9,7 +9,7 @@ function Label({children}: {children: React.ReactNode}) {
     )
 }
 
-const GRID = "grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-5"
+const GRID = "grid grid-cols-1 min-[400px]:grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-5"
 
 export default function PublicationLibrary({
                                            publications,

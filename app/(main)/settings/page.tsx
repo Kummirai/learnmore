@@ -54,7 +54,7 @@ function SettingsBody() {
                 <form onSubmit={save} className="grid gap-4">
                     <div>
                         <label htmlFor="settings-name" className={label}>Display name</label>
-                        <input id="settings-name" type="text" value={name} onChange={(e) => { setName(e.target.value); setSaved(false); }} className={inputCls} />
+                        <input id="settings-name" type="text" autoComplete="name" value={name} onChange={(e) => { setName(e.target.value); setSaved(false); }} className={inputCls} />
                     </div>
                     <div>
                         <label htmlFor="settings-email" className={label}>Email</label>
@@ -62,18 +62,18 @@ function SettingsBody() {
                         <p className="text-xs text-gray-400 mt-1">Email is managed by your sign-in provider.</p>
                     </div>
 
-                    {error && <p className="rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
+                    {error && <p role="status" aria-live="polite" className="rounded-lg bg-red-50 text-red-600 text-sm px-4 py-2.5">{error}</p>}
 
                     <div className="flex items-center gap-3">
                         <button
                             type="submit"
                             disabled={saving}
-                            className="rounded-lg px-6 py-2.5 text-sm font-semibold transition hover:brightness-95 disabled:opacity-60"
+                            className="w-full sm:w-auto rounded-lg px-6 py-3 text-sm font-semibold transition hover:brightness-95 disabled:opacity-60"
                             style={{ backgroundColor: "var(--club-accent)", color: "var(--club-on-accent)" }}
                         >
                             {saving ? "Saving…" : "Save changes"}
                         </button>
-                        {saved && <span className="text-sm text-cyan font-medium">Saved ✓</span>}
+                        {saved && <span role="status" aria-live="polite" className="text-sm text-cyan font-medium">Saved ✓</span>}
                     </div>
                 </form>
             </div>

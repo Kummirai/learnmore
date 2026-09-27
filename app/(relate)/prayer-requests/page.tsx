@@ -74,7 +74,7 @@ export default function PrayerRequestsPage() {
         metaEnd={
           <Link
             href={"/prayer"}
-            className={"inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}
+            className={"inline-flex min-h-11 items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"}
           >
             <span className={"text-[11px] uppercase tracking-widest text-white/70"}>
               Prayer &amp; Requests
@@ -151,7 +151,7 @@ export default function PrayerRequestsPage() {
             <a
               href={"/relate-app.apk"}
               download
-              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+              className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
             >
               Send your request <span aria-hidden>→</span>
             </a>
@@ -170,7 +170,7 @@ export default function PrayerRequestsPage() {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
+              className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
             >
               Join the prayer team <span aria-hidden>→</span>
             </a>

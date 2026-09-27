@@ -11,7 +11,7 @@ export default function Stats() {
     return (
         <section className={"py-16 md:py-20 bg-navy px-4"}>
             <div className={"max-w-6xl mx-auto"}>
-                <div className={"grid grid-cols-2 lg:grid-cols-4 gap-8"}>
+                <div className={"grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"}>
                     {stats.map((stat, i) => (
                         <div key={i} className={"text-center text-white"}>
                             <div className={"flex justify-center mb-4"}>{stat.icon}</div>

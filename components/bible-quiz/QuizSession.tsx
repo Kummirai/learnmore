@@ -148,7 +148,7 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
                 <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-6 md:p-8">
                     {/* Club picker */}
                     <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-3">Play for your club</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2" role="group" aria-label="Choose your club">
+                    <div className="grid grid-cols-1 min-[380px]:grid-cols-2 sm:grid-cols-3 gap-2" role="group" aria-label="Choose your club">
                         {QUIZ_CLUBS.map((c) => {
                             const selected = club?.slug === c.slug;
                             return (
@@ -178,6 +178,7 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
                         <span className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Your name</span>
                         <input
                             type="text"
+                            autoComplete="name"
                             value={name}
                             onChange={(e) => setName(e.target.value.slice(0, 40))}
                             placeholder="How your club board should show you"
@@ -186,7 +187,7 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
                     </label>
 
                     {hostedError && (
-                        <p className="mt-4 text-xs text-red-600">We could not reach the quiz server — the round will run locally and won&apos;t reach the live board.</p>
+                        <p role="alert" className="mt-4 text-xs text-red-600">We could not reach the quiz server — the round will run locally and won&apos;t reach the live board.</p>
                     )}
 
                     <button

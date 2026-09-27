@@ -69,7 +69,7 @@ function CheckoutInner() {
     return (
         <section className="flex-1 px-4 py-12 bg-white">
             <div className="max-w-5xl mx-auto">
-                <Link href="/store" className="inline-flex items-center gap-1.5 text-sm text-slate-gray hover:text-navy mb-6 transition-colors">
+                <Link href="/store" className="inline-flex min-h-11 items-center gap-1.5 text-sm text-slate-gray hover:text-navy mb-6 transition-colors">
                     <LuArrowLeft /> Back to store
                 </Link>
 
@@ -92,7 +92,7 @@ function CheckoutInner() {
                         ) : (
                             <div className="space-y-3 mb-6">
                                 {lines.map(({ item, qty }) => (
-                                    <div key={item.id} className="flex items-center gap-4 rounded-xl border border-gray-100 p-3">
+                                    <div key={item.id} className="flex flex-wrap items-center gap-2 p-3 rounded-xl border border-gray-100 sm:gap-4">
                                         <div className="size-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src={item.image} alt={item.name} className="size-full object-cover" />
@@ -102,16 +102,16 @@ function CheckoutInner() {
                                             <p className="text-xs text-slate-gray">{formatPrice(item.price)} each</p>
                                         </div>
                                         <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden shrink-0">
-                                            <button onClick={() => setQty(item.id, qty - 1)} disabled={qty <= 1} aria-label="Decrease quantity" className="px-2.5 py-2 text-navy hover:bg-alice-blue transition disabled:opacity-30">
+                                            <button onClick={() => setQty(item.id, qty - 1)} disabled={qty <= 1} aria-label="Decrease quantity" className="size-11 text-navy hover:bg-alice-blue transition disabled:opacity-30">
                                                 <LuMinus className="text-sm" />
                                             </button>
                                             <span className="w-8 text-center text-sm font-bold text-navy">{qty}</span>
-                                            <button onClick={() => setQty(item.id, qty + 1)} aria-label="Increase quantity" className="px-2.5 py-2 text-navy hover:bg-alice-blue transition">
+                                            <button onClick={() => setQty(item.id, qty + 1)} aria-label="Increase quantity" className="size-11 text-navy hover:bg-alice-blue transition">
                                                 <LuPlus className="text-sm" />
                                             </button>
                                         </div>
-                                        <span className="w-20 text-right font-bold text-navy text-sm shrink-0">{formatPrice(payable(item) * qty)}</span>
-                                        <button onClick={() => removeLine(item.id)} aria-label={`Remove ${item.name}`} className="text-slate-gray hover:text-red-600 transition-colors shrink-0">
+                                        <span className="text-right ml-auto font-bold text-navy text-sm sm:w-20 shrink-0">{formatPrice(payable(item) * qty)}</span>
+                                        <button onClick={() => removeLine(item.id)} aria-label="Remove item" className="size-11 grid place-items-center text-slate-gray hover:text-red-600 transition-colors shrink-0">
                                             <LuTrash2 className="text-sm" />
                                         </button>
                                     </div>
@@ -127,13 +127,13 @@ function CheckoutInner() {
                                     <button
                                         key={i.id}
                                         onClick={() => addItem(i.id)}
-                                        className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-1.5 text-xs font-medium text-navy hover:border-cyan hover:bg-alice-blue/60 transition-colors"
+                                        className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2.5 min-h-11 text-xs font-medium text-navy hover:border-cyan hover:bg-alice-blue/60 transition-colors"
                                     >
                                         <LuPlus className="text-cyan" /> {i.name}
                                     </button>
                                 ))}
                             </div>
-                            {added && <p className="text-xs text-cyan mt-2">Added to your order ✓</p>}
+                            {added && <p className="text-xs text-cyan mt-2" aria-live="polite">Added to your order ✓</p>}
                         </div>
                     </div>
 
@@ -146,6 +146,7 @@ function CheckoutInner() {
                                     <input
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
+                                        autoComplete="name"
                                         placeholder="e.g. Thandi Mokoena"
                                         className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition"
                                     />
@@ -155,6 +156,7 @@ function CheckoutInner() {
                                     <input
                                         value={area}
                                         onChange={(e) => setArea(e.target.value)}
+                                        autoComplete="off"
                                         placeholder="e.g. Randburg / club pickup"
                                         className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition"
                                     />
@@ -165,8 +167,8 @@ function CheckoutInner() {
                                         value={notes}
                                         onChange={(e) => setNotes(e.target.value)}
                                         placeholder="Size, colour, club name…"
-                                        rows={2}
-                                        className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition resize-none"
+                                        rows={4}
+                                        className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition"
                                     />
                                 </label>
                             </div>

@@ -28,7 +28,7 @@ export default function EnrollCta() {
           >
             <FaAndroid className={"text-2xl"} />
             <span className={"flex flex-col items-start leading-tight"}>
-              <span className={"text-[10px] uppercase tracking-widest opacity-80"}>
+              <span className={"text-[11px] uppercase tracking-widest opacity-80"}>
                 Download for Android
               </span>
               <span>Get the APK</span>
@@ -42,7 +42,7 @@ export default function EnrollCta() {
           >
             <FaApple className={"text-2xl"} />
             <span className={"flex flex-col items-start leading-tight"}>
-              <span className={"text-[10px] uppercase tracking-widest opacity-70"}>
+              <span className={"text-[11px] uppercase tracking-widest opacity-70"}>
                 iOS
               </span>
               <span>Coming soon</span>

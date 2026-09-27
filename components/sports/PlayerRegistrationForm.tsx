@@ -165,13 +165,13 @@ export default function PlayerRegistrationForm({
   };
 
   const input =
-    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm focus:outline-none focus:border-cyan";
+    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-3 md:py-2.5 text-base md:text-sm focus:outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/40";
   const label =
     "block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5";
   const sectionBadge =
     "text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1";
   const choice =
-    "flex-1 rounded-lg border px-3 py-2.5 text-sm font-semibold text-center cursor-pointer transition";
+    "flex-1 min-h-11 rounded-lg border px-3 py-3 text-[13px] sm:text-sm font-semibold text-center cursor-pointer transition";
 
   if (done) {
     const onSheet = done.status === "active";
@@ -286,7 +286,7 @@ export default function PlayerRegistrationForm({
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
-                  className="mt-3 text-sm font-semibold text-navy underline decoration-gold-400 decoration-2 underline-offset-4 hover:text-cyan-dark"
+                  className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-navy underline decoration-gold-400 decoration-2 underline-offset-4 hover:text-cyan-dark"
                 >
                   {photo ? "Choose a different photo" : "Choose a photo"}
                 </button>
@@ -303,9 +303,11 @@ export default function PlayerRegistrationForm({
                 </label>
                 <input
                   id="name"
+                  name="name"
                   className={input}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  autoComplete="name"
                   placeholder="e.g. Thabo Mokoena"
                   required
                 />
@@ -317,6 +319,7 @@ export default function PlayerRegistrationForm({
                 <input
                   id="age"
                   type="number"
+                  inputMode="numeric"
                   min={4}
                   max={99}
                   className={input}
@@ -348,6 +351,7 @@ export default function PlayerRegistrationForm({
                 <input
                   id="height"
                   type="number"
+                  inputMode="numeric"
                   min={80}
                   max={230}
                   className={input}
@@ -383,6 +387,8 @@ export default function PlayerRegistrationForm({
                 <input
                   id="phone"
                   type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
                   className={input}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -424,11 +430,12 @@ export default function PlayerRegistrationForm({
 
               <div>
                 <span className={label}>Stronger foot</span>
-                <div className="flex gap-2">
+                <div className="flex gap-2" role="group" aria-label="Stronger foot">
                   {(["right", "left"] as const).map((side) => (
                     <button
                       key={side}
                       type="button"
+                      aria-pressed={foot === side}
                       onClick={() => setFoot(side)}
                       className={`${choice} ${
                         foot === side
@@ -444,11 +451,12 @@ export default function PlayerRegistrationForm({
 
               <div>
                 <span className={label}>Stronger hand</span>
-                <div className="flex gap-2">
+                <div className="flex gap-2" role="group" aria-label="Stronger hand">
                   {(["right", "left"] as const).map((side) => (
                     <button
                       key={side}
                       type="button"
+                      aria-pressed={hand === side}
                       onClick={() => setHand(side)}
                       className={`${choice} ${
                         hand === side
@@ -465,7 +473,10 @@ export default function PlayerRegistrationForm({
           </div>
 
           {error && (
-            <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-700">
+            <div
+              role="alert"
+              className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-700"
+            >
               <FaExclamationTriangle className="mt-0.5 shrink-0" />
               <span>{error}</span>
             </div>

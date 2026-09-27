@@ -55,6 +55,7 @@ export default function ContactPage() {
                     id={"name"}
                     name={"name"}
                     required
+                    autoComplete={"name"}
                     className={
                       "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan"
                     }
@@ -72,6 +73,10 @@ export default function ContactPage() {
                     name={"email"}
                     type={"email"}
                     required
+                    autoComplete={"email"}
+                    spellCheck={false}
+                    autoCapitalize={"none"}
+                    autoCorrect={"off"}
                     className={
                       "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan"
                     }
@@ -110,12 +115,13 @@ export default function ContactPage() {
                     rows={4}
                     required
                     className={
-                      "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan resize-none"
+                      "w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan"
                     }
                   />
                 </div>
                 {state?.message && (
                   <div
+                    role="alert"
                     className={
                       "flex items-start gap-2 p-3 rounded bg-red-50 text-red-600 text-sm"
                     }

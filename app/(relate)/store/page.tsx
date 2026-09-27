@@ -34,7 +34,7 @@ export function StoreCard({item}: {item: StoreItem}) {
             </Link>
             <div className={"p-4 text-sm"}>
                 <div className={"flex items-start justify-between gap-2"}>
-                    <Link href={`/store/${item.id}`} className={"text-slate-800 font-semibold text-base hover:text-cyan transition-colors"}>
+                    <Link href={`/store/${item.id}`} className={"inline-flex min-h-11 items-center text-slate-800 font-semibold text-base hover:text-cyan transition-colors"}>
                         {item.name}
                     </Link>
                     <Link
@@ -43,7 +43,7 @@ export function StoreCard({item}: {item: StoreItem}) {
                         rel={"noopener noreferrer"}
                         aria-label={`Order ${item.name} on WhatsApp`}
                         title="Buy now"
-                        className={"text-cyan hover:text-cyan-dark transition-colors shrink-0"}>
+                        className={"grid size-11 place-items-center text-cyan hover:text-cyan-dark transition-colors shrink-0"}>
                         <LuShoppingBag className="text-lg" />
                     </Link>
                 </div>
@@ -122,12 +122,16 @@ function HeroShowcase({items}: {items: StoreItem[]}) {
                             type="button"
                             onClick={() => setIdx(i)}
                             aria-label={`Show shot ${i + 1} of ${tee.name}`}
-                            className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
-                                i === idx
-                                    ? "w-6 bg-white"
-                                    : "w-1.5 bg-white/50 hover:bg-white/80"
-                            }`}
-                        />
+                            className="grid size-11 -m-2.5 place-items-center rounded-full"
+                        >
+                            <span
+                                className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
+                                    i === idx
+                                        ? "w-6 bg-white"
+                                        : "w-1.5 bg-white/50 hover:bg-white/80"
+                                }`}
+                            />
+                        </button>
                     ))}
                 </div>
             )}
@@ -149,7 +153,7 @@ export default function StorePage() {
                     className="absolute inset-0 pointer-events-none"
                     style={{background: "linear-gradient(120deg, rgba(19,197,221,0.08) 0%, rgba(255,255,255,0) 55%)"}}
                 />
-                <div className={"relative max-w-6xl mx-auto px-4 md:px-0 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"}>
+                <div className={"relative max-w-6xl mx-auto px-4 lg:px-0 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"}>
                     <div>
                         <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-3">Relate Store</p>
                         <h1 className="tracking-tight leading-[1.05] text-navy">
@@ -197,7 +201,7 @@ export default function StorePage() {
                             <button
                                 key={c}
                                 onClick={() => setCategory(c)}
-                                className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                className={`px-5 py-2.5 min-h-11 rounded-lg text-sm font-medium transition-colors ${
                                     category === c
                                         ? "bg-cyan text-white shadow-md"
                                         : "bg-gray-100 text-gray-600 hover:bg-gray-200"

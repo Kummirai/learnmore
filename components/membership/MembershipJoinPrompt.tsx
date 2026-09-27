@@ -82,7 +82,7 @@ export default function MembershipJoinPrompt() {
                 where you keep it.
               </p>
 
-              <dl className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-3">
+              <dl className="mt-8 grid grid-cols-1 min-[400px]:grid-cols-2 gap-px overflow-hidden rounded-xl bg-white/10 sm:grid-cols-3">
                 {meta.map((item) => (
                   <div key={item.label} className="bg-white/[0.06] px-4 py-3">
                     <dt className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
@@ -245,7 +245,7 @@ export default function MembershipJoinPrompt() {
                 <Link
                   key={club.slug}
                   href={`/${club.slug}`}
-                  className="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3.5 py-2 text-xs font-semibold text-navy transition-colors hover:border-navy/25 hover:bg-alice-blue"
+                  className="group inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3.5 py-3 min-h-11 text-xs font-semibold text-navy transition-colors hover:border-navy/25 hover:bg-alice-blue"
                 >
                   <span
                     className="size-2 rounded-full"

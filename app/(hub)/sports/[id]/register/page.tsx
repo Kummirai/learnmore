@@ -32,7 +32,7 @@ export default async function RegisterPage({ params, searchParams }: Params & Se
 
   return (
     <>
-      <Navbar overlay />
+      <Navbar />
       <RequireAuth
         title={`Register for ${team.name}`}
         blurb="Sign in to claim a position on the squad — we keep your registration with your account."

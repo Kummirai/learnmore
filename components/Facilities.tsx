@@ -22,7 +22,7 @@ export default function Facilities() {
                         Tools that keep your faith and community close — wherever the day takes you.
                     </p>
                 </div>
-                <div className={"grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"}>
+                <div className={"grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4"}>
                     {facilities.map((f, i) => (
                         <div key={i}
                              className={`${f.color} rounded-xl p-6 text-center text-white hover:scale-105 transition-transform cursor-pointer`}>

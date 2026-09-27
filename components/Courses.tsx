@@ -84,7 +84,7 @@ export default function Courses() {
                             <div className={"flex items-center justify-between"}>
                                 <span className={"text-sm text-gray-500"}>{course.students > 0 ? `${course.students} Programs` : ""}</span>
                                 <Link href={i === courses.length - 1 ? "/enroll" : `/${course.title.toLowerCase()}`}
-                                      className={"text-cyan text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all"}>
+                                      className={"text-cyan text-sm font-medium flex min-h-11 items-center gap-1 hover:gap-2 transition-all"}>
                                     Learn More <LuArrowRight/>
                                 </Link>
                             </div>

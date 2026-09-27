@@ -79,7 +79,7 @@ export default function PhotoHighlights() {
                 onClick={prev}
                 disabled={start === 0}
                 className={
-                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
                 }
               >
                 <LuChevronLeft className={"text-xl"} />
@@ -88,7 +88,7 @@ export default function PhotoHighlights() {
                 onClick={next}
                 disabled={start >= photos.length - visible}
                 className={
-                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
                 }
               >
                 <LuChevronRight className={"text-xl"} />

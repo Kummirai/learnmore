@@ -104,7 +104,7 @@ function YesNoOption({
 }) {
   return (
     <label
-      className={`flex items-center gap-2 rounded-lg border px-3.5 py-2 cursor-pointer transition-colors ${
+      className={`flex min-h-11 items-center gap-2 rounded-lg border px-3.5 py-3 cursor-pointer transition-colors ${
         value === opt ? "border-cyan bg-alice-blue" : "border-gray-200 hover:border-gray-300"
       }`}
     >
@@ -382,7 +382,7 @@ export default function JoinForm({
   }
 
   const input =
-    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm focus:outline-none focus:border-cyan";
+    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm focus:outline-none focus:ring-2 focus:ring-cyan/40 focus:border-cyan";
   const label = "block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5";
   const sectionBadge = "text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1";
 
@@ -504,6 +504,7 @@ export default function JoinForm({
                 </label>
                 <input
                   id="name"
+                  autoComplete="name"
                   className={input}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -517,6 +518,7 @@ export default function JoinForm({
                 <input
                   id="age"
                   type="number"
+                  inputMode="numeric"
                   min={6}
                   max={99}
                   className={input}
@@ -557,6 +559,9 @@ export default function JoinForm({
                 <input
                   id="phone"
                   required
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
                   className={input}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -637,7 +642,7 @@ export default function JoinForm({
                   return (
                     <label
                       key={opt}
-                      className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${
+                      className={`flex min-h-11 items-center gap-2 rounded-lg border px-3 py-3 cursor-pointer transition-colors ${
                         on ? "border-cyan bg-alice-blue" : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
@@ -797,7 +802,10 @@ export default function JoinForm({
           </div>
 
           {error && (
-            <p className="rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3">
+            <p
+              role="alert"
+              className="rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3"
+            >
               {error}
             </p>
           )}

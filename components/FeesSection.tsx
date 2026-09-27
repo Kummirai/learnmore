@@ -41,17 +41,17 @@ export default function FeesSection() {
                                 />
                             </a>
                             <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>
-                                <a href={`/store/${item.id}`} className="hover:text-cyan-dark transition-colors">{item.name}</a>
+                                <a href={`/store/${item.id}`} className="hover:text-cyan-dark transition-colors inline-flex min-h-11 items-center">{item.name}</a>
                             </h3>
                             <p className={"text-3xl font-bold text-cyan mb-1"}>{formatPrice(item.price)}</p>
                             <p className={"text-sm text-gray-500 mb-4 flex-1"}>{item.blurb}</p>
                             <div className={"flex flex-col gap-2 mt-auto"}>
                                 <a href={`/store/checkout?item=${item.id}`}
-                                   className={`block text-sm font-medium py-2.5 rounded transition-colors ${featured ? "bg-navy text-white hover:bg-navy-dark" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                                   className={`block text-sm font-medium py-3 min-h-11 rounded transition-colors ${featured ? "bg-navy text-white hover:bg-navy-dark" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
                                     Order now
                                 </a>
                                 <a href={`/store/${item.id}`}
-                                   className="block text-xs font-medium text-slate-gray hover:text-navy transition-colors">
+                                   className="inline-flex min-h-11 items-center text-xs font-medium text-slate-gray hover:text-navy transition-colors">
                                     View details
                                 </a>
                             </div>
@@ -60,7 +60,7 @@ export default function FeesSection() {
                 </div>
                 <div className={"text-center"}>
                     <Link href={"/store"}
-                          className={"inline-flex items-center gap-2 text-cyan font-medium text-sm hover:text-cyan-dark transition-colors"}>
+                          className={"inline-flex min-h-11 items-center gap-2 text-cyan font-medium text-sm hover:text-cyan-dark transition-colors"}>
                         Browse the Full Store <LuArrowRight/>
                     </Link>
                 </div>

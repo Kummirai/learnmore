@@ -67,45 +67,77 @@ export default function Contact() {
             </h3>
             <form className={"space-y-4"}>
               <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
+                <div>
+                  <label htmlFor={"contact-name"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                    Your Name
+                  </label>
+                  <input
+                    id={"contact-name"}
+                    name={"name"}
+                    type="text"
+                    placeholder="Your Name"
+                    required
+                    autoComplete="name"
+                    className={
+                      "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
+                    }
+                  />
+                </div>
+                <div>
+                  <label htmlFor={"contact-email"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                    Your Email
+                  </label>
+                  <input
+                    id={"contact-email"}
+                    name={"email"}
+                    type="email"
+                    placeholder="Your Email"
+                    required
+                    autoComplete="email"
+                    spellCheck={false}
+                    autoCapitalize="none"
+                    className={
+                      "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
+                    }
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor={"contact-subject"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                  Subject
+                </label>
                 <input
+                  id={"contact-subject"}
+                  name={"subject"}
                   type="text"
-                  placeholder="Your Name"
-                  required
+                  placeholder="Subject"
                   className={
                     "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
                   }
                 />
-                <input
-                  type="email"
-                  placeholder="Your Email"
+              </div>
+              <div>
+                <label htmlFor={"contact-message"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                  Your Message
+                </label>
+                <textarea
+                  id={"contact-message"}
+                  name={"message"}
+                  rows={4}
+                  placeholder="Your Message"
                   required
                   className={
                     "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
                   }
                 />
               </div>
-              <input
-                type="text"
-                placeholder="Subject"
-                className={
-                  "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan"
-                }
-              />
-              <textarea
-                rows={4}
-                placeholder="Your Message"
-                required
-                className={
-                  "w-full border border-gray-200 rounded-lg px-4 py-2.5 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan/20 focus:border-cyan resize-none"
-                }
-              />
               <Link
                 href={
                   "https://wa.me/27782677436?text=Hello%20RelateWorld!%20I%27d%20like%20to%20make%20an%20enquiry."
                 }
                 target={"_blank"}
                 className={
-                  "inline-flex items-center gap-2 bg-navy text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-navy-dark transition-colors"
+                  "inline-flex w-full items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-navy-dark transition-colors sm:w-auto"
                 }
               >
                 Send via WhatsApp <LuArrowRight />

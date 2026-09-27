@@ -26,7 +26,7 @@ function todayStr(): string {
 }
 
 const navBtn =
-    "inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+    "inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
 
 export default function MagazineReader({doc}: {doc: PubDocument}) {
     const weeks = useMemo(() => doc.weeks ?? [], [doc.weeks])
@@ -75,7 +75,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
     return (
         <div className={"max-w-3xl mx-auto"}>
             <div className={"rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden mb-10"}>
-                <div className={"flex items-center justify-between gap-3 px-4 md:px-5 py-4"}>
+                <div className={"flex items-center justify-between gap-2 px-4 md:px-5 py-4"}>
                     <button
                         onClick={() => setPos(pos - 1)}
                         disabled={pos <= 0}
@@ -83,11 +83,11 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                     >
                         <span aria-hidden>←</span> Prev
                     </button>
-                    <div className={"text-center"}>
+                    <div className={"text-center min-w-0"}>
                         <span className={"block text-[10px] uppercase tracking-[0.2em] text-(--club-accent) font-bold"}>
                             Now reading
                         </span>
-                        <p className={"font-bold text-navy mt-0.5 whitespace-nowrap"}>
+                        <p className={"font-bold text-navy mt-0.5 min-w-0"}>
                             {current ? `Week ${current.weekIndex + 1} · Day ${current.dayIndex + 1}` : "Nothing to read yet"}
                             {current && <span className={"text-gray-400 font-medium"}> of {days.length}</span>}
                         </p>
@@ -108,7 +108,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                             <button
                                 key={wi}
                                 onClick={() => jumpTo(wi, 0)}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
+                                        className={`rounded-lg px-3 py-2.5 min-h-11 text-xs font-bold transition-colors ${
                                     wi === current?.weekIndex
                                         ? "bg-navy text-white"
                                         : "bg-alice-blue text-navy hover:bg-ice-blue"
@@ -129,7 +129,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                                     <button
                                         key={di}
                                         onClick={() => jumpTo(current?.weekIndex ?? 0, di)}
-                                        className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
+                                className={`rounded-lg px-3 py-2.5 min-h-11 text-xs font-bold transition-colors ${
                                             di === current?.dayIndex
                                                 ? "bg-(--club-accent) text-navy"
                                                 : "bg-alice-blue text-navy hover:bg-ice-blue"

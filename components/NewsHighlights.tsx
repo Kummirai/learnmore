@@ -42,7 +42,7 @@ export default function NewsHighlights() {
           <Link
             href={"/news"}
             className={
-              "text-sm text-cyan font-medium flex items-center gap-1 hover:gap-2 transition-all"
+              "text-sm text-cyan font-medium flex min-h-11 items-center gap-1 hover:gap-2 transition-all"
             }
           >
             View All <LuChevronRight />

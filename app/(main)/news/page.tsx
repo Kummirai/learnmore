@@ -145,7 +145,7 @@ export default function NewsPage() {
                     <Link
                       href={"#"}
                       className={
-                        "text-xs text-cyan font-medium flex items-center gap-1 hover:gap-2 transition-all"
+                        "inline-flex min-h-11 items-center text-xs text-cyan font-medium gap-1 hover:gap-2 transition-all"
                       }
                     >
                       Read More <LuChevronRight />

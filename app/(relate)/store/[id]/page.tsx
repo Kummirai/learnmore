@@ -74,7 +74,7 @@ export default async function ProductPage({
               <h3 className="text-xl font-bold text-navy mb-5">
                 You may also like
               </h3>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {(related.length > 0 ? related : others).map((r) => (
                   <Link key={r.id} href={`/store/${r.id}`}>
                     <div className="max-w-64">
@@ -113,7 +113,7 @@ export default async function ProductPage({
 
           <Link
             href="/store"
-            className="inline-flex items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
+            className="inline-flex min-h-11 items-center gap-1.5 text-sm text-slate-gray hover:text-navy transition-colors"
           >
             <LuArrowLeft /> Back to all products
           </Link>

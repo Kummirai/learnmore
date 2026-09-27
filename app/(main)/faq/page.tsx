@@ -88,7 +88,7 @@ export default function FAQPage() {
                 />
               </button>
               <div
-                className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-60" : "max-h-0"}`}
+                className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-none" : "max-h-0"}`}
               >
                 <div
                   className={

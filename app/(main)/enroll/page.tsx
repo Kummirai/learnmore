@@ -6,7 +6,7 @@ import {LuCircleCheck, LuCircleAlert} from "react-icons/lu"
 
 const grades = ["R", "1", "2", "3", "4", "5", "6", "7"]
 
-function Field({label, name, type = "text", error, ...props}: {
+function Field({label, name, type = "text", error, className, ...props}: {
     label: string
     name: string
     type?: string
@@ -19,10 +19,10 @@ function Field({label, name, type = "text", error, ...props}: {
                 id={name}
                 name={name}
                 type={type}
-                className={`w-full px-4 py-2.5 rounded border ${error ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition`}
+                className={`w-full px-4 py-2.5 rounded border ${error ? "border-red-400 ring-1 ring-red-400" : "border-gray-300"} text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition ${className ?? ""}`}
                 {...props}
             />
-            {error && <p className={"text-red-500 text-xs mt-1"}>{error}</p>}
+            {error && <p role="alert" className={"text-red-500 text-xs mt-1"}>{error}</p>}
         </div>
     )
 }
@@ -66,14 +66,20 @@ export default function EnrollPage() {
                             <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                                 <Field label={"Full Name"} name={"parentName"}
                                        error={state?.errors?.parentName}
+                                       autoComplete={"name"}
                                        placeholder={"e.g. Thandi Mokoena"}/>
                                 <Field label={"Email Address"} name={"parentEmail"} type={"email"}
                                        error={state?.errors?.parentEmail}
+                                       autoComplete={"email"}
+                                       spellCheck={false}
+                                       autoCapitalize={"none"}
                                        placeholder={"e.g. thandi@email.com"}/>
-                                <Field label={"Phone Number"} name={"parentPhone"} type={"tel"}
-                                       error={state?.errors?.parentPhone}
-                                       placeholder={"e.g. +27 82 123 4567"}
-                                       className={"sm:col-span-2"}/>
+                                <div className={"sm:col-span-2"}>
+                                    <Field label={"Phone Number"} name={"parentPhone"} type={"tel"}
+                                           error={state?.errors?.parentPhone}
+                                           autoComplete={"tel"}
+                                           placeholder={"e.g. +27 82 123 4567"}/>
+                                </div>
                             </div>
                         </fieldset>
 
@@ -113,12 +119,13 @@ export default function EnrollPage() {
                                    className={"block text-sm font-medium text-gray-700 mb-1"}>Additional Notes
                                 (optional)</label>
                             <textarea id={"notes"} name={"notes"} rows={3}
-                                      className={"w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition resize-none"}
+                                       className={"w-full px-4 py-2.5 rounded border border-gray-300 text-base md:text-sm outline-none focus:ring-2 focus:ring-cyan focus:border-cyan transition"}
                                       placeholder={"Any special requirements or information..."}/>
                         </div>
 
                         {state?.message && !state.success && (
                             <div
+                                role="alert"
                                 className={"flex items-start gap-2 p-3 rounded bg-red-50 text-red-600 text-sm"}>
                                 <LuCircleAlert className={"mt-0.5 shrink-0"}/>
                                 <span>{state.message}</span>

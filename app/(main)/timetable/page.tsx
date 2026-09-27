@@ -375,7 +375,7 @@ export default function TimetablePage() {
                     <div className={"flex flex-wrap items-center justify-center gap-2"}>
                         {grades.map(g => (
                             <button key={g} onClick={() => { setGrade(g); setClassId("A") }}
-                                    className={`px-5 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    className={`px-5 py-3 min-h-11 rounded-lg text-sm font-medium transition-colors ${
                                         grade === g
                                             ? "bg-navy text-white shadow-md"
                                             : "bg-gray-100 text-gray-600 hover:bg-gray-200"
@@ -388,7 +388,7 @@ export default function TimetablePage() {
                         <span className={"text-sm text-gray-500 mr-1"}>Class:</span>
                         {classes.map(c => (
                             <button key={c} onClick={() => setClassId(c)}
-                                    className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                                    className={`px-4 py-3 min-h-11 rounded-lg text-sm font-medium transition-colors ${
                                         classId === c
                                             ? "bg-ice-blue text-navy-dark border border-cyan-dark"
                                             : "bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100"

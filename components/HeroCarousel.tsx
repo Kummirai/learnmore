@@ -75,9 +75,9 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
       <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center pt-20 pb-44 sm:pb-16">
         <div className="max-w-2xl mx-auto sm:mx-0 text-center sm:text-left flex flex-col gap-3">
           <h1
-            className="font-black tracking-tight leading-none text-white"
+            className="font-black tracking-tight leading-none text-white break-words"
             style={{
-              fontSize: "4.8rem",
+              fontSize: "clamp(2.5rem, 14vw, 4.8rem)",
               textShadow: "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
             }}
           >
@@ -134,7 +134,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             go(index - 1);
             restart();
           }}
-          className="size-10 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
+          className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
         >
           <LuChevronLeft />
         </button>
@@ -148,14 +148,18 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 go(i);
                 restart();
               }}
-              className={`h-2 rounded-full transition-all ${
-                i === index ? "w-6" : "w-2"
-              }`}
-              style={{
-                backgroundColor:
-                  i === index ? slide.accent : "rgba(255,255,255,0.4)",
-              }}
-            />
+              className="h-11 px-4 inline-flex items-center justify-center rounded-full"
+            >
+              <span
+                className={`h-2 rounded-full transition-all ${
+                  i === index ? "w-6" : "w-2"
+                }`}
+                style={{
+                  backgroundColor:
+                    i === index ? slide.accent : "rgba(255,255,255,0.4)",
+                }}
+              />
+            </button>
           ))}
         </div>
         <button
@@ -165,7 +169,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
             go(index + 1);
             restart();
           }}
-          className="size-10 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
+          className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
         >
           <LuChevronRight />
         </button>

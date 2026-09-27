@@ -287,7 +287,7 @@ export function EventCard({ event }: { event: RelateEvent }) {
               href={`/events/${event._id}`}
               aria-label={`View details for ${event.title ?? "this event"}`}
               title="View details"
-              className="text-cyan hover:text-cyan-dark transition-colors"
+              className="grid size-11 place-items-center text-cyan hover:text-cyan-dark transition-colors"
             >
               <LuArrowRight className="text-lg" />
             </Link>
@@ -374,7 +374,7 @@ export default function EventsPage() {
                   <a
                     key={slug}
                     href={`#club-${slug}`}
-                    className="text-xs font-medium text-cyan bg-white border border-cyan/30 px-3 py-1.5 rounded-full hover:bg-cyan/10 transition-colors"
+                    className="text-xs font-medium text-cyan bg-white border border-cyan/30 px-3 py-3 min-h-11 rounded-full hover:bg-cyan/10 transition-colors"
                   >
                     {club?.name ?? slug}
                   </a>

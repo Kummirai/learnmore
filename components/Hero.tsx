@@ -414,9 +414,11 @@ export default function Hero() {
           )}
           <h1
             key={`t-${slide.key}`}
-            className={"font-black tracking-tight leading-none text-white"}
+            className={
+              "font-black tracking-tight leading-none text-white break-words"
+            }
             style={{
-              fontSize: "4.8rem",
+              fontSize: "clamp(2.5rem, 14vw, 4.8rem)",
               textShadow:
                 "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
             }}
@@ -522,7 +524,7 @@ export default function Hero() {
           {/* ── Carousel progress dots ── */}
           <div
             className={
-              "flex items-center justify-center gap-1.5 mt-4 md:justify-start"
+              "flex flex-wrap items-center justify-center gap-1.5 mt-4 md:justify-start"
             }
           >
             {slides.map((s, i) => (
@@ -530,8 +532,12 @@ export default function Hero() {
                 key={s.key}
                 aria-label={`Go to slide ${i + 1}`}
                 onClick={() => setIndex(i)}
-                className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-cyan" : "w-1.5 bg-white/40 hover:bg-white/70"}`}
-              />
+                className="h-11 px-4 inline-flex items-center justify-center rounded-full"
+              >
+                <span
+                  className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-cyan" : "w-1.5 bg-white/40 hover:bg-white/70"}`}
+                />
+              </button>
             ))}
             <span
               className={
