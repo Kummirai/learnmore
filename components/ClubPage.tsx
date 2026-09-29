@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
@@ -12,6 +13,11 @@ import {
 } from "@/constants/relate";
 import { getPublications } from "@/lib/publications";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
+import {
+  HONOR_TRACK_BY_ID,
+  SHAPE_LABEL,
+  honorLevelForClub,
+} from "@/constants/sproutHonors";
 
 export default async function ClubPage({ slug }: { slug: string }) {
   const club = getClub(slug) ?? getClubClass(slug);
@@ -31,6 +37,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
   const publications = await getPublications(club.slug);
   const magazines = publications.filter((p) => p.kind === "magazine");
   const classes = getClubClasses(club.slug);
+  const honorLevel = honorLevelForClub(club.slug);
   const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null;
   const parent = club.parentSlug ? getClub(club.parentSlug) : undefined;
   const clubVars = {
@@ -114,6 +121,120 @@ export default async function ClubPage({ slug }: { slug: string }) {
           </>
         }
       />
+
+      {honorLevel && (
+        <section
+          id={"honors"}
+          className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
+        >
+          <div className={"max-w-6xl mx-auto"}>
+            <span
+              className={
+                "text-xs uppercase tracking-widest text-cyan font-medium"
+              }
+            >
+              Honors &amp; badges
+            </span>
+            <h2
+              className={
+                "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"
+              }
+            >
+              What {honorLevel.name} works toward
+            </h2>
+            <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+              Level {honorLevel.levelNumber} of the Sprout Club honors framework
+              — {honorLevel.focus}
+            </p>
+
+            <div
+              className={
+                "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+              }
+            >
+              {honorLevel.badges.map((badge) => {
+                const track = HONOR_TRACK_BY_ID[badge.track];
+                return (
+                  <Link
+                    key={badge.id}
+                    href={`/sprout/honors#badge-${badge.id}`}
+                    className={
+                      "group relative block h-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm hover:border-cyan hover:shadow-md transition-all"
+                    }
+                  >
+                    <Image
+                      src={track.image}
+                      alt={""}
+                      fill
+                      sizes={
+                        "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
+                      }
+                      className={
+                        "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      }
+                    />
+                    <span
+                      className={
+                        "absolute inset-x-3 bottom-3 block rounded-xl bg-white p-4 shadow-sm"
+                      }
+                    >
+                      <span
+                        className={
+                          "flex items-center gap-2 text-xs text-gray-400"
+                        }
+                      >
+                        <span
+                          className={"size-2.5 shrink-0 rounded-full"}
+                          style={{ backgroundColor: track.color }}
+                          aria-hidden={"true"}
+                        />
+                        {track.name} · {SHAPE_LABEL[badge.shape]}
+                      </span>
+                      <span
+                        className={
+                          "mt-1.5 flex items-center justify-between gap-3"
+                        }
+                      >
+                        <span
+                          className={
+                            "block font-bold text-navy text-[17px] leading-snug group-hover:text-cyan-dark transition-colors"
+                          }
+                        >
+                          {badge.name}
+                        </span>
+                        <span
+                          aria-hidden={"true"}
+                          className={
+                            "shrink-0 text-sm font-semibold text-cyan opacity-0 group-hover:opacity-100 transition-opacity"
+                          }
+                        >
+                          →
+                        </span>
+                      </span>
+                      <span
+                        className={
+                          "mt-2 block text-sm text-gray-500 leading-snug line-clamp-2"
+                        }
+                      >
+                        {badge.requirements[0]}
+                      </span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            <Link
+              href={`/sprout/honors#level-${honorLevel.id}`}
+              className={
+                "mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-cyan-dark transition-colors"
+              }
+            >
+              All requirements for {honorLevel.name} →
+            </Link>
+          </div>
+        </section>
+      )}
 
       <section className={"flex-1 px-4 py-12"}>
         <div className={"max-w-6xl mx-auto"}>
@@ -324,6 +445,48 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 ))}
               </div>
             </>
+          )}
+
+          {club.slug === "sprout" && (
+            <Link
+              href={"/sprout/honors"}
+              className={
+                "group mt-8 flex items-center gap-5 rounded-2xl border border-gray-200 bg-alice-blue/60 p-6 hover:border-cyan hover:bg-alice-blue transition-colors"
+              }
+            >
+              <span
+                className={
+                  "flex size-12 shrink-0 items-center justify-center rounded-full text-white text-xl"
+                }
+                style={{ backgroundColor: club.colorDark }}
+                aria-hidden={"true"}
+              >
+                ★
+              </span>
+              <span className={"min-w-0 flex-1"}>
+                <span
+                  className={
+                    "block text-[11px] uppercase tracking-widest text-cyan font-semibold"
+                  }
+                >
+                  Honors &amp; badges
+                </span>
+                <span className={"block font-bold text-navy text-lg leading-snug"}>
+                  Sprout Club Honors framework
+                </span>
+                <span className={"block text-sm text-gray-500 leading-snug"}>
+                  Thirteen honors across safety, money, digital skills, coding
+                  and media — earned from Sprout Kids through to Sprout Teens.
+                </span>
+              </span>
+              <span
+                className={
+                  "hidden shrink-0 text-sm font-semibold text-cyan group-hover:translate-x-1 transition-transform sm:block"
+                }
+              >
+                See the honors →
+              </span>
+            </Link>
           )}
 
           {publications.length > 0 && (
