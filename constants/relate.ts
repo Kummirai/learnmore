@@ -666,7 +666,7 @@ const SPROUT_CLASS_PROGRAMS: RelateProgram[] = [
     name: "Bible Adventurers",
     blurb: "Story-themed games that bring the Bible alive.",
     detail:
-      "An adventure through Bible stories with games, crafts and role-play — a fun way to learn the big stories that the quiz is based on.",
+      "An adventure through Bible stories with games, crafts and role-play — a fun way to learn the big stories of Scripture.",
   },
   {
     name: "Football Club",
