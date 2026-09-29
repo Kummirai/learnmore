@@ -28,6 +28,18 @@ export type HonorTrack = {
 
 export type HonorShape = "patch" | "shield" | "pin";
 
+/**
+ * One requirement of a badge, plus the measurable standards that prove it.
+ * Every criterion carries a number, count or verifiable action so a leader
+ * can pass/fail it without judgement calls. All criteria ticked = proven.
+ */
+export type HonorRequirement = {
+  /** The headline requirement — shown on cards, in metadata and summaries. */
+  text: string;
+  /** Measurable pass criteria, checked one by one in the progress panel. */
+  criteria: string[];
+};
+
 export type HonorBadge = {
   id: string;
   name: string;
@@ -35,7 +47,7 @@ export type HonorBadge = {
   shape: HonorShape;
   /** How the badge looks — a patch, shield patch or lapel pin. */
   concept: string;
-  requirements: string[];
+  requirements: HonorRequirement[];
 };
 
 export type HonorLevel = {
@@ -123,9 +135,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "patch",
         concept: "Circular patch featuring a red cross or life ring icon.",
         requirements: [
-          "Personal information: memorise your full home address, emergency contacts and parents' full names.",
-          "Basic care: demonstrate cleaning a minor scrape, applying antiseptic ointment and neatly placing an adhesive bandage.",
-          "Emergency call: roleplay calling emergency services, clearly stating name, location and scenario without panicking.",
+          {
+            text: "Personal information: memorise your full home address, emergency contacts and parents' full names.",
+            criteria: [
+              "Recites the full home address (street and city) with no more than 1 prompt",
+              "Gives 2 emergency contacts by full name with a 10-digit phone number each",
+              "States both parents' full names correctly",
+            ],
+          },
+          {
+            text: "Basic care: demonstrate cleaning a minor scrape, applying antiseptic ointment and neatly placing an adhesive bandage.",
+            criteria: [
+              "Cleans a minor scrape with water or saline using 3 gentle strokes",
+              "Applies antiseptic ointment to the wound only, not the surrounding skin",
+              "Places an adhesive bandage centred over the scrape, smooth and wrinkle-free",
+            ],
+          },
+          {
+            text: "Emergency call: roleplay calling emergency services, clearly stating name, location and scenario without panicking.",
+            criteria: [
+              "Dials the emergency number (112) and gives their own full name",
+              "States the exact location: street address plus one landmark",
+              "Describes the emergency in 1 sentence and stays on the line until dismissed",
+            ],
+          },
         ],
       },
       {
@@ -135,9 +168,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "patch",
         concept: "Circular patch featuring a piggy bank or coin icon.",
         requirements: [
-          'Budget game: complete the "Penny Market" exercise by selecting craft supplies while staying under a fixed coin limit.',
-          "Needs vs. wants: accurately categorise household items into needs (water, food, warm clothes) and wants (toys, treats, video games).",
-          "Savings goal: decorate a personal saving jar and log savings weekly toward a small goal over three weeks.",
+          {
+            text: 'Budget game: complete the "Penny Market" exercise by selecting craft supplies while staying under a fixed coin limit.',
+            criteria: [
+              "Chooses at least 4 craft items from the Penny Market list",
+              "Total spent stays within the fixed coin limit (e.g. 20 coins)",
+              "Reads the running total back correctly before finishing",
+            ],
+          },
+          {
+            text: "Needs vs. wants: accurately categorise household items into needs (water, food, warm clothes) and wants (toys, treats, video games).",
+            criteria: [
+              "Sorts 10 household items with at least 8 placed correctly",
+              "Places water, food and warm clothes in “needs” — 3 of 3",
+              "Explains in their own words why one item is a want",
+            ],
+          },
+          {
+            text: "Savings goal: decorate a personal saving jar and log savings weekly toward a small goal over three weeks.",
+            criteria: [
+              "Decorates and labels a personal saving jar",
+              "Writes a dated entry for 3 consecutive weeks — 3 of 3",
+              "Reaches or passes the goal amount (e.g. R50) by week 3",
+            ],
+          },
         ],
       },
       {
@@ -147,9 +201,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "patch",
         concept: "Circular patch featuring a monitor and keyboard icon.",
         requirements: [
-          "Hardware & ergonomics: identify screen, keyboard, mouse and power button, and demonstrate safe posture at a computer station.",
-          "Word processing: open Microsoft Word, type a three-sentence story and apply formatting (bold, font size and text colour).",
-          "File handling: save a file into a designated folder with a standard file name and properly shut down the computer.",
+          {
+            text: "Hardware & ergonomics: identify screen, keyboard, mouse and power button, and demonstrate safe posture at a computer station.",
+            criteria: [
+              "Names screen, keyboard, mouse and power button — 4 of 4 correct",
+              "Holds safe posture (feet flat, back straight, screen at eye level) for 10 seconds",
+              "States 1 computer care rule, e.g. no food or drink at the keyboard",
+            ],
+          },
+          {
+            text: "Word processing: open Microsoft Word, type a three-sentence story and apply formatting (bold, font size and text colour).",
+            criteria: [
+              "Opens Microsoft Word and starts a new blank document",
+              "Types a story of at least 3 complete sentences, each ending with a full stop",
+              "Applies bold, a font size change and a text colour — 3 of 3",
+            ],
+          },
+          {
+            text: "File handling: save a file into a designated folder with a standard file name and properly shut down the computer.",
+            criteria: [
+              "Saves the file inside the designated folder",
+              "Uses a standard file name: lowercase word + date, no spaces (e.g. story_01)",
+              "Closes the document and shuts down via Start → Shut down",
+            ],
+          },
         ],
       },
       {
@@ -159,9 +234,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "patch",
         concept: "Circular patch featuring interlocking puzzle pieces.",
         requirements: [
-          'Physical algorithms: guide a peer through a physical path using step-by-step commands ("step forward 2", "turn right").',
-          "Visual block coding: complete five beginner coding puzzles on ScratchJr or Code.org.",
-          "Pattern recognition: identify and extend three repeating logic sequences.",
+          {
+            text: 'Physical algorithms: guide a peer through a physical path using step-by-step commands ("step forward 2", "turn right").',
+            criteria: [
+              "Issues at least 5 separate commands (steps and turns) without physical help",
+              "Peer reaches the target inside 2 minutes",
+              "Uses only step/turn instructions — no touching or leading the peer",
+            ],
+          },
+          {
+            text: "Visual block coding: complete five beginner coding puzzles on ScratchJr or Code.org.",
+            criteria: [
+              "Completes 5 beginner puzzles with the platform recording each one",
+              "Finishes all 5 in a single session without restarting the level",
+              "Explains 1 block used (move, repeat or event) to the leader",
+            ],
+          },
+          {
+            text: "Pattern recognition: identify and extend three repeating logic sequences.",
+            criteria: [
+              "Extends all 3 sequences correctly — 3 of 3",
+              "Names the repeating rule for at least 1 sequence (e.g. “red-blue repeats”)",
+              "Draws the next 2 items for each of the 3 sequences",
+            ],
+          },
         ],
       },
     ],
@@ -184,9 +280,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "shield",
         concept: "Shield-shaped patch with a first-aid medical cross.",
         requirements: [
-          "Hazard response: explain proper treatment steps for minor burns, insect stings and nosebleeds.",
-          "Recovery position: safely place a peer into the recovery position and check for clear breathing.",
-          "First aid kit: assemble a functioning personal or backpack first-aid kit containing essential supplies.",
+          {
+            text: "Hazard response: explain proper treatment steps for minor burns, insect stings and nosebleeds.",
+            criteria: [
+              "Minor burn: states the first step — cool running water for 10 minutes",
+              "Insect sting: gives 2 correct steps (remove the sting, cool the site)",
+              "Nosebleed: gives 3 correct steps (sit up, pinch 10 minutes, lean forward)",
+            ],
+          },
+          {
+            text: "Recovery position: safely place a peer into the recovery position and check for clear breathing.",
+            criteria: [
+              "Rolls a peer into the recovery position in under 60 seconds, unprompted",
+              "Checks for clear breathing for 10 seconds and says what they checked",
+              "Keeps the head tilted and the airway open while waiting",
+            ],
+          },
+          {
+            text: "First aid kit: assemble a functioning personal or backpack first-aid kit containing essential supplies.",
+            criteria: [
+              "Packs 6 essentials: plasters, gauze, wipes, tape, scissors, antiseptic — 6 of 6",
+              "Checks expiry dates — every item in date",
+              "Labels the kit with their name and a contents list",
+            ],
+          },
         ],
       },
       {
@@ -196,9 +313,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "shield",
         concept: "Shield-shaped patch with a balance scale or chart icon.",
         requirements: [
-          "Menu budgeting: plan a balanced meal menu for a group on a set budget, comparing unit prices across brands.",
-          "Income & expense log: maintain a two-week personal balance sheet logging allowance or chores against savings and spending.",
-          "Bank basics: explain the concept of bank interest and how money grows over time in a savings account.",
+          {
+            text: "Menu budgeting: plan a balanced meal menu for a group on a set budget, comparing unit prices across brands.",
+            criteria: [
+              "Menu covers all 4 food groups for the stated number of people",
+              "Written total lands within the set budget and is added up correctly",
+              "Compares unit prices on 2 items and picks the cheaper per-unit option",
+            ],
+          },
+          {
+            text: "Income & expense log: maintain a two-week personal balance sheet logging allowance or chores against savings and spending.",
+            criteria: [
+              "Records an entry for 14 of 14 days",
+              "Totals income and spending separately — both totals correct",
+              "Closing balance = opening balance + income − spending, shown and correct",
+            ],
+          },
+          {
+            text: "Bank basics: explain the concept of bank interest and how money grows over time in a savings account.",
+            criteria: [
+              "Defines interest in one sentence, in their own words",
+              "Works a simple example: R100 at 5% earns R5 in one year",
+              "Names 1 way compound interest helps savings grow over time",
+            ],
+          },
         ],
       },
       {
@@ -209,9 +347,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         concept:
           "Shield-shaped patch with document, spreadsheet and presentation symbols.",
         requirements: [
-          "Microsoft Word: design a one-page report with a centred title, sub-headers, a bulleted list and an inline image.",
-          "Microsoft Excel: create a five-item budget or inventory sheet using standard formulas (=SUM, =AVERAGE) and currency formatting.",
-          "Microsoft PowerPoint: construct a four-slide presentation on a topic, incorporating slide transitions and title formatting.",
+          {
+            text: "Microsoft Word: design a one-page report with a centred title, sub-headers, a bulleted list and an inline image.",
+            criteria: [
+              "Title centred, with at least 2 sub-headers used",
+              "Includes a bulleted list of at least 4 items",
+              "Inserts 1 image inside the text and fits the report to exactly 1 page",
+            ],
+          },
+          {
+            text: "Microsoft Excel: create a five-item budget or inventory sheet using standard formulas (=SUM, =AVERAGE) and currency formatting.",
+            criteria: [
+              "Contains exactly 5 line items with quantities and prices",
+              "=SUM and =AVERAGE both present and returning correct values",
+              "Currency format applied to every money cell",
+            ],
+          },
+          {
+            text: "Microsoft PowerPoint: construct a four-slide presentation on a topic, incorporating slide transitions and title formatting.",
+            criteria: [
+              "Exactly 4 slides, each with its own title",
+              "At least 1 transition applied across all 4 slides",
+              "Title formatting (size, colour or weight) consistent on all 4 slides",
+            ],
+          },
         ],
       },
       {
@@ -221,9 +380,31 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "shield",
         concept: "Shield-shaped patch featuring a game controller icon.",
         requirements: [
-          "Game development: build a 2D game in Scratch using events, loops (if-then), variables (score) and custom audio.",
-          "Debugging: identify and correct at least three logical errors in a broken pre-made program.",
-          "Presentation: present the completed project to the group and explain how the underlying code blocks work.",
+          {
+            text: "Game development: build a 2D game in Scratch using events, loops (if-then), variables (score) and custom audio.",
+            criteria: [
+              "Uses at least 1 event block (e.g. when flag clicked)",
+              "Includes a loop and an if-then conditional — 2 of 2",
+              "Score variable increases during play and is shown on screen",
+              "Plays at least 1 custom sound effect or music clip in the game",
+            ],
+          },
+          {
+            text: "Debugging: identify and correct at least three logical errors in a broken pre-made program.",
+            criteria: [
+              "Describes all 3 planted errors before fixing them — 3 of 3",
+              "Fixes all 3 so the program completes without crashing",
+              "Runs the program twice after the fixes with no repeat of the original bugs",
+            ],
+          },
+          {
+            text: "Presentation: present the completed project to the group and explain how the underlying code blocks work.",
+            criteria: [
+              "Presents live to the group for at least 3 minutes",
+              "Explains 3 different blocks or structures and what each one does",
+              "Answers at least 1 question from the group",
+            ],
+          },
         ],
       },
     ],
@@ -246,9 +427,31 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "pin",
         concept: "Metal lapel pin or woven sash ribbon with a crest emblem.",
         requirements: [
-          "Certifications: practise basic CPR/AED routines and choking intervention (Heimlich manoeuvre) under qualified instruction.",
-          "Event safety: serve as a designated safety officer during a Sprout Camp or Sprout Sports outing.",
-          "Safety briefing: prepare and deliver a five-minute safety orientation for younger Sprout Club members.",
+          {
+            text: "Certifications: practise basic CPR/AED routines and choking intervention (Heimlich manoeuvre) under qualified instruction.",
+            criteria: [
+              "Completes a recognised CPR/AED course or supervised practice block",
+              "Holds compression rate at 100–120 per minute for a 2-minute round",
+              "Demonstrates the Heimlich manoeuvre correctly on a manikin — 2 of 2",
+              "Receives a signature from the qualified instructor",
+            ],
+          },
+          {
+            text: "Event safety: serve as a designated safety officer during a Sprout Camp or Sprout Sports outing.",
+            criteria: [
+              "Serves as safety officer for at least 1 full session or camp day",
+              "Completes a written risk check (hazards, exits, first aid point) before the activity starts",
+              "Logs every incident — 0 unreported incidents at the debrief",
+            ],
+          },
+          {
+            text: "Safety briefing: prepare and deliver a five-minute safety orientation for younger Sprout Club members.",
+            criteria: [
+              "Runs between 4 and 6 minutes timed",
+              "Covers 4 points: exits, buddy system, emergency number, first aid point",
+              "Takes at least 2 questions from the group",
+            ],
+          },
         ],
       },
       {
@@ -258,9 +461,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "pin",
         concept: "Metal lapel pin or woven sash ribbon with a growth graph icon.",
         requirements: [
-          "Event financial plan: build a full expense budget for a real group trip or fundraiser, projecting revenue versus costs.",
-          "Financial literacy: research and explain checking accounts, debit/credit cards, credit scores and compound interest.",
-          "Fundraising drive: organise and execute a mini community project or fundraiser from budget setup through final audit.",
+          {
+            text: "Event financial plan: build a full expense budget for a real group trip or fundraiser, projecting revenue versus costs.",
+            criteria: [
+              "Lists at least 10 expense lines, each with unit cost and quantity",
+              "Covers at least 4 categories (e.g. venue, food, transport, materials)",
+              "Shows projected revenue, total costs and the resulting surplus or shortfall",
+            ],
+          },
+          {
+            text: "Financial literacy: research and explain checking accounts, debit/credit cards, credit scores and compound interest.",
+            criteria: [
+              "Defines checking account, debit card, credit card and credit score — 4 of 4",
+              "Works a compound interest example: R1 000 at 10% for 2 years → R1 210",
+              "Cites at least 3 credible sources in a 5-minute explanation",
+            ],
+          },
+          {
+            text: "Fundraising drive: organise and execute a mini community project or fundraiser from budget setup through final audit.",
+            criteria: [
+              "Starts with a written budget and ends with a written final audit",
+              "Raises at least 80% of the target set in the budget",
+              "Keeps a ledger of income and expenses with receipts for every line",
+            ],
+          },
         ],
       },
       {
@@ -270,9 +494,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "pin",
         concept: "Metal lapel pin or woven sash ribbon with a briefcase symbol.",
         requirements: [
-          "Microsoft Word: write a multi-page formal document with an automated table of contents, headers, footers and page numbers.",
-          "Microsoft Excel: build a project financial tracker with conditional formatting, logic functions (IF, COUNTIF) and summary charts.",
-          "Microsoft PowerPoint: deliver a six-slide proposal pitch deck with custom slide templates, embedded media and transition timings.",
+          {
+            text: "Microsoft Word: write a multi-page formal document with an automated table of contents, headers, footers and page numbers.",
+            criteria: [
+              "Document runs to at least 4 pages",
+              "Table of contents updates automatically from at least 3 headings",
+              "Headers, footers and page numbers appear on every page",
+            ],
+          },
+          {
+            text: "Microsoft Excel: build a project financial tracker with conditional formatting, logic functions (IF, COUNTIF) and summary charts.",
+            criteria: [
+              "At least 20 rows of data across 5 or more columns",
+              "IF and COUNTIF both used and returning correct values",
+              "Conditional formatting on a status column plus 1 summary chart",
+            ],
+          },
+          {
+            text: "Microsoft PowerPoint: deliver a six-slide proposal pitch deck with custom slide templates, embedded media and transition timings.",
+            criteria: [
+              "Exactly 6 slides with a custom template or design applied",
+              "Includes at least 1 embedded media element (video, image or chart)",
+              "Auto-advance timings set on all 6 slides; full run-through of 8 minutes or less",
+            ],
+          },
         ],
       },
       {
@@ -282,9 +527,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "pin",
         concept: "Metal lapel pin or woven sash ribbon with code brackets (</>).",
         requirements: [
-          "Text syntax: write a functional program in Python or JavaScript that takes user input, uses loops/conditionals and returns calculated results.",
-          "Web basics: code a single-page HTML/CSS website with styled text, structured sections and external links.",
-          "Code documentation: document source code clearly with inline comments explaining logic flow and structure.",
+          {
+            text: "Text syntax: write a functional program in Python or JavaScript that takes user input, uses loops/conditionals and returns calculated results.",
+            criteria: [
+              "Program runs without errors and accepts at least 1 piece of user input",
+              "Contains at least 1 loop and 1 conditional branch",
+              "Returns a calculated result verified with 2 different inputs",
+            ],
+          },
+          {
+            text: "Web basics: code a single-page HTML/CSS website with styled text, structured sections and external links.",
+            criteria: [
+              "Uses header, main and footer sections — 3 of 3",
+              "Styled from an external CSS file with at least 5 rules (font, colour, spacing)",
+              "Includes at least 3 external links that all open correctly",
+            ],
+          },
+          {
+            text: "Code documentation: document source code clearly with inline comments explaining logic flow and structure.",
+            criteria: [
+              "At least 1 comment per function or logical block",
+              "3 sampled comments explain what/why rather than restating the line",
+              "Header block names author, date and purpose of the program",
+            ],
+          },
         ],
       },
       {
@@ -294,9 +560,30 @@ export const HONOR_LEVELS: HonorLevel[] = [
         shape: "pin",
         concept: "Metal lapel pin or woven sash ribbon featuring a camera/microphone symbol.",
         requirements: [
-          "Content creation: produce a two-minute promotional video or written newsletter covering a Sprout Club event (such as Sprout Camp or Sprout Sports).",
-          "Interviewing: conduct a structured five-question interview with a leader or peer and edit it into a clear report.",
-          "Media ethics: present key rules on digital privacy, copyright and respectful media representation.",
+          {
+            text: "Content creation: produce a two-minute promotional video or written newsletter covering a Sprout Club event (such as Sprout Camp or Sprout Sports).",
+            criteria: [
+              "Video runs 1:30–2:30 (90–150 seconds), or newsletter is 400+ words",
+              "Names the event, its date and at least 2 contributors",
+              "Submitted once to the club with a title card or headline",
+            ],
+          },
+          {
+            text: "Interviewing: conduct a structured five-question interview with a leader or peer and edit it into a clear report.",
+            criteria: [
+              "Asks exactly 5 prepared questions, in order",
+              "Recording runs at least 5 minutes",
+              "Report is 300+ words and quotes at least 3 answers word for word",
+            ],
+          },
+          {
+            text: "Media ethics: present key rules on digital privacy, copyright and respectful media representation.",
+            criteria: [
+              "Covers 3 rules: digital privacy, copyright, respectful representation",
+              "Runs at least 4 minutes with 2 real examples cited",
+              "Ends with a written checklist or summary the group keeps",
+            ],
+          },
         ],
       },
     ],
@@ -310,6 +597,48 @@ export const HONOR_TRACK_BY_ID = Object.fromEntries(
 /** The level whose age band a Sprout sub-club page shows (e.g. sprout-kids). */
 export function honorLevelForClub(clubSlug: string): HonorLevel | undefined {
   return HONOR_LEVELS.find((l) => l.clubSlug === clubSlug);
+}
+
+export type HonorEntry = {
+  level: HonorLevel;
+  badge: HonorBadge;
+  track: HonorTrack;
+};
+
+/** Every honor, flattened for detail routes and the honors directory. */
+export const HONOR_ENTRIES: HonorEntry[] = HONOR_LEVELS.flatMap((level) =>
+  level.badges.map((badge) => ({
+    level,
+    badge,
+    track: HONOR_TRACK_BY_ID[badge.track],
+  })),
+);
+
+/** Look one honor up by its URL id (e.g. "first-responder"). */
+export function getHonor(badgeId: string): HonorEntry | undefined {
+  return HONOR_ENTRIES.find((e) => e.badge.id === badgeId);
+}
+
+/** The honor before/after another in framework order (for prev/next links). */
+export function neighborHonors(badgeId: string): {
+  prev?: HonorEntry;
+  next?: HonorEntry;
+} {
+  const i = HONOR_ENTRIES.findIndex((e) => e.badge.id === badgeId);
+  if (i < 0) return {};
+  return { prev: HONOR_ENTRIES[i - 1], next: HONOR_ENTRIES[i + 1] };
+}
+
+/**
+ * Where a given honor gets worked on — weekly club for every level, with the
+ * camp-specific honors called out (the camp is where safety officers are made).
+ */
+export function honorWhereEarned(entry: HonorEntry): string {
+  const base = `Practised at weekly ${entry.level.name} sessions, then proven in front of a leader who signs each requirement off.`;
+  const campHonors = ["first-responder", "media-communications"];
+  return campHonors.includes(entry.badge.id)
+    ? `${base} This one also gets signed off in the field — at Sprout Camp or a Sprout Sports outing.`
+    : base;
 }
 
 export const HONOR_COUNT = HONOR_LEVELS.reduce(

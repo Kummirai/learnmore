@@ -157,31 +157,29 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 return (
                   <Link
                     key={badge.id}
-                    href={`/sprout/honors#badge-${badge.id}`}
+                    href={`/sprout/honors/${badge.id}`}
                     className={
-                      "group relative block h-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm hover:border-cyan hover:shadow-md transition-all"
+                      "group block rounded-2xl bg-white p-3 transition-colors hover:bg-alice-blue/40"
                     }
                   >
-                    <Image
-                      src={track.image}
-                      alt={""}
-                      fill
-                      sizes={
-                        "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                      }
-                      className={
-                        "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      }
-                    />
                     <span
-                      className={
-                        "absolute inset-x-3 bottom-3 block rounded-xl bg-white p-4 shadow-sm"
-                      }
+                      className={"relative block h-44 overflow-hidden rounded-2xl"}
                     >
-                      <span
-                        className={
-                          "flex items-center gap-2 text-xs text-gray-400"
+                      <Image
+                        src={track.image}
+                        alt={""}
+                        fill
+                        sizes={
+                          "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
                         }
+                        className={
+                          "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        }
+                      />
+                    </span>
+                    <span className={"block px-2 pb-1 pt-4"}>
+                      <span
+                        className={"flex items-center gap-2 text-xs text-gray-500"}
                       >
                         <span
                           className={"size-2.5 shrink-0 rounded-full"}
@@ -191,13 +189,11 @@ export default async function ClubPage({ slug }: { slug: string }) {
                         {track.name} · {SHAPE_LABEL[badge.shape]}
                       </span>
                       <span
-                        className={
-                          "mt-1.5 flex items-center justify-between gap-3"
-                        }
+                        className={"mt-1.5 flex items-center justify-between gap-3"}
                       >
                         <span
                           className={
-                            "block font-bold text-navy text-[17px] leading-snug group-hover:text-cyan-dark transition-colors"
+                            "block font-bold text-gray-800 text-[17px] leading-snug group-hover:text-cyan transition-colors"
                           }
                         >
                           {badge.name}
@@ -216,7 +212,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                           "mt-2 block text-sm text-gray-500 leading-snug line-clamp-2"
                         }
                       >
-                        {badge.requirements[0]}
+                        {badge.requirements[0].text}
                       </span>
                     </span>
                   </Link>
