@@ -242,38 +242,6 @@ function clubSlide(club: RelateClub): Slide {
   };
 }
 
-/* ── Seasonal Bible Quiz slide (shared season logic in lib/season) ── */
-import { SEASON_QUIZ } from "@/lib/season";
-
-function bibleQuizSlide(): Slide {
-  const { season, year, bookLabel, windowLabel, blurb, image } = SEASON_QUIZ;
-  return {
-    key: "bible-quiz",
-    chips: [],
-    eyebrow: `${season} ${year} season`,
-    title: `${season} Bible Quiz`,
-    shortTitle: "Quiz",
-    tagline: `${bookLabel} · ${windowLabel}`,
-    description: blurb,
-    watermark: season,
-    bg: {
-      backgroundImage: `url(${image})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    },
-    actions: (
-      <>
-        <Link href={"/bible-quiz/play"} className={btnPrimary}>
-          Play the {season} quiz
-        </Link>
-        <Link href={"/bible-quiz#overview"} className={btnGhost}>
-          See the season&apos;s top 5
-        </Link>
-      </>
-    ),
-  };
-}
-
 function charitySlide(): Slide {
   return {
     key: "charity",
@@ -308,7 +276,6 @@ export default function Hero() {
   const slides: Slide[] = [
     brandSlide(),
     prayerSlide(prayer),
-    bibleQuizSlide(),
     charitySlide(),
     ...MAGAZINES.map(magazineSlide),
     ...CLUBS.map(clubSlide),
@@ -545,7 +512,6 @@ export default function Hero() {
               }
             >
               {slide.key === "prayer" && "Prayer rhythm"}
-              {slide.key === "bible-quiz" && "Season quiz"}
               {slide.key === "charity" && "Charity & care"}
               {MAGAZINES.some((m) => m.slug === slide.key) && "Reading guides"}
               {CLUBS.some((c) => c.slug === slide.key) && "Clubs"}

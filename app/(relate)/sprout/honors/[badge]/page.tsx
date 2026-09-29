@@ -307,6 +307,7 @@ export default async function HonorDetailPage({
               badgeId={honor.id}
               badgeName={honor.name}
               requirements={honor.requirements}
+              piggyBank={honor.piggyBank}
               whatsappGroupLink={club.whatsappGroupLink}
             />
 

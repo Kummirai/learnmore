@@ -34,7 +34,7 @@ export default async function ReadingPlanReaderPage({ params }: Props) {
         tagline={plan.tagline}
         description={
           isBible
-            ? "Read the chapters of a section, mark them done, and the inline Bible Quiz for that section unlocks — you take it right here inside the plan. Your scored attempts land on your club's own top-5 board."
+            ? "Read the chapters of a section, mark them done, and keep your place — you take it right here inside the plan, and your progress stays with your club."
             : "A guided plan, day by day — verse, reading and reflection content you can work through at your own pace."
         }
         watermark={`${plan.days}d`}

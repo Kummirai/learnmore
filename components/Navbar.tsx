@@ -22,11 +22,9 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    link: "Events & Sports",
-    short: "Events",
+    link: "Sports",
+    short: "Sports",
     items: [
-      { link: "Events", path: "/events" },
-      { link: "Club Events", path: "/events/clubs" },
       { link: "Sports", path: "/sports" },
       { link: "Join a Team", path: "/join" },
       { link: "My Membership", path: "/membership" },
@@ -68,20 +66,6 @@ const navGroups: NavGroup[] = [
       { link: "Emotional Wellness", path: "/plans#emotional-wellness" },
       { link: "Finance & Stewardship", path: "/plans#finance-stewardship" },
       { link: "Academic", path: "/plans#academic" },
-    ],
-  },
-  {
-    link: "Bible Quiz",
-    short: "Quiz",
-    items: [
-      { link: "Play the Quiz", path: "/bible-quiz/play" },
-      { link: "Season Overview", path: "/bible-quiz" },
-      { link: "Sprout Board", path: "/bible-quiz#sprout" },
-      { link: "Surge Board", path: "/bible-quiz#surge" },
-      { link: "Pulse Board", path: "/bible-quiz#pulse" },
-      { link: "Prime Board", path: "/bible-quiz#prime" },
-      { link: "Anchor Board", path: "/bible-quiz#anchor" },
-      { link: "Quiz in the App", path: "/#download" },
     ],
   },
   {

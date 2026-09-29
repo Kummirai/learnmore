@@ -28,8 +28,6 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/resources", changeFrequency: "monthly", priority: 0.6 },
   { path: "/store", changeFrequency: "monthly", priority: 0.7 },
   { path: "/plans", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/bible-quiz", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/bible-quiz/play", changeFrequency: "weekly", priority: 0.5 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

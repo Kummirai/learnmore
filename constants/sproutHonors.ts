@@ -47,6 +47,11 @@ export type HonorBadge = {
   shape: HonorShape;
   /** How the badge looks — a patch, shield patch or lapel pin. */
   concept: string;
+  /**
+   * Money honors only: what a participant banks each week and how many weeks
+   * the course runs (weekly × weeks = the piggy-bank target shown live).
+   */
+  piggyBank?: { weekly: number; weeks: number };
   requirements: HonorRequirement[];
 };
 
@@ -167,6 +172,7 @@ export const HONOR_LEVELS: HonorLevel[] = [
         track: "finance",
         shape: "patch",
         concept: "Circular patch featuring a piggy bank or coin icon.",
+        piggyBank: { weekly: 2, weeks: 3 },
         requirements: [
           {
             text: 'Budget game: complete the "Penny Market" exercise by selecting craft supplies while staying under a fixed coin limit.',
@@ -189,7 +195,7 @@ export const HONOR_LEVELS: HonorLevel[] = [
             criteria: [
               "Decorates and labels a personal saving jar",
               "Writes a dated entry for 3 consecutive weeks — 3 of 3",
-              "Reaches or passes the goal amount (e.g. R50) by week 3",
+              "Puts in at least R2 every week — R6 saved by week 3 (3 of 3 weeks)",
             ],
           },
         ],
@@ -312,6 +318,7 @@ export const HONOR_LEVELS: HonorLevel[] = [
         track: "finance",
         shape: "shield",
         concept: "Shield-shaped patch with a balance scale or chart icon.",
+        piggyBank: { weekly: 2, weeks: 2 },
         requirements: [
           {
             text: "Menu budgeting: plan a balanced meal menu for a group on a set budget, comparing unit prices across brands.",
@@ -327,6 +334,7 @@ export const HONOR_LEVELS: HonorLevel[] = [
               "Records an entry for 14 of 14 days",
               "Totals income and spending separately — both totals correct",
               "Closing balance = opening balance + income − spending, shown and correct",
+              "Saves at least R2 every week across the log — R4 saved (2 of 2 weeks)",
             ],
           },
           {

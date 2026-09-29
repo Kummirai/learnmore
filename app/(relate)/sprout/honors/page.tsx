@@ -129,34 +129,30 @@ export default function SproutHonorsPage() {
                       key={badge.id}
                       href={`/sprout/honors/${badge.id}`}
                       className={
-                        "group relative block h-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm hover:border-cyan hover:shadow-md transition-all"
+                        "group block rounded-2xl bg-white p-3 transition-colors hover:bg-alice-blue/40"
                       }
                     >
-                      <Image
-                        src={track.image}
-                        alt={""}
-                        fill
-                        sizes={
-                          "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        }
+                      <span
                         className={
-                          "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          "relative block h-44 overflow-hidden rounded-2xl"
                         }
-                      />
-                      <span
-                        aria-hidden={"true"}
-                        className={"absolute inset-x-0 bottom-0 block h-52"}
-                        style={{
-                          background: `linear-gradient(to top, ${level.colorDark}f2 0%, ${level.colorDark}d9 70%, ${level.colorDark}00 100%)`,
-                        }}
-                      />
-                      <span
-                        className={"absolute inset-x-0 bottom-0 block px-5 pb-5"}
                       >
-                        <span
-                          className={
-                            "flex items-center gap-2 text-xs text-white/70"
+                        <Image
+                          src={track.image}
+                          alt={""}
+                          fill
+                          sizes={
+                            "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           }
+                          className={
+                            "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          }
+                        />
+                      </span>
+
+                      <span className={"block px-2 pb-1 pt-4"}>
+                        <span
+                          className={"flex items-center gap-2 text-xs text-gray-500"}
                         >
                           <span
                             className={"size-2.5 shrink-0 rounded-full"}
@@ -172,7 +168,7 @@ export default function SproutHonorsPage() {
                         >
                           <span
                             className={
-                              "block font-bold text-white text-[17px] leading-snug"
+                              "block font-bold text-gray-800 text-[17px] leading-snug group-hover:text-cyan-dark transition-colors"
                             }
                           >
                             {badge.name}
@@ -180,7 +176,7 @@ export default function SproutHonorsPage() {
                           <span
                             aria-hidden={"true"}
                             className={
-                              "shrink-0 text-sm font-semibold text-cyan-light opacity-0 group-hover:opacity-100 transition-opacity"
+                              "shrink-0 text-sm font-semibold text-cyan opacity-0 group-hover:opacity-100 transition-opacity"
                             }
                           >
                             →
@@ -188,7 +184,7 @@ export default function SproutHonorsPage() {
                         </span>
                         <span
                           className={
-                            "mt-2 block text-sm text-white/75 leading-snug line-clamp-2"
+                            "mt-2 block text-sm text-gray-500 leading-snug line-clamp-2"
                           }
                         >
                           {badge.requirements[0].text}

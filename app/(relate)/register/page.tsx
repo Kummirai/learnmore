@@ -110,8 +110,9 @@ export default function RegisterPage() {
                 <div className="text-xs leading-relaxed text-navy">
                   <p className="font-bold mb-0.5">This choice is locked</p>
                   <p className="text-slate-gray">
-                    Your club shows in your profile and club pages, and unlocks your club&apos;s Bible Quiz
-                    board. Only an admin can change it — not you, not the app, not us.
+                    Your club shows in your profile and club pages, and puts you
+                    in touch with your club&apos;s leaders, events and activities.
+                    Only an admin can change it — not you, not the app, not us.
                   </p>
                 </div>
               </div>

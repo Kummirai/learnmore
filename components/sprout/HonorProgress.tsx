@@ -18,10 +18,34 @@ type Progress = {
   status: "not_started" | "in_progress" | "complete";
   updatedAt?: string;
   completedAt?: string | null;
+  savings?: { total?: number; deposits?: unknown[] };
 };
+
+type Savings = { total: number; deposits: { amount: number; at?: string }[] };
 
 const input =
   "mt-0.5 size-4 shrink-0 accent-cyan focus:ring-cyan/40 cursor-pointer";
+
+const EMPTY_SAVINGS: Savings = { total: 0, deposits: [] };
+
+function normalizeSavings(raw: unknown): Savings {
+  const s = raw as { total?: unknown; deposits?: unknown };
+  if (!s || typeof s !== "object") return EMPTY_SAVINGS;
+  const total =
+    typeof s.total === "number" && Number.isFinite(s.total) ? s.total : 0;
+  const deposits = Array.isArray(s.deposits)
+    ? s.deposits
+        .map((d) => {
+          const row = d as { amount?: unknown; at?: unknown };
+          return {
+            amount: Number(row?.amount) || 0,
+            at: typeof row?.at === "string" ? row.at : undefined,
+          };
+        })
+        .filter((d) => d.amount > 0)
+    : [];
+  return { total, deposits };
+}
 
 /** Blank criteria grid shaped to this badge's requirement definitions. */
 function blankCriteria(requirements: HonorRequirement[]): boolean[][] {
@@ -57,11 +81,14 @@ export default function HonorProgress({
   badgeId,
   badgeName,
   requirements,
+  piggyBank,
   whatsappGroupLink,
 }: {
   badgeId: string;
   badgeName: string;
   requirements: HonorRequirement[];
+  /** Money honors only — weekly saving × course weeks = the piggy target. */
+  piggyBank?: { weekly: number; weeks: number };
   whatsappGroupLink?: string;
 }) {
   const { user, loading } = useAuth();
@@ -69,6 +96,9 @@ export default function HonorProgress({
     blankCriteria(requirements),
   );
   const [progress, setProgress] = useState<Progress | null>(null);
+  const [savings, setSavings] = useState<Savings>(EMPTY_SAVINGS);
+  const [amount, setAmount] = useState("");
+  const [adding, setAdding] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -85,6 +115,7 @@ export default function HonorProgress({
         if (mine) {
           setProgress(mine);
           setCriteria(hydrateCriteria(mine, requirements));
+          if (mine.savings) setSavings(normalizeSavings(mine.savings));
         }
       })
       .catch(() => {})
@@ -115,12 +146,46 @@ export default function HonorProgress({
       if (res.status === 401)
         throw new Error("Your sign-in has expired — please sign in again.");
       if (!res.ok) throw new Error(json?.error || "Could not save your progress.");
-      if (ticket === inFlight.current && json?.data) setProgress(json.data);
+      if (ticket === inFlight.current && json?.data) {
+        setProgress(json.data);
+        if (json.data.savings) setSavings(normalizeSavings(json.data.savings));
+      }
     } catch (err) {
       setCriteria(snapshot);
       setError((err as Error).message);
     } finally {
       if (ticket === inFlight.current) setSaving(false);
+    }
+  }
+
+  async function addDeposit(event: React.FormEvent) {
+    event.preventDefault();
+    const value = Number(amount);
+    if (!Number.isFinite(value) || value <= 0) {
+      setError("Enter the amount you saved — above R0.");
+      return;
+    }
+    setAdding(true);
+    setError("");
+    try {
+      const res = await fetch(
+        `/api/sprout/honors/${encodeURIComponent(badgeId)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ deposit: Math.round(value * 100) / 100 }),
+        },
+      );
+      const json = await res.json().catch(() => ({}));
+      if (res.status === 401)
+        throw new Error("Your sign-in has expired — please sign in again.");
+      if (!res.ok) throw new Error(json?.error || "Could not save your savings.");
+      if (json?.data?.savings) setSavings(normalizeSavings(json.data.savings));
+      setAmount("");
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setAdding(false);
     }
   }
 
@@ -148,6 +213,11 @@ export default function HonorProgress({
   const allDone = total > 0 && done === total;
   const pct = criterionTotal
     ? Math.round((criterionDone / criterionTotal) * 100)
+    : 0;
+
+  const piggyTarget = piggyBank ? piggyBank.weekly * piggyBank.weeks : 0;
+  const piggyPct = piggyTarget
+    ? Math.min(100, Math.round((savings.total / piggyTarget) * 100))
     : 0;
 
   if (loading || (user && !loaded)) {
@@ -194,6 +264,30 @@ export default function HonorProgress({
             </li>
           ))}
         </ol>
+
+        {piggyBank && (
+          <div
+            className={
+              "mb-4 rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3"
+            }
+          >
+            <p
+              className={
+                "text-[11px] font-bold uppercase tracking-widest text-amber-700"
+              }
+            >
+              Piggy bank
+            </p>
+            <p className={"mt-1 text-sm text-gray-700 leading-snug"}>
+              Bank <strong className="text-navy">R{piggyBank.weekly}</strong>{" "}
+              every week for {piggyBank.weeks}{" "}
+              {piggyBank.weeks === 1 ? "week" : "weeks"} — everyone shows their
+              jar at{" "}
+              <strong className="text-navy">R{piggyTarget}</strong> by the end
+              of the course.
+            </p>
+          </div>
+        )}
 
         <div className="rounded-xl border border-cyan/20 bg-alice-blue/60 p-4">
           <div className="mb-3 size-10 rounded-full bg-white flex items-center justify-center">
@@ -264,6 +358,103 @@ export default function HonorProgress({
             : ""}
         </p>
       </div>
+
+      {piggyBank && (
+        <div
+          className={
+            "mb-5 rounded-xl border border-amber-200 bg-amber-50/60 px-4 py-3.5"
+          }
+        >
+          <div className={"flex items-start justify-between gap-3"}>
+            <div className={"min-w-0"}>
+              <p
+                className={
+                  "text-[11px] font-bold uppercase tracking-widest text-amber-700"
+                }
+              >
+                Piggy bank
+              </p>
+              <p className={"mt-1 text-sm text-gray-700 leading-snug"}>
+                Save{" "}
+                <strong className="text-navy">R{piggyBank.weekly}</strong> a
+                week for {piggyBank.weeks}{" "}
+                {piggyBank.weeks === 1 ? "week" : "weeks"} — target{" "}
+                <strong className="text-navy">R{piggyTarget}</strong>
+              </p>
+            </div>
+            <p className={"shrink-0 text-right"}>
+              <span className={"block text-lg font-black leading-tight text-navy"}>
+                R{savings.total.toFixed(2)}
+              </span>
+              <span className={"block text-[11px] text-slate-gray"}>banked</span>
+            </p>
+          </div>
+
+          <div
+            className={
+              "mt-2.5 h-2 w-full overflow-hidden rounded-full bg-amber-100"
+            }
+          >
+            <div
+              className={"h-full rounded-full bg-amber-500 transition-all duration-500"}
+              style={{ width: `${piggyPct}%` }}
+            />
+          </div>
+
+          <form
+            onSubmit={addDeposit}
+            className={"mt-3 flex items-center gap-2"}
+          >
+            <label className={"relative flex-1"}>
+              <span
+                aria-hidden={"true"}
+                className={
+                  "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400"
+                }
+              >
+                R
+              </span>
+              <input
+                type={"number"}
+                min={"1"}
+                step={"0.5"}
+                inputMode={"decimal"}
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder={String(piggyBank.weekly)}
+                aria-label={"Amount you saved"}
+                className={
+                  "w-full rounded-lg border border-amber-200 bg-white py-2 pl-7 pr-3 text-sm text-gray-800 focus:border-amber-400 focus:outline-none"
+                }
+              />
+            </label>
+            <button
+              type={"submit"}
+              disabled={adding}
+              className={
+                "shrink-0 rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
+              }
+            >
+              {adding ? "Saving…" : "Add savings"}
+            </button>
+          </form>
+
+          {savings.deposits.length > 0 && (
+            <p className={"mt-2 text-[11px] text-slate-gray"}>
+              {savings.deposits.length} deposit
+              {savings.deposits.length === 1 ? "" : "s"} logged
+              {savings.deposits[savings.deposits.length - 1].at
+                ? ` · last ${new Date(
+                    savings.deposits[savings.deposits.length - 1].at!,
+                  ).toLocaleDateString("en-ZA", {
+                    day: "numeric",
+                    month: "short",
+                  })}`
+                : ""}
+            </p>
+          )}
+        </div>
+      )}
 
       <ol className="space-y-3">
         {requirements.map((req, i) => {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { LuCircleCheck } from "react-icons/lu";
 import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
@@ -12,6 +13,7 @@ import {
   programSlug,
 } from "@/constants/relate";
 import { getPublications } from "@/lib/publications";
+import { getClubEvents } from "@/lib/events";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
 import {
   HONOR_TRACK_BY_ID,
@@ -35,11 +37,30 @@ export default async function ClubPage({ slug }: { slug: string }) {
   }
 
   const publications = await getPublications(club.slug);
+  const events = await getClubEvents(club.slug);
   const magazines = publications.filter((p) => p.kind === "magazine");
   const classes = getClubClasses(club.slug);
   const honorLevel = honorLevelForClub(club.slug);
   const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null;
   const parent = club.parentSlug ? getClub(club.parentSlug) : undefined;
+  // Sprout pages lead with Events & Activities — the programs list and its
+  // flagship banner are replaced by what's on the calendar.
+  const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
+  const banner = isSprout
+    ? {
+        eyebrow: "Get involved",
+        title: "Join Activities and Events",
+        blurb: `Come along to ${club.name} and the extra dates on the calendar — take part, bring a friend and tick something off every week.`,
+        events: true,
+      }
+    : club.programs[0]
+      ? {
+          eyebrow: "The weekly flagship",
+          title: club.programs[0].name,
+          blurb: club.programs[0].blurb,
+          events: false,
+        }
+      : null;
   const clubVars = {
     "--club-accent": club.color,
     "--club-accent-dark": club.colorDark,
@@ -66,12 +87,12 @@ export default async function ClubPage({ slug }: { slug: string }) {
               Join {club.name}
             </JoinCta>
             <a
-              href={"#programs"}
+              href={isSprout ? "#events" : "#programs"}
               className={
                 "inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"
               }
             >
-              Explore programs
+              {isSprout ? "See what's on" : "Explore programs"}
             </a>
           </>
         }
@@ -312,28 +333,30 @@ export default async function ClubPage({ slug }: { slug: string }) {
             </div>
           )}
 
-          <div id={"programs"} className={"scroll-mt-8 mb-10"}>
-            <span
-              className={
-                "text-xs uppercase tracking-widest text-cyan font-medium"
-              }
-            >
-              What happens here
-            </span>
-            <h2
-              className={
-                "text-2xl md:text-3xl font-semibold text-gray-800 mt-1"
-              }
-            >
-              Programs &amp; Activities
-            </h2>
-            <p className={"text-gray-500 text-sm mt-2 max-w-xl"}>
-              {club.programs.length} programs for {club.group.toLowerCase()} —
-              one weekly flagship, then the whole menu of ways to be involved.
-            </p>
-          </div>
+          {!isSprout && (
+            <div id={"programs"} className={"scroll-mt-8 mb-10"}>
+              <span
+                className={
+                  "text-xs uppercase tracking-widest text-cyan font-medium"
+                }
+              >
+                What happens here
+              </span>
+              <h2
+                className={
+                  "text-2xl md:text-3xl font-semibold text-gray-800 mt-1"
+                }
+              >
+                Programs &amp; Activities
+              </h2>
+              <p className={"text-gray-500 text-sm mt-2 max-w-xl"}>
+                {club.programs.length} programs for {club.group.toLowerCase()} —
+                one weekly flagship, then the whole menu of ways to be involved.
+              </p>
+            </div>
+          )}
 
-          {club.programs[0] && (
+          {banner && (
             <div
               className={
                 "relative overflow-hidden rounded-2xl text-white mb-10 shadow-sm"
@@ -364,24 +387,28 @@ export default async function ClubPage({ slug }: { slug: string }) {
                     }
                     style={{ color: club.color }}
                   >
-                    The weekly flagship
+                    {banner.eyebrow}
                   </span>
                   <h3
                     className={
                       "mt-1 text-2xl md:text-3xl font-bold tracking-tight"
                     }
                   >
-                    {club.programs[0].name}
+                    {banner.title}
                   </h3>
                   <p
                     className={
                       "mt-2 text-white/80 text-sm md:text-base max-w-xl leading-relaxed"
                     }
                   >
-                    {club.programs[0].blurb}
+                    {banner.blurb}
                   </p>
                 </div>
-                <div className={"shrink-0 self-start md:self-center"}>
+                <div
+                  className={
+                    "shrink-0 self-start md:self-center flex flex-wrap items-center gap-3"
+                  }
+                >
                   <JoinCta
                     href={`/join?club=${club.slug}`}
                     className={
@@ -390,12 +417,22 @@ export default async function ClubPage({ slug }: { slug: string }) {
                   >
                     Join {club.name}
                   </JoinCta>
+                  {banner.events && (
+                    <a
+                      href={"#events"}
+                      className={
+                        "inline-flex items-center gap-2 border border-white/30 px-5 py-2.5 rounded-lg font-semibold text-sm hover:border-white/70 transition-colors"
+                      }
+                    >
+                      See what&apos;s on →
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
           )}
 
-          {club.programs.length > 1 && (
+          {!isSprout && club.programs.length > 1 && (
             <>
               <h3
                 className={
@@ -447,43 +484,209 @@ export default async function ClubPage({ slug }: { slug: string }) {
             <Link
               href={"/sprout/honors"}
               className={
-                "group mt-8 flex items-center gap-5 rounded-2xl border border-gray-200 bg-alice-blue/60 p-6 hover:border-cyan hover:bg-alice-blue transition-colors"
+                "group mt-8 flex items-center gap-5 rounded-2xl border border-green-200 bg-green-50 p-6 hover:border-green-300 hover:bg-green-100 transition-colors"
               }
             >
               <span
                 className={
-                  "flex size-12 shrink-0 items-center justify-center rounded-full text-white text-xl"
+                  "flex size-12 shrink-0 items-center justify-center rounded-full bg-green-600 text-white"
                 }
-                style={{ backgroundColor: club.colorDark }}
                 aria-hidden={"true"}
               >
-                ★
+                <LuCircleCheck className={"text-xl"} />
               </span>
               <span className={"min-w-0 flex-1"}>
                 <span
                   className={
-                    "block text-[11px] uppercase tracking-widest text-cyan font-semibold"
+                    "block text-[11px] uppercase tracking-widest text-green-700 font-semibold"
                   }
                 >
                   Honors &amp; badges
                 </span>
-                <span className={"block font-bold text-navy text-lg leading-snug"}>
+                <span
+                  className={"block font-bold text-green-900 text-lg leading-snug"}
+                >
                   Sprout Club Honors framework
                 </span>
-                <span className={"block text-sm text-gray-500 leading-snug"}>
+                <span className={"block text-sm text-green-800 leading-snug"}>
                   Thirteen honors across safety, money, digital skills, coding
                   and media — earned from Sprout Kids through to Sprout Teens.
                 </span>
               </span>
               <span
                 className={
-                  "hidden shrink-0 text-sm font-semibold text-cyan group-hover:translate-x-1 transition-transform sm:block"
+                  "hidden shrink-0 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white group-hover:bg-green-700 transition-colors sm:block"
                 }
               >
                 See the honors →
               </span>
             </Link>
           )}
+
+          <div id={"events"} className={"mt-12 scroll-mt-8"}>
+            <span
+              className={
+                "text-xs uppercase tracking-widest text-cyan font-medium"
+              }
+            >
+              What&apos;s on
+            </span>
+            <h2
+              className={
+                "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"
+              }
+            >
+              Events &amp; Activities
+            </h2>
+            <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+              {isSprout
+                ? `Every date on for ${club.name} — weekly gatherings, special days out and the camps that fill the term.`
+                : `Upcoming dates for ${club.name} — the week-to-week rhythm sits in the programs above, these are the extra gatherings to put in the diary.`}
+            </p>
+
+            {events.length > 0 ? (
+              <div
+                className={
+                  "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+                }
+              >
+                {events.map((event) => {
+                  const when = new Date(`${event.date}T00:00:00`);
+                  const meta = [
+                    event.time,
+                    event.location,
+                    event.fee || "Free",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ");
+                  return (
+                    <Link
+                      key={event.id}
+                      href={`/events/${event.id}`}
+                      className={
+                        "group block rounded-2xl bg-white p-3 transition-colors hover:bg-alice-blue/40"
+                      }
+                    >
+                      <span
+                        className={
+                          "relative block h-44 overflow-hidden rounded-2xl"
+                        }
+                        style={
+                          event.imageUrl
+                            ? undefined
+                            : {
+                                background: `linear-gradient(135deg, ${club.colorDark} 0%, #1d2a4d 100%)`,
+                              }
+                        }
+                      >
+                        {event.imageUrl ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={event.imageUrl}
+                            alt={event.title}
+                            loading="lazy"
+                            className={
+                              "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                            }
+                          />
+                        ) : (
+                          <span
+                            className={
+                              "absolute inset-0 flex flex-col items-center justify-center text-white"
+                            }
+                          >
+                            <span
+                              className={"text-4xl font-black leading-none"}
+                            >
+                              {when.getDate()}
+                            </span>
+                            <span
+                              className={
+                                "mt-1 text-xs uppercase tracking-widest text-white/70"
+                              }
+                            >
+                              {when.toLocaleDateString("en-GB", {
+                                month: "short",
+                              })}
+                            </span>
+                          </span>
+                        )}
+                      </span>
+
+                      <span className={"block px-2 pb-1 pt-4"}>
+                        <span
+                          className={
+                            "block text-xs font-medium uppercase tracking-widest text-cyan"
+                          }
+                        >
+                          {when.toLocaleDateString("en-GB", {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "short",
+                          })}
+                        </span>
+                        <span
+                          className={
+                            "mt-1.5 flex items-center justify-between gap-3"
+                          }
+                        >
+                          <span
+                            className={
+                              "block font-bold text-gray-800 text-[17px] leading-snug group-hover:text-cyan-dark transition-colors"
+                            }
+                          >
+                            {event.title}
+                          </span>
+                          <span
+                            aria-hidden={"true"}
+                            className={
+                              "shrink-0 text-sm font-semibold text-cyan opacity-0 group-hover:opacity-100 transition-opacity"
+                            }
+                          >
+                            →
+                          </span>
+                        </span>
+                        <span
+                          className={
+                            "mt-1 block text-[13px] text-slate-gray leading-snug"
+                          }
+                        >
+                          {meta}
+                        </span>
+                        {event.description && (
+                          <span
+                            className={
+                              "mt-1.5 block text-sm text-gray-500 leading-snug line-clamp-2"
+                            }
+                          >
+                            {event.description}
+                          </span>
+                        )}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            ) : (
+              <div
+                className={
+                  "rounded-xl border border-dashed border-gray-200 bg-alice-blue/40 px-5 py-6 text-sm text-gray-500"
+                }
+              >
+                No dates on the calendar yet — new ones appear here as soon as
+                leaders set them.
+              </div>
+            )}
+
+            <Link
+              href={"/events"}
+              className={
+                "mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-cyan-dark transition-colors"
+              }
+            >
+              All Relate events →
+            </Link>
+          </div>
 
           {publications.length > 0 && (
             <div

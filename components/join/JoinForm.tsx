@@ -40,7 +40,6 @@ const INTEREST_OPTIONS = [
   "Football",
   "Netball",
   "Volleyball",
-  "Bible Quiz",
   "Reading & study guides",
   "Prayer & worship",
   "Events & outings",

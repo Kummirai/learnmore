@@ -6,7 +6,6 @@ import {
   LuDumbbell,
   LuHeartHandshake,
   LuLayers,
-  LuLightbulb,
   LuArrowRight,
 } from "react-icons/lu";
 import { withAlpha } from "./shared";
@@ -50,13 +49,6 @@ export default function MembershipBenefits({
       body: "A verse, a read and a prayer for every day — from a month in the Psalms to the whole Bible in a year.",
       href: "/plans",
       cta: "Pick a plan",
-    },
-    {
-      icon: LuLightbulb,
-      title: "Bible Quiz season",
-      body: "Read the season's books together, then battle it out on the leaderboard and win the season.",
-      href: "/bible-quiz",
-      cta: "Play the quiz",
     },
     {
       icon: LuHeartHandshake,

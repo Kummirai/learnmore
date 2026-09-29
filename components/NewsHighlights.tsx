@@ -11,9 +11,9 @@ const posts = [
     color: "bg-ice-blue text-navy-dark",
   },
   {
-    title: "The Bible Quiz Season Has Begun",
+    title: "Sprout Camp Bookings Are Open",
     excerpt:
-      "Read the books, earn points on the leaderboard and battle it out at club — Sprout's quiz season is underway.",
+      "Four days of honors, hikes and campfires — leaders on hand to sign off badges. Places are limited, so book early.",
     date: "15 Aug 2026",
     tag: "Sprout",
     color: "bg-blue-100 text-blue-700",

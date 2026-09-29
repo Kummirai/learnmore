@@ -46,12 +46,6 @@ export const CLUBS: RelateClub[] = [
           "An overnight camp experience with hikes, campfires and team challenges, subsidised so every child can attend.",
       },
       {
-        name: "Bible Quiz",
-        blurb: "Read the books, then battle it out in the quiz.",
-        detail:
-          "Each season we read a few books of the Bible together. Learn the stories and characters, then join the quiz to test your knowledge — build up points on the leaderboard and win the season.",
-      },
-      {
         name: "Sprout Sports",
         blurb: "Weekend sports and recreation.",
         detail:
@@ -644,12 +638,6 @@ export function getRelateClub(
 }
 
 const SPROUT_CLASS_PROGRAMS: RelateProgram[] = [
-  {
-    name: "Bible Quiz",
-    blurb: "Read the books, then battle it out in the quiz.",
-    detail:
-      "Each season we read a few books of the Bible together. Learn the stories and characters, then join the quiz to test your knowledge — build up points on the leaderboard and win the season.",
-  },
   {
     name: "Reading Circle",
     blurb: "Literacy development and reading encouragement.",
