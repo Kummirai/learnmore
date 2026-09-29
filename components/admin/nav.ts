@@ -11,6 +11,7 @@ import {
     LuFolderOpen,
     LuShoppingBag,
     LuFlame,
+    LuBadgeCheck,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -131,6 +132,13 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Streaks",
                 icon: LuFlame,
                 description: "Repair reading streaks for members.",
+            },
+            {
+                href: "/admin/sprout-honors",
+                label: "Sprout Honors",
+                short: "Honors",
+                icon: LuBadgeCheck,
+                description: "Roll-up of honors progress and piggy-bank savings.",
             },
         ],
     },
