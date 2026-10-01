@@ -1,4 +1,5 @@
 import type {CSSProperties} from "react"
+import {Suspense} from "react"
 import Navbar from "@/components/Navbar"
 import MagazineReader from "@/components/publications/MagazineReader"
 import {PubBlocks} from "@/components/publications/PublicationBlocks"
@@ -48,7 +49,9 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
                 </header>
 
                 {isMagazine && doc.weeks && doc.weeks.length > 0 ? (
-                    <MagazineReader key={doc.id} doc={doc}/>
+                    <Suspense fallback={null}>
+                        <MagazineReader key={doc.id} doc={doc}/>
+                    </Suspense>
                 ) : (
                     <div className={"max-w-3xl mx-auto"}>
                         {doc.blocks && doc.blocks.length > 0 && (

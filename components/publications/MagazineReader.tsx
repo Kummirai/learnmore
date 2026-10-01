@@ -1,6 +1,7 @@
 "use client"
 
 import {useMemo, useState} from "react"
+import {useSearchParams} from "next/navigation"
 import {LuBookOpen} from "react-icons/lu"
 import {PubBlocks} from "@/components/publications/PublicationBlocks"
 import type {PubDocument, PubWeek} from "@/lib/publications"
@@ -49,8 +50,24 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
         ).offsets
     }, [weeks])
 
+    const searchParams = useSearchParams()
+
     const [pos, setPos] = useState<number>(() => {
         if (days.length === 0) return 0
+
+        // Shared links arrive as /library/{id}?week=3&day=2026-09-15.
+        const sharedDate = searchParams.get("day")
+        if (sharedDate) {
+            const idx = days.findIndex(({day}) => day.date === sharedDate)
+            if (idx >= 0) return idx
+        }
+
+        const sharedWeek = Number(searchParams.get("week"))
+        if (Number.isInteger(sharedWeek) && sharedWeek >= 1) {
+            const offset = weekOffsets[sharedWeek - 1]
+            if (typeof offset === "number") return Math.min(offset, days.length - 1)
+        }
+
         const today = todayStr()
         const idx = days.findIndex(({day}) => day.date === today)
         return idx >= 0 ? idx : -1
