@@ -7,160 +7,90 @@ import { AdminHeader } from "@/components/admin/ui";
 import {
   READING_PLANS,
   READING_PLAN_CATEGORIES,
-  type RelateReadingPlan,
   getPlanSections,
-  type ReadingSection,
+  fetchAdminReadingPlans,
 } from "@/lib/reading-plans";
-import { getSupabase } from "@/lib/supabase";
-import type { PubBlock } from "@/lib/editor/season";
 
-type SectionDraft = {
-  title: string;
-  book: string;
-  startCh: number;
-  endCh: number;
-  verseText: string;
-  verseBy: string;
-  blocks: PubBlock[];
-};
-
-type PlanDraft = {
+type ListItem = {
   slug: string;
   title: string;
-  tagline: string;
-  description: string;
-  category: string;
   section: string;
   days: number;
+  category: string;
   gradient: [string, string];
-  image: string;
-  sections: SectionDraft[];
+  status: "published" | "draft";
+  source: "catalog" | "db";
+  sectionsCount: number;
 };
 
-function toDraft(p: RelateReadingPlan): PlanDraft {
-  const sections: SectionDraft[] = getPlanSections(p).map((s: ReadingSection) => ({
-    title: s.title,
-    book: s.book || "",
-    startCh: s.startCh || 1,
-    endCh: s.endCh || 5,
-    verseText: s.verseText || "",
-    verseBy: s.verseBy || "",
-    blocks: s.blocks || [],
-  }));
-  return {
+function catalogItems(): ListItem[] {
+  return READING_PLANS.map((p) => ({
     slug: p.slug,
     title: p.title,
-    tagline: p.tagline,
-    description: p.description,
-    category: p.category,
     section: p.section,
     days: p.days,
+    category: p.category,
     gradient: p.gradient,
-    image: p.image,
-    sections,
-  };
+    status: "published" as const,
+    source: "catalog" as const,
+    sectionsCount: getPlanSections(p).length,
+  }));
 }
 
 export default function AdminReadingPlansPage() {
-  const [plans, setPlans] = useState<PlanDraft[]>([]);
+  const [plans, setPlans] = useState<ListItem[]>(catalogItems);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
 
-  useEffect(() => {
-    setPlans(READING_PLANS.map(toDraft));
-    setLoading(false);
-  }, []);
-
-  async function loadAuthored() {
-    const db = getSupabase();
-    if (!db) return;
+  async function loadPlans() {
     try {
-      const { data } = await db
-        .from("reading_plans")
-        .select("slug,title,tagline,description,category,section,days,gradient,image,status")
-        .order("sort", { ascending: true });
-      if (!data || !data.length) return;
-      const local = (await Promise.all(
-        (data as Array<Record<string, any>>).map(async (row) => {
-          const base = READING_PLANS.find((p) => p.slug === row.slug);
-          const { data: secs } = await db
-            .from("plan_sections")
-            .select("title,book,start_ch,end_ch,verse_text,verse_by,blocks,sort")
-            .eq("plan_slug", row.slug)
-            .order("sort", { ascending: true });
-          const sections: SectionDraft[] =
-            secs && secs.length
-              ? (secs as Array<Record<string, any>>).map((s) => ({
-                  title: s.title || "",
-                  book: s.book || "",
-                  startCh: s.start_ch ?? 1,
-                  endCh: s.end_ch ?? 5,
-                  verseText: s.verse_text || "",
-                  verseBy: s.verse_by || "",
-                  blocks: Array.isArray(s.blocks) ? (s.blocks as PubBlock[]) : [],
-                }))
-              : getPlanSections({
-                  slug: row.slug,
-                  title: row.title,
-                  tagline: row.tagline || "",
-                  description: row.description || "",
-                  category: row.category || "Bible Reading",
-                  section: row.section || "Whole Bible",
-                  days: row.days ?? 5,
-                  gradient: (Array.isArray(row.gradient) && row.gradient.length === 2
-                    ? row.gradient
-                    : ["#111827", "#1f2937"]) as [string, string],
-                  image: row.image || "",
-                }).map((s: ReadingSection) => ({
-                  title: s.title,
-                  book: s.book || "",
-                  startCh: s.startCh || 1,
-                  endCh: s.endCh || 5,
-                  verseText: s.verseText || "",
-                  verseBy: s.verseBy || "",
-                  blocks: s.blocks || [],
-                }));
-          return {
-            slug: row.slug,
-            title: row.title,
-            tagline: row.tagline || base?.tagline || "",
-            description: row.description || base?.description || "",
-            category: row.category || "Bible Reading",
-            section: row.section || base?.section || "Whole Bible",
-            days: row.days ?? base?.days ?? 5,
-            gradient: (Array.isArray(row.gradient) && row.gradient.length === 2
-              ? row.gradient
-              : base?.gradient ?? ["#111827", "#1f2937"]) as [string, string],
-            image: row.image || base?.image || "",
-            sections,
-          } satisfies PlanDraft;
-        }),
-      )) as PlanDraft[];
-      setPlans(local);
-    } catch {
-      // fall back to the catalog
+      const rows = await fetchAdminReadingPlans();
+      setPlans(
+        rows.map((row) => ({
+          slug: row.slug,
+          title: row.title,
+          section: row.section,
+          days: row.days,
+          category: row.category,
+          gradient: row.gradient,
+          status: row.status === "draft" ? "draft" : "published",
+          source: row.source === "db" ? "db" : "catalog",
+          sectionsCount: row.sectionsCount ?? row.sections?.length ?? 0,
+        })),
+      );
+    } catch (e) {
+      setNotice(e instanceof Error ? e.message : "Couldn't reach the API — showing the built-in catalog.");
     }
   }
 
   useEffect(() => {
-    void loadAuthored();
+    let cancelled = false;
+    (async () => {
+      if (cancelled) return;
+      await loadPlans();
+      if (!cancelled) setLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   async function remove(slug: string) {
     const name = plans.find((p) => p.slug === slug)?.title || slug;
-    if (!confirm(`Delete "${name}"? This also removes its authored sections.`)) return;
-    const db = getSupabase();
+    if (!confirm(`Delete "${name}"? This removes the saved plan and its sections.`)) return;
     setBusy(true);
     try {
-      if (db) {
-        await db.from("reading_plans").delete().eq("slug", slug);
-        await db.from("plan_sections").delete().eq("plan_slug", slug);
-        void loadAuthored();
-      } else {
-        setPlans((prev) => prev.filter((p) => p.slug !== slug));
+      const res = await fetch(`/api/admin/reading-plans/${encodeURIComponent(slug)}`, {
+        method: "DELETE",
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setNotice(typeof json?.error === "string" ? json.error : "Delete failed.");
+        return;
       }
       setNotice("Reading plan deleted.");
+      await loadPlans();
     } catch (e: unknown) {
       setNotice(`Delete failed: ${e instanceof Error ? e.message : "unknown error"}`);
     } finally {
@@ -234,7 +164,7 @@ export default function AdminReadingPlansPage() {
                               {p.title}
                             </Link>
                             <p className="text-xs text-gray-400 truncate">
-                              {p.section} · {p.days} days · {p.sections.length} sections
+                              {p.section} · {p.days} days · {p.sectionsCount} sections
                             </p>
                           </div>
                           <Link

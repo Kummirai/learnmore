@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { FaBookOpen } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
-import { READING_PLANS, READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
+import { READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
+import { listPublicReadingPlans } from "@/lib/reading-plans";
 
 export const metadata: Metadata = {
   title: "Reading Plans",
@@ -11,7 +12,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/plans" },
 };
 
-export default function ReadingPlansPage() {
+export default async function ReadingPlansPage() {
+    const READING_PLANS = await listPublicReadingPlans();
     return (
         <>
             <PageHero

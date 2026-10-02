@@ -14,6 +14,8 @@ export type RelateReadingPlan = {
     days: number;
     gradient: [string, string];
     image: string;
+    /** True when the plan was authored in the admin editor (backend). */
+    authored?: boolean;
 };
 
 export const READING_PLAN_CATEGORIES = [

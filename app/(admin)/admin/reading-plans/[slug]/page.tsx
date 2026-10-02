@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ReadingPlanEditor from "@/components/admin/ReadingPlanEditor";
 import { Button } from "@/components/admin/ui";
-import { getAuthoredPlan, getReadingPlan, getPlanSections } from "@/lib/reading-plans";
+import { fetchAdminReadingPlan, getReadingPlan, getPlanSections } from "@/lib/reading-plans";
 
 export default function AdminReadingPlanEditPage({ params }: { params: Promise<{ slug: string }> }) {
   return (
@@ -31,10 +31,10 @@ function EditBody({ params }: { params: Promise<{ slug: string }> }) {
       if (cancelled) return;
       setSlug(planSlug);
       try {
-        const authored = await getAuthoredPlan(planSlug);
+        const doc = await fetchAdminReadingPlan(planSlug);
         if (cancelled) return;
-        if (authored) {
-          setInitial(buildInitial(authored.plan, authored.sections, "published"));
+        if (doc) {
+          setInitial(buildInitial(doc, doc.sections ?? [], doc.status));
           return;
         }
         const catalog = getReadingPlan(planSlug);

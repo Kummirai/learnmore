@@ -12,7 +12,6 @@ import { emptyReading, readingHasContent } from "@/lib/editor/season";
 import type { PubBlock, ReadingStructure } from "@/lib/editor/season";
 import { READING_PLAN_CATEGORIES } from "@/lib/reading-plans";
 import { BLOCK_TYPES } from "@/lib/editor/catalog";
-import { getSupabase } from "@/lib/supabase";
 
 type DayDraft = {
   title: string;
@@ -206,44 +205,43 @@ export default function ReadingPlanEditor({
     setSaving(true);
     setError(null);
     setSaved(false);
-    const db = getSupabase();
     try {
-      if (!db) {
-        setError("Supabase isn't configured — nothing was saved.");
-        return;
-      }
-      const planFields = {
+      const payload = {
         title: draft.title,
-        tagline: draft.tagline || null,
-        description: draft.description || null,
+        tagline: draft.tagline || "",
+        description: draft.description || "",
         category: draft.category,
-        section: draft.section || null,
+        section: draft.section || "",
         days: draft.days,
         gradient: draft.gradient,
-        image: draft.image || null,
+        image: draft.image || "",
         status: draft.status || "draft",
+        sections: draft.sections
+          .filter((s) => s.title || s.verseText || s.blocks.length || (s.reading && readingHasContent(s.reading)))
+          .map((s, i) => ({
+            title: s.title || `Day ${i + 1}`,
+            book: isBible && s.book ? s.book : null,
+            startCh: isBible ? s.startCh : null,
+            endCh: isBible ? s.endCh : null,
+            verseText: s.verseText || null,
+            verseBy: s.verseBy || null,
+            blocks: blocksForPayload(s),
+            sort: i,
+          })),
       };
-      if (isEdit) {
-        await db.from("reading_plans").update(planFields).eq("slug", draft.slug);
-      } else {
-        await db.from("reading_plans").insert({ slug: draft.slug, ...planFields, sort: 0 });
+      const res = await fetch(
+        `/api/admin/reading-plans/${encodeURIComponent(draft.slug)}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        },
+      );
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(typeof json?.error === "string" ? json.error : "Save failed.");
+        return;
       }
-
-      await db.from("plan_sections").delete().eq("plan_slug", draft.slug);
-      const rows = draft.sections
-        .filter((s) => s.title || s.verseText || s.blocks.length || (s.reading && readingHasContent(s.reading)))
-        .map((s, i) => ({
-          plan_slug: draft.slug,
-          title: s.title || `Day ${i + 1}`,
-          book: isBible && s.book ? s.book : null,
-          start_ch: isBible ? s.startCh : null,
-          end_ch: isBible ? s.endCh : null,
-          verse_text: s.verseText || null,
-          verse_by: s.verseBy || null,
-          blocks: blocksForPayload(s),
-          sort: i,
-        }));
-      if (rows.length) await db.from("plan_sections").insert(rows);
 
       setSaved(true);
       router.push("/admin/reading-plans");

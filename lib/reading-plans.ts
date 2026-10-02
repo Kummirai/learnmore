@@ -9,6 +9,7 @@
  * and later swapped to live Supabase rows without touching page code.
  */
 import { READING_PLANS, READING_PLAN_CATEGORIES, type RelateReadingPlan } from "@/constants/readingPlans";
+import { API_BASE } from "@/lib/config";
 
 export { READING_PLANS, READING_PLAN_CATEGORIES };
 export type { RelateReadingPlan };
@@ -121,64 +122,124 @@ export function getPlansByCategory(category: string): RelateReadingPlan[] {
   return READING_PLANS.filter((p) => p.category === category);
 }
 
+// ─── Backend (MongoDB) accessors ─────────────────────────────────────────
+
 /**
- * Load an authored plan from Supabase when it exists there (admin editor),
- * merged with the static catalog for metadata that only the catalog carries.
- * Returns null when Supabase isn't configured or the plan row is absent —
- * callers then fall back to the catalog + getPlanSections().
+ * Public list of plans from the backend (static catalog overlaid with admin-
+ * authored plans). Falls back to the local catalog when the API is down.
+ */
+export async function listPublicReadingPlans(): Promise<RelateReadingPlan[]> {
+  try {
+    const res = await fetch(`${API_BASE}/api/reading-plans`, { cache: "no-store" });
+    if (!res.ok) return READING_PLANS;
+    const data = await res.json();
+    return Array.isArray(data) && data.length ? (data as RelateReadingPlan[]) : READING_PLANS;
+  } catch {
+    return READING_PLANS;
+  }
+}
+
+type ApiSection = {
+  id?: string;
+  planSlug?: string;
+  plan_slug?: string;
+  title?: string;
+  book?: string | null;
+  startCh?: number | null;
+  endCh?: number | null;
+  verseText?: string;
+  verseBy?: string;
+  blocks?: unknown[];
+  sort?: number;
+};
+
+function sectionFromApi(s: ApiSection): ReadingSection {
+  return {
+    id: s.id ?? `${s.planSlug ?? s.plan_slug ?? "plan"}-${typeof s.sort === "number" ? s.sort : 0}`,
+    planSlug: s.planSlug ?? s.plan_slug ?? "",
+    title: s.title ?? "",
+    book: s.book ?? null,
+    startCh: s.startCh ?? null,
+    endCh: s.endCh ?? null,
+    verseText: s.verseText ?? undefined,
+    verseBy: s.verseBy ?? undefined,
+    blocks: Array.isArray(s.blocks) ? (s.blocks as PubBlock[]) : undefined,
+    sort: typeof s.sort === "number" ? s.sort : 0,
+  };
+}
+
+/**
+ * Load an authored plan from the backend (MongoDB) when it exists there
+ * (admin editor). Returns null when the plan is only in the static catalog —
+ * callers then fall back to the local catalog + getPlanSections().
  */
 export async function getAuthoredPlan(
   slug: string,
 ): Promise<{ plan: RelateReadingPlan; sections: ReadingSection[] } | null> {
-  const { getSupabase } = await import("@/lib/supabase");
-  const db = getSupabase();
-  if (!db) return null;
+  try {
+    const res = await fetch(
+      `${API_BASE}/api/reading-plans/${encodeURIComponent(slug)}`,
+      { cache: "no-store" },
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    const plan = json?.plan as RelateReadingPlan | undefined;
+    const sections = json?.sections as ApiSection[] | undefined;
+    if (!plan || !plan.authored) return null;
+    return {
+      plan,
+      sections: Array.isArray(sections) && sections.length
+        ? sections.map(sectionFromApi)
+        : getPlanSections(plan),
+    };
+  } catch {
+    return null;
+  }
+}
 
-  const { data: rows, error } = await db
-    .from("reading_plans")
-    .select("slug,title,tagline,description,category,section,days,image,cover,gradient,status")
-    .eq("slug", slug)
-    .limit(1);
+// ─── Admin accessors (same-origin /api/* → BFF proxy keeps cookies first-party)
 
-  if (error || !rows || rows.length === 0) return null;
-  const row = rows[0] as Record<string, any>;
+export type AdminReadingPlan = {
+  slug: string;
+  title: string;
+  tagline: string;
+  description: string;
+  category: string;
+  section: string;
+  days: number;
+  gradient: [string, string];
+  image: string;
+  status: "published" | "draft";
+  source: "catalog" | "db";
+  sort?: number;
+  updatedAt?: string | null;
+  sectionsCount: number;
+  sections?: Array<Record<string, unknown>>;
+};
 
-  const base = READING_PLANS.find((p) => p.slug === slug);
-  const plan: RelateReadingPlan = {
-    slug: row.slug,
-    title: row.title,
-    tagline: row.tagline ?? base?.tagline ?? "",
-    description: row.description ?? base?.description ?? "",
-    category: row.category ?? base?.category ?? "Bible Reading",
-    section: row.section ?? base?.section ?? "",
-    days: row.days ?? base?.days ?? 5,
-    gradient: (Array.isArray(row.gradient) && row.gradient.length === 2 ? row.gradient : base?.gradient ?? ["#111827", "#1f2937"]) as [string, string],
-    image: row.image ?? row.cover ?? base?.image ?? "",
-  };
+/** All plans (catalog + authored, drafts included) for the admin list. */
+export async function fetchAdminReadingPlans(): Promise<AdminReadingPlan[]> {
+  const res = await fetch("/api/admin/reading-plans", { cache: "no-store" });
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}));
+    throw new Error(typeof json?.error === "string" ? json.error : "Couldn't load reading plans.");
+  }
+  const json = await res.json();
+  return Array.isArray(json?.data) ? (json.data as AdminReadingPlan[]) : [];
+}
 
-  const { data: secs, error: secErr } = await db
-    .from("plan_sections")
-    .select("id,title,book,start_ch,end_ch,verse_text,verse_by,blocks,sort")
-    .eq("plan_slug", slug)
-    .order("sort", { ascending: true });
-
-  const sections: ReadingSection[] =
-    secErr || !secs || secs.length === 0
-      ? getPlanSections(plan)
-      : (secs as Array<Record<string, any>>).map((s) => ({
-          id: s.id,
-          planSlug: slug,
-          title: s.title,
-          book: s.book ?? null,
-          startCh: s.start_ch ?? null,
-          endCh: s.end_ch ?? null,
-          verseText: s.verse_text ?? undefined,
-          verseBy: s.verse_by ?? undefined,
-          blocks: Array.isArray(s.blocks) ? (s.blocks as PubBlock[]) : undefined,
-          sort: s.sort,
-        }));
-
-  return { plan, sections };
+/** One authored plan document (any status), or null when only catalog exists. */
+export async function fetchAdminReadingPlan(
+  slug: string,
+): Promise<AdminReadingPlan | null> {
+  const res = await fetch(
+    `/api/admin/reading-plans/${encodeURIComponent(slug)}`,
+    { cache: "no-store" },
+  );
+  if (res.status === 404) return null;
+  if (!res.ok) return null;
+  const json = await res.json().catch(() => ({}));
+  return (json?.data as AdminReadingPlan | undefined) ?? null;
 }
 
 // ─── Progress + quiz types (Supabase-shaped) ──────────────────────────────
