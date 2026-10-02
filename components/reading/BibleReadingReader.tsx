@@ -2,12 +2,12 @@
  * Reading plan reader (client view).
  *
  * Renders a plan's sections. Bible plans split into 5-chapter sections: mark
- * all 5 chapters of a section done and its inline Bible Quiz unlocks — only
- * ever reachable from inside this plan. Topic/marriage/wellness plans are
- * authored day-by-day with a verse + content blocks and a simple "read" toggle.
+ * the chapters of a section done to complete it. Topic/marriage/wellness plans
+ * are authored day-by-day with a verse + content blocks and a simple "read"
+ * toggle.
  *
- * Authored content (verse + blocks + commentary) comes from Supabase when the
- * admin editor is configured; otherwise sections fall back to the seeded
+ * Authored content (verse + blocks + commentary) comes from the backend when
+ * the admin editor has saved it; otherwise sections fall back to the seeded
  * catalog via lib/reading-plans.
  */
 "use client";
@@ -16,12 +16,8 @@ import { useState } from "react";
 import {
   FaBookOpen,
   FaCheck,
-  FaFloppyDisk,
   FaLock,
-  FaMedal,
-  FaQuestion,
   FaQuoteLeft,
-  FaWhatsapp,
 } from "react-icons/fa6";
 import type { RelateReadingPlan } from "@/lib/reading-plans";
 import type { ReadingSection } from "@/lib/reading-plans";
@@ -92,10 +88,10 @@ export default function BibleReadingReader({ plan, sections }: Props) {
                 ) : null}
               </div>
 
-              {/* Quiz / complete button */}
+              {/* Complete / progress pill */}
               {unlocked ? (
                 <button className="inline-flex items-center gap-2 rounded-full bg-cyan px-4 py-2 text-xs font-bold text-navy transition-colors hover:bg-cyan-dark">
-                  <FaQuestion className="text-[11px]" /> {isCompact(s) ? "Complete" : "Take Bible Quiz"}
+                  <FaCheck className="text-[11px]" /> {isCompact(s) ? "Complete" : "All chapters read"}
                 </button>
               ) : (
                 <button className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-xs font-bold text-slate-gray">
@@ -108,7 +104,7 @@ export default function BibleReadingReader({ plan, sections }: Props) {
             {/* Verse of the day */}
             {s.verseText ? (
               <div className="mt-4 rounded-xl border-l-4 bg-alice-blue/50 p-3.5 ring-1 ring-gray-100" style={{ borderLeftColor: "#13c5dd" }}>
-                <p className="text-[11px] font-bold uppercase tracking-widest text-cyan mb-1">Today's verse</p>
+                <p className="text-[11px] font-bold uppercase tracking-widest text-cyan mb-1">Today&apos;s verse</p>
                 <p className="text-sm leading-6 text-navy">
                   <FaQuoteLeft className="mr-1 inline text-slate-gray" />
                   {s.verseText}
@@ -307,21 +303,6 @@ function BlockView({ b }: { b: PubBlock }) {
               </li>
             ))}
           </ul>
-        </div>
-      );
-    case "quiz":
-      return (
-        <div className="rounded-xl bg-alice-blue p-3">
-          {b.question ? <p className="mb-2 text-sm font-bold text-gray-800">{b.question}</p> : null}
-          <ul className="space-y-1.5">
-            {(b.options || []).map((opt, i) => (
-              <li key={i} className="flex gap-2 text-sm text-gray-600">
-                <span className={`size-2.5 shrink-0 rounded-full border ${i === b.correctIndex ? "border-gold-500 bg-gold-500" : "border-gray-300 bg-white"}`} />
-                {opt}
-              </li>
-            ))}
-          </ul>
-          {b.explain ? <p className="mt-2 text-xs text-slate-gray">{b.explain}</p> : null}
         </div>
       );
     case "reflection":

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
 import { getReadingPlan, getPlanSections, getAuthoredPlan } from "@/lib/reading-plans";
 import { readingPlanMetadataFromSlug } from "@/lib/seo";
 import BibleReadingReader from "@/components/reading/BibleReadingReader";
@@ -26,6 +27,8 @@ export default async function ReadingPlanReaderPage({ params }: Props) {
 
   return (
     <>
+      <Navbar />
+
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-4xl mx-auto">
           <BibleReadingReader plan={plan} sections={sections} />
