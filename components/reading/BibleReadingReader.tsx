@@ -16,7 +16,6 @@ import { useState } from "react";
 import {
   FaBookOpen,
   FaCheck,
-  FaLock,
   FaQuoteLeft,
 } from "react-icons/fa6";
 import type { RelateReadingPlan } from "@/lib/reading-plans";
@@ -30,9 +29,8 @@ type Props = {
 };
 
 export default function BibleReadingReader({ plan, sections }: Props) {
-  const [progress, setProgress] = useState<Record<string, number[]>>({});
-  const [compactDone, setCompactDone] = useState<Set<string>>(new Set());
-  const maxCh = (s: ReadingSection) => (s.endCh ?? s.startCh ?? 1) - (s.startCh ?? 1) + 1;
+  const [index, setIndex] = useState(0);
+  const [done, setDone] = useState<Set<string>>(new Set());
 
   if (!plan) {
     return (
@@ -42,138 +40,129 @@ export default function BibleReadingReader({ plan, sections }: Props) {
     );
   }
 
-  // Topic plans: no chapter book range — simple per-day "mark read".
-  const isCompact = (s: ReadingSection) => !s.book && s.startCh == null;
-
-  const doneChapters = (s: ReadingSection) =>
-    (progress[s.id] ?? []).filter((ch) => ch >= (s.startCh ?? 0) && ch <= (s.endCh ?? 0)).length;
-
-  const unlockedFor = (s: ReadingSection) =>
-    isCompact(s) ? compactDone.has(s.id) : doneChapters(s) >= Math.max(1, maxCh(s));
-
-  function markRead(s: ReadingSection, ch: number) {
-    setProgress((prev) => {
-      const mine = prev[s.id] ?? [];
-      const next = mine.includes(ch) ? mine.filter((x) => x !== ch) : [...mine, ch];
-      return { ...prev, [s.id]: next };
-    });
+  if (!sections.length) {
+    return (
+      <p className="rounded-2xl border border-dashed border-gray-200 p-8 text-center text-sm text-slate-gray">
+        No sections yet for this plan.
+      </p>
+    );
   }
 
-  function toggleCompact(s: ReadingSection) {
-    setCompactDone((prev) => {
+  // One article at a time: read it, mark it complete, move with prev/next.
+  const i = Math.min(Math.max(index, 0), sections.length - 1);
+  const s = sections[i];
+  const isCompact = !s.book && s.startCh == null;
+  const isDone = done.has(s.id);
+  const range =
+    [s.book, s.startCh != null && s.endCh != null ? `${s.startCh}–${s.endCh}` : ""]
+      .filter(Boolean)
+      .join(" ") || null;
+
+  const toggleComplete = () => {
+    setDone((prev) => {
       const next = new Set(prev);
       if (next.has(s.id)) next.delete(s.id);
       else next.add(s.id);
       return next;
     });
-  }
+  };
+
+  const go = (delta: number) => {
+    setIndex(Math.min(Math.max(i + delta, 0), sections.length - 1));
+  };
 
   return (
-    <div className="space-y-6">
-      {sections.map((s) => {
-        const unlocked = unlockedFor(s);
-        return (
-          <article key={s.id} className="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-gray">
-                  {isCompact(s) ? `Day ${s.sort + 1} · ${plan.section || "Read"}` : `Section ${s.sort + 1} of ${sections.length}`}
-                </p>
-                <h3 className="text-lg font-black text-navy mt-0.5">{s.title || (isCompact(s) ? `Day ${s.sort + 1}` : "Untitled section")}</h3>
-                {!isCompact(s) ? (
-                  <p className="text-xs text-slate-gray mt-0.5">
-                    {[s.book, s.startCh != null && s.endCh != null ? `${s.startCh}–${s.endCh}` : ""].filter(Boolean).join(" ") || "Reading"}
-                  </p>
-                ) : null}
-              </div>
-
-              {/* Complete / progress pill */}
-              {unlocked ? (
-                <button className="inline-flex items-center gap-2 rounded-full bg-cyan px-4 py-2 text-xs font-bold text-navy transition-colors hover:bg-cyan-dark">
-                  <FaCheck className="text-[11px]" /> {isCompact(s) ? "Complete" : "All chapters read"}
-                </button>
-              ) : (
-                <button className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-xs font-bold text-slate-gray">
-                  <FaLock className="text-[11px]" />
-                  {isCompact(s) ? "Mark as read" : `${doneChapters(s)}/${maxCh(s)} chapters`}
-                </button>
-              )}
-            </div>
-
-            {/* Verse of the day */}
-            {s.verseText ? (
-              <div className="mt-4 rounded-xl border-l-4 bg-alice-blue/50 p-3.5 ring-1 ring-gray-100" style={{ borderLeftColor: "#13c5dd" }}>
-                <p className="text-[11px] font-bold uppercase tracking-widest text-cyan mb-1">Today&apos;s verse</p>
-                <p className="text-sm leading-6 text-navy">
-                  <FaQuoteLeft className="mr-1 inline text-slate-gray" />
-                  {s.verseText}
-                </p>
-                {s.verseBy ? <p className="mt-1 text-xs font-semibold text-slate-gray">— {s.verseBy}</p> : null}
-              </div>
-            ) : null}
-
-            {/* Authored commentary / reading content */}
-            {s.blocks && s.blocks.length ? (
-              <div className="mt-4 space-y-3">
-                {s.blocks.map((b, i) => (
-                  <BlockView key={i} b={b} />
-                ))}
-              </div>
-            ) : null}
-
-            {/* Bible chapter chips (only when the section has a book range) */}
-            {!isCompact(s) && s.startCh != null && s.endCh != null ? (
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {Array.from({ length: maxCh(s) }, (_, i) => {
-                  const ch = (s.startCh ?? 1) + i;
-                  const isDone = (progress[s.id] ?? []).includes(ch);
-                  return (
-                    <button
-                      key={ch}
-                      onClick={() => markRead(s, ch)}
-                      aria-pressed={isDone}
-                      className="size-9 rounded-lg text-[11px] font-bold border transition-colors"
-                      style={
-                        isDone
-                          ? { backgroundColor: "#065f46", borderColor: "#065f46", color: "#fff" }
-                          : { borderColor: "#e5e7eb", color: "#334155" }
-                      }
-                    >
-                      {ch}
-                    </button>
-                  );
-                })}
-              </div>
-            ) : null}
-
-            {/* Topic-plan simple read toggle */}
-            {isCompact(s) ? (
-              <div className="mt-4">
-                <button
-                  onClick={() => toggleCompact(s)}
-                  aria-pressed={compactDone.has(s.id)}
-                  className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-bold transition-colors"
-                  style={
-                    compactDone.has(s.id)
-                      ? { backgroundColor: "#065f46", borderColor: "#065f46", color: "#fff" }
-                      : { borderColor: "#e5e7eb", color: "#334155" }
-                  }
-                >
-                  {compactDone.has(s.id) ? <FaCheck /> : <FaBookOpen className="text-slate-gray" />}
-                  {compactDone.has(s.id) ? "Day read" : "Mark day as read"}
-                </button>
-              </div>
-            ) : null}
-          </article>
-        );
-      })}
-
-      {!sections.length ? (
-        <p className="rounded-2xl border border-dashed border-gray-200 p-8 text-center text-sm text-slate-gray">
-          No sections yet for this plan.
+    <div className="space-y-5">
+      {/* Position */}
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-gray">
+          {isCompact
+            ? `Day ${s.sort + 1} · ${plan.section || "Read"}`
+            : `Section ${s.sort + 1} of ${sections.length}`}
         </p>
-      ) : null}
+        {isDone ? (
+          <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+            Completed
+          </span>
+        ) : null}
+      </div>
+
+      {/* Article */}
+      <article className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
+        <h3 className="text-xl font-black text-navy">
+          {s.title || (isCompact ? `Day ${s.sort + 1}` : "Untitled section")}
+        </h3>
+        {range ? <p className="mt-1 text-sm text-slate-gray">{range}</p> : null}
+
+        {s.verseText ? (
+          <div
+            className="mt-4 rounded-xl border-l-4 bg-alice-blue/50 p-3.5 ring-1 ring-gray-100"
+            style={{ borderLeftColor: "#13c5dd" }}
+          >
+            <p className="text-[11px] font-bold uppercase tracking-widest text-cyan mb-1">
+              Today&apos;s verse
+            </p>
+            <p className="text-sm leading-6 text-navy">
+              <FaQuoteLeft className="mr-1 inline text-slate-gray" />
+              {s.verseText}
+            </p>
+            {s.verseBy ? (
+              <p className="mt-1 text-xs font-semibold text-slate-gray">— {s.verseBy}</p>
+            ) : null}
+          </div>
+        ) : null}
+
+        {s.blocks && s.blocks.length ? (
+          <div className="mt-4 space-y-3">
+            {s.blocks.map((b, idx) => (
+              <BlockView key={idx} b={b} />
+            ))}
+          </div>
+        ) : (
+          <p className="mt-4 rounded-2xl border border-dashed border-gray-200 p-6 text-center text-sm leading-6 text-slate-gray">
+            {range
+              ? `Open ${range} in the Bible, read at your own pace, then mark this section complete.`
+              : "Reading content for this section is coming soon."}
+          </p>
+        )}
+
+        <div className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-4">
+          <button
+            onClick={toggleComplete}
+            aria-pressed={isDone}
+            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold transition-colors"
+            style={
+              isDone
+                ? { backgroundColor: "#065f46", color: "#fff" }
+                : { backgroundColor: "#13c5dd", color: "#1d2a4d" }
+            }
+          >
+            {isDone ? <FaCheck /> : <FaBookOpen className="text-slate-gray" />}
+            {isDone ? "Completed" : "Mark complete"}
+          </button>
+        </div>
+      </article>
+
+      {/* Prev / Next */}
+      <div className="flex items-center justify-between gap-3">
+        <button
+          onClick={() => go(-1)}
+          disabled={i === 0}
+          className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-navy transition hover:bg-alice-blue disabled:opacity-40 disabled:hover:bg-white"
+        >
+          &larr; Previous
+        </button>
+        <span className="text-xs font-semibold text-slate-gray">
+          {i + 1} of {sections.length}
+        </span>
+        <button
+          onClick={() => go(1)}
+          disabled={i === sections.length - 1}
+          className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-5 py-2.5 text-xs font-bold text-navy transition hover:bg-alice-blue disabled:opacity-40 disabled:hover:bg-white"
+        >
+          Next &rarr;
+        </button>
+      </div>
     </div>
   );
 }

@@ -53,7 +53,7 @@ function blankDraft(): Draft {
     days: 5,
     gradient: ["#0f766e", "#14532d"],
     image: "",
-    status: "draft",
+    status: "published",
     sections: Array.from({ length: 5 }, emptySection),
   };
 }
@@ -131,7 +131,7 @@ export default function ReadingPlanEditor({
     d.days = initial.days || 5;
     d.gradient = Array.isArray(initial.gradient) && initial.gradient.length === 2 ? (initial.gradient as [string, string]) : ["#0f766e", "#14532d"];
     d.image = initial.image || initial.cover || "";
-    d.status = initial.status || "draft";
+    d.status = initial.status || "published";
     const rows = Array.isArray(initial.sections) ? initial.sections : [];
     d.sections = rows.length ? rows.map((r: Record<string, any>) => hydrateSection(r)) : Array.from({ length: d.days }, emptySection);
     return d;
@@ -215,7 +215,7 @@ export default function ReadingPlanEditor({
         days: draft.days,
         gradient: draft.gradient,
         image: draft.image || "",
-        status: draft.status || "draft",
+        status: draft.status || "published",
         sections: draft.sections
           .filter((s) => s.title || s.verseText || s.blocks.length || (s.reading && readingHasContent(s.reading)))
           .map((s, i) => ({
@@ -466,7 +466,18 @@ export default function ReadingPlanEditor({
         <div className="flex flex-col items-start gap-3">
           {error ? <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p> : null}
           {saved ? <p className="rounded-xl bg-gold-50 px-4 py-3 text-sm text-gold-700">Saved.</p> : null}
-          <div className="flex gap-3">
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-gray">
+              Status
+              <Select
+                className="w-auto rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-navy"
+                value={draft.status}
+                onChange={(e) => set({ status: e.target.value })}
+              >
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </Select>
+            </label>
             <Button onClick={save} disabled={saving || !draft.slug || !draft.title}>
               {saving ? "Saving…" : isEdit ? "Save changes" : "Create plan"}
             </Button>

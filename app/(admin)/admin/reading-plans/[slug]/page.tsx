@@ -93,7 +93,7 @@ function EditBody({ params }: { params: Promise<{ slug: string }> }) {
 function buildInitial(
   plan: { slug: string; title: string; tagline?: string; description?: string; category?: string; section?: string; days?: number; gradient?: [string, string]; image?: string },
   sections: Array<Record<string, any>>,
-  status = "draft",
+  status = "published",
 ) {
   return {
     slug: plan.slug,

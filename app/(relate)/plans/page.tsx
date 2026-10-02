@@ -5,6 +5,8 @@ import PageHero from "@/components/PageHero";
 import { READING_PLAN_CATEGORIES } from "@/constants/readingPlans";
 import { listPublicReadingPlans } from "@/lib/reading-plans";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Reading Plans",
   description:
@@ -118,7 +120,7 @@ export default async function ReadingPlansPage() {
                                                         className="inline-flex items-center gap-1.5 rounded-full px-4 py-3 min-h-11 text-xs font-bold text-white transition hover:brightness-110 shrink-0"
                                                         style={{ backgroundColor: plan.gradient[0] }}
                                                     >
-                                                        <FaBookOpen className="text-sm" /> Start plan
+                                                        <FaBookOpen className="text-sm" /> Sample
                                                     </Link>
                                                 </div>
                                             </div>

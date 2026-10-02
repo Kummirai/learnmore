@@ -165,6 +165,9 @@ export default function AdminReadingPlansPage() {
                             </Link>
                             <p className="text-xs text-gray-400 truncate">
                               {p.section} · {p.days} days · {p.sectionsCount} sections
+                              {p.status === "draft" ? (
+                                <span className="ml-1.5 rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold text-amber-700">DRAFT</span>
+                              ) : null}
                             </p>
                           </div>
                           <Link
