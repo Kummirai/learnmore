@@ -17,6 +17,7 @@ import {
   FaBookOpen,
   FaCheck,
   FaQuoteLeft,
+  FaShareNodes,
 } from "react-icons/fa6";
 import type { RelateReadingPlan } from "@/lib/reading-plans";
 import type { ReadingSection } from "@/lib/reading-plans";
@@ -67,6 +68,7 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
   const [done, setDone] = useState<Set<string>>(new Set());
   const [started, setStarted] = useState(false);
   const [onServer, setOnServer] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   // Hydrate: signed-in readers pull progress from the backend; guests use
   // local storage. Sample opens clean, Start plan creates the record.
@@ -163,6 +165,28 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
     persist([...done], true);
   };
 
+  const shareSection = () => {
+    const url = typeof window !== "undefined" ? `${window.location.origin}/plans/${plan.slug}` : "";
+    const text = `${plan.title} — Section ${i + 1} of ${sections.length}: ${s.title}${range ? ` (${range})` : ""}`;
+    void fetch("/api/reading-shares", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ slug: plan.slug, day: s.sort + 1, title: s.title, via: "web" }),
+    }).catch(() => {});
+    if (typeof navigator !== "undefined" && navigator.share) {
+      navigator.share({ title: plan.title, text, url }).catch(() => {});
+    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard
+        .writeText(`${text}
+${url}`)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch(() => {});
+    }
+  };
+
   const go = (delta: number) => {
     setIndex(Math.min(Math.max(i + delta, 0), sections.length - 1));
   };
@@ -250,6 +274,13 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
           >
             {isDone ? <FaCheck /> : <FaBookOpen className="text-slate-gray" />}
             {isDone ? "Completed" : "Mark complete"}
+          </button>
+          <button
+            type="button"
+            onClick={shareSection}
+            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2.5 text-xs font-bold text-navy transition hover:bg-alice-blue"
+          >
+            <FaShareNodes className="text-[11px]" /> {copied ? "Link copied" : "Share"}
           </button>
         </div>
       </article>
