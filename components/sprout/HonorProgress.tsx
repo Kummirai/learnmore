@@ -17,6 +17,8 @@ type Progress = {
   checks: boolean[];
   criteria?: boolean[][];
   status: "not_started" | "in_progress" | "complete";
+  /** When the record was opened — set on enroll or first write. */
+  enrolledAt?: string | null;
   updatedAt?: string;
   completedAt?: string | null;
   savings?: { total?: number; deposits?: unknown[] };
@@ -342,8 +344,8 @@ export default function HonorProgress({
     );
   }
 
-  // Signed in with no record yet — enroll first, then progress fills in.
-  if (!progress) {
+  // Signed in but not enrolled yet — enroll first, then progress fills in.
+  if (!progress?.enrolledAt) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
         <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">
