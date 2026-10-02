@@ -167,7 +167,11 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
 
   const shareSection = () => {
     const url = typeof window !== "undefined" ? `${window.location.origin}/plans/${plan.slug}` : "";
-    const text = `${plan.title} — Section ${i + 1} of ${sections.length}: ${s.title}${range ? ` (${range})` : ""}`;
+    const parts = [`${plan.title} — Section ${i + 1} of ${sections.length}: ${s.title}`];
+    if (s.verseText) parts.push(`“${s.verseText}”${s.verseBy ? ` — ${s.verseBy}` : ""}`);
+    if (range) parts.push(`Read: ${range}`);
+    parts.push(`Day ${s.sort + 1} of ${plan.days} · ${plan.tagline}`);
+    const text = parts.join("\n\n");
     void fetch("/api/reading-shares", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
