@@ -8,6 +8,7 @@ import {
   LuLoaderCircle,
   LuLogIn,
   LuCircle,
+  LuAward,
 } from "react-icons/lu";
 import { useAuth } from "@/components/AuthProvider";
 import type { HonorRequirement } from "@/constants/sproutHonors";
@@ -73,9 +74,10 @@ function hydrateCriteria(
 }
 
 /**
- * A participant's live measurable status for one honor: every requirement is
- * broken into concrete pass criteria, each ticked as it is proven in front of
- * a leader. Saved against the signed-in account the moment a box is ticked.
+ * A participant's live measurable status for one honor: enrollment opens the
+ * record, then every requirement is broken into concrete pass criteria, each
+ * ticked as it is proven in front of a leader. Saved against the signed-in
+ * account the moment a box is ticked.
  */
 export default function HonorProgress({
   badgeId,
@@ -101,6 +103,7 @@ export default function HonorProgress({
   const [adding, setAdding] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState("");
   const inFlight = useRef(0);
 
@@ -155,6 +158,35 @@ export default function HonorProgress({
       setError((err as Error).message);
     } finally {
       if (ticket === inFlight.current) setSaving(false);
+    }
+  }
+
+  /** Open the record — after this, progress can be filled in. */
+  async function enroll() {
+    setEnrolling(true);
+    setError("");
+    try {
+      const res = await fetch(
+        `/api/sprout/honors/${encodeURIComponent(badgeId)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ enroll: true }),
+        },
+      );
+      const json = await res.json().catch(() => ({}));
+      if (res.status === 401)
+        throw new Error("Your sign-in has expired — please sign in again.");
+      if (!res.ok) throw new Error(json?.error || "Could not enroll — please try again.");
+      if (json?.data) {
+        setProgress(json.data);
+        setCriteria(hydrateCriteria(json.data, requirements));
+        if (json.data.savings) setSavings(normalizeSavings(json.data.savings));
+      }
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setEnrolling(false);
     }
   }
 
@@ -306,6 +338,106 @@ export default function HonorProgress({
             <LuLogIn /> Sign in to start
           </Link>
         </div>
+      </div>
+    );
+  }
+
+  // Signed in with no record yet — enroll first, then progress fills in.
+  if (!progress) {
+    return (
+      <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+        <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">
+          Get started
+        </p>
+        <h3 className="font-bold text-navy text-lg leading-snug">
+          {badgeName}
+        </h3>
+
+        <div className="mt-4 flex gap-3 rounded-xl border border-cyan/20 bg-alice-blue/60 p-4">
+          <div className="size-10 shrink-0 rounded-full bg-white flex items-center justify-center">
+            <LuAward className="text-base text-cyan" />
+          </div>
+          <div>
+            <h4 className="font-bold text-navy mb-1">Enroll to start</h4>
+            <p className="text-sm text-slate-gray leading-snug">
+              Enroll for this honor, then tick each criterion as you prove it —
+              your record saves to your account and your leader sees the same
+              one.
+            </p>
+          </div>
+        </div>
+
+        {error && (
+          <p
+            role="alert"
+            className="mt-4 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-4 py-3"
+          >
+            {error}
+          </p>
+        )}
+
+        <button
+          type={"button"}
+          onClick={enroll}
+          disabled={enrolling}
+          className={
+            "mt-4 inline-flex items-center gap-2 rounded-lg bg-cyan text-white px-6 py-3 text-sm font-bold hover:bg-cyan-dark transition-colors disabled:opacity-60"
+          }
+        >
+          {enrolling ? <LuLoaderCircle className="animate-spin" /> : <LuAward />}
+          {enrolling ? "Enrolling…" : `Enroll in ${badgeName}`}
+        </button>
+
+        <p className="mt-6 mb-3 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+          What you&apos;ll prove
+        </p>
+        <ol className="space-y-3 mb-5">
+          {requirements.map((req, i) => (
+            <li key={req.text} className="rounded-lg bg-gray-50 px-3.5 py-3">
+              <div className="flex gap-3">
+                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-white text-[11px] font-bold text-gray-400">
+                  {i + 1}
+                </span>
+                <span className="text-sm text-gray-700 leading-snug">
+                  {req.text}
+                </span>
+              </div>
+              <ul className="mt-2 space-y-1.5 border-l-2 border-cyan/30 pl-6">
+                {req.criteria.map((criterion) => (
+                  <li
+                    key={criterion}
+                    className="text-[13px] leading-snug text-slate-gray"
+                  >
+                    {criterion}
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+
+        {piggyBank && (
+          <div
+            className={
+              "rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3"
+            }
+          >
+            <p
+              className={
+                "text-[11px] font-bold uppercase tracking-widest text-amber-700"
+              }
+            >
+              Piggy bank
+            </p>
+            <p className={"mt-1 text-sm text-gray-700 leading-snug"}>
+              Bank <strong className="text-navy">R{piggyBank.weekly}</strong>{" "}
+              every week for {piggyBank.weeks}{" "}
+              {piggyBank.weeks === 1 ? "week" : "weeks"} — everyone shows their
+              jar at <strong className="text-navy">R{piggyTarget}</strong> by
+              the end of the course.
+            </p>
+          </div>
+        )}
       </div>
     );
   }
