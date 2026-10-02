@@ -563,6 +563,7 @@ export const SPORTS_TEAMS: RelateTeam[] = [
     name: "Sprout Kids Netball",
     initials: "SKN",
     tagline: "Saturday morning netball for kids — all positions, all fun.",
+    logo: "/images/sports/netball/sprout-kids.jpg",
   },
   {
     id: "stw-netball",
