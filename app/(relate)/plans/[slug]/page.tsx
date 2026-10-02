@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 
 type Props = {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -16,8 +17,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return readingPlanMetadataFromSlug(slug);
 }
 
-export default async function ReadingPlanReaderPage({ params }: Props) {
+export default async function ReadingPlanReaderPage({ params, searchParams }: Props) {
   const { slug } = await params;
+  const sp = await searchParams;
 
   const authored = await getAuthoredPlan(slug);
   const plan = authored?.plan ?? getReadingPlan(slug);
@@ -31,7 +33,7 @@ export default async function ReadingPlanReaderPage({ params }: Props) {
 
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-4xl mx-auto">
-          <BibleReadingReader plan={plan} sections={sections} />
+          <BibleReadingReader plan={plan} sections={sections} autoStart={sp?.start === "1"} />
         </div>
       </section>
     </>

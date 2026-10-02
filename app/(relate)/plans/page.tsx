@@ -115,13 +115,21 @@ export default async function ReadingPlansPage() {
                                                     <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
                                                         {plan.category}
                                                     </span>
-                                                    <Link
-                                                        href={`/plans/${plan.slug}`}
-                                                        className="inline-flex items-center gap-1.5 rounded-full px-4 py-3 min-h-11 text-xs font-bold text-white transition hover:brightness-110 shrink-0"
+                                                    <div className="flex items-center gap-2 shrink-0">
+                                                      <Link
+                                                        href={`/plans/${plan.slug}?start=1`}
+                                                        className="inline-flex items-center gap-1.5 rounded-full px-4 py-3 min-h-11 text-xs font-bold text-white transition hover:brightness-110"
                                                         style={{ backgroundColor: plan.gradient[0] }}
-                                                    >
-                                                        <FaBookOpen className="text-sm" /> Sample
-                                                    </Link>
+                                                      >
+                                                        <FaBookOpen className="text-sm" /> Start plan
+                                                      </Link>
+                                                      <Link
+                                                        href={`/plans/${plan.slug}`}
+                                                        className="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-4 py-3 min-h-11 text-xs font-bold text-navy transition hover:bg-alice-blue"
+                                                      >
+                                                        Sample
+                                                      </Link>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

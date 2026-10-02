@@ -12,7 +12,7 @@
  */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaBookOpen,
   FaCheck,
@@ -26,11 +26,96 @@ import { emptyReading } from "@/lib/editor/season";
 type Props = {
   plan: RelateReadingPlan;
   sections: ReadingSection[];
+  /** Opens the plan in started mode (from the list "Start plan" button). */
+  autoStart?: boolean;
 };
 
-export default function BibleReadingReader({ plan, sections }: Props) {
+type StoredProgress = { startedAt: number; done: string[] };
+
+const progressKey = (slug: string) => `rp-progress:${slug}`;
+
+function loadLocal(slug: string): string[] | null {
+  try {
+    const raw = window.localStorage.getItem(progressKey(slug));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as StoredProgress;
+    return Array.isArray(parsed.done) ? parsed.done.map(String) : [];
+  } catch {
+    return null;
+  }
+}
+
+function saveLocal(slug: string, done: string[]) {
+  try {
+    window.localStorage.setItem(progressKey(slug), JSON.stringify({ startedAt: Date.now(), done }));
+  } catch {
+    // private mode / quota — progress stays in memory
+  }
+}
+
+/** Progress lives in the backend (`user_study_progress`) for signed-in readers. */
+function postProgress(slug: string, title: string, completed: string[], total: number): Promise<void> {
+  return fetch("/api/study-progress", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slug, title, completedLessons: completed, totalLessons: total }),
+  }).then(() => undefined);
+}
+
+export default function BibleReadingReader({ plan, sections, autoStart = false }: Props) {
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState<Set<string>>(new Set());
+  const [started, setStarted] = useState(false);
+  const [onServer, setOnServer] = useState(false);
+
+  // Hydrate: signed-in readers pull progress from the backend; guests use
+  // local storage. Sample opens clean, Start plan creates the record.
+  useEffect(() => {
+    if (!plan) return;
+    let cancelled = false;
+    (async () => {
+      let startedNow = false;
+      let doneNow: string[] = [];
+      let signedIn = false;
+      try {
+        const res = await fetch("/api/study-progress", { headers: { Accept: "application/json" } });
+        if (res.ok) {
+          signedIn = true;
+          const json = (await res.json()) as { data?: Array<Record<string, unknown>> };
+          const rows = Array.isArray(json.data) ? json.data : [];
+          const row = rows.find((r) => r.slug === plan.slug);
+          if (row) {
+            startedNow = true;
+            doneNow = Array.isArray(row.completedLessons)
+              ? (row.completedLessons as unknown[]).map(String)
+              : [];
+          }
+        }
+      } catch {
+        // offline / API down → local fallback below
+      }
+      if (!signedIn) {
+        const local = loadLocal(plan.slug);
+        if (local) {
+          startedNow = true;
+          doneNow = local;
+        }
+      }
+      if (cancelled) return;
+      setOnServer(signedIn);
+      if (startedNow) {
+        setDone(new Set(doneNow));
+        setStarted(true);
+      } else if (autoStart) {
+        setStarted(true);
+        if (signedIn) void postProgress(plan.slug, plan.title, [], sections.length);
+        else saveLocal(plan.slug, []);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [plan, autoStart, sections.length]);
 
   if (!plan) {
     return (
@@ -58,13 +143,24 @@ export default function BibleReadingReader({ plan, sections }: Props) {
       .filter(Boolean)
       .join(" ") || null;
 
+  const persist = (ids: string[], withStart: boolean) => {
+    if (!plan) return;
+    if (withStart) setStarted(true);
+    if (onServer) void postProgress(plan.slug, plan.title, ids, sections.length);
+    else saveLocal(plan.slug, ids);
+  };
+
   const toggleComplete = () => {
-    setDone((prev) => {
-      const next = new Set(prev);
-      if (next.has(s.id)) next.delete(s.id);
-      else next.add(s.id);
-      return next;
-    });
+    const next = new Set(done);
+    if (next.has(s.id)) next.delete(s.id);
+    else next.add(s.id);
+    setDone(next);
+    // Marking a section = going through the plan, so it starts tracking.
+    persist([...next], !started);
+  };
+
+  const startPlan = () => {
+    persist([...done], true);
   };
 
   const go = (delta: number) => {
@@ -80,11 +176,26 @@ export default function BibleReadingReader({ plan, sections }: Props) {
             ? `Day ${s.sort + 1} · ${plan.section || "Read"}`
             : `Section ${s.sort + 1} of ${sections.length}`}
         </p>
-        {isDone ? (
-          <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
-            Completed
-          </span>
-        ) : null}
+        <div className="flex items-center gap-2">
+          {started ? (
+            <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+              {done.size} of {sections.length} complete
+            </span>
+          ) : (
+            <button
+              onClick={startPlan}
+              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11px] font-bold text-white"
+              style={{ backgroundColor: plan.gradient[0] }}
+            >
+              Start plan
+            </button>
+          )}
+          {isDone ? (
+            <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
+              Completed
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {/* Article */}
@@ -115,7 +226,7 @@ export default function BibleReadingReader({ plan, sections }: Props) {
         {s.blocks && s.blocks.length ? (
           <div className="mt-4 space-y-3">
             {s.blocks.map((b, idx) => (
-              <BlockView key={idx} b={b} />
+              <BlockView key={`${s.id}-${idx}`} b={b} />
             ))}
           </div>
         ) : (
@@ -237,6 +348,39 @@ function ReadingView({ structure }: { structure: ReadingStructure }) {
   );
 }
 
+function TodoBlock({ b }: { b: PubBlock }) {
+  const [checked, setChecked] = useState<boolean[]>(() => (b.items || []).map(() => false));
+  return (
+    <div className="rounded-xl bg-alice-blue p-3">
+      <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-cyan">{b.title || "To-do"}</p>
+      <ul className="space-y-1">
+        {(b.items || []).map((item, i) => (
+          <li key={i}>
+            <button
+              type="button"
+              aria-pressed={checked[i] ?? false}
+              onClick={() => setChecked((prev) => prev.map((v, j) => (j === i ? !v : v)))}
+              className="flex w-full items-start gap-2 py-1 text-left text-sm text-gray-700"
+            >
+              <span
+                className="mt-0.5 flex size-3.5 shrink-0 items-center justify-center rounded border"
+                style={
+                  checked[i]
+                    ? { backgroundColor: "#065f46", borderColor: "#065f46" }
+                    : { borderColor: "#cbd5e1", backgroundColor: "#fff" }
+                }
+              >
+                {checked[i] ? <FaCheck className="text-[8px] text-white" /> : null}
+              </span>
+              <span className={checked[i] ? "text-slate-gray line-through" : ""}>{item}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function BlockView({ b }: { b: PubBlock }) {
   switch (b.type) {
     case "reading":
@@ -244,7 +388,12 @@ function BlockView({ b }: { b: PubBlock }) {
     case "paragraph":
       return <p className="text-sm leading-6 text-gray-700">{b.text}</p>;
     case "heading":
-      return <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-700 mt-3 -mb-1">~ {b.text}</h4>;
+      return (
+        <div className="mt-5 mb-1 flex items-center gap-2">
+          <span className="h-4 w-1 rounded-full" style={{ backgroundColor: EYEBROW }} />
+          <h4 className="text-[11px] font-bold uppercase tracking-widest text-navy">{b.text}</h4>
+        </div>
+      );
     case "quote":
       return (
         <blockquote className="rounded-r-xl border-l-4 bg-alice-blue/60 px-3 py-2 text-sm italic leading-6 text-gray-700" style={{ borderLeftColor: EYEBROW }}>
@@ -281,19 +430,7 @@ function BlockView({ b }: { b: PubBlock }) {
         </ul>
       );
     case "checklist":
-      return (
-        <div className="rounded-xl bg-alice-blue p-3">
-          {b.title ? <p className="mb-2 text-sm font-bold text-gray-800">{b.title}</p> : null}
-          <ul className="space-y-1.5">
-            {(b.items || []).map((item, i) => (
-              <li key={i} className="flex gap-2 text-sm text-gray-600">
-                <span className="mt-0.5 size-3.5 shrink-0 rounded border border-gray-300 bg-white" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
+      return <TodoBlock b={b} />;
     case "reflection":
       return (
         <div className="rounded-xl bg-alice-blue p-3">
@@ -306,7 +443,7 @@ function BlockView({ b }: { b: PubBlock }) {
     case "pray":
       return (
         <div className="rounded-xl bg-navy p-3">
-          {b.title ? <p className="mb-2 text-sm font-bold text-white">{b.title}</p> : null}
+          <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-cyan">{b.title || "Prayer"}</p>
           <ul className="space-y-1.5">
             {(b.items || []).map((item, i) => (
               <li key={i} className="flex gap-2 text-sm text-white/85">
