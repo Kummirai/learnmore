@@ -63,6 +63,27 @@ function postProgress(slug: string, title: string, completed: string[], total: n
   }).then(() => undefined);
 }
 
+/**
+ * Progress keys are 1-based day numbers — the same scheme the mobile app
+ * writes, so both platforms share one row. Older rows stored section ids;
+ * normalize them back to day numbers when reading.
+ */
+const dayKey = (s: ReadingSection) => String(s.sort + 1);
+
+function toDayKeys(values: string[], sections: ReadingSection[]): string[] {
+  const byId = new Map(sections.map((sec) => [sec.id, dayKey(sec)]));
+  const days = new Set<string>();
+  for (const value of values) {
+    if (/^\d+$/.test(value)) {
+      if (Number(value) > 0) days.add(value);
+      continue;
+    }
+    const mapped = byId.get(value);
+    if (mapped) days.add(mapped);
+  }
+  return [...days];
+}
+
 export default function BibleReadingReader({ plan, sections, autoStart = false }: Props) {
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState<Set<string>>(new Set());
@@ -139,7 +160,8 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
   const i = Math.min(Math.max(index, 0), sections.length - 1);
   const s = sections[i];
   const isCompact = !s.book && s.startCh == null;
-  const isDone = done.has(s.id);
+  const doneDays = new Set(toDayKeys([...done], sections));
+  const isDone = doneDays.has(dayKey(s));
   const range =
     [s.book, s.startCh != null && s.endCh != null ? `${s.startCh}–${s.endCh}` : ""]
       .filter(Boolean)
@@ -153,16 +175,17 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
   };
 
   const toggleComplete = () => {
-    const next = new Set(done);
-    if (next.has(s.id)) next.delete(s.id);
-    else next.add(s.id);
+    const next = new Set(doneDays);
+    const key = dayKey(s);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
     setDone(next);
     // Marking a section = going through the plan, so it starts tracking.
     persist([...next], !started);
   };
 
   const startPlan = () => {
-    persist([...done], true);
+    persist([...doneDays], true);
   };
 
   const shareSection = () => {
@@ -207,7 +230,7 @@ ${url}`)
         <div className="flex items-center gap-2">
           {started ? (
             <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
-              {done.size} of {sections.length} complete
+              {doneDays.size} of {sections.length} complete
             </span>
           ) : (
             <button
