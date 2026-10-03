@@ -1,10 +1,10 @@
 /**
  * Reading plan reader (client view).
  *
- * Renders a plan's sections. Bible plans split into 5-chapter sections: mark
- * the chapters of a section done to complete it. Topic/marriage/wellness plans
- * are authored day-by-day with a verse + content blocks and a simple "read"
- * toggle.
+ * Renders one section (day) at a time in the same format as the mobile day
+ * reader: header eyebrow/title → VERSE / READ / REFLECT / RESPOND sections
+ * with a scroll-spy stepper → in-page Mark complete + Share action row →
+ * prev/next paging.
  *
  * Authored content (verse + blocks + commentary) comes from the backend when
  * the admin editor has saved it; otherwise sections fall back to the seeded
@@ -12,12 +12,15 @@
  */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   FaBookOpen,
+  FaBookmark,
   FaCheck,
-  FaQuoteLeft,
+  FaCircleCheck,
+  FaHeart,
   FaShareNodes,
+  FaCircleXmark,
 } from "react-icons/fa6";
 import type { RelateReadingPlan } from "@/lib/reading-plans";
 import type { ReadingSection } from "@/lib/reading-plans";
@@ -34,6 +37,18 @@ type Props = {
 type StoredProgress = { startedAt: number; done: string[] };
 
 const progressKey = (slug: string) => `rp-progress:${slug}`;
+
+// Surge club palette — same constants the mobile day reader uses.
+const SURGE_ACCENT = "#C2410C";
+const SURGE_COLOR = "#FF6B00";
+const EYEBROW = "#13c5dd";
+const MUTED = "#6b7a8d";
+const CHECKED_BG = "#1d2a4d";
+const SUCCESS = "#10b981";
+const ERROR = "#ef4444";
+
+const INTERACTIVE = ["checklist", "quiz", "reflection", "pray"];
+const REFLECT_TYPES = ["checklist", "quiz", "reflection"];
 
 function loadLocal(slug: string): string[] | null {
   try {
@@ -84,12 +99,75 @@ function toDayKeys(values: string[], sections: ReadingSection[]): string[] {
   return [...days];
 }
 
+function SectionHead({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <div className="mb-3.5">
+      <p className="text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: EYEBROW }}>
+        {eyebrow}
+      </p>
+      <h4 className="mt-1 text-base font-bold leading-5" style={{ color: SURGE_COLOR }}>
+        {title}
+      </h4>
+    </div>
+  );
+}
+
+function QuoteCard({ text, by, source }: { text: string; by?: string; source?: string }) {
+  return (
+    <blockquote
+      className="mb-1.5 rounded-[10px] border-l-4 bg-ghost-white px-3 text-sm italic leading-[22px] text-navy"
+      style={{ borderLeftColor: EYEBROW }}
+    >
+      &ldquo;{text}&rdquo;
+      {by || source ? (
+        <footer className="mt-1 text-[11px] font-semibold not-italic text-slate-gray">
+          {by ? `— ${by}` : ""}
+          {by && source ? " · " : ""}
+          {source || ""}
+        </footer>
+      ) : null}
+    </blockquote>
+  );
+}
+
 export default function BibleReadingReader({ plan, sections, autoStart = false }: Props) {
   const [index, setIndex] = useState(0);
   const [done, setDone] = useState<Set<string>>(new Set());
   const [started, setStarted] = useState(false);
   const [onServer, setOnServer] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const articleRef = useRef<HTMLElement | null>(null);
+
+  const safeIndex = Math.min(Math.max(index, 0), Math.max(sections.length - 1, 0));
+  const current = sections.length ? sections[safeIndex] : undefined;
+
+  const steps = useMemo(() => {
+    if (!current) return [];
+    const list: string[] = [];
+    if (current.verseText) list.push("VERSE");
+    list.push("READ");
+    const blocks = current.blocks ?? [];
+    if (blocks.some((b) => REFLECT_TYPES.includes(b.type))) list.push("REFLECT");
+    if (blocks.some((b) => b.type === "pray")) list.push("RESPOND");
+    return list;
+  }, [current]);
+
+  // Season-guide scroll spy: the last section whose top crossed the threshold
+  // is the current step; tabs jump to their section.
+  useEffect(() => {
+    const compute = () => {
+      let step = 0;
+      steps.forEach((label, idx) => {
+        const el = articleRef.current?.querySelector<HTMLElement>(`[data-step="${label}"]`);
+        if (el && el.getBoundingClientRect().top <= 140) step = idx;
+      });
+      setActiveStep(step);
+    };
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    return () => window.removeEventListener("scroll", compute);
+  }, [steps]);
 
   // Hydrate: signed-in readers pull progress from the backend; guests use
   // local storage. Sample opens clean, Start plan creates the record.
@@ -157,7 +235,7 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
   }
 
   // One article at a time: read it, mark it complete, move with prev/next.
-  const i = Math.min(Math.max(index, 0), sections.length - 1);
+  const i = safeIndex;
   const s = sections[i];
   const isCompact = !s.book && s.startCh == null;
   const doneDays = new Set(toDayKeys([...done], sections));
@@ -166,6 +244,19 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
     [s.book, s.startCh != null && s.endCh != null ? `${s.startCh}–${s.endCh}` : ""]
       .filter(Boolean)
       .join(" ") || null;
+
+  const blocks = s.blocks ?? [];
+  const readBlocks = blocks.filter((b) => !INTERACTIVE.includes(b.type));
+  const reflectBlocks = blocks.filter((b) => REFLECT_TYPES.includes(b.type));
+  const prayBlocks = blocks.filter((b) => b.type === "pray");
+
+  const chapters: number[] = [];
+  if (s.book && s.startCh != null) {
+    const end = Math.min(typeof s.endCh === "number" ? s.endCh : s.startCh, s.startCh + 40);
+    for (let c = s.startCh; c <= end; c++) chapters.push(c);
+  }
+
+  const shownStep = Math.min(activeStep, Math.max(steps.length - 1, 0));
 
   const persist = (ids: string[], withStart: boolean) => {
     if (!plan) return;
@@ -190,7 +281,7 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
 
   const shareSection = () => {
     const url = typeof window !== "undefined" ? `${window.location.origin}/plans/${plan.slug}` : "";
-    const parts = [`${plan.title} — Section ${i + 1} of ${sections.length}: ${s.title}`];
+    const parts = [`${plan.title} — Day ${s.sort + 1}: ${s.title}`];
     if (s.verseText) parts.push(`“${s.verseText}”${s.verseBy ? ` — ${s.verseBy}` : ""}`);
     if (range) parts.push(`Read: ${range}`);
     parts.push(`Day ${s.sort + 1} of ${plan.days} · ${plan.tagline}`);
@@ -218,16 +309,25 @@ ${url}`)
     setIndex(Math.min(Math.max(i + delta, 0), sections.length - 1));
   };
 
+  const goToStep = (label: string, idx: number) => {
+    const el = articleRef.current?.querySelector<HTMLElement>(`[data-step="${label}"]`);
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActiveStep(idx);
+  };
+
   return (
     <div className="space-y-5">
-      {/* Position */}
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-[11px] font-bold uppercase tracking-widest text-slate-gray">
-          {isCompact
-            ? `Day ${s.sort + 1} · ${plan.section || "Read"}`
-            : `Section ${s.sort + 1} of ${sections.length}`}
-        </p>
-        <div className="flex items-center gap-2">
+      {/* Header — same eyebrow/title as the mobile day reader */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-[11px] font-normal text-slate-gray">
+            {plan.title} · Day {s.sort + 1} of {plan.days}
+          </p>
+          <h3 className="mt-1 text-[20px] font-bold leading-[26px] text-navy">
+            {s.title || (isCompact ? `Day ${s.sort + 1}` : "Untitled section")}
+          </h3>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
           {started ? (
             <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-emerald-700">
               {doneDays.size} of {sections.length} complete
@@ -249,63 +349,112 @@ ${url}`)
         </div>
       </div>
 
-      {/* Article */}
-      <article className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
-        <h3 className="text-xl font-black text-navy">
-          {s.title || (isCompact ? `Day ${s.sort + 1}` : "Untitled section")}
-        </h3>
-        {range ? <p className="mt-1 text-sm text-slate-gray">{range}</p> : null}
+      {/* Section stepper with scroll spy (Season-guide tabs) */}
+      {steps.length > 1 ? (
+        <div className="flex rounded-xl bg-white px-1 py-1">
+          {steps.map((label, idx) => (
+            <button
+              key={label}
+              type="button"
+              onClick={() => goToStep(label, idx)}
+              className="flex-1 rounded-lg py-[7px] text-xs transition-colors"
+              style={
+                idx <= shownStep
+                  ? { color: SURGE_ACCENT, fontWeight: 700 }
+                  : { color: MUTED, fontWeight: 400 }
+              }
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      ) : null}
 
+      {/* Article */}
+      <article ref={articleRef} className="rounded-3xl border border-gray-100 bg-white p-6 shadow-sm">
         {s.verseText ? (
-          <div
-            className="mt-4 rounded-xl border-l-4 bg-alice-blue/50 p-3.5 ring-1 ring-gray-100"
-            style={{ borderLeftColor: "#13c5dd" }}
-          >
-            <p className="text-[11px] font-bold uppercase tracking-widest text-cyan mb-1">
-              Today&apos;s verse
-            </p>
-            <p className="text-sm leading-6 text-navy">
-              <FaQuoteLeft className="mr-1 inline text-slate-gray" />
-              {s.verseText}
-            </p>
-            {s.verseBy ? (
-              <p className="mt-1 text-xs font-semibold text-slate-gray">— {s.verseBy}</p>
-            ) : null}
-          </div>
+          <section data-step="VERSE" className="mb-6 scroll-mt-32">
+            <SectionHead eyebrow="VERSE" title="Today's verse" />
+            <div
+              className="rounded-xl border-l-4 bg-white p-3.5 ring-1 ring-gray-100"
+              style={{ borderLeftColor: SURGE_ACCENT }}
+            >
+              <p className="text-sm leading-6 text-navy">&ldquo;{s.verseText}&rdquo;</p>
+              {s.verseBy ? (
+                <p className="mt-1.5 text-[11px] font-semibold text-slate-gray">— {s.verseBy}</p>
+              ) : null}
+            </div>
+          </section>
         ) : null}
 
-        {s.blocks && s.blocks.length ? (
-          <div className="mt-4 space-y-3">
-            {s.blocks.map((b, idx) => (
-              <BlockView key={`${s.id}-${idx}`} b={b} />
-            ))}
-          </div>
-        ) : (
-          <p className="mt-4 rounded-2xl border border-dashed border-gray-200 p-6 text-center text-sm leading-6 text-slate-gray">
-            {range
-              ? `Open ${range} in the Bible, read at your own pace, then mark this section complete.`
-              : "Reading content for this section is coming soon."}
-          </p>
-        )}
+        <section data-step="READ" className="mb-6 scroll-mt-32">
+          <SectionHead eyebrow="READ" title="The reading" />
 
-        <div className="mt-6 flex items-center gap-3 border-t border-gray-100 pt-4">
+          {chapters.length ? (
+            <div className="mb-2.5 flex flex-wrap gap-2">
+              {chapters.map((c) => (
+                <span
+                  key={c}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-ice-blue bg-white px-3 py-1.5 text-xs font-semibold text-navy-soft"
+                >
+                  <FaBookOpen className="text-[10px]" style={{ color: EYEBROW }} />
+                  {s.book} {c}
+                </span>
+              ))}
+            </div>
+          ) : null}
+
+          {readBlocks.length ? (
+            readBlocks.map((b, idx) => <BlockView key={`${s.id}-${idx}`} b={b} />)
+          ) : chapters.length ? (
+            <p className="text-sm leading-[22px] text-navy">
+              Read {range} at your own pace, then mark this day complete.
+            </p>
+          ) : (
+            <p className="text-sm leading-[22px] text-navy">
+              Reading content for this day is coming soon.
+            </p>
+          )}
+        </section>
+
+        {reflectBlocks.length ? (
+          <section data-step="REFLECT" className="mb-6 scroll-mt-32">
+            <SectionHead eyebrow="REFLECT" title="Think it over" />
+            <div className="space-y-3">
+              {reflectBlocks.map((b, idx) => (
+                <InteractiveView key={`${s.id}-${idx}`} b={b} />
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {prayBlocks.length ? (
+          <section data-step="RESPOND" className="mb-6 scroll-mt-32">
+            <SectionHead eyebrow="RESPOND" title="Pray it through" />
+            <div className="space-y-3">
+              {prayBlocks.map((b, idx) => (
+                <InteractiveView key={`${s.id}-${idx}`} b={b} />
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {/* Action row — scrolls with the page, like mobile */}
+        <div className="mt-6 flex items-center gap-3">
           <button
             onClick={toggleComplete}
             aria-pressed={isDone}
-            className="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-bold transition-colors"
-            style={
-              isDone
-                ? { backgroundColor: "#065f46", color: "#fff" }
-                : { backgroundColor: "#13c5dd", color: "#1d2a4d" }
-            }
+            className="inline-flex flex-1 items-center justify-center gap-2 rounded-[14px] px-5 py-3 text-xs font-bold text-white transition hover:opacity-90"
+            style={{ backgroundColor: isDone ? SUCCESS : SURGE_COLOR }}
           >
-            {isDone ? <FaCheck /> : <FaBookOpen className="text-slate-gray" />}
+            {isDone ? <FaCircleCheck /> : <FaBookmark />}
             {isDone ? "Completed" : "Mark complete"}
           </button>
           <button
             type="button"
             onClick={shareSection}
-            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2.5 text-xs font-bold text-navy transition hover:bg-alice-blue"
+            className="inline-flex items-center justify-center gap-2 rounded-[14px] border bg-white px-5 py-3 text-xs font-bold transition hover:bg-alice-blue"
+            style={{ borderColor: "rgba(194, 65, 12, 0.35)", color: SURGE_ACCENT }}
           >
             <FaShareNodes className="text-[11px]" /> {copied ? "Link copied" : "Share"}
           </button>
@@ -336,33 +485,21 @@ ${url}`)
   );
 }
 
-const EYEBROW = "#13c5dd";
-
 function ReadingMediaView({ media }: { media: ReadingMedia }) {
   if (media.type === "image") {
     return (
-      <figure className="overflow-hidden rounded-xl ring-1 ring-gray-100">
+      <figure className="mb-2 overflow-hidden rounded-xl ring-1 ring-gray-100">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={media.uri} alt={media.caption || ""} className="w-full" />
         {media.caption ? (
-          <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-xs text-slate-gray">
+          <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-[11px] text-slate-gray">
             {media.caption}
           </figcaption>
         ) : null}
       </figure>
     );
   }
-  return (
-    <blockquote className="rounded-r-xl border-l-4 bg-alice-blue/60 px-3 py-2 text-sm italic leading-6 text-gray-700" style={{ borderLeftColor: EYEBROW }}>
-      &ldquo;{media.text}&rdquo;
-      {media.by || media.source ? (
-        <footer className="mt-1 text-xs not-italic text-slate-gray">
-          {media.by ? `— ${media.by}` : ""}
-          {media.source ? ` · ${media.source}` : ""}
-        </footer>
-      ) : null}
-    </blockquote>
-  );
+  return <QuoteCard text={media.text} by={media.by} source={media.source} />;
 }
 
 function ReadingView({ structure }: { structure: ReadingStructure }) {
@@ -372,71 +509,199 @@ function ReadingView({ structure }: { structure: ReadingStructure }) {
   const conclusion = s.conclusion ?? emptyReading().conclusion;
   const media = (m?: ReadingMedia[]) => (m || []).map((x, j) => <ReadingMediaView key={j} media={x} />);
   return (
-    <div className="space-y-1.5">
+    <div>
       {media(intro.beforeHook)}
-      {intro.hook ? <p className="text-sm leading-6 text-gray-700">{intro.hook}</p> : null}
+      {intro.hook ? <p className="mb-1.5 text-sm leading-[22px] text-navy">{intro.hook}</p> : null}
       {media(intro.afterHook)}
-      {intro.thesis ? <p className="text-sm leading-6 text-gray-700">{intro.thesis}</p> : null}
+      {intro.thesis ? <p className="mb-1.5 text-sm leading-[22px] text-navy">{intro.thesis}</p> : null}
       {media(intro.afterThesis)}
       {body.map((item, j) => (
         <div key={j}>
           {media(item.beforeTopic)}
-          {item.topic ? <p className="text-sm leading-6 text-gray-700">{item.topic}</p> : null}
+          {item.topic ? <p className="mb-1.5 text-sm leading-[22px] text-navy">{item.topic}</p> : null}
           {media(item.afterTopic)}
           {item.support.length ? (
-            <p className="mt-1 text-sm leading-6 italic text-slate-gray">{item.support.join(" ")}</p>
+            <p className="mb-1.5 text-sm italic leading-[22px] text-slate-gray">{item.support.join(" ")}</p>
           ) : null}
           {media(item.afterSupport)}
-          {item.closing ? <p className="mt-1 text-sm leading-6 text-gray-700">{item.closing}</p> : null}
+          {item.closing ? <p className="mb-1.5 text-sm leading-[22px] text-navy">{item.closing}</p> : null}
           {media(item.afterClosing)}
         </div>
       ))}
       {media(conclusion.beforeRestate)}
-      {conclusion.restate ? <p className="text-sm leading-6 text-gray-700">{conclusion.restate}</p> : null}
+      {conclusion.restate ? <p className="mb-1.5 text-sm leading-[22px] text-navy">{conclusion.restate}</p> : null}
       {media(conclusion.afterRestate)}
       {conclusion.whyItMatters ? (
-        <p className="text-sm leading-6 text-gray-700">{conclusion.whyItMatters}</p>
+        <p className="mb-1.5 text-sm leading-[22px] text-navy">{conclusion.whyItMatters}</p>
       ) : null}
       {media(conclusion.afterWhyItMatters)}
       {conclusion.closing ? (
-        <p className="text-[13px] italic leading-5 text-gray-700">{conclusion.closing}</p>
+        <p className="mb-1.5 text-sm italic leading-[22px] text-navy">{conclusion.closing}</p>
       ) : null}
       {media(conclusion.afterClosing)}
     </div>
   );
 }
 
-function TodoBlock({ b }: { b: PubBlock }) {
+/** Flat gray card — mirrors the mobile InteractiveBlocks card. */
+function InteractiveCard({ children }: { children: ReactNode }) {
+  return <div className="rounded-xl bg-ghost-white p-3">{children}</div>;
+}
+
+function ChecklistView({ b }: { b: PubBlock }) {
   const [checked, setChecked] = useState<boolean[]>(() => (b.items || []).map(() => false));
   return (
-    <div className="rounded-xl bg-alice-blue p-3">
-      <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-cyan">{b.title || "To-do"}</p>
-      <ul className="space-y-1">
+    <InteractiveCard>
+      <p className="mb-1.5 text-sm font-bold text-gray-700">{b.title || "Try it today"}</p>
+      <ul>
         {(b.items || []).map((item, i) => (
           <li key={i}>
             <button
               type="button"
               aria-pressed={checked[i] ?? false}
               onClick={() => setChecked((prev) => prev.map((v, j) => (j === i ? !v : v)))}
-              className="flex w-full items-start gap-2 py-1 text-left text-sm text-gray-700"
+              className="flex w-full items-center gap-2 rounded-lg px-0.5 py-[5px] text-left"
             >
               <span
-                className="mt-0.5 flex size-3.5 shrink-0 items-center justify-center rounded border"
+                className="flex size-3.5 shrink-0 items-center justify-center rounded border"
                 style={
                   checked[i]
-                    ? { backgroundColor: "#065f46", borderColor: "#065f46" }
-                    : { borderColor: "#cbd5e1", backgroundColor: "#fff" }
+                    ? { backgroundColor: CHECKED_BG, borderColor: CHECKED_BG }
+                    : { borderColor: "#d1d5db", backgroundColor: "#fff" }
                 }
               >
                 {checked[i] ? <FaCheck className="text-[8px] text-white" /> : null}
               </span>
-              <span className={checked[i] ? "text-slate-gray line-through" : ""}>{item}</span>
+              <span
+                className="text-xs leading-[18px]"
+                style={{ color: checked[i] ? MUTED : "#4b5563" }}
+              >
+                {item}
+              </span>
             </button>
           </li>
         ))}
       </ul>
-    </div>
+    </InteractiveCard>
   );
+}
+
+function QuizView({ b }: { b: PubBlock }) {
+  const [selected, setSelected] = useState<number | null>(null);
+  const answered = selected !== null;
+  const correct = answered && selected === b.correctIndex;
+  return (
+    <InteractiveCard>
+      <p className="mb-1.5 text-sm font-bold text-gray-700">{b.question}</p>
+      <ul>
+        {(b.options || []).map((opt, i) => {
+          const isSelected = selected === i;
+          const isCorrect = answered && i === b.correctIndex;
+          const isWrongPick = answered && isSelected && i !== b.correctIndex;
+          return (
+            <li key={i}>
+              <button
+                type="button"
+                onClick={() => setSelected(i)}
+                className="flex w-full items-center gap-2 rounded-lg px-0.5 py-[5px] text-left"
+                style={
+                  isCorrect
+                    ? { backgroundColor: "rgba(16, 185, 129, 0.10)" }
+                    : isWrongPick
+                      ? { backgroundColor: "rgba(239, 68, 68, 0.08)" }
+                      : undefined
+                }
+              >
+                <span
+                  className="size-2.5 shrink-0 rounded-full border"
+                  style={
+                    isSelected
+                      ? { backgroundColor: CHECKED_BG, borderColor: CHECKED_BG }
+                      : { borderColor: "#d1d5db", backgroundColor: "#fff" }
+                  }
+                />
+                <span className="flex-1 text-xs leading-[18px] text-[#4b5563]">{opt}</span>
+                {isCorrect ? <FaCircleCheck className="text-[14px]" style={{ color: SUCCESS }} /> : null}
+                {isWrongPick ? <FaCircleXmark className="text-[14px]" style={{ color: ERROR }} /> : null}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+      {answered && b.explain ? (
+        <p className="mt-0.5 px-0.5 text-xs" style={{ color: correct ? "#065f46" : MUTED }}>
+          {correct ? "Correct — " : ""}
+          {b.explain}
+        </p>
+      ) : null}
+    </InteractiveCard>
+  );
+}
+
+function ReflectionView({ b }: { b: PubBlock }) {
+  const [text, setText] = useState("");
+  return (
+    <InteractiveCard>
+      <p className="mb-1 text-xs italic text-gray-600">&ldquo;{b.prompt}&rdquo;</p>
+      <textarea
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        maxLength={2000}
+        placeholder={b.placeholder || "Write your thoughts here…"}
+        className="min-h-16 w-full resize-none rounded-lg border border-dashed border-gray-300 bg-white p-2 text-[13px] text-gray-700 placeholder:text-gray-400 focus:border-gray-400 focus:outline-none"
+      />
+    </InteractiveCard>
+  );
+}
+
+function PrayView({ b }: { b: PubBlock }) {
+  const [prayed, setPrayed] = useState<boolean[]>(() => (b.items || []).map(() => false));
+  return (
+    <InteractiveCard>
+      <div className="mb-1.5 flex items-center gap-1.5">
+        <FaHeart className="text-[13px]" style={{ color: MUTED }} />
+        <p className="text-sm font-bold text-gray-700">{b.title || "Pray it today"}</p>
+      </div>
+      <ul>
+        {(b.items || []).map((item, i) => (
+          <li key={i}>
+            <button
+              type="button"
+              aria-pressed={prayed[i] ?? false}
+              onClick={() => setPrayed((prev) => prev.map((v, j) => (j === i ? !v : v)))}
+              className="flex w-full items-center gap-2 rounded-lg px-0.5 py-[5px] text-left"
+            >
+              <span
+                className="size-[7px] shrink-0 rounded-full"
+                style={{ backgroundColor: prayed[i] ? SUCCESS : EYEBROW }}
+              />
+              <span
+                className="text-xs leading-[18px]"
+                style={{ color: prayed[i] ? MUTED : "#4b5563" }}
+              >
+                {item}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </InteractiveCard>
+  );
+}
+
+function InteractiveView({ b }: { b: PubBlock }) {
+  switch (b.type) {
+    case "checklist":
+      return <ChecklistView b={b} />;
+    case "quiz":
+      return <QuizView b={b} />;
+    case "reflection":
+      return <ReflectionView b={b} />;
+    case "pray":
+      return <PrayView b={b} />;
+    default:
+      return null;
+  }
 }
 
 function BlockView({ b }: { b: PubBlock }) {
@@ -444,33 +709,18 @@ function BlockView({ b }: { b: PubBlock }) {
     case "reading":
       return <ReadingView structure={b.structure ?? emptyReading()} />;
     case "paragraph":
-      return <p className="text-sm leading-6 text-gray-700">{b.text}</p>;
+      return <p className="mb-1.5 text-sm leading-[22px] text-navy">{b.text}</p>;
     case "heading":
-      return (
-        <div className="mt-5 mb-1 flex items-center gap-2">
-          <span className="h-4 w-1 rounded-full" style={{ backgroundColor: EYEBROW }} />
-          <h4 className="text-[11px] font-bold uppercase tracking-widest text-navy">{b.text}</h4>
-        </div>
-      );
+      return <h4 className="mb-1.5 mt-2.5 text-base font-bold leading-5 text-navy">{b.text}</h4>;
     case "quote":
-      return (
-        <blockquote className="rounded-r-xl border-l-4 bg-alice-blue/60 px-3 py-2 text-sm italic leading-6 text-gray-700" style={{ borderLeftColor: EYEBROW }}>
-          &ldquo;{b.text}&rdquo;
-          {b.by || b.source ? (
-            <footer className="mt-1 text-xs not-italic text-slate-gray">
-              {b.by ? `— ${b.by}` : ""}
-              {b.source ? ` · ${b.source}` : ""}
-            </footer>
-          ) : null}
-        </blockquote>
-      );
+      return <QuoteCard text={b.text || ""} by={b.by} source={b.source} />;
     case "image":
       return (
-        <figure className="overflow-hidden rounded-xl ring-1 ring-gray-100">
+        <figure className="mb-2 overflow-hidden rounded-xl ring-1 ring-gray-100">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={b.uri} alt={b.caption || ""} className="w-full" />
           {b.caption ? (
-            <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-xs text-slate-gray">
+            <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-[11px] text-slate-gray">
               {b.caption}
             </figcaption>
           ) : null}
@@ -478,9 +728,9 @@ function BlockView({ b }: { b: PubBlock }) {
       );
     case "list":
       return (
-        <ul className="space-y-1.5">
+        <ul className="mb-1.5 space-y-1">
           {(b.items || []).map((item, i) => (
-            <li key={i} className="flex gap-2 text-sm leading-6 text-gray-700">
+            <li key={i} className="flex gap-2.5 text-sm leading-[22px] text-navy">
               <span className="mt-[7px] size-1.5 shrink-0 rounded-full" style={{ backgroundColor: EYEBROW }} />
               <span>{item}</span>
             </li>
@@ -488,30 +738,10 @@ function BlockView({ b }: { b: PubBlock }) {
         </ul>
       );
     case "checklist":
-      return <TodoBlock b={b} />;
+    case "quiz":
     case "reflection":
-      return (
-        <div className="rounded-xl bg-alice-blue p-3">
-          <p className="text-sm italic text-gray-600">&ldquo;{b.prompt}&rdquo;</p>
-          <div className="mt-2 flex h-10 items-center rounded-lg border border-dashed border-gray-300 bg-white px-2 text-xs text-gray-400">
-            {b.placeholder || "Write your answer…"}
-          </div>
-        </div>
-      );
     case "pray":
-      return (
-        <div className="rounded-xl bg-navy p-3">
-          <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-cyan">{b.title || "Prayer"}</p>
-          <ul className="space-y-1.5">
-            {(b.items || []).map((item, i) => (
-              <li key={i} className="flex gap-2 text-sm text-white/85">
-                <span className="mt-[7px] size-1.5 shrink-0 rounded-full bg-cyan" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
+      return <InteractiveView b={b} />;
     default:
       return null;
   }
