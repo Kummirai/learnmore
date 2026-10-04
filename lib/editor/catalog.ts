@@ -17,7 +17,7 @@ export const clubName = (slug?: string | null): string =>
   slug ? (CLUBS.find((c) => c.slug === slug)?.name ?? slug) : "Relate";
 
 /** Magazine series offered today. "Relate" is the no-club umbrella series. */
-export const SERIES = ["Relate", "Rooted", "Footsteps", "Hearth"];
+export const SERIES = ["Relate", "Rooted", "Footsteps"];
 
 export const PUBLICATION_KINDS = ["magazine", "bulletin"] as const;
 

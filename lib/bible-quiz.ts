@@ -327,8 +327,8 @@ export const CLUB_ACCENTS: Record<string, string> = {
   adults: "#1e3a8a",
   prime: "#1e3a8a",
   anchor: "#1e3a8a",
-  base: "#1e3a8a",
-  nexus: "#1e3a8a",
+  spark: "#1e3a8a",
+  synergy: "#1e3a8a",
 };
 
 /** Deterministic per-club seed so boards/logs render on every reload. */

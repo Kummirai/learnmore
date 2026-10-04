@@ -47,7 +47,7 @@ const categories: Category[] = [
                 title: "Club Facilitator",
                 commitment: "Weekly · 2 hrs",
                 icon: LuUsers,
-                body: "Lead one weekly club session — welcome, run the programme, and help people connect. Seven clubs run each week across Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus.",
+                body: "Lead one weekly club session — welcome, run the programme, and help people connect. Seven clubs run each week across Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy.",
                 fits: "Anyone who enjoys facilitating a group",
             },
             {

@@ -39,16 +39,16 @@ export default function Courses() {
             color: "bg-[#2E7D32]/10 text-[#14532D]"
         },
         {
-            title: "Base",
-            description: "Couples building life together — needing support, connection and growth.",
-            duration: "Couples of any age",
+            title: "Spark",
+            description: "Newly married couples building the foundations — needing unity, tools and each other.",
+            duration: "0–5 yrs married",
             students: 9,
             color: "bg-[#E8A2B6]/20 text-[#9D174D]"
         },
         {
-            title: "Nexus",
-            description: "Families raising children — needing community, resources and stability.",
-            duration: "Families",
+            title: "Synergy",
+            description: "Seasoned couples building legacy — needing depth, purpose and a hand on the next generation.",
+            duration: "6+ yrs married",
             students: 9,
             color: "bg-[#8A9A5B]/10 text-[#4D7C0F]"
         },

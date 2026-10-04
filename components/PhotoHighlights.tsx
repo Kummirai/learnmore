@@ -17,11 +17,11 @@ const photos = [
     src: "https://images.unsplash.com/photo-1625999874116-dba9a603fa24?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "Base Couples Date Night",
+    label: "Spark Double Date",
     src: "https://images.unsplash.com/photo-1744972974629-daa2fdaa15ee?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {
-    label: "Nexus Family Potluck",
+    label: "Synergy Couples Retreat",
     src: "https://images.unsplash.com/photo-1729284440498-19b2295ac7bb?q=80&w=400&h=300&fit=crop&fm=webp",
   },
   {

@@ -11,11 +11,11 @@ const faqs = [
     },
     {
         q: "Which club is right for me or my family?",
-        a: "There's a club for every season of life: Sprout (children 6–15), Surge (16–21), Pulse (21–33), Prime (singles 33+), Anchor (single parents), Base (couples) and Nexus (families). Message us on WhatsApp and we'll help you find your crew."
+        a: "There's a club for every season of life: Sprout (children 6–15), Surge (16–21), Pulse (21–33), Prime (singles 33+), Anchor (single parents), Spark (0–5 years married) and Synergy (6+ years married). Message us on WhatsApp and we'll help you find your crew."
     },
     {
         q: "What happens at a typical club gathering?",
-        a: "Each club meets weekly — games, real conversations and practical skills, with an optional faith component. Sprout runs Saturday morning activities, Pulse hosts monthly networking, Nexus shares potluck dinners. Every program serves a meal or snack."
+        a: "Each club meets weekly — games, real conversations and practical skills, with an optional faith component. Sprout runs Saturday morning activities, Pulse hosts monthly networking, Synergy hosts couples’ retreats. Every program serves a meal or snack."
     },
     {
         q: "Do I need to be religious to join?",

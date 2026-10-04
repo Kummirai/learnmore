@@ -25,8 +25,8 @@ const CLUB_SLUGS = [
     { value: "pulse", label: "Pulse" },
     { value: "prime", label: "Prime" },
     { value: "anchor", label: "Anchor" },
-    { value: "base", label: "Base" },
-    { value: "nexus", label: "Nexus" },
+    { value: "spark", label: "Spark" },
+    { value: "synergy", label: "Synergy" },
 ];
 
 type PublicationItem = {

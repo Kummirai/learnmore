@@ -10,7 +10,7 @@
 
 -- ---------------------------------------------------------------------------
 -- 1. Clubs — grouped by age into SIX registration choices (source of truth).
---    Adults is ONE registration choice; the underlying Prime/Anchor/Base/Nexus
+--    Adults is ONE registration choice; the underlying Prime/Anchor/Spark/Synergy
 --    slugs each still keep their own club page + own quiz board.
 --    group_key is NOT unique: adults shares one key across four club rows.
 -- ---------------------------------------------------------------------------
@@ -31,8 +31,8 @@ insert into public.clubs (slug, name, group_key, age_min, age_max, sort) values
   ('pulse',         'Pulse',         'pulse', 21,  33,  50),
   ('prime',         'Prime',         'adults',33,  99,  60),
   ('anchor',        'Anchor',        'adults',33,  99,  70),
-  ('base',          'Base',          'adults',33,  99,  80),
-  ('nexus',         'Nexus',         'adults',33,  99,  90)
+  ('spark',         'Spark',         'adults',18,  99,  80),
+  ('synergy',       'Synergy',       'adults',25,  99,  90)
 on conflict (slug) do update
   set name = excluded.name, group_key = excluded.group_key,
       age_min = excluded.age_min, age_max = excluded.age_max,

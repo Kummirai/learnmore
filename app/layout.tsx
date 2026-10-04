@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s | Relate World",
   },
   description:
-    "Relate World brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families. 100% free to join.",
+    "Relate World brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, Bible reading guides and practical support for families. 100% free to join.",
   keywords: [
     "RelateWorld",
     "Relate World",
@@ -90,7 +90,7 @@ export default function RootLayout({
                   url: SITE_URL,
                   logo: `${SITE_URL}/images/relate-world-logo.png`,
                   description:
-                    "Relate World — free community clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+                    "Relate World — free community clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, Bible reading guides and practical support for families.",
                   areaServed: "ZA",
                 },
                 {

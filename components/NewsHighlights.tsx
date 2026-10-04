@@ -21,7 +21,7 @@ const posts = [
   {
     title: "New Clubs Opened for Parents & Families",
     excerpt:
-      "Anchor, Base and Nexus bring single parents, couples and families into the Relate family — every age now has a home.",
+      "Anchor, Spark and Synergy bring single parents and couples of every stage into the Relate family — every season now has a home.",
     date: "2 Aug 2026",
     tag: "Community",
     color: "bg-purple-100 text-purple-700",

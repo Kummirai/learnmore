@@ -11,6 +11,7 @@ import {
   getClubClass,
   getClubClasses,
   programSlug,
+  programsByPillar,
 } from "@/constants/relate";
 import { getPublications } from "@/lib/publications";
 import { getClubEvents } from "@/lib/events";
@@ -255,6 +256,49 @@ export default async function ClubPage({ slug }: { slug: string }) {
 
       <section className={"flex-1 px-4 py-12"}>
         <div className={"max-w-6xl mx-auto"}>
+          {(club.mission || club.vision) && (
+            <div className={"mb-10 grid gap-4 md:grid-cols-2"}>
+              {club.mission && (
+                <div
+                  className={
+                    "rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+                  }
+                >
+                  <span
+                    className={
+                      "text-[11px] uppercase tracking-widest font-semibold"
+                    }
+                    style={{ color: club.color }}
+                  >
+                    Mission
+                  </span>
+                  <p className={"mt-2 text-sm text-gray-600 leading-relaxed"}>
+                    {club.mission}
+                  </p>
+                </div>
+              )}
+              {club.vision && (
+                <div
+                  className={
+                    "rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"
+                  }
+                >
+                  <span
+                    className={
+                      "text-[11px] uppercase tracking-widest font-semibold"
+                    }
+                    style={{ color: club.color }}
+                  >
+                    Vision
+                  </span>
+                  <p className={"mt-2 text-sm text-gray-600 leading-relaxed"}>
+                    {club.vision}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
           {classes.length > 0 && (
             <div className={"mb-10"}>
               <span
@@ -351,7 +395,8 @@ export default async function ClubPage({ slug }: { slug: string }) {
               </h2>
               <p className={"text-gray-500 text-sm mt-2 max-w-xl"}>
                 {club.programs.length} programs for {club.group.toLowerCase()} —
-                one weekly flagship, then the whole menu of ways to be involved.
+                the weekly flagship first, then everything grouped under the
+                three pillars: Shift, Sanctuary and Connect.
               </p>
             </div>
           )}
@@ -432,53 +477,60 @@ export default async function ClubPage({ slug }: { slug: string }) {
             </div>
           )}
 
-          {!isSprout && club.programs.length > 1 && (
-            <>
-              <h3
-                className={
-                  "text-sm font-semibold text-gray-400 uppercase tracking-widest mb-2"
-                }
-              >
-                More ways to be involved
-              </h3>
-              <div className={"grid grid-cols-1 md:grid-cols-2 gap-x-12"}>
-                {club.programs.slice(1).map((p) => (
-                  <Link
-                    key={p.name}
-                    href={`/${club.slug}/${programSlug(p.name)}`}
+          {!isSprout &&
+            programsByPillar(club).map((group) => {
+              const items = group.programs.filter((p) => p !== club.programs[0]);
+              if (items.length === 0) return null;
+              return (
+                <div key={group.pillar ?? "all"} className={"mb-8"}>
+                  <h3
                     className={
-                      "group -mx-3 flex items-baseline gap-3 rounded-lg px-3 py-4 border-b border-gray-100 hover:bg-alice-blue/70 transition-colors"
+                      "text-sm font-semibold text-gray-400 uppercase tracking-widest mb-2"
                     }
                   >
-                    <span
-                      className={"size-2 shrink-0 rounded-full self-center"}
-                      style={{ backgroundColor: club.color }}
-                    />
-                    <div className={"min-w-0"}>
-                      <h4
+                    {group.pillar
+                      ? group.pillar + (group.label ? ` · ${group.label}` : "")
+                      : "More ways to be involved"}
+                  </h3>
+                  <div className={"grid grid-cols-1 md:grid-cols-2 gap-x-12"}>
+                    {items.map((p) => (
+                      <Link
+                        key={p.name}
+                        href={`/${club.slug}/${programSlug(p.name)}`}
                         className={
-                          "font-medium text-gray-800 text-[15px] group-hover:text-cyan-dark transition-colors"
+                          "group -mx-3 flex items-baseline gap-3 rounded-lg px-3 py-4 border-b border-gray-100 hover:bg-alice-blue/70 transition-colors"
                         }
                       >
-                        {p.name}
-                      </h4>
-                      <p className={"text-sm text-gray-500 leading-snug"}>
-                        {p.blurb}
-                      </p>
-                    </div>
-                    <span
-                      aria-hidden={"true"}
-                      className={
-                        "ml-auto self-center text-sm font-semibold text-cyan opacity-0 group-hover:opacity-100 transition-opacity"
-                      }
-                    >
-                      →
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </>
-          )}
+                        <span
+                          className={"size-2 shrink-0 rounded-full self-center"}
+                          style={{ backgroundColor: club.color }}
+                        />
+                        <div className={"min-w-0"}>
+                          <h4
+                            className={
+                              "font-medium text-gray-800 text-[15px] group-hover:text-cyan-dark transition-colors"
+                            }
+                          >
+                            {p.name}
+                          </h4>
+                          <p className={"text-sm text-gray-500 leading-snug"}>
+                            {p.blurb}
+                          </p>
+                        </div>
+                        <span
+                          aria-hidden={"true"}
+                          className={
+                            "ml-auto self-center text-sm font-semibold text-cyan opacity-0 group-hover:opacity-100 transition-opacity"
+                          }
+                        >
+                          →
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
 
           {club.slug === "sprout" && (
             <Link

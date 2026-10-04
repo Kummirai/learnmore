@@ -2,9 +2,9 @@ import ClubPage from "@/components/ClubPage"
 import { clubMetadataFromSlug } from "@/lib/seo"
 
 export function generateMetadata() {
-    return clubMetadataFromSlug("nexus")
+    return clubMetadataFromSlug("spark")
 }
 
-export default function NexusPage() {
-    return <ClubPage slug={"nexus"}/>
+export default function SparkPage() {
+    return <ClubPage slug={"spark"}/>
 }

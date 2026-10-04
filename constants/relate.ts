@@ -1,7 +1,14 @@
+/** The three-pillar framework every club above Sprout is built on. */
+export type RelatePillar = "Shift" | "Sanctuary" | "Connect";
+
+export const PILLARS: RelatePillar[] = ["Shift", "Sanctuary", "Connect"];
+
 export type RelateProgram = {
   name: string;
   blurb: string;
   detail: string;
+  /** Which pillar the program sits under. Sprout programs stay ungrouped. */
+  pillar?: RelatePillar;
 };
 
 export type RelateClub = {
@@ -17,6 +24,10 @@ export type RelateClub = {
   whatsappGroupLink: string;
   programs: RelateProgram[];
   parentSlug?: string;
+  mission?: string;
+  vision?: string;
+  /** Club-specific name for each pillar (e.g. Surge's Shift pillar = "Runway"). */
+  pillarLabels?: Record<RelatePillar, string>;
 };
 
 export const CLUBS: RelateClub[] = [
@@ -61,64 +72,75 @@ export const CLUBS: RelateClub[] = [
     tagline: "Rise. Build. Become.",
     description:
       "Young people stepping into adulthood — needing guidance, skills and purpose.",
+    mission:
+      "To empower teenagers and young adults with foundational identity, essential life skills, and academic support to successfully transition into independent adulthood.",
+    vision:
+      "A generation of confident, purpose-driven young leaders securely anchored in their faith and practically equipped for the future marketplace.",
     heroImage: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80",
     color: "#FF6B00",
     colorDark: "#C2410C",
     whatsappGroupLink: "https://chat.whatsapp.com/Fkq2vBcZtfLCuoS9CqGM7o",
+    pillarLabels: {
+      Shift: "Runway",
+      Sanctuary: "Identity",
+      Connect: "Fun & Action",
+    },
     programs: [
-      {
-        name: "Surge Connect",
-        blurb: "Weekly youth meetups.",
-        detail:
-          "Weekly hangouts with real conversations about life, faith and the future — a safe place to belong.",
-      },
-      {
-        name: "Rise Mentorship",
-        blurb: "One-on-one career and life coaching.",
-        detail:
-          "Get matched with a mentor who walks with you for six months — goal setting, accountability and honest guidance.",
-      },
       {
         name: "The Launch Pad",
         blurb: "Career exposure, internships and job placements.",
         detail:
           "Work-shadow days, internship placements and CV clinics that open doors into the working world.",
-      },
-      {
-        name: "Tuition Support",
-        blurb: "School and university fees.",
-        detail:
-          "Registration and tuition support for students who qualify, based on need and school reports.",
-      },
-      {
-        name: "School Supply Drive",
-        blurb: "Stationery, uniforms and books.",
-        detail:
-          "Annual drive collecting packs of stationery, uniforms and set-work books before each school year starts.",
+        pillar: "Shift",
       },
       {
         name: "Life Skills Workshops",
         blurb: "Finance, CV writing and interview prep.",
         detail:
           "Hands-on workshops — open your first bank account, write a CV that gets read, and nail the interview.",
+        pillar: "Shift",
       },
       {
-        name: "Surge Outings",
-        blurb: "Park visits and beach days.",
+        name: "Tuition Support",
+        blurb: "School and university fees.",
         detail:
-          "Regular outings to parks, the beach and local attractions — friendship and fresh air.",
+          "Registration and tuition support for students who qualify, based on need and school reports.",
+        pillar: "Shift",
+      },
+      {
+        name: "School Supply Drive",
+        blurb: "Stationery, uniforms and books.",
+        detail:
+          "Annual drive collecting packs of stationery, uniforms and set-work books before each school year starts.",
+        pillar: "Shift",
       },
       {
         name: "Surge Fire",
         blurb: "Youth worship nights.",
         detail:
           "Monthly worship nights with music, testimony and prayer — optional and open to everyone.",
+        pillar: "Sanctuary",
       },
       {
         name: "Purpose Quest",
         blurb: "Identity and calling workshops.",
         detail:
           "A guided journey through identity, gifts and calling to help you find your purpose.",
+        pillar: "Sanctuary",
+      },
+      {
+        name: "Surge Outings",
+        blurb: "Park visits and beach days.",
+        detail:
+          "Regular outings to parks, the beach and local attractions — friendship and fresh air.",
+        pillar: "Connect",
+      },
+      {
+        name: "Impact Squad",
+        blurb: "Local volunteering and community service.",
+        detail:
+          "Serve alongside your crew on local projects — food drives, clean-ups and outreach in the neighbourhood.",
+        pillar: "Connect",
       },
     ],
   },
@@ -130,64 +152,75 @@ export const CLUBS: RelateClub[] = [
     tagline: "Live loud. Move forward.",
     description:
       "Young adults building careers, finances and identity — needing network and direction.",
+    mission:
+      "To equip young professionals and entrepreneurs with cutting-edge marketplace tools, long-term financial mastery, deep accountability networks, and an active marketplace calling.",
+    vision:
+      "A thriving network of young adults driving economic innovation and spiritual transformation within their specific corporate and civic industries.",
     heroImage: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1200&q=80",
     color: "#00B4D8",
     colorDark: "#0284C7",
     whatsappGroupLink: "https://chat.whatsapp.com/Glr3wCdZugMDvpT9DrHN8p",
+    pillarLabels: {
+      Shift: "Acceleration",
+      Sanctuary: "Wellness",
+      Connect: "Fellowship",
+    },
     programs: [
       {
-        name: "Pulse Network",
-        blurb: "Monthly networking at free venues.",
+        name: "The Hustle Hub",
+        blurb: "Co-working and entrepreneurship incubator.",
         detail:
-          "Monthly meetups at free venues to grow your network — bring a friend, leave with contacts.",
+          "Free co-working days plus a 12-week incubator for young businesses — mentorship, templates and pitch practice.",
+        pillar: "Shift",
       },
       {
         name: "Pulse Wallet",
         blurb: "Financial literacy: budgeting, investing, credit.",
         detail:
           "A practical money course: budgeting that works, debt and credit scores, and first steps into investing.",
-      },
-      {
-        name: "The Hustle Hub",
-        blurb: "Co-working and entrepreneurship incubator.",
-        detail:
-          "Free co-working days plus a 12-week incubator for young businesses — mentorship, templates and pitch practice.",
-      },
-      {
-        name: "Pulse Check",
-        blurb: "Mental health and wellness circles.",
-        detail:
-          "Confidential peer circles facilitated by trained volunteers — because your mind matters as much as your money.",
+        pillar: "Shift",
       },
       {
         name: "Career Workshops",
         blurb: "CV writing, interviews and career planning.",
         detail:
           "Bring your CV, leave with a plan — writing labs, mock interviews and career mapping sessions.",
+        pillar: "Shift",
       },
       {
         name: "Tuition & Study Grants",
         blurb: "Support for further education.",
         detail:
           "Short-course and further-study grants awarded each term based on need and a simple application.",
-      },
-      {
-        name: "Social Mixers",
-        blurb: "Potlucks and park braais.",
-        detail:
-          "Relaxed potlucks, park braais and game evenings — community without the pressure.",
+        pillar: "Shift",
       },
       {
         name: "Pulse Faith",
         blurb: "Prayer groups and Bible study.",
         detail:
           "Optional weekly prayer groups and Bible studies for those who want to grow spiritually.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Kingdom Calling",
-        blurb: "Career and ministry integration.",
+        name: "Pulse Check",
+        blurb: "Mental health and burnout circles.",
         detail:
-          "For those exploring how faith and work weave together — quarterly dinners with guest speakers.",
+          "Confidential peer circles facilitated by trained volunteers — because your mind matters as much as your money.",
+        pillar: "Sanctuary",
+      },
+      {
+        name: "Social Mixers",
+        blurb: "Potlucks and park braais.",
+        detail:
+          "Relaxed potlucks, park braais and game evenings — community without the pressure.",
+        pillar: "Connect",
+      },
+      {
+        name: "Purpose in Action",
+        blurb: "Project-based community impact.",
+        detail:
+          "Team up with your crew on a local project each quarter — plan it, run it and see the difference it makes.",
+        pillar: "Connect",
       },
     ],
   },
@@ -199,64 +232,82 @@ export const CLUBS: RelateClub[] = [
     tagline: "Own your stage. Flourish.",
     description:
       "Mature singles thriving independently — needing community and purpose.",
+    mission:
+      "To provide mature single adults with premium spaces for advanced career pivot planning, deep theological sanctuary, exceptional lifestyle networks, and multi-generational mentorship paths.",
+    vision:
+      "A leadership powerhouse of mature single professionals living integrated, influential lives while actively funding and mentoring the next generation.",
     heroImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=1200&q=80",
     color: "#6C2BD9",
     colorDark: "#4A148C",
     whatsappGroupLink: "https://chat.whatsapp.com/Hms4xDeZvhNEwqU9EsIO9q",
+    pillarLabels: {
+      Shift: "Optimization",
+      Sanctuary: "Depth",
+      Connect: "Premium",
+    },
     programs: [
-      {
-        name: "Prime Circle",
-        blurb: "Monthly peer support groups.",
-        detail:
-          "Monthly circles where mature singles talk honestly about life, purpose and the season they're in.",
-      },
       {
         name: "Prime Pursuit",
         blurb: "Career reinvention and skill-building.",
         detail:
           "Structured programmes for career pivots — new skills, new industries, new confidence.",
-      },
-      {
-        name: "Legacy Lab",
-        blurb: "Mentorship training to give back to younger groups.",
-        detail:
-          "Become a trained mentor to Surge and Pulse members — turn your experience into someone else's shortcut.",
-      },
-      {
-        name: "Prime Living",
-        blurb: "Health, fitness and lifestyle retreats.",
-        detail:
-          "Weekend retreats focused on health, rest and living well in your prime.",
+        pillar: "Shift",
       },
       {
         name: "Career Transition Help",
-        blurb: "Job search, side hustle and retirement planning.",
+        blurb: "Job search and side hustle deployment.",
         detail:
-          "Practical help with job searches, starting a side hustle or planning a dignified retirement.",
+          "Practical help with job searches and getting a side hustle off the ground — from idea to first income.",
+        pillar: "Shift",
       },
       {
-        name: "Crisis Support",
-        blurb: "Emergency help per case.",
+        name: "Retirement & Estate Planning",
+        blurb: "Retirement income and estate planning.",
         detail:
-          "When life happens — emergency financial, food or counselling support assessed case by case.",
+          "Plan a dignified retirement and put an estate in order — wills, beneficiaries and wealth that outlives you.",
+        pillar: "Shift",
       },
       {
         name: "Prime Reflection",
         blurb: "Life review and spiritual retreats.",
         detail:
           "Optional guided retreats to review the story so far and set direction for what's next.",
+        pillar: "Sanctuary",
       },
       {
         name: "Prayer Shield",
         blurb: "Intercessory prayer teams.",
         detail:
           "Optional teams that pray weekly for members' needs and celebrate answered prayer.",
+        pillar: "Sanctuary",
+      },
+      {
+        name: "Crisis Support",
+        blurb: "Localised immediate help, case by case.",
+        detail:
+          "When life happens — emergency financial, food or counselling support assessed case by case.",
+        pillar: "Sanctuary",
+      },
+      {
+        name: "Prime Outings",
+        blurb: "Scenic hikes, vineyard lunches and weekend escapes.",
+        detail:
+          "Curated day outings and weekend escapes — scenic hikes, vineyard lunches and time away from the routine.",
+        pillar: "Connect",
+      },
+      {
+        name: "Legacy Lab",
+        blurb: "Mentorship training to give back to younger groups.",
+        detail:
+          "Become a trained mentor to Surge and Pulse members — turn your experience into someone else's shortcut.",
+        pillar: "Connect",
       },
       {
         name: "Elders' Table",
         blurb: "Wisdom-sharing sessions.",
         detail:
           "Quarterly dinners where stories and wisdom are passed between generations.",
+        pillar: "Connect",
       },
     ],
   },
@@ -268,208 +319,256 @@ export const CLUBS: RelateClub[] = [
     tagline: "Holding it all together.",
     description:
       "Single parents raising children alone — needing support, community and practical help.",
+    mission:
+      "To alleviate economic stress, cultivate deep personal restoration, and form healthy mutual-aid networks that stabilize whole homes.",
+    vision:
+      "A community where single parents transition from surviving to thriving, raising whole families while fulfilling their career and spiritual callings.",
     heroImage: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=1200&q=80",
     color: "#2E7D32",
     colorDark: "#14532D",
     whatsappGroupLink: "https://chat.whatsapp.com/Int5yEfZwiOFxrV9FtJP0r",
+    pillarLabels: {
+      Shift: "Resilience",
+      Sanctuary: "Restoration",
+      Connect: "Community",
+    },
     programs: [
       {
-        name: "Anchor Connect",
-        blurb: "Weekly single-parent support groups.",
+        name: "Single-Income Wealth",
+        blurb: "Budgeting, debt elimination and property investing.",
         detail:
-          "Weekly groups where single parents find real friends, practical tips and a safe place to be honest.",
+          "Build a money structure that works on one income — a budget, a debt-elimination plan and a first step into property.",
+        pillar: "Shift",
       },
       {
-        name: "Parenting Workshops",
-        blurb: "Practical parenting skills and coaching.",
+        name: "Childcare & Tuition Grants",
+        blurb: "Childcare, school fees and study support.",
         detail:
-          "Practical workshops on discipline, routines and raising kids well on one income.",
+          "Grants toward childcare, school fees and uniforms so money never decides whether your child gets to learn.",
+        pillar: "Shift",
       },
       {
-        name: "Childcare Support",
-        blurb: "Subsidised or free childcare during programs.",
+        name: "Flexible Career Path",
+        blurb: "Career progression built around family life.",
         detail:
-          "Free childcare during every Anchor program, plus subsidised daycare placements for working parents.",
+          "Coaching on hours, roles and study options that move your career forward without breaking the family rhythm.",
+        pillar: "Shift",
       },
       {
-        name: "Food Relief",
-        blurb: "Monthly food parcels.",
+        name: "Restoration Circles",
+        blurb: "Co-parenting limits, burnout care and identity tracking.",
         detail:
-          "Monthly food parcels with staples and fresh produce for families who need a hand to stay standing.",
+          "Small groups that hold the hard parts — co-parenting boundaries, burnout care and remembering who you are.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Tuition Support",
-        blurb: "School fees, uniforms and stationery for kids.",
+        name: "Shield of Grace",
+        blurb: "Parent fellowship and prayer.",
         detail:
-          "School fee contributions, uniforms and stationery so your kids never fall behind because of money.",
+          "A parent fellowship that prays for one another and shows up with a meal or a hand when a week goes sideways.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Financial Coaching",
-        blurb: "Budgeting on a single income.",
+        name: "Emergency Cash Relief",
+        blurb: "Rapid help when a month goes wrong.",
         detail:
-          "One-on-one coaching to build a budget that works on one income and a plan to get ahead.",
+          "Fast, dignified cash relief for the emergencies that would otherwise blow up the whole month.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Co-Parenting Support",
-        blurb: "Mediation and communication help.",
+        name: "Parent & Child Outings",
+        blurb: "Curated outings for parents and children.",
         detail:
-          "Trained mediators help you build a calm, workable co-parenting arrangement that puts kids first.",
+          "Subsidised days out where you can simply enjoy your kids — memory-making without the cost.",
+        pillar: "Connect",
       },
       {
-        name: "Anchor Outings",
-        blurb: "Parent-child bonding outings.",
+        name: "Weekend Family Escapes",
+        blurb: "Restorative weekends with childcare built in.",
         detail:
-          "Subsidised outings where you can simply enjoy your kids — memory-making without the cost.",
+          "Restorative weekend getaways with a childcare grid built in, so parents actually get to rest.",
+        pillar: "Connect",
       },
       {
-        name: "Respite Care",
-        blurb: "Occasional childcare relief.",
+        name: "Resource Swap",
+        blurb: "Uniform and clothing exchange database.",
         detail:
-          "Vetted volunteers give you a few hours to rest, shop or just breathe when you need it most.",
-      },
-      {
-        name: "Prayer & Encouragement",
-        blurb: "Pastoral support and prayer groups.",
-        detail:
-          "Optional pastoral care and prayer groups — someone to stand with you in the hard seasons.",
+          "A cooperative database for swapping uniforms and outgrown clothing — what your child has outgrown, another family needs.",
+        pillar: "Connect",
       },
     ],
   },
   {
-    slug: "base",
-    name: "Base",
-    group: "Couples",
-    ageRange: "Couples of any age",
-    tagline: "Stronger together.",
+    slug: "spark",
+    name: "Spark",
+    group: "Couples (0–5 Years Married)",
+    ageRange: "0 – 5 yrs married",
+    tagline: "Lay it right from day one.",
     description:
-      "Couples building life together — needing support, connection and growth.",
+      "Newly married couples building the foundations — needing unity, tools and each other.",
+    mission:
+      "To anchor newly married couples with unified financial blueprints, foundational communication tools, and Christ-centered relational habits to construct an unshakeable marital bedrock.",
+    vision:
+      "A generation of newly married teams navigating unified asset creation and deep emotional alignment, serving as an unshakeable nucleus for their future children.",
     heroImage: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=1200&q=80",
     color: "#E8A2B6",
     colorDark: "#9D174D",
     whatsappGroupLink: "https://chat.whatsapp.com/Jot6zFgZxkPGysW9GuKQ1s",
+    pillarLabels: {
+      Shift: "Foundation",
+      Sanctuary: "Alignment",
+      Connect: "Connection",
+    },
     programs: [
       {
-        name: "Base Connect",
-        blurb: "Couples socials: park, church and potlucks.",
+        name: "Joint Financial Visioning",
+        blurb: "One shared money vision for two lives.",
         detail:
-          "Monthly socials where couples make couple-friends — park picnics, potlucks and game nights.",
+          "Sit down together and build the shared money plan — income, goals and the first assets you create as a team.",
+        pillar: "Shift",
       },
       {
-        name: "The Blueprint",
-        blurb: "Financial and goal-setting sessions.",
+        name: "First Home Blueprint",
+        blurb: "First-home buying and asset strategies.",
         detail:
-          "Couples workshops to build a shared money plan and life goals you actually keep.",
+          "From deposit to handover — strategies for buying your first home and getting the asset column started.",
+        pillar: "Shift",
       },
       {
-        name: "Base Camp",
-        blurb: "Relationship enrichment retreats.",
+        name: "Dual-Career Charting",
+        blurb: "Unified dual-career path planning.",
         detail:
-          "Weekend retreats that give couples time away to reconnect and grow.",
+          "Chart both careers on one timeline — study, moves, timing and the trade-offs you agree on early.",
+        pillar: "Shift",
       },
       {
-        name: "Anchor Sessions",
-        blurb: "Communication and conflict resolution.",
+        name: "Intimacy Preservation Circles",
+        blurb: "Protecting closeness in the early years.",
         detail:
-          "Facilitated sessions teaching the tools for fair fighting, real listening and repair.",
+          "Small circles where couples talk honestly about staying close through work, money and in-law pressure.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Date Night",
-        blurb: "Low-cost potluck dinners and movie nights.",
+        name: "Conflict Labs",
+        blurb: "Communication and conflict resolution practice.",
         detail:
-          "Monthly date nights that don't break the budget — childcare provided.",
+          "Practical labs for fair fighting — how to disagree, repair and come back to the same side.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Crisis Support",
-        blurb: "Food, counselling and prayer for couples.",
+        name: "Couples Devotionals",
+        blurb: "Intentional devotional rhythms for two.",
         detail:
-          "When a season is hard — practical help, counselling and someone to walk with you through it.",
+          "Simple rhythms for praying and reading together that survive real weeks, not just ideal ones.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Couples Mentorship",
-        blurb: "Older couples mentoring younger couples.",
+        name: "Double-Date Socials",
+        blurb: "High-energy couple socials.",
         detail:
-          "Get matched with a couple a few steps ahead who will walk with you through the early years.",
+          "Double dates, game nights and socials where you make couple-friends who are walking the same road.",
+        pillar: "Connect",
       },
       {
-        name: "Covenant Space",
-        blurb: "Faith-based marriage enrichment.",
+        name: "Young Couples' Getaways",
+        blurb: "Weekend escapes for two.",
         detail:
-          "Optional faith-based marriage enrichment courses run a few times a year.",
+          "Affordable weekend getaways built for young couples — time away before life gets louder.",
+        pillar: "Connect",
       },
       {
-        name: "Family Altar",
-        blurb: "Devotional guides and prayer resources.",
+        name: "Babysitting Swap",
+        blurb: "Date night through a mutual swap network.",
         detail:
-          "Simple devotional guides and prayer rhythms for couples who want to grow spiritually together.",
+          "Swap sitters with other couples in the club so date night keeps happening — no cost, no guilt.",
+        pillar: "Connect",
       },
     ],
   },
   {
-    slug: "nexus",
-    name: "Nexus",
-    group: "Families",
-    ageRange: "Families",
-    tagline: "Where every age connects.",
+    slug: "synergy",
+    name: "Synergy",
+    group: "Couples (6+ Years Married)",
+    ageRange: "6+ yrs married",
+    tagline: "Legacy, built together.",
     description:
-      "Families raising children — needing community, resources and stability.",
+      "Seasoned couples building legacy — needing depth, purpose and a hand on the next generation.",
+    mission:
+      "To empower seasoned couples to maximize their long-term family wealth, sustain generational marital resilience, and transition into vital community leadership and marital mentorship.",
+    vision:
+      "A structural cornerstone of mature couples driving multi-generational financial and spiritual legacy while serving as active mentors for younger marriages.",
     heroImage: "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1200&q=80",
     color: "#8A9A5B",
     colorDark: "#4D7C0F",
     whatsappGroupLink: "https://chat.whatsapp.com/Kpu7AGhZylQHztX9HvLR2t",
+    pillarLabels: {
+      Shift: "Legacy",
+      Sanctuary: "Resilience",
+      Connect: "Mentoring",
+    },
     programs: [
       {
-        name: "Nexus Table",
-        blurb: "Monthly family dinners — potluck.",
+        name: "Generational Wealth Modelling",
+        blurb: "Long-term family wealth strategies.",
         detail:
-          "Monthly potluck dinners where families eat together, kids play and nobody eats alone.",
+          "Model the long game together — what you build now and how it passes to the generation after you.",
+        pillar: "Shift",
       },
       {
-        name: "Food Relief",
-        blurb: "Monthly food parcels.",
+        name: "University Funding Projections",
+        blurb: "Varsity funds planned years ahead.",
         detail:
-          "Monthly food parcels for families in a tight season — dignity first, no questions asked.",
+          "Project study costs years out and build the savings plan that gets every child to varsity.",
+        pillar: "Shift",
       },
       {
-        name: "Roots & Wings",
-        blurb: "Parenting support groups.",
+        name: "Property & Portfolio",
+        blurb: "Shared property and investment portfolios.",
         detail:
-          "Parenting groups that give both roots (values) and wings (confidence) for every stage of raising kids.",
+          "Optimise what you hold together — property, investments and a portfolio that serves the whole family.",
+        pillar: "Shift",
       },
       {
-        name: "The Village",
-        blurb: "Intergenerational activities.",
+        name: "Longevity Circles",
+        blurb: "Marital longevity maintenance.",
         detail:
-          "Grandparents, parents and kids together — storytelling days, shared meals and skills passed down.",
+          "Circles for couples a few decades in — keeping the marriage healthy, warm and intentional over the long haul.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Nexus Cares",
-        blurb: "Emergency relief: food, clothing and resource bank.",
+        name: "Empty-Nest Preparation",
+        blurb: "Preparing for the season after the kids.",
         detail:
-          "A rapid-response resource bank for family emergencies — food, clothing, furniture and school needs.",
+          "Prepare for the quiet house — conversations and rituals that carry a marriage into its next season.",
+        pillar: "Sanctuary",
       },
       {
-        name: "School Support",
-        blurb: "Uniforms, stationery and fees.",
+        name: "Family Intercession Network",
+        blurb: "High-level family prayer networks.",
         detail:
-          "Uniforms, stationery and school-fee support so the whole family can thrive at school.",
+          "A prayer network covering the families of the house — standing together for children, homes and marriages.",
+        pillar: "Sanctuary",
       },
       {
-        name: "Family Events",
-        blurb: "Park days, games and fun activities.",
+        name: "Couples' Retreats",
+        blurb: "Premium weekend couples' retreats.",
         detail:
-          "Family park days, games afternoons and seasonal celebrations the whole family can enjoy.",
+          "Premium weekend retreats for married couples — rest, reconnection and time to think about the decades ahead.",
+        pillar: "Connect",
       },
       {
-        name: "Family Devotions",
-        blurb: "Resources for home worship.",
+        name: "Legacy Galas",
+        blurb: "Formal dinners and annual celebrations.",
         detail:
-          "Simple, short family devotional guides — faith at home made practical.",
+          "Formal dinners and galas celebrating the families who have built something that lasts.",
+        pillar: "Connect",
       },
       {
-        name: "Healing Rooms",
-        blurb: "Prayer ministry for families in crisis.",
+        name: "Spark Mentorship",
+        blurb: "Structured mentoring for newer couples.",
         detail:
-          "Optional prayer ministry for families walking through crisis — confidential, gentle and free.",
+          "A structured path to mentor Spark couples — hand what you've learned to the marriages starting out.",
+        pillar: "Connect",
       },
     ],
   },
@@ -477,6 +576,26 @@ export const CLUBS: RelateClub[] = [
 
 export function getClub(slug: string): RelateClub | undefined {
   return CLUBS.find((c) => c.slug === slug);
+}
+
+/** Group a club's programs by pillar. Clubs whose programs carry no pillar
+ *  (Sprout) come back as a single unnamed group. */
+export function programsByPillar(
+  club: RelateClub,
+): { pillar: RelatePillar | null; label: string | null; programs: RelateProgram[] }[] {
+  const grouped: {
+    pillar: RelatePillar | null;
+    label: string | null;
+    programs: RelateProgram[];
+  }[] = PILLARS.map((pillar) => ({
+    pillar,
+    label: club.pillarLabels?.[pillar] ?? null,
+    programs: club.programs.filter((p) => p.pillar === pillar),
+  })).filter((g) => g.programs.length > 0);
+
+  const ungrouped = club.programs.filter((p) => !p.pillar);
+  if (ungrouped.length > 0) grouped.push({ pillar: null, label: null, programs: ungrouped });
+  return grouped;
 }
 
 /** URL segment for a program name, shared by the club page links, the

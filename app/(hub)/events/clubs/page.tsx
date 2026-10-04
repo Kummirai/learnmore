@@ -6,7 +6,7 @@ import { CLUBS } from "@/constants/relate";
 export const metadata: Metadata = {
   title: "Club Events · Relate",
   description:
-    "Find events organised by every Relate club — Sprout, Surge, Pulse, Prime, Anchor, Base and Nexus — meetups, match days and more.",
+    "Find events organised by every Relate club — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — meetups, match days and more.",
 };
 
 export default function ClubEventsPage() {

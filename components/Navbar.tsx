@@ -39,8 +39,8 @@ const navGroups: NavGroup[] = [
       { link: "Pulse", path: "/pulse" },
       { link: "Prime", path: "/prime" },
       { link: "Anchor", path: "/anchor" },
-      { link: "Base", path: "/base" },
-      { link: "Nexus", path: "/nexus" },
+      { link: "Spark", path: "/spark" },
+      { link: "Synergy", path: "/synergy" },
     ],
   },
   {
