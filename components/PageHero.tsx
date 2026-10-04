@@ -112,9 +112,6 @@ export default function PageHero({
           />
         </>
       )}
-      {bgImage && (
-        <>
-      )}
       {watermark && (
       <div
         className={
