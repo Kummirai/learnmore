@@ -54,7 +54,7 @@ export default function PageHero({
             ? {
                 backgroundImage: `url(${bgImage})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center",
+                backgroundPosition: "center 30%",
               }
             : {
                 background:

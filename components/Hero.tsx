@@ -227,7 +227,7 @@ function clubSlide(club: RelateClub): Slide {
     bg: {
       backgroundImage: `url(${club.heroImage})`,
       backgroundSize: "cover",
-      backgroundPosition: "center",
+      backgroundPosition: "center 30%",
     },
     actions: (
       <>
