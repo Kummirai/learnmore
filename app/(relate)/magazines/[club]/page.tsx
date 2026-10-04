@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar"
 import PublicationLibrary from "@/components/publications/PublicationLibrary"
 import {getClub} from "@/lib/clubs"
 import {getPublications} from "@/lib/publications"
+import {getMagazinesForClub} from "@/constants/relate"
 
 export const dynamic = "force-dynamic"
 
@@ -32,11 +33,14 @@ export default async function ClubMagazinesPage({
     }
 
     const publications = await getPublications(club.slug)
+    const magazines = getMagazinesForClub(club.slug)
     const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null
     const clubVars = {
         "--club-accent": club.color,
         "--club-accent-dark": club.colorDark,
     } as CSSProperties
+
+    const description = magazines[0]?.summary ?? club.description
 
     return (
         <>
@@ -48,7 +52,7 @@ export default async function ClubMagazinesPage({
                         {club.name} Season Guides
                     </h1>
                     <p className="mt-2 text-gray-600 max-w-2xl">
-                        Read {club.name}’s season study guide and bulletin — open to everyone, no account needed.
+                        {description}
                     </p>
                 </div>
             </section>
