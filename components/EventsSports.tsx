@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { LuChevronRight, LuLoaderCircle } from "react-icons/lu";
-import { CLUBS, SPORTS, teamsForSport } from "@/constants/relate";
+import { useClubs } from "@/lib/useClubs";
+import { useSports } from "@/lib/useSports";
 
 type RelateEvent = {
   _id: string;
@@ -15,37 +16,6 @@ type RelateEvent = {
   clubSlug?: string;
 };
 
-const seedEvents: RelateEvent[] = [
-  {
-    _id: "seed-sprout-morning",
-    title: "Sprout Club Morning",
-    date: "2026-10-03",
-    description: "Games, crafts and stories for ages 6–15.",
-    clubSlug: "sprout",
-  },
-  {
-    _id: "seed-surge-fire",
-    title: "Surge Fire Worship Night",
-    date: "2026-10-09",
-    description: "Monthly worship, testimony and prayer.",
-    clubSlug: "surge",
-  },
-  {
-    _id: "seed-pulse-meetup",
-    title: "Pulse Network Meetup",
-    date: "2026-10-15",
-    description: "Grow your network — bring a friend.",
-    clubSlug: "pulse",
-  },
-  {
-    _id: "seed-sports-sunday",
-    title: "Sports Sunday",
-    date: "2026-10-18",
-    description: "Football, netball and volleyball on the Relate grounds.",
-    clubSlug: "pulse",
-  },
-];
-
 const dayOf = (iso?: string) => {
   if (!iso) return { day: "", month: "" };
   const d = new Date(`${iso}T00:00:00`);
@@ -56,9 +26,12 @@ const dayOf = (iso?: string) => {
 };
 
 export default function EventsSports() {
-  const [events, setEvents] = useState<RelateEvent[]>(seedEvents);
+  const { find } = useClubs();
+  const { sports: catalog, loading: sportsLoading, error: sportsError } = useSports();
+  const [events, setEvents] = useState<RelateEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [live, setLive] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -87,7 +60,10 @@ export default function EventsSports() {
           setLive(true);
         }
       } catch {
-        if (alive) setEvents(seedEvents);
+        if (alive)
+          setError(
+            "The events feed couldn't be loaded — check your connection and try again.",
+          );
       } finally {
         if (alive) setLoading(false);
       }
@@ -109,7 +85,7 @@ export default function EventsSports() {
     [events],
   );
 
-  const clubOf = (slug?: string) => CLUBS.find((c) => c.slug === slug);
+  const clubOf = (slug?: string) => find(slug);
 
   return (
     <section className="py-16 md:py-20 bg-white px-4">
@@ -155,6 +131,14 @@ export default function EventsSports() {
                   />
                 ))}
               </div>
+            ) : error ? (
+              <p role="alert" className="text-sm text-red-700 p-3">
+                {error}
+              </p>
+            ) : upcoming.length === 0 ? (
+              <p className="text-sm text-slate-gray p-3">
+                No upcoming events right now — check back soon.
+              </p>
             ) : (
               <div className="space-y-3">
                 {upcoming.map((e) => {
@@ -210,7 +194,17 @@ export default function EventsSports() {
               </Link>
             </div>
             <div className="space-y-3 flex-1">
-              {SPORTS.map((sport) => (
+              {sportsError && (
+                <p role="alert" className="text-xs text-red-700">
+                  {sportsError}
+                </p>
+              )}
+              {sportsLoading && !sportsError && (
+                <p className="text-xs text-gray-400">Loading teams…</p>
+              )}
+              {!sportsLoading &&
+                !sportsError &&
+                (catalog?.sports ?? []).map((sport) => (
                 <Link
                   key={sport}
                   href={`/sports#${sport.toLowerCase()}`}
@@ -219,7 +213,7 @@ export default function EventsSports() {
                   <div>
                     <p className="text-sm font-semibold text-navy">{sport}</p>
                     <p className="text-[11px] text-slate-gray">
-                      {teamsForSport(sport)
+                      {(catalog?.teamsForSport(sport) ?? [])
                         .map((t) => t.initials)
                         .join(" · ")}
                     </p>

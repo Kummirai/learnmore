@@ -5,14 +5,14 @@
  *
  * Values are copied on disk — never printed to stdout.
  */
+/* eslint-disable @typescript-eslint/no-require-imports -- CommonJS script (.cjs) */
 const fs = require("fs");
 const path = require("path");
 
-const MOBILE_ENV_DIR = "C:/Users/Me/Documents/GitHub/relateWorld/frontend";
-const WEBSITE_ENV = "C:/Users/Me/Documents/GitHub/relateWorld_website/.env.local";
+const MOBILE_ENV_DIR = path.join(__dirname, "..", "..", "mobile_app");
+const WEBSITE_ENV = path.join(__dirname, "..", ".env.local");
 
 const mobileCandidates = [".env", ".env.local", ".env.development", ".env.production"];
-const webCandidates = [".env.local", ".env"];
 
 function readLines(file) {
   try {
@@ -33,6 +33,18 @@ function findValue(dir, files, keys) {
   return null;
 }
 
+function upsert(lines, existing, name, value) {
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith(name + "=")) {
+      existing[name] = i;
+      lines[i] = `${name}=${value}`;
+      return;
+    }
+  }
+  existing[name] = lines.length;
+  lines.push(`${name}=${value}`);
+}
+
 const url = findValue(MOBILE_ENV_DIR, mobileCandidates, [
   "EXPO_PUBLIC_SUPABASE_URL",
   "NEXT_PUBLIC_SUPABASE_URL",
@@ -44,15 +56,15 @@ const key = findValue(MOBILE_ENV_DIR, mobileCandidates, [
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
 ]);
 
-function upsert(lines, existing, name, value) {
-  for (let i = 0; i < lines.length; i++) {
-    if (lines[i].startsWith(name + "=")) {
-      existing[name] = i;
-      return;
-    }
-  }
-  existing[name] = lines.length;
-  lines.push("");
+if (!url || !key) {
+  console.error("Supabase URL/anon key not found in the mobile env files. Nothing written.");
+  process.exit(1);
 }
 
-const baseCommented = lines.map((l) => (l.startsWith("`" ...
+const lines = readLines(WEBSITE_ENV);
+const existing = {};
+upsert(lines, existing, "NEXT_PUBLIC_SUPABASE_URL", url);
+upsert(lines, existing, "NEXT_PUBLIC_SUPABASE_ANON_KEY", key);
+
+fs.writeFileSync(WEBSITE_ENV, lines.join("\n"), "utf8");
+console.log("Updated web .env.local with NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");

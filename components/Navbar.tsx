@@ -6,7 +6,7 @@ import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
 import { useState } from "react";
 import UserAvatar from "./UserAvatar";
-import { CLUBS, SUB_CLUBS } from "@/constants/relate";
+import { useClubs } from "@/lib/useClubs";
 
 type NavItem = { link: string; path: string };
 type NavGroup = { link: string; short: string; items: NavItem[] };
@@ -44,16 +44,6 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    link: "Season Guides",
-    short: "Guides",
-    items: [...CLUBS.filter((c) => c.slug !== "sprout"), ...SUB_CLUBS].map(
-      (c) => ({
-        link: `${c.name} S.G`,
-        path: `/magazines/${c.slug}`,
-      }),
-    ),
-  },
-  {
     link: "Reading Plans",
     short: "Plans",
     items: [
@@ -88,7 +78,23 @@ const flatLinks = [
 ];
 
 export default function Navbar({ overlay = false }: { overlay?: boolean }) {
+  const { clubs, subClubs, loading } = useClubs();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Season Guides come from the catalogue — the group appears once it lands.
+  const groups: NavGroup[] = loading
+    ? navGroups
+    : [
+        ...navGroups.slice(0, 3),
+        {
+          link: "Season Guides",
+          short: "Guides",
+          items: [...clubs.filter((c) => c.slug !== "sprout"), ...subClubs].map(
+            (c) => ({ link: `${c.name} S.G`, path: `/magazines/${c.slug}` }),
+          ),
+        },
+        ...navGroups.slice(3),
+      ];
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(
     {},
   );
@@ -155,7 +161,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                 Home
               </Link>
             </li>
-            {navGroups.map((group) => (
+            {groups.map((group) => (
               <li key={group.link} className={"relative group"}>
                 <span
                   className={`flex items-center gap-1 text-sm  ${hoverText} transition-colors cursor-default`}

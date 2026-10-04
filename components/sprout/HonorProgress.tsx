@@ -11,7 +11,7 @@ import {
   LuAward,
 } from "react-icons/lu";
 import { useAuth } from "@/components/AuthProvider";
-import type { HonorRequirement } from "@/constants/sproutHonors";
+import type { HonorRequirement } from "@/lib/honors";
 
 type Progress = {
   checks: boolean[];

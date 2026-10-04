@@ -6,12 +6,11 @@ import { LuArrowRight } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
 import {
-  getRelateClub,
-  SPORTS,
-  teamsForSport,
   type RelateSport,
   type RelateTeam,
 } from "@/constants/relate";
+import { getSports, type SportsData } from "@/lib/sports";
+import { getClub } from "@/lib/clubs";
 
 export const metadata: Metadata = {
   title: "Sports · Relate",
@@ -63,8 +62,8 @@ const sportLine: Record<RelateSport, string> = {
   Volleyball: "Friday court sessions and weekend tournaments — all levels welcome.",
 };
 
-function TeamCard({ team }: { team: RelateTeam }) {
-  const club = getRelateClub(team.clubSlug);
+async function TeamCard({ team }: { team: RelateTeam }) {
+  const club = await getClub(team.clubSlug).catch(() => undefined);
   const accent = club?.color ?? "#13c5dd";
 
   return (
@@ -123,29 +122,62 @@ function TeamCard({ team }: { team: RelateTeam }) {
   );
 }
 
-export default function SportsPage() {
+/** A note in place of the team grid — the catalogue failed or is empty. */
+function CatalogNote({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="mb-14 rounded-2xl border border-dashed border-gray-200 bg-gray-50 p-8 text-center">
+      <h2 className="text-2xl font-black tracking-tight text-navy">{title}</h2>
+      <p className="mx-auto mt-2 max-w-xl text-sm text-slate-gray">{body}</p>
+    </div>
+  );
+}
+
+export default async function SportsPage() {
+  let catalog: SportsData | null = null;
+  try {
+    catalog = await getSports();
+  } catch {
+    catalog = null; // unreachable backend — the note below says so
+  }
+
   return (
     <>
       <HeroCarousel slides={SPORT_SLIDES} />
 
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
-          {SPORTS.map((sport) => (
-            <div key={sport} id={sport.toLowerCase()} className="scroll-mt-24 mb-14 last:mb-0">
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
-                Relate · {sport}
-              </p>
-              <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-1">
-                {sport}
-              </h2>
-              <p className="text-gray-500 mb-6 max-w-2xl">{sportLine[sport]}</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {teamsForSport(sport).map((team) => (
-                  <TeamCard key={team.id} team={team} />
-                ))}
+          {!catalog ? (
+            <CatalogNote
+              title="Teams unavailable"
+              body="We couldn't load the squads right now. Reload the page to try again."
+            />
+          ) : catalog.sports.length === 0 ? (
+            <CatalogNote
+              title="No teams published yet"
+              body="Football, netball and volleyball squads will appear here as soon as they are published."
+            />
+          ) : (
+            catalog.sports.map((sport) => (
+              <div
+                key={sport}
+                id={sport.toLowerCase()}
+                className="scroll-mt-24 mb-14 last:mb-0"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
+                  Relate · {sport}
+                </p>
+                <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-1">
+                  {sport}
+                </h2>
+                <p className="text-gray-500 mb-6 max-w-2xl">{sportLine[sport]}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  {catalog.teamsForSport(sport).map((team) => (
+                    <TeamCard key={team.id} team={team} />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
 
           <div className="rounded-2xl bg-navy text-white p-8 md:p-12 text-center relative overflow-hidden">
             <div className="absolute -top-24 -left-24 size-72 rounded-full bg-cyan/20 blur-3xl" />

@@ -1,12 +1,11 @@
-import {
-  MAX_PER_POSITION,
-  playerSlug,
-  positionsForSport,
-  type Player,
-  type Squad,
-} from "@/constants/squads";
 import type { RelateSport } from "@/constants/relate";
 import { API_BASE } from "@/lib/config";
+import {
+  playerSlug,
+  type Player,
+  type Squad,
+  type SportsData,
+} from "@/lib/sports";
 
 /** A row of POST /api/sports/registrations (safe public fields only). */
 export type RegisteredPlayer = {
@@ -50,16 +49,19 @@ export type SquadRoster = {
 };
 
 /**
- * Overlays real registrations onto the generated team sheet.
+ * Overlays real registrations onto the team sheet from the catalogue.
  *
  * Slots fill in registration order within each position, so the first
  * applicants are the ones who show up as the starting N; anyone past their
  * slot count lands in reserves, and anyone past the position cap waits.
+ * The slot list and the per-position cap come from the catalog, which is the
+ * backend's copy — nothing here knows the rules on its own.
  */
 export function buildRoster(
   squad: Squad,
   registered: RegisteredPlayer[],
   sport: RelateSport,
+  catalog: SportsData,
 ): SquadRoster {
   const active = registered.filter((r) => r.status === "active");
   const waitlist = registered
@@ -99,10 +101,10 @@ export function buildRoster(
   reserves.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
   const counts: Record<string, PositionCount> = {};
-  for (const slot of positionsForSport(sport)) {
+  for (const slot of catalog.positionsForSport(sport)) {
     counts[slot.name] = {
       taken: (queueByPosition.get(slot.name) ?? []).length,
-      capacity: MAX_PER_POSITION,
+      capacity: catalog.maxPerPosition,
     };
   }
 

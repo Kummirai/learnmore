@@ -1,20 +1,8 @@
-import { CLUBS as WEBSITE_CLUBS, SUB_CLUBS } from "@/constants/relate";
-
 export type ClubEntry = {
   slug: string;
   name: string;
   color: string;
 };
-
-/** Every club and sub-club the site knows about, used by the admin editor. */
-export const CLUBS: ClubEntry[] = [...WEBSITE_CLUBS, ...SUB_CLUBS].map((c) => ({
-  slug: c.slug,
-  name: c.name,
-  color: c.color,
-}));
-
-export const clubName = (slug?: string | null): string =>
-  slug ? (CLUBS.find((c) => c.slug === slug)?.name ?? slug) : "Relate";
 
 /** Magazine series offered today. "Relate" is the no-club umbrella series. */
 export const SERIES = ["Relate", "Rooted", "Footsteps"];

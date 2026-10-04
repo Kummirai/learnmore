@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LuArrowRight, LuCalendar } from "react-icons/lu";
 import PageHero from "@/components/PageHero";
-import { CLUBS } from "@/constants/relate";
+import { getClubsCatalog } from "@/lib/clubs";
+import DataError from "@/components/DataError";
 
 export const metadata: Metadata = {
   title: "Club Events · Relate",
@@ -9,7 +11,20 @@ export const metadata: Metadata = {
     "Find events organised by every Relate club — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — meetups, match days and more.",
 };
 
-export default function ClubEventsPage() {
+export default async function ClubEventsPage() {
+  let clubs;
+  try {
+    clubs = (await getClubsCatalog()).clubs;
+  } catch {
+    return (
+      <section className="flex-1 px-4 py-16">
+        <div className="max-w-3xl mx-auto">
+          <DataError label={"The club list"} />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <>
       <PageHero
@@ -18,19 +33,19 @@ export default function ClubEventsPage() {
         tagline="Every club, every meetup"
         description="Events grouped by club — pick your club to see its meetups, match days, worship nights and family gatherings."
         watermark="Events"
-        chips={CLUBS.map((c) => ({ dot: true, label: c.name }))}
+        chips={clubs.map((c) => ({ dot: true, label: c.name }))}
         meta={[
-          { label: "Clubs", value: String(CLUBS.length) },
+          { label: "Clubs", value: String(clubs.length) },
           { label: "Cadence", value: "Weekly" },
           { label: "Cost", value: "Free" },
         ]}
         actions={
-          <a
+          <Link
             href="/events"
             className="inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
           >
             All events <LuArrowRight />
-          </a>
+          </Link>
         }
       />
 
@@ -43,8 +58,8 @@ export default function ClubEventsPage() {
             Pick a club
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {CLUBS.map((club) => (
-              <a
+            {clubs.map((club) => (
+              <Link
                 key={club.slug}
                 href={`/events#club-${club.slug}`}
                 className="group flex flex-col bg-white rounded-2xl overflow-hidden"
@@ -73,7 +88,7 @@ export default function ClubEventsPage() {
                     View events <LuArrowRight />
                   </span>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </div>

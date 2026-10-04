@@ -1,7 +1,7 @@
 import {notFound} from "next/navigation"
 import type {Metadata} from "next"
 import PublicationReader from "@/components/publications/PublicationReader"
-import {getClub, getClubClass} from "@/constants/relate"
+import {getClub} from "@/lib/clubs"
 import {getPublication} from "@/lib/publications"
 import {clipText} from "@/lib/seo"
 
@@ -31,7 +31,7 @@ export default async function PublicationPage({
         notFound()
     }
 
-    const club = doc.clubSlug ? getClub(doc.clubSlug) ?? getClubClass(doc.clubSlug) : undefined
+    const club = doc.clubSlug ? await getClub(doc.clubSlug).catch(() => undefined) : undefined
 
     return <PublicationReader doc={doc} club={club}/>
 }

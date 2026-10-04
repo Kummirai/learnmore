@@ -5,39 +5,25 @@ import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 
 import PageHero from "@/components/PageHero";
-import {
-  CLUBS,
-  SUB_CLUBS,
-  getClub,
-  getClubClass,
-  programSlug,
-  type RelateClub,
-  type RelateProgram,
-} from "@/constants/relate";
+import { programSlug, type RelateClub, type RelateProgram } from "@/constants/relate";
+import { getClub } from "@/lib/clubs";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+/** Clubs come from the catalogue at request time — no build-time params. */
+export const dynamic = "force-dynamic";
 
 type Params = { club: string; program: string };
 
-function findProgram(
+async function findProgram(
   clubSlug: string,
   programSlugPath: string,
-): { club?: RelateClub; program?: RelateProgram } {
-  const club = getClub(clubSlug) ?? getClubClass(clubSlug);
+): Promise<{ club?: RelateClub; program?: RelateProgram }> {
+  const club = await getClub(clubSlug).catch(() => undefined);
   if (!club) return {};
   const program = club.programs.find(
     (p) => programSlug(p.name) === programSlugPath,
   );
   return { club, program };
-}
-
-/** Every club × program combination is generated at build time. */
-export function generateStaticParams(): Params[] {
-  return [...CLUBS, ...SUB_CLUBS].flatMap((club) =>
-    club.programs.map((p) => ({
-      club: club.slug,
-      program: programSlug(p.name),
-    })),
-  );
 }
 
 export async function generateMetadata({
@@ -46,7 +32,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { club: clubSlug, program: programPath } = await params;
-  const { club, program } = findProgram(clubSlug, programPath);
+  const { club, program } = await findProgram(clubSlug, programPath);
   if (!club || !program) return {};
 
   const title = `${program.name} · ${club.name} Program`;
@@ -74,10 +60,12 @@ export default async function ClubProgramPage({
   params: Promise<Params>;
 }) {
   const { club: clubSlug, program: programPath } = await params;
-  const { club, program } = findProgram(clubSlug, programPath);
+  const { club, program } = await findProgram(clubSlug, programPath);
   if (!club || !program) notFound();
 
-  const parent = club.parentSlug ? getClub(club.parentSlug) : undefined;
+  const parent = club.parentSlug
+    ? await getClub(club.parentSlug).catch(() => undefined)
+    : undefined;
   const others = club.programs.filter((p) => p.name !== program.name);
   const clubVars = {
     "--club-accent": club.color,

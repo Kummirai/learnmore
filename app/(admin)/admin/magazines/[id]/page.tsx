@@ -20,7 +20,7 @@ export default function AdminMagazinesEditPage({ params }: { params: Promise<{ i
 
 function EditBody({ params }: { params: Promise<{ id: string }> }) {
     const [id, setId] = useState<string | null>(null);
-    const [doc, setDoc] = useState<Record<string, any> | null>(null);
+    const [doc, setDoc] = useState<Record<string, unknown> | null>(null);
     const [error, setError] = useState("");
 
     useEffect(() => {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { type Membership } from "@/lib/membership";
-import { SPORTS_TEAMS } from "@/constants/relate";
+import { useSports } from "@/lib/useSports";
 import { barcodeBars, initialsOf, withAlpha } from "./shared";
 import CopyReference from "./CopyReference";
 
@@ -22,9 +22,16 @@ export default function MembershipCard({
   statusChip: string;
   className?: string;
 }) {
+  const { sports, loading, error } = useSports();
   const initials = initialsOf(member.name) || "R";
   const reference = `#${member.reference ?? member.id ?? "—"}`;
   const bars = barcodeBars(member.reference ?? member.id ?? "");
+  // The squad name only becomes a link once the catalogue confirms the team
+  // exists — while it loads, or if it fails, the name still renders as text.
+  const teamLinked =
+    !loading &&
+    !error &&
+    !!sports?.teams.some((t) => t.id === member.teamId);
 
   return (
     <div
@@ -96,7 +103,7 @@ export default function MembershipCard({
                 (member.clubName ?? "Relate")
               )}
               {member.teamId &&
-                (SPORTS_TEAMS.some((t) => t.id === member.teamId) ? (
+                (teamLinked ? (
                   <>
                     {" · "}
                     <Link

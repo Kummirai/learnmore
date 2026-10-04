@@ -4,10 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaCheck, FaCamera, FaExclamationTriangle } from "react-icons/fa";
 import { LuArrowRight, LuLoaderCircle } from "react-icons/lu";
-import {
-  MAX_PER_POSITION,
-  positionsForSport,
-} from "@/constants/squads";
+import { useSports } from "@/lib/useSports";
 import { type RelateTeam } from "@/constants/relate";
 
 type Counts = Record<string, { taken: number; capacity: number }>;
@@ -38,8 +35,11 @@ const PHOTO_TYPES = ["image/jpeg", "image/pjpeg", "image/png", "image/webp", "im
 /**
  * Player registration for one squad: profile photo (stored in Supabase) plus
  * the details a coach needs to pick a side — position, height, dominant foot
- * and hand, religion. A position holds MAX_PER_POSITION players; past that the
- * applicant is queued as a waitlist entry rather than turned away.
+ * and hand, religion. A position holds the catalogue's cap of players; past
+ * that the applicant is queued as a waitlist entry rather than turned away.
+ *
+ * Positions, squad size and the cap all come from the sports catalogue, so
+ * the form renders a loading state while it fetches and says so if it fails.
  */
 export default function PlayerRegistrationForm({
   team,
@@ -48,7 +48,11 @@ export default function PlayerRegistrationForm({
   team: RelateTeam;
   defaultPosition?: string;
 }) {
-  const positions = useMemo(() => positionsForSport(team.sport), [team.sport]);
+  const { sports, loading, error: catalogueError } = useSports();
+  const positions = useMemo(
+    () => (sports ? sports.positionsForSport(team.sport) : []),
+    [sports, team.sport],
+  );
 
   const [counts, setCounts] = useState<Counts>({});
   const [name, setName] = useState("");
@@ -57,9 +61,7 @@ export default function PlayerRegistrationForm({
   const [phone, setPhone] = useState("");
   const [heightCm, setHeightCm] = useState("");
   const [religion, setReligion] = useState("");
-  const [position, setPosition] = useState(
-    positions.some((p) => p.name === defaultPosition) ? defaultPosition : "",
-  );
+  const [position, setPosition] = useState(defaultPosition);
   const [foot, setFoot] = useState<"" | "left" | "right">("");
   const [hand, setHand] = useState<"" | "left" | "right">("");
   const [photo, setPhoto] = useState<File | null>(null);
@@ -89,9 +91,56 @@ export default function PlayerRegistrationForm({
     };
   }, [preview]);
 
+  if (loading) {
+    return (
+      <section className="flex-1 px-4 py-12 bg-white">
+        <div className="max-w-xl mx-auto text-center">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-2">
+            Relate · {team.sport} registration
+          </p>
+          <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
+            Register for {team.name}
+          </h1>
+          <div className="inline-flex items-center gap-2 text-sm text-gray-400">
+            <LuLoaderCircle className="animate-spin" /> Loading the squad
+            catalogue…
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (catalogueError || !sports) {
+    return (
+      <section className="flex-1 px-4 py-12 bg-white">
+        <div className="max-w-xl mx-auto text-center">
+          <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-5">
+            <FaExclamationTriangle className="text-2xl text-red-600" />
+          </div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-2">
+            Relate · {team.sport} registration
+          </p>
+          <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
+            Registration unavailable
+          </h1>
+          <p className="text-sm text-slate-gray">
+            The squad catalogue could not be loaded, so there is nothing to
+            register for right now — reload the page to try again.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  // A ?position= preset is only trusted once the catalogue confirms it.
+  const activePosition = positions.some((p) => p.name === position)
+    ? position
+    : "";
+
   const placeLabel = (positionName: string) => {
     const taken = counts[positionName]?.taken ?? 0;
-    const capacity = counts[positionName]?.capacity ?? MAX_PER_POSITION;
+    const capacity = counts[positionName]?.capacity ?? sports.maxPerPosition;
+    if (!capacity) return "Checking places…";
     const left = Math.max(0, capacity - taken);
     if (left === 0) return "Full — joins the waiting list";
     return `${left} of ${capacity} places left`;
@@ -126,7 +175,7 @@ export default function PlayerRegistrationForm({
     if (!Number.isFinite(heightNum) || heightNum < 80 || heightNum > 230)
       return setError("Enter a height between 80 cm and 230 cm.");
     if (!religion.trim()) return setError("Enter the player's religion.");
-    if (!position) return setError("Choose the position you play.");
+    if (!activePosition) return setError("Choose the position you play.");
     if (!foot) return setError("Choose the stronger foot (right or left).");
     if (!hand) return setError("Choose the stronger hand (right or left).");
     if (phone.trim() && phone.replace(/\D/g, "").length < 9)
@@ -143,7 +192,7 @@ export default function PlayerRegistrationForm({
       if (phone.trim()) body.set("phone", phone.trim());
       body.set("heightCm", String(heightNum));
       body.set("religion", religion.trim());
-      body.set("position", position);
+      body.set("position", activePosition);
       body.set("foot", foot);
       body.set("hand", hand);
       body.set("photo", photo);
@@ -239,10 +288,10 @@ export default function PlayerRegistrationForm({
             Register for {team.name}
           </h2>
           <p className="text-sm text-slate-gray max-w-2xl">
-            Pick your position, add a photo and the essentials — the first
-            {team.sport === "Football" ? " 11" : " 7"} players per position make
-            the team sheet, and every position holds up to{" "}
-            {MAX_PER_POSITION} players (starter plus cover).
+            Pick your position, add a photo and the essentials — the first{" "}
+            {sports.squadSize[team.sport]} players per position make the team
+            sheet, and every position holds up to {sports.maxPerPosition}{" "}
+            players (starter plus cover).
           </p>
         </div>
 
@@ -408,7 +457,7 @@ export default function PlayerRegistrationForm({
                 <select
                   id="position"
                   className={`${input} disabled:opacity-60`}
-                  value={position}
+                  value={activePosition}
                   onChange={(e) => setPosition(e.target.value)}
                   required
                 >
@@ -419,10 +468,10 @@ export default function PlayerRegistrationForm({
                     </option>
                   ))}
                 </select>
-                {position && (
+                {activePosition && (
                   <p className="mt-2 text-xs text-slate-gray">
-                    {placeLabel(position)}. First come, first picked — the earliest
-                    {team.sport === "Football" ? " 11" : " 7"} per squad are shown
+                    {placeLabel(activePosition)}. First come, first picked — the
+                    earliest {sports.squadSize[team.sport]} per squad are shown
                     as the team.
                   </p>
                 )}

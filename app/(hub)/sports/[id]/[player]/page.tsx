@@ -14,36 +14,45 @@ import {
   LuUsers,
 } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
-import { SPORTS_TEAMS, getRelateClub } from "@/constants/relate";
-import {
-  MAX_PER_POSITION,
-  findPlayer,
-  getSquad,
-  playerSlug,
-} from "@/constants/squads";
+import { getClub } from "@/lib/clubs";
+import { getSports, playerSlug, type SportsData } from "@/lib/sports";
 import {
   buildRoster,
   fetchRoster,
   type RegisteredPlayer,
 } from "@/lib/squad-roster";
 
-/** Registered players are only known at request time, so never bake them in. */
-export const dynamicParams = true;
-export const revalidate = 30;
+/** Teams and their players are only known at request time. */
+export const dynamic = "force-dynamic";
 
-export function generateStaticParams() {
-  const seen = new Set<string>();
-  const params: { id: string; player: string }[] = [];
-  for (const team of SPORTS_TEAMS) {
-    for (const slot of getSquad(team.id)?.players ?? []) {
-      const slug = playerSlug(slot.name);
-      const key = `${team.id}:${slug}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      params.push({ id: team.id, player: slug });
-    }
+async function loadCatalog(): Promise<SportsData | null> {
+  try {
+    return await getSports();
+  } catch {
+    return null; // unreachable backend — the page says so below
   }
-  return params;
+}
+
+function CatalogError() {
+  return (
+    <>
+      <Navbar />
+      <section className="flex-1 px-4 py-24 bg-white">
+        <div className="mx-auto max-w-xl text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">
+            Relate · Sports
+          </p>
+          <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
+            Teams unavailable
+          </h1>
+          <p className="text-sm text-slate-gray">
+            We couldn&rsquo;t load the squads right now. Reload the page to try
+            again.
+          </p>
+        </div>
+      </section>
+    </>
+  );
 }
 
 /** One-line role summary for an open position (falls back to a generic line). */
@@ -78,12 +87,14 @@ export async function generateMetadata({
   params: Promise<{ id: string; player: string }>;
 }): Promise<Metadata> {
   const { id, player } = await params;
-  const team = SPORTS_TEAMS.find((t) => t.id === id);
+  const catalog = await loadCatalog();
+  if (!catalog) return { title: "Teams Unavailable · Relate Sports" };
+  const team = catalog.getTeam(id);
   if (!team) return { title: "Player Not Found · Relate Sports" };
 
   const { registrations } = await fetchRoster(team.id);
   const registrant = findRegistrant(registrations, player);
-  const open = registrant ? undefined : findPlayer(id, player);
+  const open = registrant ? undefined : catalog.findPlayer(id, player);
   const claimed = open ? starterFor(registrations, open.position) : undefined;
   const person = registrant ?? claimed;
 
@@ -154,14 +165,16 @@ export default async function PlayerPage({
   params: Promise<{ id: string; player: string }>;
 }) {
   const { id, player } = await params;
-  const team = SPORTS_TEAMS.find((t) => t.id === id);
-  const squad = team ? getSquad(team.id) : undefined;
+  const catalog = await loadCatalog();
+  if (!catalog) return <CatalogError />;
+  const team = catalog.getTeam(id);
+  const squad = team ? catalog.getSquad(team.id) : undefined;
   if (!team || !squad) notFound();
 
   const { registrations } = await fetchRoster(team.id);
-  const roster = buildRoster(squad, registrations, team.sport);
+  const roster = buildRoster(squad, registrations, team.sport, catalog);
   const registrant = findRegistrant(registrations, player);
-  const open = registrant ? undefined : findPlayer(id, player);
+  const open = registrant ? undefined : catalog.findPlayer(id, player);
   if (!registrant && !open) notFound();
 
   // A position URL keeps working once somebody holds the slot: send it to
@@ -171,7 +184,7 @@ export default async function PlayerPage({
     if (claimed) redirect(`/sports/${team.id}/${playerSlug(claimed.name)}`);
   }
 
-  const club = getRelateClub(team.clubSlug);
+  const club = await getClub(team.clubSlug).catch(() => undefined);
   const firstName = (registrant?.name ?? team.name).split(" ")[0];
   const registerHref = registrant
     ? `/sports/${team.id}/register`
@@ -264,7 +277,7 @@ export default async function PlayerPage({
                     <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
                       <LuUsers />{" "}
                       {roster.counts[open!.position]?.taken ?? 0} of{" "}
-                      {roster.counts[open!.position]?.capacity ?? MAX_PER_POSITION} filled
+                      {roster.counts[open!.position]?.capacity ?? catalog.maxPerPosition} filled
                     </span>
                     <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
                       <LuCrosshair /> First come, first picked
@@ -350,7 +363,7 @@ export default async function PlayerPage({
                       icon={<LuUsers />}
                       label="Places filled"
                       value={`${roster.counts[open!.position]?.taken ?? 0} of ${
-                        roster.counts[open!.position]?.capacity ?? MAX_PER_POSITION
+                        roster.counts[open!.position]?.capacity ?? catalog.maxPerPosition
                       }`}
                     />
                     <DetailRow icon={<LuUser />} label="Sport" value={team.sport} />
@@ -384,7 +397,7 @@ export default async function PlayerPage({
                   <ul className="space-y-3 text-sm md:text-base text-gray-600">
                     <li className="flex gap-3">
                       <span className="mt-1.5 size-1.5 rounded-full bg-cyan shrink-0" />
-                      Every position holds up to {MAX_PER_POSITION} players — a
+                      Every position holds up to {catalog.maxPerPosition} players — a
                       starter plus cover.
                     </li>
                     <li className="flex gap-3">

@@ -10,7 +10,7 @@ import {
   LuMapPin,
 } from "react-icons/lu";
 import HeroCarousel, { type HeroSlide } from "@/components/HeroCarousel";
-import { CLUBS, SUB_CLUBS } from "@/constants/relate";
+import { useClubs } from "@/lib/useClubs";
 
 const EVENT_SLIDES: HeroSlide[] = [
   {
@@ -101,32 +101,6 @@ export type RelateEvent = {
 
 export const EVENTS_ENDPOINT = "/api/community/events";
 
-export const seedEvents: RelateEvent[] = [
-  {
-    _id: "seed-netball-teens",
-    title: "Relate Netball Teens Tournament",
-    date: "2027-03-07",
-    time: "9:00 AM",
-    timeTo: "4:00 PM",
-    location: "Relate Sports Grounds",
-    description:
-      "Join the Relate Netball Tournament — teams, friends and community all cheering together on the Relate Sports Grounds.",
-    fee: "R30",
-    clubSlug: "sprout-teens",
-    category: "Netball",
-    eyebrow: "NETBALL TOURNAMENT",
-  },
-];
-
-export const clubOf = (slug?: string) =>
-  SUB_CLUBS.find((c) => c.slug === slug) ?? CLUBS.find((c) => c.slug === slug);
-
-export const parentOf = (slug?: string) => {
-  const sub = SUB_CLUBS.find((c) => c.slug === slug);
-  const parentSlug = sub?.parentSlug ?? slug;
-  return CLUBS.find((c) => c.slug === parentSlug) ?? CLUBS.find((c) => c.slug === slug);
-};
-
 export const formatLongDate = (iso?: string) => {
   if (!iso) return "";
   const d = new Date(`${iso}T00:00:00`);
@@ -150,11 +124,11 @@ export const formatShortDate = (iso?: string) => {
 
 export async function fetchEvents(): Promise<RelateEvent[]> {
   try {
-    const res = await fetch(EVENTS_ENDPOINT);
+    const res = await fetch(EVENTS_ENDPOINT, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     const list = Array.isArray(json) ? json : json?.data;
-    if (!Array.isArray(list) || list.length === 0) throw new Error("empty");
+    if (!Array.isArray(list)) throw new Error("unexpected events payload");
     return list.map((e: Record<string, unknown>) => ({
       _id: String(e._id ?? e.id ?? Math.random()),
       title: String(e.title ?? "Relate Event"),
@@ -208,7 +182,8 @@ export async function fetchEvents(): Promise<RelateEvent[]> {
       hasRsvpd: Boolean(e.hasRsvpd),
     }));
   } catch {
-    return seedEvents;
+    // Strict API-only: no bundled preview events — the caller surfaces this.
+    throw new Error("The events feed couldn't be loaded — check your connection and try again.");
   }
 }
 
@@ -216,7 +191,8 @@ const dateKey = (iso?: string) => (iso ? new Date(`${iso}T23:59:59`).getTime() :
 const isUpcoming = (iso?: string) => dateKey(iso) >= Date.now();
 
 export function EventCard({ event }: { event: RelateEvent }) {
-  const club = clubOf(event.clubSlug);
+  const { find } = useClubs();
+  const club = find(event.clubSlug);
   const gradient = club?.color
     ? `linear-gradient(135deg, ${club.color}, ${club.colorDark})`
     : "linear-gradient(135deg, #16213E, #0891B2)";
@@ -299,20 +275,33 @@ export function EventCard({ event }: { event: RelateEvent }) {
 }
 
 export default function EventsPage() {
-  const [events, setEvents] = useState<RelateEvent[]>(seedEvents);
+  const { subClubs, find } = useClubs();
+  const [events, setEvents] = useState<RelateEvent[]>([]);
   const [loading, setLoading] = useState(true);
-  const [live, setLive] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const clubOf = (slug?: string) => (slug ? find(slug) : undefined);
+  const parentOf = (slug?: string) => {
+    const sub = slug ? subClubs.find((c) => c.slug === slug) : undefined;
+    const parentSlug = sub?.parentSlug ?? slug;
+    return find(parentSlug) ?? find(slug);
+  };
 
   useEffect(() => {
     let alive = true;
-    (async () => {
-      const list = await fetchEvents();
-      if (alive) {
-        setEvents(list);
-        setLive(list !== seedEvents);
-        setLoading(false);
-      }
-    })();
+    fetchEvents()
+      .then((list) => {
+        if (alive) setEvents(list);
+      })
+      .catch(() => {
+        if (alive)
+          setError(
+            "The events feed couldn't be loaded — check your connection and try again.",
+          );
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
     return () => {
       alive = false;
     };
@@ -352,6 +341,15 @@ export default function EventsPage() {
             </div>
           )}
 
+          {error && !loading && (
+            <div
+              role="alert"
+              className="border border-red-200 bg-red-50 rounded-xl px-5 py-4 text-sm text-red-700 mb-6"
+            >
+              {error}
+            </div>
+          )}
+
           {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {Array.from({ length: 3 }).map((_, i) => (
@@ -361,7 +359,7 @@ export default function EventsPage() {
               />
             ))}
           </div>
-        ) : upcoming.length === 0 ? (
+        ) : error ? null : upcoming.length === 0 ? (
           <p className="text-center text-gray-500 py-16">
             No upcoming events right now — check back soon.
           </p>
@@ -369,7 +367,7 @@ export default function EventsPage() {
           <>
             <div className="flex flex-wrap gap-2 justify-center mb-8">
               {upcomingClubs.map((slug) => {
-                const club = CLUBS.find((c) => c.slug === slug);
+                const club = clubOf(slug);
                 return (
                   <a
                     key={slug}
@@ -380,15 +378,10 @@ export default function EventsPage() {
                   </a>
                 );
               })}
-              {!live && (
-                <span className="text-xs text-gray-400">
-                  sample preview — live feed offline
-                </span>
-              )}
             </div>
 
             {upcomingClubs.map((slug) => {
-              const club = CLUBS.find((c) => c.slug === slug);
+              const club = clubOf(slug);
               const items = upcoming.filter(
                 (e) => parentOf(e.clubSlug)?.slug === slug,
               );

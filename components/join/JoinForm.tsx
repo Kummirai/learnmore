@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   FaCheck,
   FaChevronRight,
@@ -15,11 +15,9 @@ import {
   membershipCookieString,
   type Membership,
 } from "@/lib/membership";
-import {
-  getRelateClub,
-  SPORTS_TEAMS,
-  type RelateTeam,
-} from "@/constants/relate";
+import type { RelateTeam } from "@/constants/relate";
+import { useClubs } from "@/lib/useClubs";
+import { useSports } from "@/lib/useSports";
 
 type YesNo = "" | "yes" | "no";
 
@@ -149,12 +147,16 @@ export default function JoinForm({
   /** Known membership record (read from the cookie) — prefills the form. */
   member?: Membership | null;
 }) {
-  const linkedTeam = SPORTS_TEAMS.find((t) => t.id === defaultTeam) ?? null;
-  const initialClub = defaultClub || member?.clubSlug || linkedTeam?.clubSlug || "";
+  const {
+    find: findClub,
+    loading: clubsLoading,
+    error: clubsError,
+  } = useClubs();
+  const { sports, loading: teamsLoading, error: teamsError } = useSports();
+  const linkedTeam = defaultTeam ? (sports?.getTeam(defaultTeam) ?? null) : null;
+  const initialClub = defaultClub || member?.clubSlug || "";
   const [clubSlug, setClubSlug] = useState(initialClub);
-  const [teamId, setTeamId] = useState(
-    linkedTeam && linkedTeam.clubSlug === initialClub ? linkedTeam.id : "",
-  );
+  const [teamId, setTeamId] = useState("");
   const [name, setName] = useState(member?.name ?? "");
   const [age, setAge] = useState(member?.age ?? "");
   const [gender, setGender] = useState(member?.gender ?? "");
@@ -184,16 +186,30 @@ export default function JoinForm({
 
   const clubs = useMemo(
     () =>
-      JOIN_CLUB_SLUGS.map((slug) => getRelateClub(slug)).filter(
+      JOIN_CLUB_SLUGS.map((slug) => findClub(slug)).filter(
         (c): c is NonNullable<typeof c> => Boolean(c),
       ),
-    [],
+    [findClub],
   );
 
   const teams = useMemo(
-    () => SPORTS_TEAMS.filter((t) => t.clubSlug === clubSlug),
-    [clubSlug],
+    () => (sports?.teams ?? []).filter((t) => t.clubSlug === clubSlug),
+    [sports, clubSlug],
   );
+
+  // A deep-linked team (?team=…) is adopted once the catalogue has loaded.
+  useEffect(() => {
+    if (!linkedTeam) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- adopts a URL deep link after the async sports catalogue arrives; there is no event handler to hook into
+    setClubSlug((prev) => prev || linkedTeam.clubSlug);
+  }, [linkedTeam]);
+
+  useEffect(() => {
+    if (!linkedTeam || teamId) return;
+    if (clubSlug && clubSlug !== linkedTeam.clubSlug) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- adopts a URL deep link after the async sports catalogue arrives; there is no event handler to hook into
+    setTeamId(linkedTeam.id);
+  }, [linkedTeam, clubSlug, teamId]);
 
   const selectedClub = clubs.find((c) => c.slug === clubSlug);
   const selectedTeam = teams.find((t) => t.id === teamId);
@@ -431,17 +447,25 @@ export default function JoinForm({
                 <label className={label} htmlFor="club">
                   Club
                 </label>
+                {clubsError && (
+                  <p role="alert" className="text-xs text-red-600 mb-1">
+                    {clubsError}
+                  </p>
+                )}
                 <select
                   id="club"
                   required
                   className={input}
                   value={clubSlug}
+                  disabled={clubsLoading}
                   onChange={(e) => {
                     setClubSlug(e.target.value);
                     setTeamId("");
                   }}
                 >
-                  <option value="">Choose your club…</option>
+                  <option value="">
+                    {clubsLoading ? "Loading clubs…" : "Choose your club…"}
+                  </option>
                   {clubs.map((c) => (
                     <option key={c.slug} value={c.slug}>
                       {c.name} · {c.group} ({c.ageRange})
@@ -453,17 +477,24 @@ export default function JoinForm({
                 <label className={label} htmlFor="team">
                   Team (optional)
                 </label>
+                {teamsError && (
+                  <p role="alert" className="text-xs text-red-600 mb-1">
+                    {teamsError}
+                  </p>
+                )}
                 <select
                   id="team"
                   className={`${input} disabled:opacity-60 disabled:cursor-not-allowed`}
                   value={teamId}
                   onChange={(e) => setTeamId(e.target.value)}
-                  disabled={!clubSlug || teams.length === 0}
+                  disabled={!clubSlug || teams.length === 0 || teamsLoading}
                 >
                   <option value="">
                     {!clubSlug
                       ? "Choose a club first…"
-                      : teams.length === 0
+                      : teamsLoading
+                        ? "Loading teams…"
+                        : teams.length === 0
                         ? `No teams in ${selectedClub?.name ?? "this club"} yet`
                         : "Choose your team…"}
                   </option>

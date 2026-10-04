@@ -1,13 +1,13 @@
 import { API_BASE } from "@/lib/config";
-import { STORE_CATEGORIES, STORE_ITEMS, type StoreItem } from "@/constants/relate";
+import { STORE_CATEGORIES, type StoreItem } from "@/constants/relate";
 
 /**
  * Store catalogue loading.
  *
- * The storefront is driven by the admin-managed `store_items` collection
- * (GET /api/store), merged over the bundled STORE_ITEMS constants so the store
- * still works before anyone has added anything in the dashboard, and so the
- * seeded products keep their curated order.
+ * The storefront is strictly API-driven: everything comes from the
+ * admin-managed `store_items` collection (GET /api/store). Network and HTTP
+ * failures throw so callers can render an explicit error state — there is no
+ * bundled fallback anywhere in this module.
  */
 
 const VALID_CATEGORIES = STORE_CATEGORIES.filter((c) => c !== "All");
@@ -47,41 +47,19 @@ export function normalizeStoreItem(raw: ApiStoreItem): StoreItem | null {
     };
 }
 
-/** DB items win over bundled ones with the same id; new DB items are appended. */
-export function mergeStoreItems(dbItems: StoreItem[]): StoreItem[] {
-    const byId = new Map(dbItems.map((i) => [i.id, i]));
-    const merged: StoreItem[] = [];
-    for (const bundled of STORE_ITEMS) {
-        merged.push(byId.get(bundled.id) ?? bundled);
-    }
-    const bundledIds = new Set(STORE_ITEMS.map((i) => i.id));
-    for (const item of dbItems) {
-        if (!bundledIds.has(item.id)) merged.push(item);
-    }
-    return merged;
-}
-
-async function fetchApiItems(): Promise<ApiStoreItem[]> {
-    const res = await fetch(`${API_BASE}/api/store`, {cache: "no-store"});
+/** Server-side catalogue. Throws on network/HTTP failure; never falls back. */
+export async function getStoreItems(): Promise<StoreItem[]> {
+    const res = await fetch(`${API_BASE}/api/store`, {next: {revalidate: 60}});
     if (!res.ok) throw new Error(`store api ${res.status}`);
     const json = await res.json();
     if (!Array.isArray(json?.data)) throw new Error("unexpected store payload");
-    return json.data;
+    const raw: ApiStoreItem[] = json.data;
+    return raw
+        .map(normalizeStoreItem)
+        .filter((i): i is StoreItem => i !== null);
 }
 
-/** Server-side catalogue. Never throws — falls back to the bundled items. */
-export async function getStoreItems(): Promise<StoreItem[]> {
-    try {
-        const items = (await fetchApiItems())
-            .map(normalizeStoreItem)
-            .filter((i): i is StoreItem => i !== null);
-        return items.length > 0 ? mergeStoreItems(items) : STORE_ITEMS;
-    } catch {
-        return STORE_ITEMS;
-    }
-}
-
-/** Server-side single item lookup across the merged catalogue. */
+/** Server-side single item lookup; null when unknown, API failures throw. */
 export async function getStoreItemById(id: string): Promise<StoreItem | null> {
     const items = await getStoreItems();
     return items.find((i) => i.id === id) ?? null;

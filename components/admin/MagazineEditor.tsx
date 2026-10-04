@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- this editor hydrates free-form JSON documents from MongoDB (legacy issues, weeks, blocks) whose shape is only guaranteed at save time */
+
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Badge, Button, Card, Field, Input, Select, TextArea } from "@/components/admin/ui";
@@ -10,7 +12,8 @@ import { DayPreview, DayPreviewModal } from "./ReadPreview";
 import type { DayPreviewData } from "./ReadPreview";
 import { buildWeeks, emptyReading, readingHasContent } from "@/lib/editor/season";
 import type { PubBlock, ReadingStructure } from "@/lib/editor/season";
-import { CLUBS, SERIES, SEASON_NAMES, PUBLICATION_KINDS, BLOCK_TYPES } from "@/lib/editor/catalog";
+import { SERIES, SEASON_NAMES, PUBLICATION_KINDS, BLOCK_TYPES } from "@/lib/editor/catalog";
+import { useClubs } from "@/lib/useClubs";
 
 type WeekDraft = {
     topic: string;
@@ -175,6 +178,7 @@ export default function MagazineEditor({
     // Keep the weeks buffer aligned with the canonical calendar.
     useEffect(() => {
         if (!seasonWeeks.length) return;
+        // eslint-disable-next-line react-hooks/set-state-in-effect -- the alignment must re-run whenever the season changes, including when it arrives from loaded draft data; there is no event handler to hook into
         setDraft((prev) => {
             const weeks = Array.isArray(prev.weeks) ? [...prev.weeks] : [];
             for (let i = 0; i < seasonWeeks.length; i++) {
@@ -193,7 +197,8 @@ export default function MagazineEditor({
     const [activeSeat, setActiveSeat] = useState<{ wIdx: number; dIdx: number } | null>(null);
     const [activePreviewOpen, setActivePreviewOpen] = useState(false);
 
-    const previewAccent = CLUBS.find((c) => c.slug === draft.clubSlug)?.color || "#151f3a";
+    const { allClubs: editorClubs } = useClubs();
+    const previewAccent = editorClubs.find((c) => c.slug === draft.clubSlug)?.color || "#151f3a";
 
     const activePreview = useMemo<DayPreviewData | null>(() => {
         if (!activeSeat || !draft.season || !Array.isArray(draft.weeks)) return null;
@@ -298,7 +303,7 @@ export default function MagazineEditor({
                         <Field label="Club" hint="Who is this season guide for?">
                             <Select value={draft.clubSlug} onChange={(e) => set({ clubSlug: e.target.value })}>
                                 <option value="">Relate (everyone)</option>
-                                {CLUBS.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
+                                {editorClubs.map((c) => <option key={c.slug} value={c.slug}>{c.name}</option>)}
                             </Select>
                         </Field>
                         <Field label="Status">

@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { FaFacebook, FaTwitter, FaInstagramSquare } from "react-icons/fa";
-import { LuShield, LuUsers } from "react-icons/lu";
+import { LuLoaderCircle, LuShield, LuUsers } from "react-icons/lu";
 import { useState } from "react";
-import { SPORTS_TEAMS } from "@/constants/relate";
-import { SQUADS, SPORTS_DIRECTOR } from "@/constants/squads";
+import { useSports } from "@/lib/useSports";
 
 type TeamMember = {
   name: string;
@@ -20,12 +19,10 @@ type TeamGroup = {
   featured?: TeamMember;
 };
 
-const coachMembers: TeamMember[] = SPORTS_TEAMS.map((t) => ({
-  name: SQUADS[t.id]?.coach.name ?? `${t.initials} Coach`,
-  role: `Head Coach · ${t.name}`,
-}));
+/** Title of the group fed by the sports catalogue — loading and error show here. */
+const SPORTS_GROUP = "Sports Director & Coaches";
 
-const groups: TeamGroup[] = [
+const staticGroups: TeamGroup[] = [
   {
     title: "Presidency",
     subtitle: "Setting direction and holding the organisation to account",
@@ -54,12 +51,6 @@ const groups: TeamGroup[] = [
       { name: "Synergy Director", role: "Married 6+ yrs · retreats & mentoring" },
       { name: "Education Director", role: "Schools & learning programmes" },
     ],
-  },
-  {
-    title: "Sports Director & Coaches",
-    subtitle: "Leading every Relate team — Sprout, Surge and Pulse squads",
-    featured: { name: SPORTS_DIRECTOR.name, role: SPORTS_DIRECTOR.role },
-    members: coachMembers,
   },
 ];
 
@@ -142,6 +133,33 @@ function MemberCard({
 
 export default function Team() {
   const [showAll, setShowAll] = useState(false);
+  const { sports, loading, error } = useSports();
+
+  // The sports group is whatever the catalogue says it is: loading, failed
+  // and published-nothing each get their own message instead of a blank row.
+  const sportsStatus = loading
+    ? "loading"
+    : error
+      ? "error"
+      : sports && sports.teams.length > 0
+        ? "ready"
+        : "empty";
+
+  const sportsGroup: TeamGroup = {
+    title: SPORTS_GROUP,
+    subtitle: "Leading every Relate team — Sprout, Surge and Pulse squads",
+    featured: sports?.director.name
+      ? { name: sports.director.name, role: sports.director.role }
+      : undefined,
+    members: sports
+      ? sports.teams.map((team) => ({
+          name: sports.getSquad(team.id)?.coach.name ?? `${team.initials} Coach`,
+          role: `Head Coach · ${team.name}`,
+        }))
+      : [],
+  };
+
+  const groups = [...staticGroups, sportsGroup];
 
   return (
     <section className={"py-16 md:py-24 bg-white px-4"}>
@@ -181,39 +199,60 @@ export default function Team() {
                 <p className={"text-gray-500 mt-2"}>{group.subtitle}</p>
               </div>
 
-              {/* Featured member on its own row — original w-72 width, centered */}
-              {group.featured && (
-                <div className={"flex justify-center mb-6 sm:mb-8"}>
-                  <div className={"w-full max-w-56 sm:max-w-72"}>
-                    <MemberCard member={group.featured} featured />
-                  </div>
+              {group.title === SPORTS_GROUP && sportsStatus !== "ready" ? (
+                <div
+                  className={
+                    "rounded-2xl border border-dashed border-gray-200 bg-gray-50 p-6 text-center text-sm text-slate-gray"
+                  }
+                >
+                  {sportsStatus === "loading" ? (
+                    <span className={"inline-flex items-center gap-2"}>
+                      <LuLoaderCircle className={"animate-spin"} /> Loading the
+                      sports teams…
+                    </span>
+                  ) : sportsStatus === "error" ? (
+                    "The sports teams could not be loaded right now — reload the page to try again."
+                  ) : (
+                    "No teams published yet."
+                  )}
                 </div>
-              )}
+              ) : (
+                <>
+                  {/* Featured member on its own row — original w-72 width, centered */}
+                  {group.featured && (
+                    <div className={"flex justify-center mb-6 sm:mb-8"}>
+                      <div className={"w-full max-w-56 sm:max-w-72"}>
+                        <MemberCard member={group.featured} featured />
+                      </div>
+                    </div>
+                  )}
 
-              {/* Two cards per row on mobile, three from md up */}
-              <div
-                className={
-                  "grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 items-stretch"
-                }
-              >
-                {visible.map((member, i) => (
-                  <MemberCard key={i} member={member} />
-                ))}
-              </div>
-
-              {hasShowMore && (
-                <div className={"text-center mt-8"}>
-                  <button
-                    onClick={() => setShowAll(!showAll)}
+                  {/* Two cards per row on mobile, three from md up */}
+                  <div
                     className={
-                      "px-6 py-3 min-h-11 rounded-lg bg-navy text-white font-medium text-sm hover:bg-navy-dark transition-colors"
+                      "grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 items-stretch"
                     }
                   >
-                    {showAll
-                      ? "Show Less"
-                      : `Show More (${group.members.length - 6} more)`}
-                  </button>
-                </div>
+                    {visible.map((member, i) => (
+                      <MemberCard key={i} member={member} />
+                    ))}
+                  </div>
+
+                  {hasShowMore && (
+                    <div className={"text-center mt-8"}>
+                      <button
+                        onClick={() => setShowAll(!showAll)}
+                        className={
+                          "px-6 py-3 min-h-11 rounded-lg bg-navy text-white font-medium text-sm hover:bg-navy-dark transition-colors"
+                        }
+                      >
+                        {showAll
+                          ? "Show Less"
+                          : `Show More (${group.members.length - 6} more)`}
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           );

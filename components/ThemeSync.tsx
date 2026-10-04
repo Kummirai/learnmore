@@ -2,7 +2,7 @@
 
 import {useEffect} from "react"
 import {usePathname} from "next/navigation"
-import {CLUBS, SUB_CLUBS} from "@/constants/relate"
+import {useClubs} from "@/lib/useClubs"
 import {colors} from "@/constants/colors"
 
 const DEFAULT_ACCENT = "#13c5dd"
@@ -10,11 +10,6 @@ const DEFAULT_ACCENT_DARK = "#0fa3c4"
 const DEFAULT_ON_ACCENT = "#1d2a4d"
 const DEFAULT_CHROME = "#151f3a"
 const DEFAULT_CHROME_DARK = "#0f1830"
-
-function resolveClub(path: string | null) {
-    const slug = path?.split("/").filter(Boolean)[0]
-    return CLUBS.find((c) => c.slug === slug) ?? SUB_CLUBS.find((c) => c.slug === slug)
-}
 
 function luminance(hex: string): number {
     const n = hex.replace("#", "")
@@ -39,10 +34,11 @@ function mix(hexA: string, hexB: string, t: number): string {
 
 export default function ThemeSync() {
     const pathname = usePathname()
+    const {find} = useClubs()
 
     useEffect(() => {
         const root = document.documentElement
-        const club = resolveClub(pathname)
+        const club = find(pathname?.split("/").filter(Boolean)[0])
         root.style.setProperty("--club-accent", club?.color ?? DEFAULT_ACCENT)
         root.style.setProperty("--club-accent-dark", club?.colorDark ?? DEFAULT_ACCENT_DARK)
         root.style.setProperty("--club-on-accent", club ? onAccentFor(club.color) : DEFAULT_ON_ACCENT)
@@ -54,7 +50,7 @@ export default function ThemeSync() {
             "--club-chrome-dark",
             club ? mix(club.colorDark, colors.navyDark, 0.4) : DEFAULT_CHROME_DARK,
         )
-    }, [pathname])
+    }, [pathname, find])
 
     return null
 }

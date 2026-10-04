@@ -6,11 +6,11 @@ import { useEffect, useRef, useState } from "react";
 import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import {
-  CLUBS,
   MAGAZINES,
   type RelateClub,
   type RelateMagazine,
 } from "@/constants/relate";
+import { useClubs } from "@/lib/useClubs";
 
 /* ── Next prayer time (shared math in lib/prayer-times, mirrors the mobile app) ── */
 import {
@@ -273,12 +273,13 @@ const AUTOPLAY_MS = 6000;
 
 export default function Hero() {
   const prayer = useNextPrayer();
+  const { clubs } = useClubs();
   const slides: Slide[] = [
     brandSlide(),
     prayerSlide(prayer),
     charitySlide(),
     ...MAGAZINES.map(magazineSlide),
-    ...CLUBS.map(clubSlide),
+    ...clubs.map(clubSlide),
   ];
 
   const [index, setIndex] = useState(0);
@@ -514,7 +515,7 @@ export default function Hero() {
               {slide.key === "prayer" && "Prayer rhythm"}
               {slide.key === "charity" && "Charity & care"}
               {MAGAZINES.some((m) => m.slug === slide.key) && "Reading guides"}
-              {CLUBS.some((c) => c.slug === slide.key) && "Clubs"}
+              {clubs.some((c) => c.slug === slide.key) && "Clubs"}
             </span>
           </div>
         </div>

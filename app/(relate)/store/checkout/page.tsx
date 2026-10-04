@@ -15,15 +15,13 @@ const WHATSAPP_NUMBER = "27782677436";
 
 type Line = { item: StoreItem; qty: number };
 
-function CheckoutInner() {
+function CheckoutInner({ catalog, error }: { catalog: StoreItem[]; error: string | null }) {
     const searchParams = useSearchParams();
     const initialId = searchParams.get("item");
-    const { items: catalog } = useStoreItems();
 
-    const [lines, setLines] = useState<Line[]>(() => {
-        const start = initialId ? catalog.filter((i) => i.id === initialId).map((item) => ({ item, qty: 1 })) : [];
-        return start;
-    });
+    const [lines, setLines] = useState<Line[]>(() =>
+        initialId ? catalog.filter((i) => i.id === initialId).map((item) => ({ item, qty: 1 })) : [],
+    );
 
     const [name, setName] = useState("");
     const [area, setArea] = useState("");
@@ -79,6 +77,12 @@ function CheckoutInner() {
                     Review your items, add your details, and send the order through WhatsApp — we confirm payment and delivery in the chat.
                 </p>
 
+                {error && (
+                    <div role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        {error}
+                    </div>
+                )}
+
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
                     {/* Items + add more */}
                     <div className="lg:col-span-3">
@@ -122,17 +126,21 @@ function CheckoutInner() {
                         {/* Add products */}
                         <div className="rounded-2xl border border-gray-100 p-4">
                             <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-3">Add more items</p>
-                            <div className="flex flex-wrap gap-2">
-                                {catalog.filter((i) => !lines.some((l) => l.item.id === i.id)).map((i) => (
-                                    <button
-                                        key={i.id}
-                                        onClick={() => addItem(i.id)}
-                                        className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2.5 min-h-11 text-xs font-medium text-navy hover:border-cyan hover:bg-alice-blue/60 transition-colors"
-                                    >
-                                        <LuPlus className="text-cyan" /> {i.name}
-                                    </button>
-                                ))}
-                            </div>
+                            {catalog.length === 0 ? (
+                                <p className="text-sm text-slate-gray">No products are available right now.</p>
+                            ) : (
+                                <div className="flex flex-wrap gap-2">
+                                    {catalog.filter((i) => !lines.some((l) => l.item.id === i.id)).map((i) => (
+                                        <button
+                                            key={i.id}
+                                            onClick={() => addItem(i.id)}
+                                            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2.5 min-h-11 text-xs font-medium text-navy hover:border-cyan hover:bg-alice-blue/60 transition-colors"
+                                        >
+                                            <LuPlus className="text-cyan" /> {i.name}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                             {added && <p className="text-xs text-cyan mt-2" aria-live="polite">Added to your order ✓</p>}
                         </div>
                     </div>
@@ -197,19 +205,27 @@ function CheckoutInner() {
     );
 }
 
-export default function CheckoutPage() {
+function CheckoutLoading() {
     return (
-        <Suspense
-            fallback={
-                <section className="flex-1 px-4 py-20 flex items-center justify-center bg-white">
-                    <div className="flex items-center gap-3 text-slate-gray">
-                        <LuLoaderCircle className="animate-spin text-2xl" />
-                        <span className="text-sm">Loading your order…</span>
-                    </div>
-                </section>
-            }
-        >
-            <CheckoutInner />
+        <section className="flex-1 px-4 py-20 flex items-center justify-center bg-white">
+            <div className="flex items-center gap-3 text-slate-gray" role="status">
+                <LuLoaderCircle className="animate-spin text-2xl" />
+                <span className="text-sm">Loading your order…</span>
+            </div>
+        </section>
+    );
+}
+
+export default function CheckoutPage() {
+    const { items: catalog, loading, error } = useStoreItems();
+
+    return (
+        <Suspense fallback={<CheckoutLoading />}>
+            {loading ? (
+                <CheckoutLoading />
+            ) : (
+                <CheckoutInner catalog={catalog} error={error} />
+            )}
         </Suspense>
     );
 }

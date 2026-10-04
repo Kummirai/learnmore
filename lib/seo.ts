@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { getClub, getClubClass, getMagazine } from "@/constants/relate";
+import { getMagazine } from "@/constants/relate";
+import { getClub } from "@/lib/clubs";
 import { getReadingPlan } from "@/lib/reading-plans";
 
 /**
@@ -24,9 +25,15 @@ export function siteMetadata(overrides: Metadata, canonical: string): Metadata {
     };
 }
 
-/** Metadata for a main club or sub-club page (e.g. /sprout). */
-export function clubMetadataFromSlug(slug: string): Metadata {
-    const club = getClub(slug) ?? getClubClass(slug);
+/** Metadata for a main club or sub-club page (e.g. /sprout). Reads the
+ *  catalogue at request time; a failed read falls back to the site defaults. */
+export async function clubMetadataFromSlug(slug: string): Promise<Metadata> {
+    let club;
+    try {
+        club = await getClub(slug);
+    } catch {
+        return {};
+    }
     if (!club) return {};
     const title = `${club.name} Club · ${club.group} (${club.ageRange})`;
     return siteMetadata(

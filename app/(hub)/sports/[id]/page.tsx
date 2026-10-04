@@ -14,36 +14,58 @@ import {
 import { FaWhatsapp } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import TeamMembers from "@/components/sports/TeamMembers";
-import {
-  SPORTS_TEAMS,
-  getRelateClub,
-} from "@/constants/relate";
-import {
-  MAX_PER_POSITION,
-  getSquad,
-  playerSlug,
-  SPORTS_DIRECTOR,
-} from "@/constants/squads";
+import { getClub } from "@/lib/clubs";
+import { getSports, playerSlug, type SportsData } from "@/lib/sports";
 import { buildRoster, fetchRoster, type Slot } from "@/lib/squad-roster";
 
-export function generateStaticParams() {
-  return SPORTS_TEAMS.map((team) => ({ id: team.id }));
+/** The catalogue only exists at request time, so never bake a team in. */
+export const dynamic = "force-dynamic";
+
+async function loadCatalog(): Promise<SportsData | null> {
+  try {
+    return await getSports();
+  } catch {
+    return null; // unreachable backend — the page says so below
+  }
 }
 
-export function generateMetadata({
+function CatalogError() {
+  return (
+    <>
+      <Navbar />
+      <section className="flex-1 px-4 py-24 bg-white">
+        <div className="mx-auto max-w-xl text-center">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">
+            Relate · Sports
+          </p>
+          <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
+            Teams unavailable
+          </h1>
+          <p className="text-sm text-slate-gray">
+            We couldn&rsquo;t load the squads right now. Reload the page to try
+            again.
+          </p>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
-  return params.then(({ id }) => {
-    const team = SPORTS_TEAMS.find((t) => t.id === id);
-    const club = getRelateClub(team?.clubSlug);
-    if (!team) return { title: "Team Not Found · Relate Sports" };
-    return {
-      title: `${team.name} · Relate Sports`,
-      description: `${team.name} — squad, coach and upcoming fixtures for ${club?.name ?? "Relate"}. Train through the week, play at the weekend. Free to join.`,
-    };
-  });
+  const { id } = await params;
+  const catalog = await loadCatalog();
+  if (!catalog) return { title: "Teams Unavailable · Relate Sports" };
+  const team = catalog.getTeam(id);
+  const club = await getClub(team?.clubSlug).catch(() => undefined);
+  if (!team) return { title: "Team Not Found · Relate Sports" };
+  return {
+    title: `${team.name} · Relate Sports`,
+    description: `${team.name} — squad, coach and upcoming fixtures for ${club?.name ?? "Relate"}. Train through the week, play at the weekend. Free to join.`,
+  };
 }
 
 /** #RRGGBB + alpha → rgba() so gradients sit over the navy chrome. */
@@ -144,18 +166,20 @@ export default async function TeamPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const team = SPORTS_TEAMS.find((t) => t.id === id);
-  const squad = team ? getSquad(team.id) : undefined;
+  const catalog = await loadCatalog();
+  if (!catalog) return <CatalogError />;
+  const team = catalog.getTeam(id);
+  const squad = team ? catalog.getSquad(team.id) : undefined;
   if (!team || !squad) notFound();
-  const club = getRelateClub(team.clubSlug);
+  const club = await getClub(team.clubSlug).catch(() => undefined);
   const gradient = club
     ? `linear-gradient(135deg, ${club.color}, ${club.colorDark})`
     : "linear-gradient(135deg, #13c5dd, #0284c7)";
 
-  // Real registrations overlaid on the generated team sheet (empty on failure
+  // Real registrations overlaid on the team sheet (empty on failure
   // or before anyone signs up — the sheet then shows open positions).
   const { registrations } = await fetchRoster(team.id);
-  const roster = buildRoster(squad, registrations, team.sport);
+  const roster = buildRoster(squad, registrations, team.sport, catalog);
 
   return (
       <>
@@ -370,7 +394,7 @@ export default async function TeamPage({
                 </p>
                 <p className="text-xs text-slate-gray mt-0.5">
                   Photo, height, dominant foot and hand, position. First come,
-                  first picked; every position takes up to {MAX_PER_POSITION}.
+                  first picked; every position takes up to {catalog.maxPerPosition}.
                 </p>
               </div>
               <Link
@@ -402,19 +426,20 @@ export default async function TeamPage({
                       <p className="text-cyan text-xs font-semibold uppercase tracking-wider">{squad.coach.role} · {team.name}</p>
                     </div>
                   </article>
-                  <article className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                    <div
-                      className="size-16 rounded-full flex items-center justify-center text-xl font-black text-white ring-4 ring-white shadow-lg shrink-0"
-                      style={{ background: gradient }}
-                    >
-                      {initialsOf(SPORTS_DIRECTOR.name)}
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-navy">{SPORTS_DIRECTOR.name}</h3>
-                      <p className="text-cyan text-xs font-semibold uppercase tracking-wider">{SPORTS_DIRECTOR.role} · All Relate teams</p>
-                    </div>
-                  </article>
-                </div>
+                  {catalog.director.name && (
+                    <article className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                      <div
+                        className="size-16 rounded-full flex items-center justify-center text-xl font-black text-white ring-4 ring-white shadow-lg shrink-0"
+                        style={{ background: gradient }}
+                      >
+                        {initialsOf(catalog.director.name)}
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-navy">{catalog.director.name}</h3>
+                        <p className="text-cyan text-xs font-semibold uppercase tracking-wider">{catalog.director.role} · All Relate teams</p>
+                      </div>
+                    </article>
+                  )}                </div>
               </div>
             )}
 

@@ -5,14 +5,12 @@ import type { CSSProperties } from "react";
 
 import PageHero from "@/components/PageHero";
 import JoinCta from "@/components/join/JoinCta";
-import { getClub } from "@/constants/relate";
-import {
-  HONOR_COUNT,
-  HONOR_LEVELS,
-  HONOR_TRACK_BY_ID,
-  SHAPE_LABEL,
-} from "@/constants/sproutHonors";
+import { getClub, getClubAccent } from "@/lib/clubs";
+import { getHonors, type Honors } from "@/lib/honors";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
+
+/** The framework is fetched with `revalidate: 60` — refresh the page on it too. */
+export const revalidate = 60;
 
 const DESCRIPTION =
   "Every Sprout Club honor — 13 badges across safety, money, digital skills, coding and media. Open one to see its requirements and track your progress.";
@@ -34,8 +32,21 @@ export function generateMetadata(): Metadata {
   );
 }
 
-export default function SproutHonorsPage() {
-  const sprout = getClub("sprout")!;
+export default async function SproutHonorsPage() {
+  let honors: Honors;
+  try {
+    honors = await getHonors();
+  } catch {
+    return <HonorsUnavailable />;
+  }
+
+  let sprout;
+  try {
+    sprout = await getClub("sprout");
+  } catch {
+    return <HonorsUnavailable />;
+  }
+  if (!sprout) return <HonorsUnavailable />;
   const clubVars = {
     "--club-accent": sprout.color,
     "--club-accent-dark": sprout.colorDark,
@@ -49,7 +60,7 @@ export default function SproutHonorsPage() {
         mobileTitle="Honors"
         tagline="Badges earned. Skills proven."
         description={DESCRIPTION}
-        watermark={String(HONOR_COUNT)}
+        watermark={String(honors.count)}
         actions={
           <>
             <JoinCta
@@ -71,8 +82,8 @@ export default function SproutHonorsPage() {
           </>
         }
         meta={[
-          { label: "Honors", value: String(HONOR_COUNT) },
-          { label: "Levels", value: String(HONOR_LEVELS.length) },
+          { label: "Honors", value: String(honors.count) },
+          { label: "Levels", value: String(honors.levels.length) },
           { label: "Ages", value: sprout.ageRange },
         ]}
         metaEnd={
@@ -92,7 +103,7 @@ export default function SproutHonorsPage() {
 
       <section className={"flex-1 px-4 py-12 bg-white"}>
         <div className={"max-w-6xl mx-auto"}>
-          {HONOR_LEVELS.map((level) => (
+          {honors.levels.map((level) => (
             <div
               key={level.id}
               id={`level-${level.id}`}
@@ -123,7 +134,7 @@ export default function SproutHonorsPage() {
                 }
               >
                 {level.badges.map((badge) => {
-                  const track = HONOR_TRACK_BY_ID[badge.track];
+                  const track = honors.trackById[badge.track];
                   return (
                     <Link
                       key={badge.id}
@@ -159,7 +170,7 @@ export default function SproutHonorsPage() {
                             style={{ backgroundColor: track.color }}
                             aria-hidden={"true"}
                           />
-                          {track.short} · {SHAPE_LABEL[badge.shape]}
+                          {track.short} · {honors.shapeLabels[badge.shape]}
                         </span>
                         <span
                           className={
@@ -256,6 +267,55 @@ export default function SproutHonorsPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/**
+ * The framework failed to load — show an explicit error instead of any
+ * bundled badge content (there is none: this route is API-only).
+ */
+async function HonorsUnavailable() {
+  const sprout = await getClubAccent("sprout");
+  const clubVars = {
+    "--club-accent": sprout.color,
+    "--club-accent-dark": sprout.colorDark,
+  } as CSSProperties;
+
+  return (
+    <div style={clubVars}>
+      <PageHero
+        style={clubVars}
+        title="Sprout Club Honors"
+        mobileTitle="Honors"
+        tagline="Badges earned. Skills proven."
+        description={DESCRIPTION}
+        meta={[{ label: "Club", value: "Sprout" }]}
+      />
+
+      <section className={"flex-1 px-4 py-12 bg-white"}>
+        <div
+          className={
+            "max-w-xl mx-auto text-center rounded-2xl border border-red-200 bg-red-50 px-6 py-14"
+          }
+        >
+          <p className={"text-base font-semibold text-red-700 mb-1"}>
+            We couldn&apos;t load the honors framework.
+          </p>
+          <p className={"text-sm text-red-600 mb-5"}>
+            The badge list is unavailable right now — please try again in a
+            moment.
+          </p>
+          <a
+            href={"/sprout/honors"}
+            className={
+              "text-sm font-semibold text-red-700 underline underline-offset-4"
+            }
+          >
+            Try again
+          </a>
         </div>
       </section>
     </div>

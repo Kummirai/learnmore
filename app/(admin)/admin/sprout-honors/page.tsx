@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AdminHeader, Badge, Select } from "@/components/admin/ui";
-import { getHonor, HONOR_ENTRIES, HONOR_LEVELS } from "@/constants/sproutHonors";
+import { useHonors } from "@/lib/useHonors";
 import { LuExternalLink, LuSearch } from "react-icons/lu";
 
 type Status = "not_started" | "in_progress" | "complete";
@@ -41,6 +41,7 @@ export default function AdminSproutHonorsPage() {
 }
 
 function HonorsBody() {
+    const { honors, loading: honorsLoading, error: honorsError } = useHonors();
     const [badgeId, setBadgeId] = useState<string>(ALL_HONORS);
     const [payload, setPayload] = useState<{ badge: string; rows: Row[] } | null>(null);
     const [error, setError] = useState("");
@@ -77,7 +78,7 @@ function HonorsBody() {
         () => (payload && payload.badge === badgeId ? payload.rows : []),
         [payload, badgeId],
     );
-    const entry = badgeId ? getHonor(badgeId) : undefined;
+    const entry = badgeId ? honors?.getHonor(badgeId) : undefined;
 
     const view = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -100,6 +101,28 @@ function HonorsBody() {
         };
     }, [rows]);
 
+    // The framework itself failed or is still loading — say so plainly rather
+    // than rendering a board with no honor names in it.
+    if (honorsError || honorsLoading || !honors) {
+        return (
+            <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+                <AdminHeader
+                    eyebrow="Sprout Club"
+                    title="Honors Progress"
+                    sub="Every participant's progress through the honors framework — criteria proven, requirements signed off and piggy-bank savings."
+                />
+                <p
+                    className={`rounded-lg px-4 py-2.5 text-sm ${
+                        honorsError ? "bg-red-50 text-red-600" : "bg-alice-blue text-slate-gray"
+                    }`}
+                >
+                    {honorsError ?? "Loading the honors framework…"}
+                </p>
+                {honorsError && <p className="mt-3 text-xs text-gray-400">Reload the page to try again.</p>}
+            </div>
+        );
+    }
+
     return (
         <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
             <AdminHeader
@@ -112,7 +135,7 @@ function HonorsBody() {
                             <span className="sr-only">Filter by honor</span>
                             <Select value={badgeId} onChange={(e) => setBadgeId(e.target.value)}>
                                 <option value={ALL_HONORS}>All honors</option>
-                                {HONOR_LEVELS.map((level) => (
+                                {honors.levels.map((level) => (
                                     <optgroup key={level.id} label={level.name}>
                                         {level.badges.map((badge) => (
                                             <option key={badge.id} value={badge.id}>
@@ -184,7 +207,7 @@ function HonorsBody() {
                     </thead>
                     <tbody>
                         {view.map((row) => {
-                            const honor = getHonor(row.badgeId);
+                            const honor = honors.getHonor(row.badgeId);
                             const pct = row.criteriaTotal ? Math.round((row.criteriaDone / row.criteriaTotal) * 100) : 0;
                             const target = honor?.badge.piggyBank
                                 ? honor.badge.piggyBank.weekly * honor.badge.piggyBank.weeks
@@ -284,7 +307,7 @@ function HonorsBody() {
                     Read-only roll-up: 500 most recently updated records, newest first.
                 </p>
                 <div className="flex flex-wrap gap-1.5">
-                    {HONOR_ENTRIES.map((e) => (
+                    {honors.entries.map((e) => (
                         <button
                             key={e.badge.id}
                             type="button"

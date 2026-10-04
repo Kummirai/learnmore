@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
-import { CLUBS, MAGAZINES, STORE_ITEMS, SUB_CLUBS, SPORTS_TEAMS, programSlug } from "@/constants/relate";
-import { READING_PLANS } from "@/constants/readingPlans";
-import { getSquad, playerSlug } from "@/constants/squads";
+import { MAGAZINES, programSlug } from "@/constants/relate";
+import { getClubsCatalog } from "@/lib/clubs";
+import { listPublicReadingPlans } from "@/lib/reading-plans";
+import { getSports } from "@/lib/sports";
+import { getStoreItems } from "@/lib/store";
 
 const SITE_URL = "https://relateworld.org";
 
@@ -30,7 +32,12 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/plans", changeFrequency: "monthly", priority: 0.7 },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+/**
+ * The sitemap reads clubs, store, squads and reading plans from the API at
+ * request time (the backend is the source of truth). A failed section is
+ * omitted rather than served from stale bundled data.
+ */
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
   const main = MAIN_PAGES.map(({ path, changeFrequency, priority }) => ({
@@ -40,14 +47,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority,
   }));
 
-  const clubs = [...CLUBS, ...SUB_CLUBS].map((club) => ({
+  const [catalog, storeItems, sports, plans] = await Promise.all([
+    getClubsCatalog().catch(() => null),
+    getStoreItems().catch(() => []),
+    getSports().catch(() => null),
+    listPublicReadingPlans().catch(() => []),
+  ]);
+
+  const allClubs = catalog ? [...catalog.clubs, ...catalog.subClubs] : [];
+
+  const clubs = (catalog?.clubs ?? []).map((club) => ({
     url: `${SITE_URL}/${club.slug}`,
     lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.9,
   }));
 
-  const clubPrograms = [...CLUBS, ...SUB_CLUBS].flatMap((club) =>
+  const clubPrograms = allClubs.flatMap((club) =>
     club.programs.map((program) => ({
       url: `${SITE_URL}/${club.slug}/${programSlug(program.name)}`,
       lastModified,
@@ -56,7 +72,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }))
   );
 
-  const clubMagazines = CLUBS.map((club) => ({
+  const clubMagazines = (catalog?.clubs ?? []).map((club) => ({
     url: `${SITE_URL}/magazines/${club.slug}`,
     lastModified,
     changeFrequency: "monthly" as const,
@@ -68,32 +84,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/library/${mag.slug}`, lastModified, changeFrequency: "monthly" as const, priority: 0.7 },
   ]);
 
-  const plans = READING_PLANS.map((plan) => ({
+  const planEntries = plans.map((plan) => ({
     url: `${SITE_URL}/plans/${plan.slug}`,
     lastModified,
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));
 
-  const storeItems = STORE_ITEMS.map((item) => ({
+  const storeEntries = storeItems.map((item) => ({
     url: `${SITE_URL}/store/${item.id}`,
     lastModified,
     changeFrequency: "yearly" as const,
     priority: 0.5,
   }));
 
-  const sportsTeams = SPORTS_TEAMS.map((team) => ({
+  const sportsTeams = (sports?.teams ?? []).map((team) => ({
     url: `${SITE_URL}/sports/${team.id}`,
     lastModified,
     changeFrequency: "weekly" as const,
     priority: 0.6,
   }));
 
-  const sportsPlayers = SPORTS_TEAMS.flatMap((team) => {
+  const sportsPlayers = (sports?.teams ?? []).flatMap((team) => {
+    if (!sports) return [];
     const seen = new Set<string>();
     const entries: MetadataRoute.Sitemap = [];
-    for (const player of getSquad(team.id)?.players ?? []) {
-      const url = `${SITE_URL}/sports/${team.id}/${playerSlug(player.name)}`;
+    for (const player of sports.getSquad(team.id)?.players ?? []) {
+      const url = `${SITE_URL}/sports/${team.id}/${sports.playerSlug(player.name)}`;
       if (seen.has(url)) continue;
       seen.add(url);
       entries.push({
@@ -112,8 +129,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...clubPrograms,
     ...clubMagazines,
     ...magazines,
-    ...plans,
-    ...storeItems,
+    ...planEntries,
+    ...storeEntries,
     ...sportsTeams,
     ...sportsPlayers,
   ];

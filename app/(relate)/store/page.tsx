@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react"
 import Link from "next/link"
 import {FaWhatsapp} from "react-icons/fa"
-import {LuArrowRight, LuBadgeCheck, LuShoppingBag} from "react-icons/lu"
+import {LuArrowRight, LuBadgeCheck, LuCircleAlert, LuLoaderCircle, LuShoppingBag} from "react-icons/lu"
 import Navbar from "@/components/Navbar"
 import {useStoreItems} from "@/components/store/useStoreItems"
 import {STORE_CATEGORIES, type StoreCategory, type StoreItem} from "@/constants/relate"
@@ -20,6 +20,7 @@ export function StoreCard({item}: {item: StoreItem}) {
         <div className={"flex flex-col group"}>
             <Link href={`/store/${item.id}`} className={"block overflow-hidden rounded-xl bg-alice-blue"}>
                 {item.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                         src={item.image}
                         alt={item.name}
@@ -71,9 +72,7 @@ export function StoreCard({item}: {item: StoreItem}) {
 function HeroShowcase({items}: {items: StoreItem[]}) {
     const tee = items.find((i) => i.id === "relate-tee")
     const allSlides = tee?.images?.length ? tee.images : tee ? [tee.image] : []
-    const slides = allSlides.filter(
-        (src) => src.includes("t-shirt-1") || src.includes("t-shirt-3"),
-    )
+    const slides = allSlides.filter(Boolean)
     const [idx, setIdx] = useState(0)
     const [paused, setPaused] = useState(false)
 
@@ -141,7 +140,7 @@ function HeroShowcase({items}: {items: StoreItem[]}) {
 
 export default function StorePage() {
     const [category, setCategory] = useState<StoreCategory>("All")
-    const {items: allItems} = useStoreItems()
+    const {items: allItems, loading, error} = useStoreItems()
 
     const items = category === "All" ? allItems : allItems.filter((i) => i.category === category)
 
@@ -212,11 +211,39 @@ export default function StorePage() {
                         ))}
                     </div>
 
-                    <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"}>
-                        {items.map((item) => (
-                            <StoreCard key={item.id} item={item}/>
-                        ))}
-                    </div>
+                    {loading ? (
+                        <div className={"flex items-center justify-center gap-3 py-16 text-slate-gray"} role={"status"}>
+                            <LuLoaderCircle className={"animate-spin text-2xl"} />
+                            <span className={"text-sm"}>Loading the store…</span>
+                        </div>
+                    ) : error ? (
+                        <div className={"rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center"} role={"alert"}>
+                            <LuCircleAlert className={"text-red-500 text-2xl mx-auto mb-3"} />
+                            <p className={"text-sm font-semibold text-red-700 mb-1"}>We couldn&rsquo;t load the store.</p>
+                            <p className={"text-sm text-red-600 mb-5"}>{error}</p>
+                            <button
+                                onClick={() => window.location.reload()}
+                                className={"min-h-11 px-6 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors"}>
+                                Try again
+                            </button>
+                        </div>
+                    ) : allItems.length === 0 ? (
+                        <div className={"rounded-2xl border border-dashed border-gray-300 bg-alice-blue/50 py-16 text-center"}>
+                            <LuShoppingBag className={"text-3xl text-slate-gray mx-auto mb-3"} />
+                            <p className={"text-base font-semibold text-navy mb-1"}>Nothing in stock right now</p>
+                            <p className={"text-sm text-slate-gray"}>New Relate gear lands here soon — check back shortly.</p>
+                        </div>
+                    ) : items.length === 0 ? (
+                        <div className={"rounded-2xl border border-dashed border-gray-300 bg-alice-blue/50 py-12 text-center"}>
+                            <p className={"text-sm text-slate-gray"}>No products in {category} yet — check the other categories.</p>
+                        </div>
+                    ) : (
+                        <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"}>
+                            {items.map((item) => (
+                                <StoreCard key={item.id} item={item}/>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </section>
         </>

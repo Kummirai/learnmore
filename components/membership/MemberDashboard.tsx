@@ -4,14 +4,15 @@ import {
   LuCalendarDays,
   LuCheck,
   LuExternalLink,
+  LuLoaderCircle,
   LuMapPin,
   LuPencil,
   LuUsers,
 } from "react-icons/lu";
 import { FaWhatsapp } from "react-icons/fa";
 import { type Membership } from "@/lib/membership";
-import { getRelateClub, SPORTS_TEAMS } from "@/constants/relate";
-import { getSquad } from "@/constants/squads";
+import { useClubs } from "@/lib/useClubs";
+import { useSports } from "@/lib/useSports";
 import MembershipCard from "./MembershipCard";
 import MembershipBenefits from "./MembershipBenefits";
 import MembershipFaq from "./MembershipFaq";
@@ -111,18 +112,22 @@ function Field({
 }
 
 export default function MemberDashboard({ member }: { member: Membership }) {
+  const { sports, loading: squadsLoading, error: squadsError } = useSports();
+  const { find: findClub } = useClubs();
   const status =
     STATUS_LABELS[member.status ?? "active"] ?? STATUS_LABELS.active;
-  const club = getRelateClub(member.clubSlug);
+  const club = findClub(member.clubSlug);
   const accent = club?.color ?? "#13c5dd";
   const accentDark = club?.colorDark ?? "#0fa3c4";
   const joinedLabel = formatDate(member.joinedAt);
   const reference = member.reference ?? member.id ?? "—";
 
-  const team = member.teamId
-    ? SPORTS_TEAMS.find((t) => t.id === member.teamId)
-    : undefined;
-  const squad = member.teamId ? getSquad(member.teamId) : undefined;
+  const team =
+    sports && member.teamId
+      ? sports.teams.find((t) => t.id === member.teamId)
+      : undefined;
+  const squad =
+    sports && member.teamId ? sports.getSquad(member.teamId) : undefined;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const nextFixture =
@@ -485,7 +490,30 @@ export default function MemberDashboard({ member }: { member: Membership }) {
             </div>
 
             <div className="rounded-3xl border border-white bg-white p-6 shadow-[0_1px_2px_rgba(21,31,58,0.05)] md:p-8">
-              {team ? (
+              {member.teamId && squadsLoading ? (
+                <>
+                  <p className="mb-1 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">
+                    Your squad
+                  </p>
+                  <div className="mt-5 flex items-center gap-2 text-sm text-slate-gray">
+                    <LuLoaderCircle className="animate-spin" /> Loading your
+                    squad…
+                  </div>
+                </>
+              ) : member.teamId && squadsError ? (
+                <>
+                  <p className="mb-1 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">
+                    Your squad
+                  </p>
+                  <h2 className="text-2xl font-black tracking-tight text-navy">
+                    {member.teamName ?? member.teamId}
+                  </h2>
+                  <p className="mt-3 text-sm leading-relaxed text-slate-gray">
+                    The squad list could not be loaded right now — reload the
+                    page to try again.
+                  </p>
+                </>
+              ) : team ? (
                 <>
                   <p className="mb-1 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">
                     Your squad

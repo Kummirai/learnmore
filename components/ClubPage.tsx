@@ -5,25 +5,27 @@ import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
 import PageHero from "@/components/PageHero";
-import {
-  CLUBS,
-  getClub,
-  getClubClass,
-  getClubClasses,
-  programSlug,
-  programsByPillar,
-} from "@/constants/relate";
+import { programSlug, programsByPillar } from "@/constants/relate";
+import { getAllClubs, getClub, getClubClasses } from "@/lib/clubs";
 import { getPublications } from "@/lib/publications";
 import { getClubEvents } from "@/lib/events";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
-import {
-  HONOR_TRACK_BY_ID,
-  SHAPE_LABEL,
-  honorLevelForClub,
-} from "@/constants/sproutHonors";
+import { getHonors } from "@/lib/honors";
+import DataError from "@/components/DataError";
 
 export default async function ClubPage({ slug }: { slug: string }) {
-  const club = getClub(slug) ?? getClubClass(slug);
+  let club;
+  try {
+    club = await getClub(slug);
+  } catch {
+    return (
+      <section className={"flex-1 px-4 py-12"}>
+        <div className={"max-w-4xl mx-auto"}>
+          <DataError label={"This club"} />
+        </div>
+      </section>
+    );
+  }
 
   if (!club) {
     return (
@@ -40,10 +42,21 @@ export default async function ClubPage({ slug }: { slug: string }) {
   const publications = await getPublications(club.slug);
   const events = await getClubEvents(club.slug);
   const magazines = publications.filter((p) => p.kind === "magazine");
-  const classes = getClubClasses(club.slug);
-  const honorLevel = honorLevelForClub(club.slug);
+  const classes = await getClubClasses(club.slug).catch(() => []);
+  // Honors are Sprout-only — one API read, and an explicit error if it fails.
+  const loadsHonors =
+    club.slug === "sprout" || club.slug.startsWith("sprout-");
+  const honors = loadsHonors ? await getHonors().catch(() => null) : null;
+  const honorLevel = honors?.honorLevelForClub(club.slug);
+  const honorsError =
+    loadsHonors && honors === null
+      ? "The Sprout honors framework couldn't be loaded right now — the badges are temporarily unavailable."
+      : null;
   const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null;
-  const parent = club.parentSlug ? getClub(club.parentSlug) : undefined;
+  const parent = club.parentSlug
+    ? await getClub(club.parentSlug).catch(() => undefined)
+    : undefined;
+  const allClubs = await getAllClubs().catch(() => []);
   // Sprout pages lead with Events & Activities — the programs list and its
   // flagship banner are replaced by what's on the calendar.
   const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
@@ -74,6 +87,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
         mobileTitle={club.name.split(/\s+/)[0]}
         tagline={club.tagline}
         description={club.description}
+        bgImage={club.heroImage}
         watermark={
           numericAge ? numericAge.replace(" yrs", "").trim() : undefined
         }
@@ -144,7 +158,38 @@ export default async function ClubPage({ slug }: { slug: string }) {
         }
       />
 
-      {honorLevel && (
+      {honorsError && (
+        <section
+          id={"honors"}
+          className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
+        >
+          <div className={"max-w-6xl mx-auto"}>
+            <span
+              className={
+                "text-xs uppercase tracking-widest text-red-500 font-medium"
+              }
+            >
+              Honors &amp; badges
+            </span>
+            <h2
+              className={
+                "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-4"
+              }
+            >
+              Honors unavailable
+            </h2>
+            <p
+              className={
+                "max-w-xl rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-600"
+              }
+            >
+              {honorsError}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {honors && honorLevel && (
         <section
           id={"honors"}
           className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
@@ -175,7 +220,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
               }
             >
               {honorLevel.badges.map((badge) => {
-                const track = HONOR_TRACK_BY_ID[badge.track];
+                const track = honors.trackById[badge.track];
                 return (
                   <Link
                     key={badge.id}
@@ -208,7 +253,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                           style={{ backgroundColor: track.color }}
                           aria-hidden={"true"}
                         />
-                        {track.name} · {SHAPE_LABEL[badge.shape]}
+                        {track.name} · {honors.shapeLabels[badge.shape]}
                       </span>
                       <span
                         className={"mt-1.5 flex items-center justify-between gap-3"}
@@ -771,13 +816,13 @@ export default async function ClubPage({ slug }: { slug: string }) {
             </div>
           )}
 
-          {CLUBS.length > 1 && (
+          {allClubs.length > 1 && (
             <div className={"mt-12 bg-alice-blue rounded-xl p-8 text-center"}>
               <h2 className={"text-xl font-semibold text-gray-800 mb-5"}>
                 Explore more clubs
               </h2>
               <div className={"flex flex-wrap justify-center gap-3"}>
-                {CLUBS.filter((c) => c.slug !== club.slug).map((c) => (
+                {allClubs.filter((c) => c.slug !== club.slug).map((c) => (
                   <Link
                     key={c.slug}
                     href={`/${c.slug}`}

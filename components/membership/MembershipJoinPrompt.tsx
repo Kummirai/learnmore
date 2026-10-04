@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LuArrowRight, LuCheck, LuIdCard } from "react-icons/lu";
-import { CLUBS, SUB_CLUBS } from "@/constants/relate";
+import { useClubs } from "@/lib/useClubs";
 import MembershipBenefits from "./MembershipBenefits";
 import MembershipFaq from "./MembershipFaq";
 import { barcodeBars, withAlpha } from "./shared";
@@ -24,7 +24,7 @@ const STEPS = [
 ];
 
 export default function MembershipJoinPrompt() {
-  const clubs = [...CLUBS, ...SUB_CLUBS];
+  const { allClubs: clubs } = useClubs();
   const ghostBars = barcodeBars("RELATEMEMBER");
 
   const meta = [

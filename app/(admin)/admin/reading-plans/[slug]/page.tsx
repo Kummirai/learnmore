@@ -21,7 +21,7 @@ export default function AdminReadingPlanEditPage({ params }: { params: Promise<{
 
 function EditBody({ params }: { params: Promise<{ slug: string }> }) {
   const [slug, setSlug] = useState<string | null>(null);
-  const [initial, setInitial] = useState<Record<string, any> | null>(null);
+  const [initial, setInitial] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -92,7 +92,7 @@ function EditBody({ params }: { params: Promise<{ slug: string }> }) {
 
 function buildInitial(
   plan: { slug: string; title: string; tagline?: string; description?: string; category?: string; section?: string; days?: number; gradient?: [string, string]; image?: string },
-  sections: Array<Record<string, any>>,
+  sections: Array<Record<string, unknown>>,
   status = "published",
 ) {
   return {

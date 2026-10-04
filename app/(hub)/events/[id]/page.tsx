@@ -7,32 +7,40 @@ import { LuArrowLeft, LuCalendar, LuChevronRight, LuLoaderCircle, LuTicket } fro
 import Navbar from "@/components/Navbar";
 import RsvpForm from "@/components/events/RsvpForm";
 import {
-  clubOf,
   EventCard,
   fetchEvents,
   formatLongDate,
   formatShortDate,
   type RelateEvent,
 } from "../page";
+import { useClubs } from "@/lib/useClubs";
 
 const WHATSAPP_NUMBER = "27782677436";
 
 export default function EventDetailPage() {
   const params = useParams<{ id: string }>();
   const id = decodeURIComponent(params.id);
+  const { find } = useClubs();
   const [events, setEvents] = useState<RelateEvent[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [rsvpOpen, setRsvpOpen] = useState(false);
 
   useEffect(() => {
     let alive = true;
-    (async () => {
-      const list = await fetchEvents();
-      if (alive) {
-        setEvents(list);
-        setLoading(false);
-      }
-    })();
+    fetchEvents()
+      .then((list) => {
+        if (alive) setEvents(list);
+      })
+      .catch(() => {
+        if (alive)
+          setError(
+            "The events feed couldn't be loaded — check your connection and try again.",
+          );
+      })
+      .finally(() => {
+        if (alive) setLoading(false);
+      });
     return () => {
       alive = false;
     };
@@ -52,8 +60,24 @@ export default function EventDetailPage() {
     );
   }
 
+  if (error) {
+    return (
+      <>
+        <Navbar />
+        <section className="flex-1 px-4 py-16">
+          <div
+            role="alert"
+            className="max-w-2xl mx-auto border border-red-200 bg-red-50 rounded-xl px-5 py-4 text-sm text-red-700"
+          >
+            {error}
+          </div>
+        </section>
+      </>
+    );
+  }
+
   const event = events?.find((e) => e._id === id) ?? null;
-  const club = clubOf(event?.clubSlug);
+  const club = find(event?.clubSlug);
   const others = events?.filter((e) => e._id !== id).slice(0, 4) ?? [];
 
   if (!event) {

@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any -- this editor hydrates free-form JSON documents from MongoDB (sections/blocks) whose shape is only guaranteed at save time */
+
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaBookOpen, FaPlus, FaXmark } from "react-icons/fa6";

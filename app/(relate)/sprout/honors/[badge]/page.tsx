@@ -5,21 +5,14 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import JoinCta from "@/components/join/JoinCta";
 import HonorProgress from "@/components/sprout/HonorProgress";
-import { getClub } from "@/constants/relate";
-import {
-  HONOR_ENTRIES,
-  getHonor,
-  honorWhereEarned,
-  neighborHonors,
-} from "@/constants/sproutHonors";
+import { getClub } from "@/lib/clubs";
+import { getHonors, type Honors } from "@/lib/honors";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 type Params = { badge: string };
 
-/** Every honor gets its own page, generated at build time. */
-export function generateStaticParams(): Params[] {
-  return HONOR_ENTRIES.map((e) => ({ badge: e.badge.id }));
-}
+/** Honors come from the API at request time — nothing to pre-render. */
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -27,7 +20,13 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { badge } = await params;
-  const entry = getHonor(badge);
+  let honors: Honors;
+  try {
+    honors = await getHonors();
+  } catch {
+    return { title: "Sprout Club Honors · Unavailable" };
+  }
+  const entry = honors.getHonor(badge);
   if (!entry) return {};
 
   const title = `${entry.badge.name} · ${entry.level.name} Honor`;
@@ -57,12 +56,66 @@ export default async function HonorDetailPage({
   params: Promise<Params>;
 }) {
   const { badge } = await params;
-  const entry = getHonor(badge);
+  let honors: Honors;
+  try {
+    honors = await getHonors();
+  } catch {
+    return (
+      <>
+        <header className={"relative overflow-hidden text-white bg-navy"}>
+          <Navbar overlay />
+
+          <div className={"relative max-w-6xl mx-auto px-4 pt-32 pb-14"}>
+            <h1
+              className={"font-black tracking-tight leading-[1.05]"}
+              style={{ fontSize: "clamp(2rem, 7vw, 3.5rem)" }}
+            >
+              Sprout Club Honors
+            </h1>
+            <p
+              className={
+                "mt-3 max-w-xl text-sm md:text-base text-white/85 leading-relaxed"
+              }
+            >
+              Every honor in the framework, its requirements and the progress
+              panel that tracks it.
+            </p>
+          </div>
+        </header>
+
+        <section className={"flex-1 px-4 py-12 bg-white"}>
+          <div
+            className={
+              "max-w-xl mx-auto text-center rounded-2xl border border-red-200 bg-red-50 px-6 py-14"
+            }
+          >
+            <p className={"text-base font-semibold text-red-700 mb-1"}>
+              We couldn&apos;t load this honor.
+            </p>
+            <p className={"text-sm text-red-600 mb-5"}>
+              The honors framework is unavailable right now — please try again
+              in a moment.
+            </p>
+            <a
+              href={`/sprout/honors/${badge}`}
+              className={
+                "text-sm font-semibold text-red-700 underline underline-offset-4"
+              }
+            >
+              Try again
+            </a>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  const entry = honors.getHonor(badge);
   if (!entry) notFound();
 
   const { level, badge: honor, track } = entry;
-  const club = getClub("sprout")!;
-  const { prev, next } = neighborHonors(honor.id);
+  const club = await getClub("sprout").catch(() => undefined);
+  const { prev, next } = honors.neighborHonors(honor.id);
 
   return (
     <>
@@ -215,7 +268,7 @@ export default async function HonorDetailPage({
                 Where it&apos;s earned
               </span>
               <p className={"mt-2 text-sm text-gray-600 leading-relaxed"}>
-                {honorWhereEarned(entry)}
+                {honors.honorWhereEarned(entry)}
               </p>
               <div className={"mt-4 flex flex-wrap gap-3"}>
                 <Link
@@ -227,7 +280,7 @@ export default async function HonorDetailPage({
                   {level.name} page →
                 </Link>
                 <a
-                  href={club.whatsappGroupLink}
+                  href={club?.whatsappGroupLink ?? "/sprout"}
                   target={"_blank"}
                   rel={"noreferrer"}
                   className={
@@ -308,7 +361,7 @@ export default async function HonorDetailPage({
               badgeName={honor.name}
               requirements={honor.requirements}
               piggyBank={honor.piggyBank}
-              whatsappGroupLink={club.whatsappGroupLink}
+              whatsappGroupLink={club?.whatsappGroupLink ?? "/sprout"}
             />
 
             <div

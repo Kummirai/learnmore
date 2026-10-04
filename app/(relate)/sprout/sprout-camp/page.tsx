@@ -12,7 +12,7 @@ import {
 import PageHero from "@/components/PageHero";
 import JoinCta from "@/components/join/JoinCta";
 import CampRegisterForm from "@/components/sprout/CampRegisterForm";
-import { getClub } from "@/constants/relate";
+import { getClubAccent } from "@/lib/clubs";
 import { SPROUT_CAMP } from "@/constants/sproutCamp";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
@@ -41,9 +41,9 @@ function formatDeadline(iso: string): string {
   return d.toLocaleDateString("en-ZA", { day: "numeric", month: "long" });
 }
 
-export default function SproutCampPage() {
+export default async function SproutCampPage() {
   const camp = SPROUT_CAMP;
-  const sprout = getClub("sprout")!;
+  const sprout = await getClubAccent("sprout");
   const deadline = formatDeadline(camp.registrationDeadline);
   const clubVars = {
     "--club-accent": sprout.color,
@@ -71,7 +71,7 @@ export default function SproutCampPage() {
               Register for camp →
             </Link>
             <Link
-              href={`/${sprout.slug}#programs`}
+              href={"/sprout#programs"}
               className={
                 "inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
               }
@@ -398,7 +398,7 @@ export default function SproutCampPage() {
 
                 <div className={"mt-6 flex flex-col gap-3"}>
                   <JoinCta
-                    href={`/join?club=${sprout.slug}`}
+                    href={"/join?club=sprout"}
                     className={
                       "inline-flex items-center justify-center gap-2 bg-navy text-white px-5 py-3 rounded-lg font-semibold text-sm hover:bg-navy/90 transition-colors"
                     }

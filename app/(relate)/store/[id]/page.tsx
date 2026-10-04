@@ -5,11 +5,9 @@ import { LuArrowLeft, LuChevronRight, LuShoppingBag } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import ProductPanel from "@/components/store/ProductPanel";
 import { getStoreItemById, getStoreItems } from "@/lib/store";
-import { STORE_ITEMS } from "@/constants/relate";
+import type { StoreItem } from "@/constants/relate";
 
-export function generateStaticParams() {
-  return STORE_ITEMS.map((item) => ({ id: item.id }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -17,7 +15,12 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const item = await getStoreItemById(id);
+  let item: StoreItem | null;
+  try {
+    item = await getStoreItemById(id);
+  } catch {
+    return { title: "Store Unavailable · Relate Store" };
+  }
   if (!item) return { title: "Product Not Found · Relate Store" };
   return {
     title: `${item.name} · Relate Store`,
@@ -31,10 +34,46 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const item = await getStoreItemById(id);
+
+  let all: StoreItem[];
+  try {
+    all = await getStoreItems();
+  } catch {
+    return (
+      <>
+        <Navbar />
+        <section className="flex-1 px-4 py-12 bg-white">
+          <div className="max-w-xl mx-auto text-center rounded-2xl border border-red-200 bg-red-50 px-6 py-14">
+            <p className="text-base font-semibold text-red-700 mb-1">
+              We couldn&rsquo;t load the store.
+            </p>
+            <p className="text-sm text-red-600 mb-5">
+              The catalogue is unavailable right now — please try again in a
+              moment.
+            </p>
+            <div className="flex items-center justify-center gap-4 text-sm font-semibold">
+              <a
+                href={`/store/${id}`}
+                className="text-red-700 hover:text-red-800 underline underline-offset-4 min-h-11 inline-flex items-center"
+              >
+                Try again
+              </a>
+              <Link
+                href="/store"
+                className="text-slate-gray hover:text-navy transition-colors min-h-11 inline-flex items-center"
+              >
+                Back to store
+              </Link>
+            </div>
+          </div>
+        </section>
+      </>
+    );
+  }
+
+  const item = all.find((i) => i.id === id);
   if (!item) notFound();
 
-  const all = await getStoreItems();
   const related = all
     .filter((i) => i.category === item.category && i.id !== item.id)
     .slice(0, 4);
@@ -80,18 +119,20 @@ export default async function ProductPage({
                     <div className="max-w-64">
                       <div className="group rounded-lg overflow-hidden bg-alice-blue">
                         {r.image ? (
-                          <>
-                            <img
-                              className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
-                              src={r.image}
-                              alt={r.name}
-                            />
-                            <img
-                              className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
-                              src={r.image}
-                              alt=""
-                            />
-                          </>
+                            <>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
+                                  src={r.image}
+                                  alt={r.name}
+                                />
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
+                                  src={r.image}
+                                  alt=""
+                                />
+                            </>
                         ) : (
                           <div className="aspect-square flex items-center justify-center text-slate-gray">
                             <LuShoppingBag />
