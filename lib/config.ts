@@ -6,6 +6,7 @@
  * itself needs to reach the backend (e.g. the OAuth session-bridge exchange).
  */
 export const API_BASE =
+    process.env.NEXT_PUBLIC_API_BASE ||
     process.env.NEXT_PUBLIC_API_URL ||
     process.env.API_URL ||
     "https://relate-iota.vercel.app";
