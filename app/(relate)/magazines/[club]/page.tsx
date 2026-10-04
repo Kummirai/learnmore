@@ -1,6 +1,7 @@
 import {notFound} from "next/navigation"
 import type {Metadata} from "next"
 import type {CSSProperties} from "react"
+import Navbar from "@/components/Navbar"
 import PublicationLibrary from "@/components/publications/PublicationLibrary"
 import {getClub} from "@/lib/clubs"
 import {getPublications} from "@/lib/publications"
@@ -39,7 +40,9 @@ export default async function ClubMagazinesPage({
 
     return (
         <>
-            <section className="px-4 pt-16 pb-8">
+            <Navbar/>
+
+            <section className="px-4 pt-8 pb-6">
                 <div className="max-w-6xl mx-auto">
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                         {club.name} Season Guides
