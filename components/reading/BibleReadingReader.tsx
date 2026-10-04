@@ -70,12 +70,13 @@ function saveLocal(slug: string, done: string[]) {
 }
 
 /** Progress lives in the backend (`user_study_progress`) for signed-in readers. */
-function postProgress(slug: string, title: string, completed: string[], total: number): Promise<void> {
-  return fetch("/api/study-progress", {
+async function postProgress(slug: string, title: string, completed: string[], total: number): Promise<void> {
+  const res = await fetch("/api/study-progress", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ slug, title, completedLessons: completed, totalLessons: total }),
-  }).then(() => undefined);
+  });
+  if (!res.ok) throw new Error(`study-progress ${res.status}`);
 }
 
 /**
@@ -209,8 +210,13 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
         setStarted(true);
       } else if (autoStart) {
         setStarted(true);
-        if (signedIn) void postProgress(plan.slug, plan.title, [], sections.length);
-        else saveLocal(plan.slug, []);
+        if (signedIn) {
+          void postProgress(plan.slug, plan.title, [], sections.length).catch(() => {
+            saveLocal(plan.slug, []);
+          });
+        } else {
+          saveLocal(plan.slug, []);
+        }
       }
     })();
     return () => {
@@ -258,25 +264,31 @@ export default function BibleReadingReader({ plan, sections, autoStart = false }
 
   const shownStep = Math.min(activeStep, Math.max(steps.length - 1, 0));
 
-  const persist = (ids: string[], withStart: boolean) => {
+  const persist = async (ids: string[], withStart: boolean) => {
     if (!plan) return;
     if (withStart) setStarted(true);
-    if (onServer) void postProgress(plan.slug, plan.title, ids, sections.length);
-    else saveLocal(plan.slug, ids);
+    if (onServer) {
+      try {
+        await postProgress(plan.slug, plan.title, ids, sections.length);
+        return;
+      } catch {
+        // backend unavailable or auth failed — keep local progress
+      }
+    }
+    saveLocal(plan.slug, ids);
   };
 
-  const toggleComplete = () => {
+  const toggleComplete = async () => {
     const next = new Set(doneDays);
     const key = dayKey(s);
     if (next.has(key)) next.delete(key);
     else next.add(key);
     setDone(next);
-    // Marking a section = going through the plan, so it starts tracking.
-    persist([...next], !started);
+    await persist([...next], !started);
   };
 
-  const startPlan = () => {
-    persist([...doneDays], true);
+  const startPlan = async () => {
+    await persist([...doneDays], true);
   };
 
   const shareSection = () => {
