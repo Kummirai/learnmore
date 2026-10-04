@@ -114,19 +114,6 @@ export default function PageHero({
       )}
       {bgImage && (
         <>
-          <div
-            aria-hidden={"true"}
-            className={
-              "absolute -top-24 -left-20 size-72 md:size-96 rounded-full bg-navy/50 opacity-70 blur-3xl"
-            }
-          />
-          <div
-            aria-hidden={"true"}
-            className={
-              "absolute left-1/2 top-1/2 -translate-x-[55%] -translate-y-1/2 size-96 md:size-[32rem] rounded-full bg-navy/40 blur-3xl"
-            }
-          />
-        </>
       )}
       {watermark && (
       <div
