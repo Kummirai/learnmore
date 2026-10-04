@@ -328,7 +328,7 @@ export default function Hero() {
       {/* ── Watermark ── */}
       <div
         className={
-          "absolute bottom-0 right-4 hidden pb-0.5 select-none md:block"
+          "absolute bottom-4 right-4 hidden pb-0.5 select-none md:block"
         }
       >
         <span

@@ -129,11 +129,11 @@ export default function PageHero({
         </>
       )}
       {watermark && (
-        <div
-          className={
-            "absolute bottom-0 right-4 hidden pb-0.5 select-none md:block"
-          }
-        >
+      <div
+        className={
+          "absolute bottom-4 right-4 hidden pb-0.5 select-none md:block"
+        }
+      >
           <span
             className={
               "block font-black leading-none tracking-tighter text-[color:var(--club-accent)]"
