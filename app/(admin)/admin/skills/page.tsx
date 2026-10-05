@@ -42,11 +42,11 @@ export default function AdminSkillsPage() {
 function SkillsBody() {
     const [clubSlug, setClubSlug] = useState<string>("sprout");
     const [filterSkillId, setFilterSkillId] = useState<string>(ALL_SKILLS);
-    const effectiveSkillId = clubSlug !== (payload?.clubSlug ?? clubSlug) ? ALL_SKILLS : filterSkillId;
-    const { skills, loading: skillsLoading, error: skillsError } = useSkills(clubSlug);
     const [payload, setPayload] = useState<{ skill: string; clubSlug: string; rows: Row[] } | null>(null);
     const [error, setError] = useState("");
     const [query, setQuery] = useState("");
+    const { skills, loading: skillsLoading, error: skillsError } = useSkills(clubSlug);
+    const effectiveSkillId = clubSlug !== (payload?.clubSlug ?? clubSlug) ? ALL_SKILLS : filterSkillId;
 
     useEffect(() => {
         let cancelled = false;
