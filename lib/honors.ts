@@ -1,3 +1,8 @@
+/**
+ * @deprecated Use lib/skills.ts and lib/useSkills.ts instead.
+ * The honors system is being replaced by the club-agnostic skills system.
+ * This module will be removed in a future release.
+ */
 import { API_BASE } from "@/lib/config";
 
 /**

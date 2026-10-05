@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-import { LuCircleCheck } from "react-icons/lu";
 import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
@@ -10,7 +8,7 @@ import { getAllClubs, getClub, getClubClasses } from "@/lib/clubs";
 import { getPublications } from "@/lib/publications";
 import { getClubEvents } from "@/lib/events";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
-import { getHonors } from "@/lib/honors";
+import { getSkills } from "@/lib/skills";
 import DataError from "@/components/DataError";
 
 export default async function ClubPage({ slug }: { slug: string }) {
@@ -43,22 +41,16 @@ export default async function ClubPage({ slug }: { slug: string }) {
   const events = await getClubEvents(club.slug);
   const magazines = publications.filter((p) => p.kind === "magazine");
   const classes = await getClubClasses(club.slug).catch(() => []);
-  // Honors are Sprout-only — one API read, and an explicit error if it fails.
-  const loadsHonors =
-    club.slug === "sprout" || club.slug.startsWith("sprout-");
-  const honors = loadsHonors ? await getHonors().catch(() => null) : null;
-  const honorLevel = honors?.honorLevelForClub(club.slug);
-  const honorsError =
-    loadsHonors && honors === null
-      ? "The Sprout honors framework couldn't be loaded right now — the badges are temporarily unavailable."
+  const skills = await getSkills(club.slug).catch(() => null);
+  const skillsError =
+    skills === null
+      ? `The ${club.name} skills framework couldn't be loaded right now — the skills are temporarily unavailable.`
       : null;
   const numericAge = club.ageRange.match(/^[\d–+ ]+/) ? club.ageRange : null;
   const parent = club.parentSlug
     ? await getClub(club.parentSlug).catch(() => undefined)
     : undefined;
   const allClubs = await getAllClubs().catch(() => []);
-  // Sprout pages lead with Events & Activities — the programs list and its
-  // flagship banner are replaced by what's on the calendar.
   const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
   const banner = isSprout
     ? {
@@ -158,9 +150,9 @@ export default async function ClubPage({ slug }: { slug: string }) {
         }
       />
 
-      {honorsError && (
+      {skillsError && (
         <section
-          id={"honors"}
+          id={"skills"}
           className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
         >
           <div className={"max-w-6xl mx-auto"}>
@@ -169,29 +161,29 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 "text-xs uppercase tracking-widest text-red-500 font-medium"
               }
             >
-              Honors &amp; badges
+              Skills
             </span>
             <h2
               className={
                 "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-4"
               }
             >
-              Honors unavailable
+              Skills unavailable
             </h2>
             <p
               className={
                 "max-w-xl rounded-xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-600"
               }
             >
-              {honorsError}
+              {skillsError}
             </p>
           </div>
         </section>
       )}
 
-      {honors && honorLevel && (
+      {skills && skills.levels.length > 0 && (
         <section
-          id={"honors"}
+          id={"skills"}
           className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
         >
           <div className={"max-w-6xl mx-auto"}>
@@ -200,18 +192,17 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 "text-xs uppercase tracking-widest text-cyan font-medium"
               }
             >
-              Honors &amp; badges
+              Skills
             </span>
             <h2
               className={
                 "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"
               }
             >
-              What {honorLevel.name} works toward
+              What {club.name} members develop
             </h2>
             <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
-              Level {honorLevel.levelNumber} of the Sprout Club honors framework
-              — {honorLevel.focus}
+              {skills.count} skills across {skills.levels.length} levels in the {club.name} framework
             </p>
 
             <div
@@ -219,51 +210,56 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
               }
             >
-              {honorLevel.badges.map((badge) => {
-                const track = honors.trackById[badge.track];
+              {skills.skills.slice(0, 6).map((skill) => {
+                const level = skills.levelById[skill.levelId];
                 return (
                   <Link
-                    key={badge.id}
-                    href={`/sprout/honors/${badge.id}`}
+                    key={skill.id}
+                    href={`/${club.slug}/skills/${skill.id}`}
                     className={
                       "group block rounded-2xl bg-white p-3 transition-colors hover:bg-alice-blue/40"
                     }
                   >
                     <span
                       className={"relative block h-44 overflow-hidden rounded-2xl"}
+                      style={{
+                        background: `linear-gradient(135deg, ${level?.colorDark ?? club.colorDark} 0%, ${club.color} 100%)`,
+                      }}
                     >
-                      <Image
-                        src={track.image}
-                        alt={""}
-                        fill
-                        sizes={
-                          "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                        }
-                        className={
-                          "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        }
-                      />
+                      <span className={"absolute inset-0 flex items-center justify-center"}>
+                        <span
+                          className={
+                            "text-4xl font-black text-white/20"
+                          }
+                        >
+                          {skill.name[0]}
+                        </span>
+                      </span>
                     </span>
                     <span className={"block px-2 pb-1 pt-4"}>
                       <span
-                        className={"flex items-center gap-2 text-xs text-gray-500"}
+                        className={
+                          "flex items-center gap-2 text-xs text-gray-500"
+                        }
                       >
                         <span
                           className={"size-2.5 shrink-0 rounded-full"}
-                          style={{ backgroundColor: track.color }}
+                          style={{ backgroundColor: level?.color ?? club.color }}
                           aria-hidden={"true"}
                         />
-                        {track.name} · {honors.shapeLabels[badge.shape]}
+                        {level?.name ?? "Skill"}
                       </span>
                       <span
-                        className={"mt-1.5 flex items-center justify-between gap-3"}
+                        className={
+                          "mt-1.5 flex items-center justify-between gap-3"
+                        }
                       >
                         <span
                           className={
                             "block font-bold text-gray-800 text-[17px] leading-snug group-hover:text-cyan transition-colors"
                           }
                         >
-                          {badge.name}
+                          {skill.name}
                         </span>
                         <span
                           aria-hidden={"true"}
@@ -274,13 +270,15 @@ export default async function ClubPage({ slug }: { slug: string }) {
                           →
                         </span>
                       </span>
-                      <span
-                        className={
-                          "mt-2 block text-sm text-gray-500 leading-snug line-clamp-2"
-                        }
-                      >
-                        {badge.requirements[0].text}
-                      </span>
+                      {skill.description && (
+                        <span
+                          className={
+                            "mt-2 block text-sm text-gray-500 leading-snug line-clamp-2"
+                          }
+                        >
+                          {skill.description}
+                        </span>
+                      )}
                     </span>
                   </Link>
                 );
@@ -288,12 +286,12 @@ export default async function ClubPage({ slug }: { slug: string }) {
             </div>
 
             <Link
-              href={`/sprout/honors#level-${honorLevel.id}`}
+              href={`/${club.slug}/skills`}
               className={
                 "mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-cyan-dark transition-colors"
               }
             >
-              All requirements for {honorLevel.name} →
+              All {club.name} skills →
             </Link>
           </div>
         </section>
@@ -577,49 +575,6 @@ export default async function ClubPage({ slug }: { slug: string }) {
               );
             })}
 
-          {club.slug === "sprout" && (
-            <Link
-              href={"/sprout/honors"}
-              className={
-                "group mt-8 flex items-center gap-5 rounded-2xl border border-green-200 bg-green-50 p-6 hover:border-green-300 hover:bg-green-100 transition-colors"
-              }
-            >
-              <span
-                className={
-                  "flex size-12 shrink-0 items-center justify-center rounded-full bg-green-600 text-white"
-                }
-                aria-hidden={"true"}
-              >
-                <LuCircleCheck className={"text-xl"} />
-              </span>
-              <span className={"min-w-0 flex-1"}>
-                <span
-                  className={
-                    "block text-[11px] uppercase tracking-widest text-green-700 font-semibold"
-                  }
-                >
-                  Honors &amp; badges
-                </span>
-                <span
-                  className={"block font-bold text-green-900 text-lg leading-snug"}
-                >
-                  Sprout Club Honors framework
-                </span>
-                <span className={"block text-sm text-green-800 leading-snug"}>
-                  Thirteen honors across safety, money, digital skills, coding
-                  and media — earned from Sprout Kids through to Sprout Teens.
-                </span>
-              </span>
-              <span
-                className={
-                  "hidden shrink-0 rounded-lg bg-green-600 px-4 py-2.5 text-sm font-semibold text-white group-hover:bg-green-700 transition-colors sm:block"
-                }
-              >
-                See the honors →
-              </span>
-            </Link>
-          )}
-
           <div id={"events"} className={"mt-12 scroll-mt-8"}>
             <span
               className={
@@ -665,9 +620,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                       }
                     >
                       <span
-                        className={
-                          "relative block h-44 overflow-hidden rounded-2xl"
-                        }
+                        className={"relative block h-44 overflow-hidden rounded-2xl"}
                         style={
                           event.imageUrl
                             ? undefined

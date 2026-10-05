@@ -1,3 +1,8 @@
+/**
+ * @deprecated Use lib/useSkills.ts instead.
+ * The honors system is being replaced by the club-agnostic skills system.
+ * This hook will be removed in a future release.
+ */
 "use client";
 
 import { useEffect, useState } from "react";

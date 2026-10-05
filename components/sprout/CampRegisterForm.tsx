@@ -214,10 +214,10 @@ export default function CampRegisterForm({
         </p>
         <div className="mt-4 flex flex-wrap gap-3">
           <Link
-            href="/sprout/honors"
+            href="/sprout/skills"
             className="inline-flex items-center gap-2 rounded-lg border border-green-300 bg-white px-4 py-2.5 text-sm font-semibold text-navy hover:border-green-500 transition-colors"
           >
-            See the honors they can earn →
+            See the skills they can develop →
           </Link>
           <Link
             href={`#itinerary`}

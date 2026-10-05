@@ -1,8 +1,3 @@
-/**
- * @deprecated Use components/skills/SkillProgress.tsx instead.
- * This component is kept for backwards compatibility but will be removed
- * in a future release.
- */
 "use client";
 
 import Link from "next/link";
@@ -16,58 +11,27 @@ import {
   LuAward,
 } from "react-icons/lu";
 import { useAuth } from "@/components/AuthProvider";
-import type { HonorRequirement } from "@/lib/honors";
+import type { SkillRequirement } from "@/lib/skills";
 
 type Progress = {
   checks: boolean[];
   criteria?: boolean[][];
   status: "not_started" | "in_progress" | "complete";
-  /** When the record was opened — set on enroll or first write. */
   enrolledAt?: string | null;
   updatedAt?: string;
   completedAt?: string | null;
-  savings?: { total?: number; deposits?: unknown[] };
 };
-
-type Savings = { total: number; deposits: { amount: number; at?: string }[] };
 
 const input =
   "mt-0.5 size-4 shrink-0 accent-cyan focus:ring-cyan/40 cursor-pointer";
 
-const EMPTY_SAVINGS: Savings = { total: 0, deposits: [] };
-
-function normalizeSavings(raw: unknown): Savings {
-  const s = raw as { total?: unknown; deposits?: unknown };
-  if (!s || typeof s !== "object") return EMPTY_SAVINGS;
-  const total =
-    typeof s.total === "number" && Number.isFinite(s.total) ? s.total : 0;
-  const deposits = Array.isArray(s.deposits)
-    ? s.deposits
-        .map((d) => {
-          const row = d as { amount?: unknown; at?: unknown };
-          return {
-            amount: Number(row?.amount) || 0,
-            at: typeof row?.at === "string" ? row.at : undefined,
-          };
-        })
-        .filter((d) => d.amount > 0)
-    : [];
-  return { total, deposits };
-}
-
-/** Blank criteria grid shaped to this badge's requirement definitions. */
-function blankCriteria(requirements: HonorRequirement[]): boolean[][] {
+function blankCriteria(requirements: SkillRequirement[]): boolean[][] {
   return requirements.map((req) => req.criteria.map(() => false));
 }
 
-/**
- * Shape whatever the API returns to the criteria grid this badge defines now.
- * Old records only stored a requirement-level tick — treat that as every
- * criterion under it proven.
- */
 function hydrateCriteria(
   raw: Progress | null,
-  requirements: HonorRequirement[],
+  requirements: SkillRequirement[],
 ): boolean[][] {
   if (!raw) return blankCriteria(requirements);
   return requirements.map((req, i) => {
@@ -80,24 +44,17 @@ function hydrateCriteria(
   });
 }
 
-/**
- * A participant's live measurable status for one honor: enrollment opens the
- * record, then every requirement is broken into concrete pass criteria, each
- * ticked as it is proven in front of a leader. Saved against the signed-in
- * account the moment a box is ticked.
- */
-export default function HonorProgress({
-  badgeId,
-  badgeName,
+export default function SkillProgress({
+  skillId,
+  skillName,
   requirements,
-  piggyBank,
+  clubSlug,
   whatsappGroupLink,
 }: {
-  badgeId: string;
-  badgeName: string;
-  requirements: HonorRequirement[];
-  /** Money honors only — weekly saving × course weeks = the piggy target. */
-  piggyBank?: { weekly: number; weeks: number };
+  skillId: string;
+  skillName: string;
+  requirements: SkillRequirement[];
+  clubSlug: string;
   whatsappGroupLink?: string;
 }) {
   const { user, loading } = useAuth();
@@ -105,9 +62,6 @@ export default function HonorProgress({
     blankCriteria(requirements),
   );
   const [progress, setProgress] = useState<Progress | null>(null);
-  const [savings, setSavings] = useState<Savings>(EMPTY_SAVINGS);
-  const [amount, setAmount] = useState("");
-  const [adding, setAdding] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [saving, setSaving] = useState(false);
   const [enrolling, setEnrolling] = useState(false);
@@ -117,7 +71,7 @@ export default function HonorProgress({
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
-    fetch(`/api/sprout/honors/${encodeURIComponent(badgeId)}`)
+    fetch(`/api/skills/${encodeURIComponent(clubSlug)}/${encodeURIComponent(skillId)}`)
       .then((r) => (r.ok ? r.json() : { data: null }))
       .then((json) => {
         if (cancelled) return;
@@ -125,7 +79,6 @@ export default function HonorProgress({
         if (mine) {
           setProgress(mine);
           setCriteria(hydrateCriteria(mine, requirements));
-          if (mine.savings) setSavings(normalizeSavings(mine.savings));
         }
       })
       .catch(() => {})
@@ -135,7 +88,7 @@ export default function HonorProgress({
     return () => {
       cancelled = true;
     };
-  }, [user, badgeId, requirements]);
+  }, [user, skillId, requirements, clubSlug]);
 
   async function save(next: boolean[][]) {
     const snapshot = criteria;
@@ -145,7 +98,7 @@ export default function HonorProgress({
     setError("");
     try {
       const res = await fetch(
-        `/api/sprout/honors/${encodeURIComponent(badgeId)}`,
+        `/api/skills/${encodeURIComponent(clubSlug)}/${encodeURIComponent(skillId)}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -158,7 +111,6 @@ export default function HonorProgress({
       if (!res.ok) throw new Error(json?.error || "Could not save your progress.");
       if (ticket === inFlight.current && json?.data) {
         setProgress(json.data);
-        if (json.data.savings) setSavings(normalizeSavings(json.data.savings));
       }
     } catch (err) {
       setCriteria(snapshot);
@@ -168,13 +120,12 @@ export default function HonorProgress({
     }
   }
 
-  /** Open the record — after this, progress can be filled in. */
   async function enroll() {
     setEnrolling(true);
     setError("");
     try {
       const res = await fetch(
-        `/api/sprout/honors/${encodeURIComponent(badgeId)}`,
+        `/api/skills/${encodeURIComponent(clubSlug)}/${encodeURIComponent(skillId)}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -188,43 +139,11 @@ export default function HonorProgress({
       if (json?.data) {
         setProgress(json.data);
         setCriteria(hydrateCriteria(json.data, requirements));
-        if (json.data.savings) setSavings(normalizeSavings(json.data.savings));
       }
     } catch (err) {
       setError((err as Error).message);
     } finally {
       setEnrolling(false);
-    }
-  }
-
-  async function addDeposit(event: React.FormEvent) {
-    event.preventDefault();
-    const value = Number(amount);
-    if (!Number.isFinite(value) || value <= 0) {
-      setError("Enter the amount you saved — above R0.");
-      return;
-    }
-    setAdding(true);
-    setError("");
-    try {
-      const res = await fetch(
-        `/api/sprout/honors/${encodeURIComponent(badgeId)}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ deposit: Math.round(value * 100) / 100 }),
-        },
-      );
-      const json = await res.json().catch(() => ({}));
-      if (res.status === 401)
-        throw new Error("Your sign-in has expired — please sign in again.");
-      if (!res.ok) throw new Error(json?.error || "Could not save your savings.");
-      if (json?.data?.savings) setSavings(normalizeSavings(json.data.savings));
-      setAmount("");
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setAdding(false);
     }
   }
 
@@ -254,11 +173,6 @@ export default function HonorProgress({
     ? Math.round((criterionDone / criterionTotal) * 100)
     : 0;
 
-  const piggyTarget = piggyBank ? piggyBank.weekly * piggyBank.weeks : 0;
-  const piggyPct = piggyTarget
-    ? Math.min(100, Math.round((savings.total / piggyTarget) * 100))
-    : 0;
-
   if (loading || (user && !loaded)) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -276,7 +190,7 @@ export default function HonorProgress({
           How it&apos;s proven
         </p>
         <h3 className="font-bold text-navy text-lg leading-snug mb-4">
-          {badgeName}
+          {skillName}
         </h3>
 
         <ol className="space-y-3 mb-5">
@@ -304,30 +218,6 @@ export default function HonorProgress({
           ))}
         </ol>
 
-        {piggyBank && (
-          <div
-            className={
-              "mb-4 rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3"
-            }
-          >
-            <p
-              className={
-                "text-[11px] font-bold uppercase tracking-widest text-amber-700"
-              }
-            >
-              Piggy bank
-            </p>
-            <p className={"mt-1 text-sm text-gray-700 leading-snug"}>
-              Bank <strong className="text-navy">R{piggyBank.weekly}</strong>{" "}
-              every week for {piggyBank.weeks}{" "}
-              {piggyBank.weeks === 1 ? "week" : "weeks"} — everyone shows their
-              jar at{" "}
-              <strong className="text-navy">R{piggyTarget}</strong> by the end
-              of the course.
-            </p>
-          </div>
-        )}
-
         <div className="rounded-xl border border-cyan/20 bg-alice-blue/60 p-4">
           <div className="mb-3 size-10 rounded-full bg-white flex items-center justify-center">
             <LuLogIn className="text-base text-cyan" />
@@ -339,7 +229,7 @@ export default function HonorProgress({
             one.
           </p>
           <Link
-            href={`/signin?next=${encodeURIComponent(`/sprout/honors/${badgeId}`)}`}
+            href={`/signin?next=${encodeURIComponent(`/${clubSlug}/skills/${skillId}`)}`}
             className="inline-flex items-center gap-2 rounded-lg bg-cyan text-white px-6 py-3 text-sm font-bold hover:bg-cyan-dark transition-colors"
           >
             <LuLogIn /> Sign in to start
@@ -349,7 +239,7 @@ export default function HonorProgress({
     );
   }
 
-  // Signed in but not enrolled yet — enroll first, then progress fills in.
+  // Signed in but not enrolled yet
   if (!progress?.enrolledAt) {
     return (
       <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -357,7 +247,7 @@ export default function HonorProgress({
           Get started
         </p>
         <h3 className="font-bold text-navy text-lg leading-snug">
-          {badgeName}
+          {skillName}
         </h3>
 
         <div className="mt-4 flex gap-3 rounded-xl border border-cyan/20 bg-alice-blue/60 p-4">
@@ -367,7 +257,7 @@ export default function HonorProgress({
           <div>
             <h4 className="font-bold text-navy mb-1">Enroll to start</h4>
             <p className="text-sm text-slate-gray leading-snug">
-              Enroll for this honor, then tick each criterion as you prove it —
+              Enroll for this skill, then tick each criterion as you prove it —
               your record saves to your account and your leader sees the same
               one.
             </p>
@@ -392,7 +282,7 @@ export default function HonorProgress({
           }
         >
           {enrolling ? <LuLoaderCircle className="animate-spin" /> : <LuAward />}
-          {enrolling ? "Enrolling…" : `Enroll in ${badgeName}`}
+          {enrolling ? "Enrolling…" : `Enroll in ${skillName}`}
         </button>
 
         <p className="mt-6 mb-3 text-[11px] font-bold uppercase tracking-widest text-gray-400">
@@ -422,29 +312,6 @@ export default function HonorProgress({
             </li>
           ))}
         </ol>
-
-        {piggyBank && (
-          <div
-            className={
-              "rounded-xl border border-amber-200 bg-amber-50/70 px-4 py-3"
-            }
-          >
-            <p
-              className={
-                "text-[11px] font-bold uppercase tracking-widest text-amber-700"
-              }
-            >
-              Piggy bank
-            </p>
-            <p className={"mt-1 text-sm text-gray-700 leading-snug"}>
-              Bank <strong className="text-navy">R{piggyBank.weekly}</strong>{" "}
-              every week for {piggyBank.weeks}{" "}
-              {piggyBank.weeks === 1 ? "week" : "weeks"} — everyone shows their
-              jar at <strong className="text-navy">R{piggyTarget}</strong> by
-              the end of the course.
-            </p>
-          </div>
-        )}
       </div>
     );
   }
@@ -457,7 +324,7 @@ export default function HonorProgress({
             Your progress
           </p>
           <h3 className="font-bold text-navy text-lg leading-snug">
-            {badgeName}
+            {skillName}
           </h3>
         </div>
         <span
@@ -497,103 +364,6 @@ export default function HonorProgress({
             : ""}
         </p>
       </div>
-
-      {piggyBank && (
-        <div
-          className={
-            "mb-5 rounded-xl border border-amber-200 bg-amber-50/60 px-4 py-3.5"
-          }
-        >
-          <div className={"flex items-start justify-between gap-3"}>
-            <div className={"min-w-0"}>
-              <p
-                className={
-                  "text-[11px] font-bold uppercase tracking-widest text-amber-700"
-                }
-              >
-                Piggy bank
-              </p>
-              <p className={"mt-1 text-sm text-gray-700 leading-snug"}>
-                Save{" "}
-                <strong className="text-navy">R{piggyBank.weekly}</strong> a
-                week for {piggyBank.weeks}{" "}
-                {piggyBank.weeks === 1 ? "week" : "weeks"} — target{" "}
-                <strong className="text-navy">R{piggyTarget}</strong>
-              </p>
-            </div>
-            <p className={"shrink-0 text-right"}>
-              <span className={"block text-lg font-black leading-tight text-navy"}>
-                R{savings.total.toFixed(2)}
-              </span>
-              <span className={"block text-[11px] text-slate-gray"}>banked</span>
-            </p>
-          </div>
-
-          <div
-            className={
-              "mt-2.5 h-2 w-full overflow-hidden rounded-full bg-amber-100"
-            }
-          >
-            <div
-              className={"h-full rounded-full bg-amber-500 transition-all duration-500"}
-              style={{ width: `${piggyPct}%` }}
-            />
-          </div>
-
-          <form
-            onSubmit={addDeposit}
-            className={"mt-3 flex items-center gap-2"}
-          >
-            <label className={"relative flex-1"}>
-              <span
-                aria-hidden={"true"}
-                className={
-                  "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400"
-                }
-              >
-                R
-              </span>
-              <input
-                type={"number"}
-                min={"1"}
-                step={"0.5"}
-                inputMode={"decimal"}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                placeholder={String(piggyBank.weekly)}
-                aria-label={"Amount you saved"}
-                className={
-                  "w-full rounded-lg border border-amber-200 bg-white py-2 pl-7 pr-3 text-sm text-gray-800 focus:border-amber-400 focus:outline-none"
-                }
-              />
-            </label>
-            <button
-              type={"submit"}
-              disabled={adding}
-              className={
-                "shrink-0 rounded-lg bg-amber-500 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
-              }
-            >
-              {adding ? "Saving…" : "Add savings"}
-            </button>
-          </form>
-
-          {savings.deposits.length > 0 && (
-            <p className={"mt-2 text-[11px] text-slate-gray"}>
-              {savings.deposits.length} deposit
-              {savings.deposits.length === 1 ? "" : "s"} logged
-              {savings.deposits[savings.deposits.length - 1].at
-                ? ` · last ${new Date(
-                    savings.deposits[savings.deposits.length - 1].at!,
-                  ).toLocaleDateString("en-ZA", {
-                    day: "numeric",
-                    month: "short",
-                  })}`
-                : ""}
-            </p>
-          )}
-        </div>
-      )}
 
       <ol className="space-y-3">
         {requirements.map((req, i) => {
@@ -674,13 +444,13 @@ export default function HonorProgress({
           <p className="text-sm text-gray-700 leading-relaxed">
             <FaCheck className="mr-1.5 inline text-green-600" />
             Every criterion is ticked. Show this record to your leader — they
-            confirm and award <strong className="text-navy">{badgeName}</strong>.
+            confirm and award <strong className="text-navy">{skillName}</strong>.
           </p>
         ) : (
           <p className="text-sm text-gray-700 leading-relaxed">
             Tick each criterion as you prove it — a requirement is proven when
             all of its criteria are ticked. A leader checks the same record
-            before the honor is awarded.
+            before the skill is awarded.
           </p>
         )}
         {whatsappGroupLink && (

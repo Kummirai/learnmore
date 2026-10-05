@@ -88,15 +88,15 @@ export default async function SproutCampPage() {
         ]}
         metaEnd={
           <Link
-            href={"/sprout/honors"}
+            href={`/${club.slug}/skills`}
             className={
               "inline-flex items-center gap-2 font-medium text-white hover:text-cyan-light transition-colors"
             }
           >
             <span className={"text-[11px] uppercase tracking-widest text-white/50"}>
-              Earn
+              Develop
             </span>
-            Sprout honors →
+            {club.name} skills →
           </Link>
         }
       />
@@ -405,14 +405,14 @@ export default async function SproutCampPage() {
                   >
                     Not a Sprout member yet? Join first
                   </JoinCta>
-                  <Link
-                    href={"/sprout/honors"}
-                    className={
-                      "inline-flex items-center justify-center gap-2 border border-gray-300 text-navy px-5 py-3 rounded-lg font-semibold text-sm hover:border-cyan hover:text-cyan-dark transition-colors"
-                    }
-                  >
-                    Honors they can earn at camp →
-                  </Link>
+                    <Link
+                      href={`/${club.slug}/skills`}
+                      className={
+                        "inline-flex items-center justify-center gap-2 border border-gray-300 text-navy px-5 py-3 rounded-lg font-semibold text-sm hover:border-cyan hover:text-cyan-dark transition-colors"
+                      }
+                    >
+                      Skills they can develop at camp →
+                    </Link>
                 </div>
               </aside>
             </div>
