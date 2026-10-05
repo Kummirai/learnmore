@@ -7,6 +7,8 @@ type MetaItem = { label: string; value: React.ReactNode };
 type PageHeroProps = {
   title: string;
   tagline?: string;
+  /** Render the tagline white instead of mixed with the club accent (for dark accents). */
+  taglineWhite?: boolean;
   description?: string;
   watermark?: string;
   chips?: Chip[];
@@ -30,6 +32,7 @@ type PageHeroProps = {
 export default function PageHero({
   title,
   tagline,
+  taglineWhite = false,
   description,
   watermark,
   actions,
@@ -164,7 +167,9 @@ export default function PageHero({
             <p
               className={"text-lg md:text-2xl font-medium"}
               style={{
-                color: "color-mix(in srgb, var(--club-accent) 35%, white)",
+                color: taglineWhite
+                  ? "#ffffff"
+                  : "color-mix(in srgb, var(--club-accent) 35%, white)",
                 textShadow:
                   "0 1px 4px rgba(21,31,58,0.9), 0 2px 16px rgba(21,31,58,0.7)",
               }}

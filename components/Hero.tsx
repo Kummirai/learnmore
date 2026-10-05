@@ -97,6 +97,8 @@ type Slide = {
   /** Compact title shown on small screens (kept to two words max). */
   shortTitle?: React.ReactNode;
   tagline: string;
+  /** Render the tagline white instead of in the club accent (dark accents vanish on the photo). */
+  taglineWhite?: boolean;
   description: string;
   watermark: string;
   /** Optional small label rendered above the title (e.g. "Dawn Prayer"). */
@@ -222,6 +224,7 @@ function clubSlide(club: RelateClub): Slide {
     title: club.name,
     shortTitle: firstWord(club.name),
     tagline: club.tagline,
+    taglineWhite: club.slug === "prime" || club.slug === "surge",
     description: club.description,
     watermark: numericAge ?? club.name,
     bg: {
@@ -388,7 +391,7 @@ export default function Hero() {
             key={`tg-${slide.key}`}
             className={"text-lg md:text-2xl font-medium"}
             style={{
-              color: "var(--club-accent)",
+              color: slide.taglineWhite ? "#ffffff" : "var(--club-accent)",
               filter: "brightness(1.15)",
               textShadow:
                 "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)",

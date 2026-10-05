@@ -79,6 +79,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
         title={club.name}
         mobileTitle={club.name.split(/\s+/)[0]}
         tagline={club.tagline}
+        taglineWhite={club.slug === "prime" || club.slug === "surge"}
         description={club.description}
         bgImage={club.heroImage}
         watermark={
