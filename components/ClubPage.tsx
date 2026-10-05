@@ -4,7 +4,7 @@ import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
 import PageHero from "@/components/PageHero";
-import { programSlug, programsByPillar } from "@/constants/relate";
+import { WHITE_TAGLINE_SLUGS, programSlug, programsByPillar } from "@/constants/relate";
 import { getAllClubs, getClub, getClubClasses } from "@/lib/clubs";
 import { getPublications } from "@/lib/publications";
 import { getClubEvents } from "@/lib/events";
@@ -79,7 +79,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
         title={club.name}
         mobileTitle={club.name.split(/\s+/)[0]}
         tagline={club.tagline}
-        taglineWhite={club.slug === "prime" || club.slug === "surge"}
+        taglineWhite={WHITE_TAGLINE_SLUGS.has(club.slug)}
         description={club.description}
         bgImage={club.heroImage}
         watermark={

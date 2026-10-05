@@ -3,6 +3,13 @@ export type RelatePillar = "Shift" | "Sanctuary" | "Connect";
 
 export const PILLARS: RelatePillar[] = ["Shift", "Sanctuary", "Connect"];
 
+/** Clubs whose hero tagline renders white — their accent disappears on the photo. */
+export const WHITE_TAGLINE_SLUGS: ReadonlySet<string> = new Set([
+  "prime",
+  "surge",
+  "spark",
+]);
+
 export type RelateProgram = {
   name: string;
   blurb: string;

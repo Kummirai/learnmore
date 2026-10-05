@@ -7,6 +7,7 @@ import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import {
   MAGAZINES,
+  WHITE_TAGLINE_SLUGS,
   type RelateClub,
   type RelateMagazine,
 } from "@/constants/relate";
@@ -224,7 +225,7 @@ function clubSlide(club: RelateClub): Slide {
     title: club.name,
     shortTitle: firstWord(club.name),
     tagline: club.tagline,
-    taglineWhite: club.slug === "prime" || club.slug === "surge",
+    taglineWhite: WHITE_TAGLINE_SLUGS.has(club.slug),
     description: club.description,
     watermark: numericAge ?? club.name,
     bg: {
