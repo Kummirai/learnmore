@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 
@@ -169,15 +170,29 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
                           background: `linear-gradient(135deg, ${level.colorDark ?? targetClub.colorDark} 0%, ${targetClub.color} 100%)`,
                         }}
                       >
-                        <span className={"absolute inset-0 flex items-center justify-center"}>
-                          <span
-                            className={
-                              "text-4xl font-black text-white/20"
+                        {skill.image ? (
+                          <Image
+                            src={skill.image}
+                            alt=""
+                            fill
+                            sizes={
+                              "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                             }
+                            className={"object-cover"}
+                          />
+                        ) : (
+                          <span
+                            className={"absolute inset-0 flex items-center justify-center"}
                           >
-                            {skill.name[0]}
+                            <span
+                              className={
+                                "text-4xl font-black text-white/20"
+                              }
+                            >
+                              {skill.name[0]}
+                            </span>
                           </span>
-                        </span>
+                        )}
                       </span>
 
                       <span className={"block px-2 pb-1 pt-4"}>

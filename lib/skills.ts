@@ -32,6 +32,8 @@ export type Skill = {
   clubSlug: string;
   levelId: SkillLevelId;
   icon?: string;
+  /** Royalty-free photo shown on the skill card. */
+  image?: string;
   color?: string;
   requirements: SkillRequirement[];
 };

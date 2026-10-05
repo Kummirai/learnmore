@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -82,6 +83,16 @@ export default async function SkillDetailPage({
         }}
       >
         <Navbar overlay />
+
+        {entry.image && (
+          <Image
+            src={entry.image}
+            alt=""
+            fill
+            sizes={"100vw"}
+            className={"object-cover opacity-35"}
+          />
+        )}
 
         <span
           aria-hidden={"true"}
