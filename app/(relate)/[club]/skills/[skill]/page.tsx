@@ -94,6 +94,15 @@ export default async function SkillDetailPage({
           />
         )}
 
+        <div
+          aria-hidden={"true"}
+          className={"absolute inset-0"}
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(21,31,58,0.55) 0%, rgba(21,31,58,0.35) 55%, rgba(21,31,58,0.72) 100%)",
+          }}
+        />
+
         <span
           aria-hidden={"true"}
           className={
@@ -133,7 +142,10 @@ export default async function SkillDetailPage({
 
           <h1
             className={"font-black tracking-tight leading-[1.05] break-words"}
-            style={{ fontSize: "clamp(2rem, 7vw, 3.5rem)" }}
+            style={{
+              fontSize: "clamp(2rem, 7vw, 3.5rem)",
+              textShadow: "0 1px 4px rgba(21,31,58,0.9), 0 2px 16px rgba(21,31,58,0.7)",
+            }}
           >
             {entry.name}
           </h1>
@@ -143,6 +155,9 @@ export default async function SkillDetailPage({
               className={
                 "mt-3 max-w-xl text-sm md:text-base text-white/85 leading-relaxed"
               }
+              style={{
+                textShadow: "0 1px 3px rgba(21,31,58,0.8), 0 2px 12px rgba(21,31,58,0.6)",
+              }}
             >
               {entry.description}
             </p>

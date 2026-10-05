@@ -8,6 +8,9 @@ export const WHITE_TAGLINE_SLUGS: ReadonlySet<string> = new Set([
   "prime",
   "surge",
   "spark",
+  "anchor",
+  "pulse",
+  "sprout",
 ]);
 
 export type RelateProgram = {

@@ -7,7 +7,6 @@ import { FaAndroid } from "react-icons/fa";
 import Navbar from "@/components/Navbar";
 import {
   MAGAZINES,
-  WHITE_TAGLINE_SLUGS,
   type RelateClub,
   type RelateMagazine,
 } from "@/constants/relate";
@@ -98,8 +97,6 @@ type Slide = {
   /** Compact title shown on small screens (kept to two words max). */
   shortTitle?: React.ReactNode;
   tagline: string;
-  /** Render the tagline white instead of in the club accent (dark accents vanish on the photo). */
-  taglineWhite?: boolean;
   description: string;
   watermark: string;
   /** Optional small label rendered above the title (e.g. "Dawn Prayer"). */
@@ -225,7 +222,6 @@ function clubSlide(club: RelateClub): Slide {
     title: club.name,
     shortTitle: firstWord(club.name),
     tagline: club.tagline,
-    taglineWhite: WHITE_TAGLINE_SLUGS.has(club.slug),
     description: club.description,
     watermark: numericAge ?? club.name,
     bg: {
@@ -317,6 +313,15 @@ export default function Hero() {
           style={{ ...s.bg, opacity: i === index ? 1 : 0 }}
         />
       ))}
+      {/* ── Readability scrim over the photo ── */}
+      <div
+        aria-hidden
+        className={"absolute inset-0"}
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(21,31,58,0.68) 0%, rgba(21,31,58,0.42) 45%, rgba(21,31,58,0.78) 100%)",
+        }}
+      />
       {/* ── Watermark ── */}
       <div
         className={
@@ -392,7 +397,7 @@ export default function Hero() {
             key={`tg-${slide.key}`}
             className={"text-lg md:text-2xl font-medium"}
             style={{
-              color: slide.taglineWhite ? "#ffffff" : "var(--club-accent)",
+              color: "#ffffff",
               filter: "brightness(1.15)",
               textShadow:
                 "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)",
@@ -492,7 +497,7 @@ export default function Hero() {
                 key={s.key}
                 aria-label={`Go to slide ${i + 1}`}
                 onClick={() => setIndex(i)}
-                className="h-11 px-4 inline-flex items-center justify-center rounded-full"
+                className="h-11 px-2 inline-flex items-center justify-center rounded-full"
               >
                 <span
                   className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-cyan" : "w-1.5 bg-white/40 hover:bg-white/70"}`}
@@ -501,7 +506,7 @@ export default function Hero() {
             ))}
             <span
               className={
-                "ml-2 text-[11px] uppercase tracking-widest text-white/50"
+                "ml-2 hidden sm:inline text-[11px] uppercase tracking-widest text-white/50"
               }
             >
               {slide.key === "prayer" && "Prayer rhythm"}

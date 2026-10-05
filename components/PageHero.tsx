@@ -66,6 +66,17 @@ export default function PageHero({
         }
       }
     >
+      {bgImage && (
+        <div
+          aria-hidden
+          className={"absolute inset-0"}
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(21,31,58,0.68) 0%, rgba(21,31,58,0.42) 45%, rgba(21,31,58,0.78) 100%)",
+          }}
+        />
+      )}
+
       {navbar && <Navbar overlay />}
 
       {!bgImage && (
@@ -167,9 +178,10 @@ export default function PageHero({
             <p
               className={"text-lg md:text-2xl font-medium"}
               style={{
-                color: taglineWhite
-                  ? "#ffffff"
-                  : "color-mix(in srgb, var(--club-accent) 35%, white)",
+                color:
+                  taglineWhite || bgImage
+                    ? "#ffffff"
+                    : "color-mix(in srgb, var(--club-accent) 35%, white)",
                 textShadow:
                   "0 1px 4px rgba(21,31,58,0.9), 0 2px 16px rgba(21,31,58,0.7)",
               }}
