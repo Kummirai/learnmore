@@ -313,15 +313,6 @@ export default function Hero() {
           style={{ ...s.bg, opacity: i === index ? 1 : 0 }}
         />
       ))}
-      {/* ── Readability scrim over the photo ── */}
-      <div
-        aria-hidden
-        className={"absolute inset-0"}
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(21,31,58,0.68) 0%, rgba(21,31,58,0.42) 45%, rgba(21,31,58,0.78) 100%)",
-        }}
-      />
       {/* ── Watermark ── */}
       <div
         className={
@@ -385,7 +376,7 @@ export default function Hero() {
             style={{
               fontSize: "clamp(2.5rem, 14vw, 4.8rem)",
               textShadow:
-                "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
+                "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
             }}
           >
             <span className={"hidden sm:inline"}>{slide.title}</span>
@@ -400,7 +391,7 @@ export default function Hero() {
               color: "#ffffff",
               filter: "brightness(1.15)",
               textShadow:
-                "0 1px 4px rgba(21,31,58,0.7), 0 2px 14px rgba(21,31,58,0.55)",
+                "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
             }}
           >
             {slide.tagline}
@@ -412,7 +403,7 @@ export default function Hero() {
             }
             style={{
               textShadow:
-                "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)",
+                "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
             }}
           >
             {slide.description}

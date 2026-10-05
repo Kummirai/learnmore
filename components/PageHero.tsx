@@ -66,17 +66,6 @@ export default function PageHero({
         }
       }
     >
-      {bgImage && (
-        <div
-          aria-hidden
-          className={"absolute inset-0"}
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(21,31,58,0.68) 0%, rgba(21,31,58,0.42) 45%, rgba(21,31,58,0.78) 100%)",
-          }}
-        />
-      )}
-
       {navbar && <Navbar overlay />}
 
       {!bgImage && (
@@ -168,7 +157,7 @@ export default function PageHero({
                   ? "clamp(2.5rem, 14vw, 4.8rem)"
                   : titleSize,
               textShadow:
-                "0 2px 16px rgba(21,31,58,0.55), 0 1px 3px rgba(21,31,58,0.45)",
+                "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
             }}
           >
             <span className={"hidden sm:inline"}>{title}</span>
@@ -183,7 +172,7 @@ export default function PageHero({
                     ? "#ffffff"
                     : "color-mix(in srgb, var(--club-accent) 35%, white)",
                 textShadow:
-                  "0 1px 4px rgba(21,31,58,0.9), 0 2px 16px rgba(21,31,58,0.7)",
+                  "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
               }}
             >
               {tagline}
@@ -196,7 +185,7 @@ export default function PageHero({
               }
               style={{
                 textShadow:
-                  "0 1px 3px rgba(21,31,58,0.8), 0 2px 14px rgba(21,31,58,0.6)",
+                  "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
               }}
             >
               {description}
@@ -218,7 +207,7 @@ export default function PageHero({
               className={
                 "mt-9 pt-6 border-t border-white/15 flex flex-wrap items-center justify-center gap-x-6 gap-y-4 text-sm md:justify-start md:gap-x-10"
               }
-              style={{ textShadow: "0 1px 6px rgba(21,31,58,0.6)" }}
+              style={{ textShadow: "0 1px 2px rgba(21,31,58,0.9), 0 2px 12px rgba(21,31,58,0.8)" }}
             >
               {meta?.map((m) => (
                 <div key={m.label}>
