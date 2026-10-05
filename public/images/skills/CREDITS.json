@@ -1,0 +1,659 @@
+{
+  "python": {
+    "title": "Code Coding",
+    "creator": "Lorenzo Cafaro",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/code-coding-TIV258VG3N"
+  },
+  "first-aid": {
+    "title": "Lumberman's First Aid Kit (ca",
+    "creator": "nationalgalleryofart",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/3387426/free-illustration-image-20th-century-antique-art"
+  },
+  "cooking": {
+    "title": "Restaurant Kitchen",
+    "creator": "Michael Browning",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/restaurant-kitchen-0HCMIT272C"
+  },
+  "web-design": {
+    "title": "contact us working hands on computer and writing",
+    "creator": "dimah2381",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/199230211@N08/53193866947"
+  },
+  "cv-writing": {
+    "title": "Laptop Working",
+    "creator": "Matt Moloney",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/laptop-working-8GETAUWFBE"
+  },
+  "public-speaking": {
+    "title": "Alvin Stardust Performing at GBBF 2013",
+    "creator": "The Puzzler",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/45188029@N07/9766143661"
+  },
+  "study-skills": {
+    "title": "Library Books",
+    "creator": "Josh Felise",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/library-books-4TDHSPIMJ6"
+  },
+  "financial-literacy": {
+    "title": "Red post-it label, calculator and ballpen",
+    "creator": "photosteve101",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/42931449@N07/6812497415"
+  },
+  "leadership": {
+    "title": "20150917-OSEC-LSC-0155",
+    "creator": "USDAgov",
+    "license": "pdm",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/41284017@N08/21506666141"
+  },
+  "career-readiness": {
+    "title": "Professional Business",
+    "creator": "Olu Eletu",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/professional-business-4VTDQ367MU"
+  },
+  "cv-linkedin": {
+    "title": "Girl Woman",
+    "creator": "Startup Stock Photos",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/girl-woman-3CZQ87F245"
+  },
+  "financial-planning": {
+    "title": "",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5949855/free-public-domain-cc0-photo"
+  },
+  "budgeting": {
+    "title": "Hand coins hand drawn illustration",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/6288592/image-vintage-art-public-domain"
+  },
+  "investing-basics": {
+    "title": "Book Report",
+    "creator": "Negative Space",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/book-report-G0V362YTA5"
+  },
+  "entrepreneurship": {
+    "title": "Green Bexar Farm at the Pearl",
+    "creator": "U.S. Department of Agriculture",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/3306788/free-photo-image-small-business-farmers-market-green"
+  },
+  "public-speaking-pulse": {
+    "title": "TEDxBoston 2010 Review",
+    "creator": "juhansonin",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/38869431@N00/4844084952"
+  },
+  "digital-skills": {
+    "title": "Macbook Laptop",
+    "creator": "Pawel Kadysz",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/macbook-laptop-R66E2T133W"
+  },
+  "networking": {
+    "title": "20170805-OSEC-LSC-1116",
+    "creator": "USDAgov",
+    "license": "pdm",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/41284017@N08/36405521755"
+  },
+  "mentoring": {
+    "title": "SAD_Hortons_Kids 72",
+    "creator": "US Department of Education",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/48445211@N06/9610034624"
+  },
+  "financial-freedom": {
+    "title": "",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5942877/free-public-domain-cc0-photo"
+  },
+  "investing": {
+    "title": "Free stock market graphs screen",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5916235/photo-image-public-domain-office-free"
+  },
+  "career-growth": {
+    "title": "Yellow cab 442 with ad, Holiday Lights glowing on trees in blue and white, vehicles, Valet Parking, downtown, Seattle, Washington, USA",
+    "creator": "Wonderlane",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/71401718@N00/6556829203"
+  },
+  "health-wellness": {
+    "title": "Wet Tomatoes",
+    "creator": "Burst",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/wet-tomatoes-YT8WYBZTHL"
+  },
+  "home-management": {
+    "title": "Washing Machine Details",
+    "creator": "dejankrsmanovic",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/155403590@N07/47090184431"
+  },
+  "digital-skills-prime": {
+    "title": "Free hands using laptop tablet",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5922972/photo-image-background-public-domain-hands"
+  },
+  "leadership-prime": {
+    "title": "Team Meeting",
+    "creator": "Startup Stock Photos",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/team-meeting-69TMH4ITIE"
+  },
+  "mentoring-prime": {
+    "title": "DIG13691-006",
+    "creator": "LBJLibraryNow",
+    "license": "pdm",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/100836534@N04/15845331961"
+  },
+  "faith-foundations": {
+    "title": "Open bible reading room",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/3289158/free-photo-image-prayer-law-books-bible"
+  },
+  "parenting": {
+    "title": "Boy Child",
+    "creator": "Leeroy",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/boy-child-R0C7A5M4WB"
+  },
+  "financial-planning-anchor": {
+    "title": "Business plan - Credit to https://www.semtrio.com/",
+    "creator": "Semtrio",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/163837264@N07/43291332124"
+  },
+  "cv-job-search": {
+    "title": "Paperwork Desk",
+    "creator": "Matt Moloney",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/paperwork-desk-3YJOHX53SQ"
+  },
+  "time-management": {
+    "title": "Alarm clock green",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5939627/alarm-clock-green"
+  },
+  "cooking-on-a-budget": {
+    "title": "Architecture Building",
+    "creator": "Dan Gold",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/architecture-building-FHY1F8QZP5"
+  },
+  "first-aid-anchor": {
+    "title": "invalid bandaged arm head. Coloured",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/13953832/invalid-with-bandaged-arm-and-head-coloured-aquatint"
+  },
+  "counselling-basics": {
+    "title": "20180927-RD-LSC-0065",
+    "creator": "USDAgov",
+    "license": "pdm",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/41284017@N08/44448435834"
+  },
+  "digital-skills-anchor": {
+    "title": "Laptop Apple",
+    "creator": "Glenn Carstens-Peters",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/laptop-apple-B6GYMTH73U"
+  },
+  "faith-resilience": {
+    "title": "climbing helping team work , success concept",
+    "creator": "ujgmxxuy61",
+    "license": "pdm",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/159535053@N06/42172615510"
+  },
+  "communication": {
+    "title": "People hangout together at coffee shop",
+    "creator": "Rawpixel Ltd",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/147875007@N03/26666491987"
+  },
+  "conflict-resolution": {
+    "title": "young couple sit talking garden",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/14014588/image-face-plant-person"
+  },
+  "budgeting-together": {
+    "title": "WHERE THE COX'S WERE",
+    "creator": "summonedbyfells",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/8521690@N02/11423050103"
+  },
+  "financial-planning-spark": {
+    "title": "Money Cash",
+    "creator": "Tim Sullivan",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/money-cash-Z89ZJWCE6K"
+  },
+  "home-setup": {
+    "title": "Lincoln Park Construction Construction is",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/9677212/image-wood-public-domain-home"
+  },
+  "cooking-together": {
+    "title": "Couple Kissing",
+    "creator": "Direct Media",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/couple-kissing-X8N6YH8IZD"
+  },
+  "parenting-prep": {
+    "title": "Pregnant woman form-fitting crimson dress",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/3286168/free-photo-image-pregnant-women-images-picture-pregnancy-mom-and-baby"
+  },
+  "faith-together": {
+    "title": "Seabees give thanks on D-Day plus 12",
+    "creator": "U.S. Navy Seabee Museum",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/60248384@N05/6847100239"
+  },
+  "intimacy-connection": {
+    "title": "Couple Holding",
+    "creator": "Burst",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/couple-holding-WCZBVEEQKC"
+  },
+  "goal-setting": {
+    "title": "Arrow, dartboard png sticker, transparent",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/7158643/png-sticker-public-domain"
+  },
+  "advanced-communication": {
+    "title": "Recording Studio",
+    "creator": "Kristin Hardwick",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/recording-studio-NJCWWNF3FM"
+  },
+  "conflict-resolution-synergy": {
+    "title": "Business people handshake illustration",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/9004444/image-person-handshake-cartoon"
+  },
+  "financial-legacy": {
+    "title": "Coins",
+    "creator": "Images_of_Money",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/59937401@N07/5929568821"
+  },
+  "investing-synergy": {
+    "title": "Gold coins stacked illustration",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/7644782/image-gold-illustrations-public-domain"
+  },
+  "parenting-teens": {
+    "title": "I hear you calling: U.S. Soldiers serve Chicago youths",
+    "creator": "416thTEC",
+    "license": "pdm",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/49714657@N03/16194941660"
+  },
+  "marriage-enrichment": {
+    "title": "Married couples walking through a walking way",
+    "creator": "Sharankrishna VP",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "wordpress",
+    "page": "https://wordpress.org/photos/photo/263655aeb0/"
+  },
+  "leadership-synergy": {
+    "title": "Teamwork Business",
+    "creator": "Direct Media",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/teamwork-business-TWSAADHX5T"
+  },
+  "mentoring-couples": {
+    "title": "Two women conversation William Carrick",
+    "creator": "thegetty",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/14309012/two-women-conversation-william-carrick"
+  },
+  "health-wellness-synergy": {
+    "title": "Woman running sand",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/3284397/free-photo-image-road-action-apparel"
+  },
+  "faith-legacy": {
+    "title": "Family Playing",
+    "creator": "Direct Media",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/family-playing-CKT87YHJH0"
+  },
+  "life-saver": {
+    "title": "Lifebelt safety ring",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/6035153/photo-image-background-public-domain-water"
+  },
+  "smart-saver": {
+    "title": "Piggy Bank",
+    "creator": "Images_of_Money",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/59937401@N07/5929478505"
+  },
+  "digital-explorer": {
+    "title": "Alexander Frick, Jr. uses smart",
+    "creator": "U.S. Department of Agriculture",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/8735091/photo-image-public-domain-person"
+  },
+  "logic-builder": {
+    "title": "My name in Lego",
+    "creator": "Ben Sutherland",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/60179301@N00/2774076784"
+  },
+  "life-saver-specialist": {
+    "title": "Amercian, Korean Red Cross Lifeguards train for the times",
+    "creator": "USAG-Humphreys",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/31687107@N07/3596973040"
+  },
+  "smart-saver-master": {
+    "title": "Free cash wallet image",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5911904/image-public-domain-money-free"
+  },
+  "office-specialist": {
+    "title": "Printer, office equipment png sticker",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/7133174/png-paper-sticker"
+  },
+  "code-creator": {
+    "title": "Students joining HTML coding workshop",
+    "creator": "U.S. Embassy South Africa",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/6485816/photo-image-public-domain-people-black"
+  },
+  "first-responder": {
+    "title": "Greenville Fire/Rescue EMS (2021)",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/9677675/greenville-firerescue-ems-2021"
+  },
+  "financial-strategist": {
+    "title": "DECplate Flow Chart Template",
+    "creator": "mrbill",
+    "license": "by",
+    "licenseVersion": "2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/41894183508@N01/3267227227"
+  },
+  "productivity-master": {
+    "title": "Some accessories on a white desk",
+    "creator": "freestocks.org",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/135396164@N05/33572876081"
+  },
+  "software-engineer": {
+    "title": "Computer Code",
+    "creator": "One Idea LLC",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/computer-code-AWXC4NOFZN"
+  },
+  "media-communications": {
+    "title": "2009_04_16",
+    "creator": "Dennis S. Hurd",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/43296902@N00/3448971878"
+  },
+  "ms-office": {
+    "title": "Office Work",
+    "creator": "Ch%E2u%20Th%F4ng%20Phan",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/office-work-UP9J4EZYNJ"
+  },
+  "interview-skills": {
+    "title": "Colleagues talking about blockchain app",
+    "creator": "rkztcxab30",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "flickr",
+    "page": "https://www.flickr.com/photos/193956704@N03/51488976548"
+  },
+  "budgeting-anchor": {
+    "title": "Piggy Bank",
+    "creator": "Artsy Crafty",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "stocksnap",
+    "page": "https://stocksnap.io/photo/piggy-bank-ZLEVSWFWZC"
+  }
+}

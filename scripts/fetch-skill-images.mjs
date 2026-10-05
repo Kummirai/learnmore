@@ -13,6 +13,7 @@
  */
 
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -36,13 +37,13 @@ const UA = { "User-Agent": "relateworld-skills/1.0" };
 const QUERIES = {
   python: "computer code screen programming",
   "web-design": "website design laptop screen",
-  "ms-office": "spreadsheet document laptop",
+  "ms-office": "office desk documents paperwork",
   "cv-writing": "resume document desk",
-  "interview-skills": "job interview handshake",
+  "interview-skills": "two colleagues talking office",
   "public-speaking": "speaker podium audience",
   "study-skills": "student studying books",
   "first-aid": "first aid kit",
-  "financial-literacy": "money coins budget",
+  "financial-literacy": "calculator money paperwork",
   leadership: "business team leader meeting",
   "career-readiness": "office professional working",
   "cv-linkedin": "professional laptop typing",
@@ -65,7 +66,7 @@ const QUERIES = {
   "mentoring-prime": "coffee conversation people",
   "faith-foundations": "open bible reading",
   parenting: "parent child family",
-  "budgeting-anchor": "household bills paperwork",
+  "budgeting-anchor": "money savings budget",
   "financial-planning-anchor": "calculator money desk",
   "cv-job-search": "job application office",
   "time-management": "clock time management desk",
@@ -77,7 +78,7 @@ const QUERIES = {
   communication: "couple talking together",
   "conflict-resolution": "couple discussion resolution",
   "budgeting-together": "couple finances planning",
-  "financial-planning-spark": "piggy bank savings",
+  "financial-planning-spark": "money banknotes paper",
   "home-setup": "moving boxes new home",
   "cooking-together": "couple cooking kitchen",
   "parenting-prep": "nursery baby room",
@@ -99,7 +100,7 @@ const QUERIES = {
   "digital-explorer": "child using tablet",
   "logic-builder": "child building blocks puzzle",
   "life-saver-specialist": "emergency responder training",
-  "smart-saver-master": "money savings jar",
+  "smart-saver-master": "wallet banknotes cash",
   "office-specialist": "children computer classroom",
   "code-creator": "kids coding robot",
   "first-responder": "paramedic emergency service",
@@ -108,6 +109,54 @@ const QUERIES = {
   "software-engineer": "programmer coding screen",
   "media-communications": "camera photography video",
 };
+
+/** Round-2 query fixes for images that came back blank, blurry or off-topic. */
+const OVERRIDES = {
+  "advanced-communication": "microphone radio studio",
+  "budgeting-anchor": "piggy bank coins savings",
+  "budgeting-together": "couple bills kitchen table",
+  budgeting: "money notes hand",
+  "career-growth": "business stairs building success",
+  "code-creator": "children computer class learning",
+  communication: "friends talking coffee table",
+  "conflict-resolution-synergy": "handshake agreement business",
+  "conflict-resolution": "couple talking",
+  "cooking-on-a-budget": "grocery shopping",
+  "cv-job-search": "job application paperwork desk",
+  "cv-linkedin": "woman laptop working office",
+  "cv-writing": "writing notes pen paper desk",
+  "digital-explorer": "person using tablet device",
+  "digital-skills-anchor": "computer keyboard typing hands",
+  entrepreneurship: "small business shop owner",
+  "faith-resilience": "sunrise hope mountain silhouette",
+  "faith-together": "hands praying together church",
+  "financial-legacy": "coins stack growth savings",
+  "financial-planning-anchor": "financial report documents desk",
+  "first-aid": "first aid",
+  "first-aid-anchor": "bandage arm",
+  "goal-setting": "target dartboard goal success",
+  "health-wellness": "healthy salad vegetables fresh",
+  "health-wellness-synergy": "woman running",
+  "home-management": "laundry basket cleaning home",
+  "intimacy-connection": "couple holding hands love",
+  "investing-basics": "business report chart",
+  "investing-synergy": "gold coins stack",
+  "leadership-prime": "team meeting",
+  "leadership-synergy": "teamwork",
+  "life-saver-specialist": "lifeguard swimming pool rescue",
+  "life-saver": "life ring buoy water safety",
+  "media-communications": "video camera filming crew",
+  mentoring: "teacher student tutoring desk",
+  "mentoring-couples": "women conversation",
+  networking: "business people networking event",
+  "office-specialist": "printer papers office",
+  "parenting-prep": "pregnant woman holding belly",
+  "public-speaking": "speaker microphone stage audience",
+  "public-speaking-pulse": "conference presenter stage talk",
+  "time-management": "alarm clock",
+};
+
+Object.assign(QUERIES, OVERRIDES);
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -143,6 +192,25 @@ async function download(url) {
   return Buffer.from(await res.arrayBuffer());
 }
 
+/** Grayscale stdev — low values mean a flat/blank crop that reads as no image. */
+async function grayStdev(buf) {
+  const { data } = await sharp(buf)
+    .greyscale()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  let s = 0;
+  let ss = 0;
+  for (const v of data) {
+    s += v;
+    ss += v * v;
+  }
+  const n = data.length;
+  const mean = s / n;
+  return Math.sqrt(ss / n - mean * mean);
+}
+
+const MIN_STDEV = 40;
+
 async function main() {
   const argv = process.argv.slice(2);
   const force = argv.includes("--force");
@@ -163,6 +231,20 @@ async function main() {
   const credits = JSON.parse(await readFile(CREDITS, "utf8").catch(() => "{}"));
 
   const rows = [];
+
+  // pixels already used by skills we are NOT refetching are off-limits
+  const wantedIds = new Set(wanted.map((s) => s.id));
+  const usedHashes = new Set();
+  for (const s of skills) {
+    if (wantedIds.has(s.id)) continue;
+    try {
+      const data = await readFile(path.join(OUT_DIR, `${s.id}.jpg`));
+      usedHashes.add(createHash("sha1").update(data).digest("hex"));
+    } catch {
+      // no existing file
+    }
+  }
+
   for (const skill of wanted) {
     const file = path.join(OUT_DIR, `${skill.id}.jpg`);
     if (!force && credits[skill.id] && !idArgs.length) continue;
@@ -173,33 +255,46 @@ async function main() {
       continue;
     }
 
-    let done = false;
-    for (const candidate of (await search(query)).slice(0, 3)) {
+    let best = null;
+    for (const candidate of (await search(query)).slice(0, 4)) {
       try {
         const buf = await download(candidate.url);
-        await sharp(buf)
-          .resize(1200, 750, { fit: "cover", position: "attention" })
-          .jpeg({ quality: 80, mozjpeg: true })
-          .toFile(file);
-        credits[skill.id] = {
-          title: candidate.title ?? "",
-          creator: candidate.creator ?? "",
-          license: candidate.license ?? "",
-          licenseVersion: candidate.license_version ?? "",
-          licenseUrl: candidate.license_url ?? "",
-          source: candidate.source ?? "",
-          page: candidate.foreign_landing_url ?? "",
-        };
-        rows.push(
-          `${skill.id.padEnd(24)} ${(candidate.title ?? "").slice(0, 34).padEnd(36)} [${candidate.license}] ${candidate.source}`,
-        );
-        done = true;
-        break;
+        for (const position of ["attention", "entropy"]) {
+          const data = await sharp(buf)
+            .resize(1200, 750, { fit: "cover", position })
+            .jpeg({ quality: 80, mozjpeg: true })
+            .toBuffer();
+          const sd = await grayStdev(data);
+          if (sd < MIN_STDEV) continue;
+          // never ship the same pixels to two different skills
+          const hash = createHash("sha1").update(data).digest("hex");
+          if (usedHashes.has(hash)) continue;
+          if (!best || sd > best.sd) best = { candidate, data, sd, hash };
+        }
       } catch {
         // try the next candidate
       }
     }
-    if (!done) rows.push(`${skill.id.padEnd(24)} FAILED (${query})`);
+
+    let done = false;
+    if (best) {
+      await writeFile(file, best.data);
+      usedHashes.add(best.hash);
+      credits[skill.id] = {
+        title: best.candidate.title ?? "",
+        creator: best.candidate.creator ?? "",
+        license: best.candidate.license ?? "",
+        licenseVersion: best.candidate.license_version ?? "",
+        licenseUrl: best.candidate.license_url ?? "",
+        source: best.candidate.source ?? "",
+        page: best.candidate.foreign_landing_url ?? "",
+      };
+      rows.push(
+        `${skill.id.padEnd(24)} ${((best.candidate.title ?? "")).slice(0, 30).padEnd(32)} [${best.candidate.license}] ${best.candidate.source} sd=${best.sd.toFixed(0)}`,
+      );
+      done = true;
+    }
+    if (!done) rows.push(`${skill.id.padEnd(24)} REJECTED (${query})`);
   }
 
   await writeFile(CREDITS, JSON.stringify(credits, null, 2) + "\n");
