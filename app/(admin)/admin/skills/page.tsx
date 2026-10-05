@@ -76,7 +76,7 @@ function SkillsBody() {
         };
     }, [effectiveSkillId, clubSlug]);
 
-    const loading = payload === null || payload.skill !== skillId || payload.clubSlug !== clubSlug;
+    const loading = payload === null || payload.skill !== effectiveSkillId || payload.clubSlug !== clubSlug;
     const rows = useMemo(
         () => (payload && payload.skill === effectiveSkillId && payload.clubSlug === clubSlug ? payload.rows : []),
         [payload, effectiveSkillId, clubSlug],
