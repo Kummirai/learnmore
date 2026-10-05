@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaCheck, FaCamera, FaExclamationTriangle } from "react-icons/fa";
 import { LuArrowRight, LuLoaderCircle } from "react-icons/lu";
@@ -306,10 +307,12 @@ export default function PlayerRegistrationForm({
                 aria-label="Choose a profile photo"
               >
                 {preview ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={preview}
                     alt="Profile photo preview"
+                    width={224}
+                    height={224}
+                    unoptimized
                     className="size-full object-cover"
                   />
                 ) : (

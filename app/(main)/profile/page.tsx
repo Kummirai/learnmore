@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { LuFlame } from "react-icons/lu";
 import RequireAuth from "@/components/RequireAuth";
 import { useAuth } from "@/components/AuthProvider";
@@ -101,10 +102,11 @@ function ProfileBody() {
     return (
         <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
             <div className="flex items-center gap-4 mb-6">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                     src={user.image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=13c5dd&color=1d2a4d`}
                     alt={user.name}
+                    width={64}
+                    height={64}
                     className="size-16 rounded-full object-cover"
                 />
                 <div>

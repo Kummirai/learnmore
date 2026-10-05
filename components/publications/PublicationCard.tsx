@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import {LuArrowRight} from "react-icons/lu"
 import type {PubSummary} from "@/lib/publications"
 
@@ -27,10 +28,10 @@ export default function PublicationCard({pub, clubName}: {pub: PubSummary; clubN
               }>
             <div className={`relative w-full ${COVER_RATIO} overflow-hidden`}>
                 {pub.cover ? (
-                    <img src={pub.cover}
+                    <Image src={pub.cover}
                          alt={`${title} cover`}
-                         loading="lazy"
-                         decoding="async"
+                         fill
+                         sizes="(max-width: 768px) 50vw, 25vw"
                          className={
                              "absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                          }/>

@@ -124,10 +124,11 @@ function SlotCard({
       <div className="relative">
         <div className="size-16 md:size-20 rounded-full overflow-hidden ring-4 ring-white shadow-lg group-hover:scale-105 transition-transform duration-300">
           {registrant?.photoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={registrant.photoUrl}
               alt={name}
+              width={96}
+              height={96}
               className="size-full object-cover"
             />
           ) : (
@@ -320,10 +321,11 @@ export default async function TeamPage({
                     >
                       <span className="size-8 rounded-full overflow-hidden bg-navy shrink-0">
                         {r.photoUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <Image
                             src={r.photoUrl}
                             alt={r.name}
+                            width={64}
+                            height={64}
                             className="size-full object-cover"
                           />
                         ) : (
@@ -363,10 +365,11 @@ export default async function TeamPage({
                     >
                       <span className="size-8 rounded-full overflow-hidden bg-navy shrink-0">
                         {r.photoUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <Image
                             src={r.photoUrl}
                             alt={r.name}
+                            width={64}
+                            height={64}
                             className="size-full object-cover"
                           />
                         ) : (

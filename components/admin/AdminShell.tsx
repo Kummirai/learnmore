@@ -2,6 +2,7 @@
 
 import {useCallback, useEffect, useState} from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {LuChevronLeft, LuLoaderCircle, LuShieldAlert, LuX} from "react-icons/lu";
 import {useAuth} from "@/components/AuthProvider";
@@ -123,12 +124,12 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
             {/* Mobile top bar */}
             <header className="sticky top-0 z-40 flex items-center justify-between gap-3 border-b border-gray-200 bg-white px-4 py-3 lg:hidden">
                 <Link href="/" className="flex items-center gap-2">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                         src={"/images/relate-world-logo.png"}
                         alt={"Relate World"}
                         width={500}
                         height={500}
+                        priority
                         className={"h-9 w-auto object-contain self-center"}
                     />
                     <span className="font-black tracking-tight text-navy">Dashboard</span>
@@ -194,8 +195,7 @@ function SidebarContent({
         <>
             <div className="border-b border-gray-100 px-5 py-5">
                 <Link href={"/"} onClick={onNavigate} className="block">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                         src={"/images/relate-world-logo.png"}
                         alt={"Relate World"}
                         width={500}

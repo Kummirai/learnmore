@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Roboto } from "next/font/google";
 import { FaFacebook, FaInstagramSquare, FaTwitter } from "react-icons/fa";
 import {
@@ -42,13 +43,13 @@ export default function Footer() {
           className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10"}
         >
           <div>
-            <img
-              src={"/images/relate-world-logo.png"}
-              alt={"Relate World"}
-              width={500}
-              height={500}
-              className={"h-14 md:h-16 w-auto object-contain self-start mb-4"}
-            />
+          <Image
+            src={"/images/relate-world-logo.png"}
+            alt={"Relate World"}
+            width={500}
+            height={500}
+            className={"h-14 md:h-16 w-auto object-contain self-start mb-4"}
+          />
             <p className={"text-sm leading-relaxed mb-4"}>
               Skills, social and spiritual growth — all in one community. Free
               clubs for every age and season of life.

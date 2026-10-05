@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { FaBookOpen } from "react-icons/fa";
 import PageHero from "@/components/PageHero";
@@ -78,11 +79,11 @@ export default async function ReadingPlansPage() {
                                         >
                                             {/* Cover */}
                                             <div className="relative h-56 overflow-hidden bg-alice-blue">
-                                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img
+                                                <Image
                                                     src={plan.image}
                                                     alt={plan.title}
-                                                    loading="lazy"
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                                     className="size-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                 />
                                                 {/* Light scrim at the bottom only, so the title stays readable without hiding the photo */}

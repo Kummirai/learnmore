@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- this editor hydrates free-form JSON documents from MongoDB (sections/blocks) whose shape is only guaranteed at save time */
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaBookOpen, FaPlus, FaXmark } from "react-icons/fa6";
 import { Badge, Button, Card, Field, Input, Select, TextArea } from "@/components/admin/ui";
@@ -307,8 +308,7 @@ export default function ReadingPlanEditor({
                 </Field>
               </div>
               {draft.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={draft.image} alt="cover preview" className="mt-6 h-[72px] w-[52px] shrink-0 rounded-md object-cover ring-1 ring-gray-200" />
+                <Image src={draft.image} alt="cover preview" width={104} height={144} unoptimized className="mt-6 h-[72px] w-[52px] shrink-0 rounded-md object-cover ring-1 ring-gray-200" />
               ) : null}
             </div>
           </div>

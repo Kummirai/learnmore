@@ -1,6 +1,7 @@
 "use client";
 
 import { Field, Input, TextArea, Select } from "@/components/admin/ui";
+import Image from "next/image";
 import type { ReadingMedia } from "@/lib/editor/season";
 
 const selectCls =
@@ -83,8 +84,7 @@ function MediaItem({
               />
             </Field>
             {media.uri ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img src={media.uri} alt="preview" className="h-24 w-full rounded-lg object-cover" />
+              <Image src={media.uri} alt="preview" width={768} height={432} unoptimized className="h-24 w-full rounded-lg object-cover" />
             ) : null}
           </>
         ) : (

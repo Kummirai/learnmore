@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuArrowLeft, LuCalendar, LuChevronRight, LuLoaderCircle, LuTicket } from "react-icons/lu";
@@ -173,12 +174,13 @@ export default function EventDetailPage() {
           </nav>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
-            <div className="h-[240px] sm:h-[400px] overflow-hidden">
+            <div className="relative h-[240px] sm:h-[400px] overflow-hidden">
               {event.imageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={event.imageUrl}
                   alt={event.title ?? "Relate event"}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="w-full h-full object-cover"
                 />
               ) : (

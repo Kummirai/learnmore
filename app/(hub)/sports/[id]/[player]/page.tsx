@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound, redirect } from "next/navigation";
 import {
   LuArrowLeft,
@@ -216,10 +217,11 @@ export default async function PlayerPage({
           <div className="mt-6 md:mt-8 flex flex-col md:flex-row md:items-center gap-8 md:gap-10">
             <div className="relative shrink-0 self-center md:self-start">
               {registrant ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   src={registrant.photoUrl}
                   alt={registrant.name}
+                  width={480}
+                  height={480}
                   className="size-44 sm:size-52 md:size-60 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20"
                 />
               ) : (

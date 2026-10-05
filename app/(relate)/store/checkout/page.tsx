@@ -2,6 +2,7 @@
 
 import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FaWhatsapp } from "react-icons/fa";
 import { LuMinus, LuPlus, LuTrash2, LuArrowLeft, LuLoaderCircle } from "react-icons/lu";
@@ -98,8 +99,7 @@ function CheckoutInner({ catalog, error }: { catalog: StoreItem[]; error: string
                                 {lines.map(({ item, qty }) => (
                                     <div key={item.id} className="flex flex-wrap items-center gap-2 p-3 rounded-xl border border-gray-100 sm:gap-4">
                                         <div className="size-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={item.image} alt={item.name} className="size-full object-cover" />
+                                            <Image src={item.image} alt={item.name} width={64} height={64} className="size-full object-cover" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <p className="font-semibold text-navy text-sm truncate">{item.name}</p>

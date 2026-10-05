@@ -13,6 +13,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 import {
   FaBookOpen,
   FaBookmark,
@@ -501,8 +502,7 @@ function ReadingMediaView({ media }: { media: ReadingMedia }) {
   if (media.type === "image") {
     return (
       <figure className="mb-2 overflow-hidden rounded-xl ring-1 ring-gray-100">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={media.uri} alt={media.caption || ""} className="w-full" />
+        <Image src={media.uri} alt={media.caption || ""} width={1600} height={1067} className="w-full" />
         {media.caption ? (
           <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-[11px] text-slate-gray">
             {media.caption}
@@ -727,10 +727,10 @@ function BlockView({ b }: { b: PubBlock }) {
     case "quote":
       return <QuoteCard text={b.text || ""} by={b.by} source={b.source} />;
     case "image":
+      if (!b.uri) return null;
       return (
         <figure className="mb-2 overflow-hidden rounded-xl ring-1 ring-gray-100">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={b.uri} alt={b.caption || ""} className="w-full" />
+          <Image src={b.uri} alt={b.caption || ""} width={1600} height={1067} className="w-full" />
           {b.caption ? (
             <figcaption className="border-t border-gray-100 bg-alice-blue px-3 py-1.5 text-[11px] text-slate-gray">
               {b.caption}

@@ -1,6 +1,7 @@
 "use client";
 
 import { FaFacebook, FaInstagramSquare } from "react-icons/fa";
+import Image from "next/image";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
@@ -140,11 +141,12 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           href={"/"}
           className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-3 md:py-4`}
         >
-          <img
+          <Image
             src={"/images/relate-world-logo.png"}
             alt={"Relate World"}
             width={500}
             height={500}
+            priority
             className={`relative h-14 md:h-20 w-auto object-contain self-center`}
           />
         </Link>
@@ -249,7 +251,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
               className={"text-gray-50 flex items-center gap-2"}
               onClick={() => setMenuOpen(false)}
             >
-              <img
+              <Image
                 src={"/images/relate-world-logo.png"}
                 alt={"Relate World"}
                 width={500}

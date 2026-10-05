@@ -1,3 +1,4 @@
+import Image from "next/image"
 import type { PubBlock, ReadingPart, ReadingBodyItem } from "@/lib/publications"
 
 function ChecklistCard({title, items}: {title?: string; items?: string[]}) {
@@ -62,7 +63,7 @@ function ReadingInline({blocks}: {blocks?: PubBlock[]}) {
             {blocks.map((b, i) => {
                 if (b.type === "image" && b.uri) {
                     return (
-                        <img key={i} src={b.uri} alt="" loading="lazy"
+                        <Image key={i} src={b.uri} alt="" width={1600} height={1000}
                              className={"my-6 aspect-[16/10] w-full object-cover max-h-72"}/>
                     )
                 }
@@ -259,7 +260,7 @@ export default function PubBlockView({block}: {block: PubBlock}) {
             return <ReadingView block={block}/>
         case "image":
             return block.uri ? (
-                <img src={block.uri} alt="" loading="lazy" className={"my-6 aspect-[16/10] w-full object-cover"}/>
+                <Image src={block.uri} alt="" width={1600} height={1000} className={"my-6 aspect-[16/10] w-full object-cover"}/>
             ) : null
         default:
             return block.text ? (

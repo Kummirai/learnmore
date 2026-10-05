@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from "react"
 import Link from "next/link"
+import Image from "next/image"
 import {FaWhatsapp} from "react-icons/fa"
 import {LuArrowRight, LuBadgeCheck, LuCircleAlert, LuLoaderCircle, LuShoppingBag} from "react-icons/lu"
 import Navbar from "@/components/Navbar"
@@ -20,11 +21,11 @@ export function StoreCard({item}: {item: StoreItem}) {
         <div className={"flex flex-col group"}>
             <Link href={`/store/${item.id}`} className={"block overflow-hidden rounded-xl bg-alice-blue"}>
                 {item.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                         src={item.image}
                         alt={item.name}
-                        loading={"lazy"}
+                        width={800}
+                        height={384}
                         className={"w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"}
                     />
                 ) : (
@@ -92,11 +93,12 @@ function HeroShowcase({items}: {items: StoreItem[]}) {
         >
             <div className="relative aspect-square overflow-hidden rounded-3xl [mask-image:linear-gradient(to_bottom,black_65%,transparent)]">
                 {slides.map((src, i) => (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                         key={src}
                         src={src}
                         alt={`${tee.name} — shot ${i + 1}`}
+                        width={800}
+                        height={800}
                         className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
                             i === idx ? "opacity-100 scale-100" : "opacity-0 scale-105"
                         }`}

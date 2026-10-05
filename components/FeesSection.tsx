@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import {LuArrowRight, LuCircleAlert, LuLoaderCircle, LuShoppingBag} from "react-icons/lu"
 import {useStoreItems} from "@/components/store/useStoreItems"
 
@@ -53,10 +54,11 @@ export default function FeesSection() {
                                     </span>
                                 )}
                                 <a href={`/store/${item.id}`} className={"block aspect-square overflow-hidden mb-4 bg-gray-100 group"}>
-                                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                                    <img
+                                    <Image
                                         src={item.image}
                                         alt={item.name}
+                                        width={640}
+                                        height={640}
                                         className={"size-full object-cover group-hover:scale-105 transition-transform duration-500"}
                                     />
                                 </a>

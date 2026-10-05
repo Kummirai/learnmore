@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 const photos = [
@@ -55,9 +56,11 @@ export default function PhotoHighlights() {
                   "relative rounded-xl aspect-[4/3] overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer"
                 }
               >
-                <img
+                <Image
                   src={p.src}
                   alt={p.label}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 25vw"
                   className={"absolute inset-0 size-full object-cover"}
                 />
                 <div

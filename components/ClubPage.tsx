@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
 
@@ -630,11 +631,11 @@ export default async function ClubPage({ slug }: { slug: string }) {
                         }
                       >
                         {event.imageUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
+                          <Image
                             src={event.imageUrl}
                             alt={event.title}
-                            loading="lazy"
+                            fill
+                            sizes="(max-width: 768px) 50vw, 25vw"
                             className={
                               "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
                             }

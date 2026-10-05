@@ -1,6 +1,7 @@
 "use client";
 
 import {useCallback, useEffect, useState} from "react";
+import Image from "next/image";
 import {
     LuImage,
     LuPackage,
@@ -346,10 +347,7 @@ export default function AdminStorePage() {
                         <div key={i._id} className="flex flex-wrap items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
                             <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-alice-blue">
                                 {i.image ? (
-                                    // Merch image URLs are admin-supplied, so a plain img avoids
-                                    // the next/image host allowlist for arbitrary domains.
-                                    // eslint-disable-next-line @next/next/no-img-element
-                                    <img src={i.image} alt="" className="h-full w-full object-cover"/>
+                                    <Image src={i.image} alt="" width={64} height={64} className="h-full w-full object-cover"/>
                                 ) : (
                                     <LuImage className="text-slate-gray"/>
                                 )}

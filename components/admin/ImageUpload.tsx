@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Image from "next/image";
 import { LuImagePlus, LuLoader, LuUpload, LuX } from "react-icons/lu";
 import { Button, Input } from "@/components/admin/ui";
 
@@ -76,9 +77,11 @@ export default function ImageUpload({
             <div className="flex flex-wrap items-center gap-3">
                 {value ? (
                     <div className="relative shrink-0">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={value}
+                        <Image src={value}
                              alt="image preview"
+                             width={640}
+                             height={480}
+                             unoptimized
                              className={`${previewClassName} rounded-md object-cover object-top ring-1 ring-gray-200`}/>
                         <button type="button"
                                 onClick={() => onChange("")}

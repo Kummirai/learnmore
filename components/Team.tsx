@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { FaFacebook, FaTwitter, FaInstagramSquare } from "react-icons/fa";
 import { LuLoaderCircle, LuShield, LuUsers } from "react-icons/lu";
 import { useState } from "react";
@@ -77,9 +78,11 @@ function MemberCard({
         }
       >
         {member.src ? (
-          <img
+          <Image
             src={member.src}
             alt={member.name}
+            width={320}
+            height={320}
             className={"size-full object-cover"}
           />
         ) : (

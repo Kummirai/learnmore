@@ -9,20 +9,19 @@ const apiBase =
 const nextConfig: NextConfig = {
     /* config options here */
     images: {
+        // Content images come from the backend, Supabase storage, the CDN and
+        // user avatars, so any https host is optimisable. Localhost covers the
+        // backend running next door in development.
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'unsplash.com',
-                port: '',
-                pathname: '/**',
+                hostname: '**',
             },
             {
-                protocol: 'https',
-                hostname: 'images.unsplash.com',
-                port: '',
-                pathname: '/**',
+                protocol: 'http',
+                hostname: 'localhost',
             },
-        ]
+        ],
     },
     async rewrites() {
         // BFF proxy: every /api/* request the app makes is forwarded to the

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { LuArrowLeft, LuChevronRight, LuShoppingBag } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
@@ -120,17 +121,19 @@ export default async function ProductPage({
                       <div className="group rounded-lg overflow-hidden bg-alice-blue">
                         {r.image ? (
                             <>
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
+                                <Image
                                   className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
                                   src={r.image}
                                   alt={r.name}
+                                  width={640}
+                                  height={640}
                                 />
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
+                                <Image
                                   className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
                                   src={r.image}
                                   alt=""
+                                  width={640}
+                                  height={640}
                                 />
                             </>
                         ) : (

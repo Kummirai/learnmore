@@ -1,6 +1,7 @@
 "use client";
 
 import { Field, Input, TextArea, Select } from "@/components/admin/ui";
+import Image from "next/image";
 import type { PubBlock } from "@/lib/editor/season";
 
 const TYPE_LABELS: Record<string, string> = {
@@ -70,7 +71,7 @@ export default function BlockEditor({
             <Field label="Image URL"><Input value={block.uri || ""} onChange={(e) => set({ uri: e.target.value })} /></Field>
             <Field label="Caption"><Input value={block.caption || ""} onChange={(e) => set({ caption: e.target.value })} /></Field>
             {block.uri ? (
-              <img src={block.uri} alt="preview" className="h-24 w-full rounded-lg object-cover" />
+              <Image src={block.uri} alt="preview" width={768} height={432} unoptimized className="h-24 w-full rounded-lg object-cover" />
             ) : null}
           </>
         )}

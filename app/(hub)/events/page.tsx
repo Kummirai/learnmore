@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LuArrowRight,
   LuCalendar,
@@ -201,11 +202,11 @@ export function EventCard({ event }: { event: RelateEvent }) {
     <article className="group flex flex-col">
       <div className="relative h-56 rounded-2xl overflow-hidden">
         {event.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={event.imageUrl}
             alt={event.title ?? "Relate event"}
-            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, 33vw"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (

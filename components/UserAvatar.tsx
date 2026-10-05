@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
     LuSettings,
@@ -60,10 +61,11 @@ export default function UserAvatar() {
                 }
             >
                 {user && user.image && !imgFailed ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                         src={user.image}
                         alt={user.name}
+                        width={80}
+                        height={80}
                         className="size-full object-cover"
                         onError={() => setImgFailed(true)}
                     />

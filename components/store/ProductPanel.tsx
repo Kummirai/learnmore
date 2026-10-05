@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { LuMinus, LuPlus } from "react-icons/lu";
@@ -39,14 +40,12 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
                 active === src ? "border-cyan" : "border-gray-200 hover:border-cyan/60"
               } bg-alice-blue`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt={`${item.name} — view ${i + 1}`} className="w-full h-full object-cover" />
+              <Image src={src} alt={`${item.name} — view ${i + 1}`} width={160} height={88} className="w-full h-full object-cover" />
             </button>
           ))}
         </div>
         <div className="flex-1 h-[260px] sm:h-[400px] rounded-xl overflow-hidden">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={active} alt={item.name} className="w-full h-full object-contain p-2 md:p-4" />
+          <Image src={active} alt={item.name} width={1200} height={900} className="w-full h-full object-contain p-2 md:p-4" />
         </div>
       </div>
 
