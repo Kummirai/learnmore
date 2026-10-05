@@ -13,7 +13,7 @@ const posts = [
   {
     title: "Sprout Camp Bookings Are Open",
     excerpt:
-      "Four days of honors, hikes and campfires — leaders on hand to sign off badges. Places are limited, so book early.",
+      "Four days of skills, hikes and campfires — leaders on hand to sign off requirements. Places are limited, so book early.",
     date: "15 Aug 2026",
     tag: "Sprout",
     color: "bg-blue-100 text-blue-700",

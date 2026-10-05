@@ -12,7 +12,7 @@ import {
 import PageHero from "@/components/PageHero";
 import JoinCta from "@/components/join/JoinCta";
 import CampRegisterForm from "@/components/sprout/CampRegisterForm";
-import { getClubAccent } from "@/lib/clubs";
+import { getClub, getClubAccent } from "@/lib/clubs";
 import { SPROUT_CAMP } from "@/constants/sproutCamp";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
 
@@ -44,6 +44,7 @@ function formatDeadline(iso: string): string {
 export default async function SproutCampPage() {
   const camp = SPROUT_CAMP;
   const sprout = await getClubAccent("sprout");
+  const club = (await getClub("sprout")) ?? { slug: "sprout", name: "Sprout" };
   const deadline = formatDeadline(camp.registrationDeadline);
   const clubVars = {
     "--club-accent": sprout.color,

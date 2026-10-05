@@ -4,6 +4,6 @@ export async function generateMetadata() {
   return {};
 }
 
-export default async function SproutHonorsRedirect() {
+export default async function SproutSkillsRedirect() {
   redirect("/sprout/skills");
 }

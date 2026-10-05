@@ -6,6 +6,6 @@ export async function generateMetadata() {
   return {};
 }
 
-export default async function HonorDetailRedirect({ params }: { params: Promise<Params> }) {
+export default async function SkillDetailRedirect({ params }: { params: Promise<Params> }) {
   redirect("/sprout/skills");
 }

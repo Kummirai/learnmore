@@ -13,13 +13,13 @@ type Params = { club: string };
 /** Skills come from the API at request time. */
 export const revalidate = 60;
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<Params>;
-}): Metadata {
-  return params.then(({ club }) =>
-    siteMetadata(
+}): Promise<Metadata> {
+  const { club } = await params;
+  return siteMetadata(
       {
         title: `${capitalize(club)} Skills`,
         description: clipText(
@@ -36,7 +36,6 @@ export function generateMetadata({
         },
       },
       `/${club}/skills`,
-    ),
   );
 }
 

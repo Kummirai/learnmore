@@ -352,10 +352,6 @@ export default async function SkillDetailPage({
 }
 
 function SkillUnavailable({ clubSlug, skillId }: { clubSlug: string; skillId: string }) {
-  const accent = getClubAccent(clubSlug);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _ = accent; // We'll fetch it server-side but this is client fallback
-
   return (
     <>
       <header

@@ -54,7 +54,7 @@ export const SPROUT_CAMP: SproutCamp = {
   title: "Sprout Camp",
   tagline: "Four days. One campfire. Growing strong together.",
   description:
-    "An overnight holiday camp for Sprout kids, tweens and teens — hikes, campfires, team challenges, honors workshops and a whole lot of joy, subsidised so every child can attend.",
+    "An overnight holiday camp for Sprout kids, tweens and teens — hikes, campfires, team challenges, skills workshops and a whole lot of joy, subsidised so every child can attend.",
   image:
     "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1600&q=80",
   location: "Relate Grounds, Gauteng",
@@ -71,7 +71,7 @@ export const SPROUT_CAMP: SproutCamp = {
   includes: [
     "Four days and three nights of supervised accommodation",
     "All meals, snacks and campfire treats",
-    "Camp t-shirt and honor badge kit",
+    "Camp t-shirt and skills kit",
     "Activities, transport on site and first-aid cover",
   ],
   bring: [
@@ -88,7 +88,7 @@ export const SPROUT_CAMP: SproutCamp = {
       body: "Songs, skits and stories under the stars after every day's challenges.",
     },
     {
-      title: "Honors workshops",
+      title: "Skills workshops",
       body: "Work on Life Saver, Smart Saver and Digital Explorer requirements with leaders on hand to sign off.",
     },
     {
@@ -121,7 +121,7 @@ export const SPROUT_CAMP: SproutCamp = {
       slots: [
         { time: "07:00", title: "Wake-up & breakfast" },
         { time: "08:30", title: "Morning hike", detail: "Age-graded routes with a leader at the front and back." },
-        { time: "11:00", title: "Honors workshops", detail: "First aid, money skills and block coding stations." },
+        { time: "11:00", title: "Skills workshops", detail: "First aid, money skills and block coding stations." },
         { time: "15:00", title: "Team challenge round" },
         { time: "19:00", title: "Campfire & testimonies" },
       ],
@@ -135,7 +135,7 @@ export const SPROUT_CAMP: SproutCamp = {
         { time: "07:00", title: "Wake-up & breakfast" },
         { time: "09:00", title: "Carnival & water games", detail: "Relays, tug-of-war and the famous Sponge Run." },
         { time: "13:00", title: "Free time & rest hour" },
-        { time: "15:00", title: "Honors sign-off sessions", detail: "Leaders verify requirements earned during camp." },
+        { time: "15:00", title: "Skills sign-off sessions", detail: "Leaders verify requirements earned during camp." },
         { time: "19:00", title: "Campfire banquet" },
       ],
     },
@@ -146,7 +146,7 @@ export const SPROUT_CAMP: SproutCamp = {
       title: "Send-off",
       slots: [
         { time: "07:30", title: "Pack up & breakfast" },
-        { time: "09:30", title: "Closing celebration", detail: "Badge awards and the camp video." },
+        { time: "09:30", title: "Closing celebration", detail: "Skill sign-offs and the camp video." },
         { time: "11:00", title: "Parent pickup", detail: "Collect campers and progress cards from leaders." },
       ],
     },
