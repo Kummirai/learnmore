@@ -85,7 +85,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
     tagline: "Growing strong, reaching high.",
     description:
       "Children in their formative years — needing nurturing, guidance, education support and a safe environment to grow.",
-    heroImage: "/images/heroes/sprout_kids.jpg",
+    heroImage: "https://relateworld.org/images/heroes/sprout.webp",
     color: "#4CAF50",
     colorDark: "#2E7D32",
     whatsappGroupLink: "https://chat.whatsapp.com/DdZ3vBcZtfLCuoS9BqEL6n",
@@ -122,7 +122,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       "To empower teenagers and young adults with foundational identity, essential life skills, and academic support to successfully transition into independent adulthood.",
     vision:
       "A generation of confident, purpose-driven young leaders securely anchored in their faith and practically equipped for the future marketplace.",
-    heroImage: "/images/heroes/surge.jpg",
+    heroImage: "https://relateworld.org/images/heroes/surge.webp",
     color: "#FF6B00",
     colorDark: "#C2410C",
     whatsappGroupLink: "https://chat.whatsapp.com/Fkq2vBcZtfLCuoS9CqGM7o",
@@ -202,7 +202,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       "To equip young professionals and entrepreneurs with cutting-edge marketplace tools, long-term financial mastery, deep accountability networks, and an active marketplace calling.",
     vision:
       "A thriving network of young adults driving economic innovation and spiritual transformation within their specific corporate and civic industries.",
-    heroImage: "/images/heroes/pulse.jpg",
+    heroImage: "https://relateworld.org/images/heroes/pulse.webp",
     color: "#00B4D8",
     colorDark: "#0284C7",
     whatsappGroupLink: "https://chat.whatsapp.com/Glr3wCdZugMDvpT9DrHN8p",
@@ -282,7 +282,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       "To provide mature single adults with premium spaces for advanced career pivot planning, deep theological sanctuary, exceptional lifestyle networks, and multi-generational mentorship paths.",
     vision:
       "A leadership powerhouse of mature single professionals living integrated, influential lives while actively funding and mentoring the next generation.",
-    heroImage: "/images/heroes/prime.jpg",
+    heroImage: "https://relateworld.org/images/heroes/prime.webp",
     color: "#6C2BD9",
     colorDark: "#4A148C",
     whatsappGroupLink: "https://chat.whatsapp.com/Hms4xDeZvhNEwqU9EsIO9q",
@@ -369,7 +369,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       "To alleviate economic stress, cultivate deep personal restoration, and form healthy mutual-aid networks that stabilize whole homes.",
     vision:
       "A community where single parents transition from surviving to thriving, raising whole families while fulfilling their career and spiritual callings.",
-    heroImage: "/images/heroes/anchor.jpg",
+    heroImage: "https://relateworld.org/images/heroes/anchor.webp",
     color: "#2E7D32",
     colorDark: "#14532D",
     whatsappGroupLink: "https://chat.whatsapp.com/Int5yEfZwiOFxrV9FtJP0r",
@@ -456,7 +456,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       "To anchor newly married couples with unified financial blueprints, foundational communication tools, and Christ-centered relational habits to construct an unshakeable marital bedrock.",
     vision:
       "A generation of newly married teams navigating unified asset creation and deep emotional alignment, serving as an unshakeable nucleus for their future children.",
-    heroImage: "/images/heroes/spark.jpg",
+    heroImage: "https://relateworld.org/images/heroes/spark.webp",
     color: "#E8A2B6",
     colorDark: "#9D174D",
     whatsappGroupLink: "https://chat.whatsapp.com/Jot6zFgZxkPGysW9GuKQ1s",
@@ -543,7 +543,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       "To empower seasoned couples to maximize their long-term family wealth, sustain generational marital resilience, and transition into vital community leadership and marital mentorship.",
     vision:
       "A structural cornerstone of mature couples driving multi-generational financial and spiritual legacy while serving as active mentors for younger marriages.",
-    heroImage: "/images/heroes/synergy.jpg",
+    heroImage: "https://relateworld.org/images/heroes/synergy.webp",
     color: "#8A9A5B",
     colorDark: "#4D7C0F",
     whatsappGroupLink: "https://chat.whatsapp.com/Kpu7AGhZylQHztX9HvLR2t",
