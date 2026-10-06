@@ -8,7 +8,9 @@ import { WHITE_TAGLINE_SLUGS, programSlug, programsByPillar } from "@/constants/
 import { getAllClubs, getClub, getClubClasses } from "@/lib/clubs";
 import { getPublications } from "@/lib/publications";
 import { getClubEvents } from "@/lib/events";
+import { getProgramCalendar } from "@/lib/program-calendar";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
+import ProgramCalendar from "@/components/ProgramCalendar";
 import { getSkills } from "@/lib/skills";
 import DataError from "@/components/DataError";
 
@@ -38,8 +40,13 @@ export default async function ClubPage({ slug }: { slug: string }) {
     );
   }
 
+  const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
   const publications = await getPublications(club.slug);
   const events = await getClubEvents(club.slug);
+  const calendar = await getProgramCalendar(club.slug).catch(() => null);
+  const calendarEntries = calendar && calendar.entries.length > 0 ? calendar.entries : [];
+  const showCalendar = calendarEntries.length > 0;
+  const hasProgramsSection = !isSprout || showCalendar;
   const magazines = publications.filter((p) => p.kind === "magazine");
   const classes = await getClubClasses(club.slug).catch(() => []);
   const skills = await getSkills(club.slug).catch(() => null);
@@ -52,7 +59,6 @@ export default async function ClubPage({ slug }: { slug: string }) {
     ? await getClub(club.parentSlug).catch(() => undefined)
     : undefined;
   const allClubs = await getAllClubs().catch(() => []);
-  const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
   const banner = isSprout
     ? {
         eyebrow: "Get involved",
@@ -413,12 +419,12 @@ export default async function ClubPage({ slug }: { slug: string }) {
               Join {club.name}
             </JoinCta>
             <a
-              href={isSprout ? "#events" : "#programs"}
+              href={hasProgramsSection ? "#programs" : "#events"}
               className={
                 "inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"
               }
             >
-              {isSprout ? "See what's on" : "Explore programs"}
+              {hasProgramsSection ? "Explore programs" : "See what's on"}
             </a>
           </>
         }
@@ -526,7 +532,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
 
           {!isSprout && ageGroupsBlock}
 
-          {!isSprout && (
+          {hasProgramsSection && (
             <div id={"programs"} className={"scroll-mt-8 mb-10"}>
               <span
                 className={
@@ -543,16 +549,25 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 Programs &amp; Activities
               </h2>
               <p className={"text-gray-500 text-sm mt-2 max-w-xl"}>
-                {club.programs.length} programs for {club.group.toLowerCase()} —
-                the weekly flagship first, then everything grouped under the
-                three pillars: Shift, Sanctuary and Connect.
+                {showCalendar
+                  ? `Every date for ${club.name} in ${calendar?.year} — pick a date to see what happens.`
+                  : `${club.programs.length} programs for ${club.group.toLowerCase()} — the weekly flagship first, then everything grouped under the three pillars: Shift, Sanctuary and Connect.`}
               </p>
             </div>
           )}
 
           {!isSprout && bannerBlock}
 
+          {showCalendar && (
+            <ProgramCalendar
+              entries={calendarEntries}
+              year={calendar?.year ?? 0}
+              clubColor={club.color}
+            />
+          )}
+
           {!isSprout &&
+            !showCalendar &&
             programsByPillar(club).map((group) => {
               const items = group.programs.filter((p) => p !== club.programs[0]);
               if (items.length === 0) return null;

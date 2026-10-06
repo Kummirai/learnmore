@@ -12,6 +12,7 @@ import {
     LuShoppingBag,
     LuFlame,
     LuBadgeCheck,
+    LuCalendarDays,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -113,6 +114,13 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Plans",
                 icon: LuBookMarked,
                 description: "Author reading plans across every category.",
+            },
+            {
+                href: "/admin/program-calendar",
+                label: "Program Calendar",
+                short: "Calendar",
+                icon: LuCalendarDays,
+                description: "Build each club's year calendar — the dates shown on club pages.",
             },
         ],
     },
