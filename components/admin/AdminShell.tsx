@@ -26,6 +26,7 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
             ["/admin/volunteers", "/api/admin/volunteers?status=new&countOnly=1"],
             ["/admin/help-requests", "/api/help-requests?status=open&countOnly=1"],
             ["/admin/social-joins", "/api/community/social-join?status=pending&countOnly=1"],
+            ["/admin/orders", "/api/admin/orders?status=received&countOnly=1"],
         ];
         const results = await Promise.all(
             endpoints.map(async ([href, url]) => {

@@ -10,6 +10,7 @@ import {
     LuBookMarked,
     LuFolderOpen,
     LuShoppingBag,
+    LuClipboardList,
     LuFlame,
     LuBadgeCheck,
     LuCalendarDays,
@@ -141,6 +142,13 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Store",
                 icon: LuShoppingBag,
                 description: "Create and edit merch, pricing and stock.",
+            },
+            {
+                href: "/admin/orders",
+                label: "Orders",
+                short: "Orders",
+                icon: LuClipboardList,
+                description: "Fulfil store orders — payment, shipping and delivery.",
             },
             {
                 href: "/admin/streaks",
