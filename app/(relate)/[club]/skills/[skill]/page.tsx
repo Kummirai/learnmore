@@ -93,7 +93,9 @@ export default async function SkillDetailPage({
       <header
         className={"relative overflow-hidden text-white"}
         style={{
-          background: `linear-gradient(115deg, ${level?.colorDark ?? targetClub?.colorDark ?? "#1d2a4d"} 0%, #1d2a4d 62%, #151f3a 100%)`,
+          background: entry.image
+            ? "linear-gradient(115deg, #0b0c0f 0%, #101114 60%, #08090b 100%)"
+            : `linear-gradient(115deg, ${level?.colorDark ?? targetClub?.colorDark ?? "#1d2a4d"} 0%, #1d2a4d 62%, #151f3a 100%)`,
         }}
       >
         <Navbar overlay />
@@ -104,7 +106,7 @@ export default async function SkillDetailPage({
             alt=""
             fill
             sizes={"100vw"}
-            className={"object-cover opacity-35"}
+            className={"object-cover opacity-50"}
           />
         )}
 
@@ -159,7 +161,7 @@ export default async function SkillDetailPage({
             className={"font-black tracking-tight leading-[1.05] break-words"}
             style={{
               fontSize: "clamp(2rem, 7vw, 3.5rem)",
-              textShadow: "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
+              textShadow: "0 1px 2px rgba(0,0,0,0.95), 0 2px 14px rgba(0,0,0,0.85), 0 4px 36px rgba(0,0,0,0.6)",
             }}
           >
             {entry.name}
@@ -171,7 +173,7 @@ export default async function SkillDetailPage({
                 "mt-3 max-w-xl text-sm md:text-base text-white/85 leading-relaxed"
               }
               style={{
-                textShadow: "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
+                textShadow: "0 1px 2px rgba(0,0,0,0.95), 0 2px 14px rgba(0,0,0,0.85), 0 4px 36px rgba(0,0,0,0.6)",
               }}
             >
               {entry.description}
@@ -262,6 +264,29 @@ export default async function SkillDetailPage({
                   </div>
                 </div>
               ) : null}
+              {entry.detail?.appFeatures?.length ? (
+                <div className={"mt-4 border-t border-gray-100 pt-4"}>
+                  <p
+                    className={
+                      "text-[11px] font-bold uppercase tracking-widest text-gray-400"
+                    }
+                  >
+                    In the app
+                  </p>
+                  <div className={"mt-2 flex flex-wrap gap-2"}>
+                    {entry.detail.appFeatures.map((feature) => (
+                      <span
+                        key={feature}
+                        className={
+                          "rounded-full border border-cyan/25 bg-alice-blue/60 px-3 py-1 text-xs font-semibold text-cyan-dark"
+                        }
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               {entry.output && (
                 <div
                   className={
@@ -281,6 +306,57 @@ export default async function SkillDetailPage({
                 </div>
               )}
             </div>
+
+            {entry.detail?.pathways && (
+              <div
+                className={"rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"}
+              >
+                <span
+                  className={"text-xs uppercase tracking-widest font-medium"}
+                  style={{ color: accent }}
+                >
+                  Your pathway
+                </span>
+                <div className={"mt-3 grid grid-cols-1 sm:grid-cols-2 gap-4"}>
+                  {entry.detail.pathways.sproutGraduate && (
+                    <div
+                      className={
+                        "rounded-xl border border-gray-100 bg-gray-50 px-4 py-3.5"
+                      }
+                    >
+                      <p
+                        className={
+                          "text-[11px] font-bold uppercase tracking-widest text-gray-400"
+                        }
+                      >
+                        Coming from Sprout
+                      </p>
+                      <p className={"mt-1.5 text-sm text-gray-700 leading-relaxed"}>
+                        {entry.detail.pathways.sproutGraduate}
+                      </p>
+                    </div>
+                  )}
+                  {entry.detail.pathways.directEntrant && (
+                    <div
+                      className={
+                        "rounded-xl border border-gray-100 bg-gray-50 px-4 py-3.5"
+                      }
+                    >
+                      <p
+                        className={
+                          "text-[11px] font-bold uppercase tracking-widest text-gray-400"
+                        }
+                      >
+                        Direct entrant
+                      </p>
+                      <p className={"mt-1.5 text-sm text-gray-700 leading-relaxed"}>
+                        {entry.detail.pathways.directEntrant}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
 
             <SkillDashboard
               skill={entry}

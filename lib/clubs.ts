@@ -119,7 +119,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
     description:
       "Young people stepping into adulthood — needing guidance, skills and purpose.",
     mission:
-      "To empower teenagers and young adults with foundational identity, essential life skills, and academic support to successfully transition into independent adulthood.",
+      "Transition to independence through real-world application, client work, and funding higher education.",
     vision:
       "A generation of confident, purpose-driven young leaders securely anchored in their faith and practically equipped for the future marketplace.",
     heroImage: "https://relateworld.org/images/heroes/surge.webp",
@@ -211,64 +211,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       Sanctuary: "Wellness",
       Connect: "Fellowship",
     },
-    programs: [
-      {
-        name: "The Hustle Hub",
-        blurb: "Co-working and entrepreneurship incubator.",
-        detail:
-          "Free co-working days plus a 12-week incubator for young businesses — mentorship, templates and pitch practice.",
-        pillar: "Shift",
-      },
-      {
-        name: "Pulse Wallet",
-        blurb: "Financial literacy: budgeting, investing, credit.",
-        detail:
-          "A practical money course: budgeting that works, debt and credit scores, and first steps into investing.",
-        pillar: "Shift",
-      },
-      {
-        name: "Career Workshops",
-        blurb: "CV writing, interviews and career planning.",
-        detail:
-          "Bring your CV, leave with a plan — writing labs, mock interviews and career mapping sessions.",
-        pillar: "Shift",
-      },
-      {
-        name: "Tuition & Study Grants",
-        blurb: "Support for further education.",
-        detail:
-          "Short-course and further-study grants awarded each term based on need and a simple application.",
-        pillar: "Shift",
-      },
-      {
-        name: "Pulse Faith",
-        blurb: "Prayer groups and Bible study.",
-        detail:
-          "Optional weekly prayer groups and Bible studies for those who want to grow spiritually.",
-        pillar: "Sanctuary",
-      },
-      {
-        name: "Pulse Check",
-        blurb: "Mental health and burnout circles.",
-        detail:
-          "Confidential peer circles facilitated by trained volunteers — because your mind matters as much as your money.",
-        pillar: "Sanctuary",
-      },
-      {
-        name: "Social Mixers",
-        blurb: "Potlucks and park braais.",
-        detail:
-          "Relaxed potlucks, park braais and game evenings — community without the pressure.",
-        pillar: "Connect",
-      },
-      {
-        name: "Purpose in Action",
-        blurb: "Project-based community impact.",
-        detail:
-          "Team up with your crew on a local project each quarter — plan it, run it and see the difference it makes.",
-        pillar: "Connect",
-      },
-    ],
+    programs: [],
   },
   {
     slug: "prime",

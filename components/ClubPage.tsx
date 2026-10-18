@@ -46,7 +46,9 @@ export default async function ClubPage({ slug }: { slug: string }) {
   const calendar = await getProgramCalendar(club.slug).catch(() => null);
   const calendarEntries = calendar && calendar.entries.length > 0 ? calendar.entries : [];
   const showCalendar = calendarEntries.length > 0;
-  const hasProgramsSection = !isSprout || showCalendar;
+  const hasProgramsSection =
+    (!isSprout || showCalendar) &&
+    (showCalendar || club.programs.length > 0);
   const magazines = publications.filter((p) => p.kind === "magazine");
   const classes = await getClubClasses(club.slug).catch(() => []);
   const skills = await getSkills(club.slug).catch(() => null);
@@ -441,7 +443,9 @@ export default async function ClubPage({ slug }: { slug: string }) {
         meta={[
           { label: "Group", value: club.group },
           { label: "Age", value: club.ageRange },
-          { label: "Programs", value: club.programs.length },
+          ...(club.programs.length > 0
+            ? [{ label: "Programs", value: club.programs.length }]
+            : []),
         ]}
         metaEnd={
           <>
@@ -650,7 +654,9 @@ export default async function ClubPage({ slug }: { slug: string }) {
             <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
               {isSprout
                 ? `Every date on for ${club.name} — weekly gatherings, special days out and the camps that fill the term.`
-                : `Upcoming dates for ${club.name} — the week-to-week rhythm sits in the programs above, these are the extra gatherings to put in the diary.`}
+                : club.programs.length === 0
+                  ? `Upcoming dates for ${club.name} — the extra gatherings to put in the diary.`
+                  : `Upcoming dates for ${club.name} — the week-to-week rhythm sits in the programs above, these are the extra gatherings to put in the diary.`}
             </p>
 
             {events.length > 0 ? (

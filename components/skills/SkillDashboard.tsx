@@ -229,12 +229,14 @@ function RequirementList({
 function LearningTracker({
   learning,
   provider,
+  learningUrl,
   grid,
   live,
   accent,
 }: {
   learning: SkillLevelEntry;
   provider?: string;
+  learningUrl?: string;
   grid: boolean[][];
   live: boolean;
   accent: string;
@@ -261,6 +263,24 @@ function LearningTracker({
           {provider && (
             <p className={"mt-1 text-sm text-slate-gray"}>
               {provider}
+            </p>
+          )}
+          {learningUrl && (
+            <a
+              href={learningUrl}
+              target={"_blank"}
+              rel={"noreferrer"}
+              className={
+                "mt-1 inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-dark hover:underline"
+              }
+            >
+              Start the free course <span aria-hidden={"true"}>↗</span>
+            </a>
+          )}
+          {learningUrl && (
+            <p className={"mt-1 max-w-md text-xs text-slate-gray leading-relaxed"}>
+              Learning comes from expert sites and videos — RelateWorld mentors
+              you through it and logs every milestone here.
             </p>
           )}
         </div>
@@ -788,6 +808,7 @@ export default function SkillDashboard({
           <LearningTracker
             learning={learning}
             provider={detail?.learningProvider}
+            learningUrl={detail?.learningUrl}
             grid={learningGrid}
             live={live}
             accent={accentColor}
