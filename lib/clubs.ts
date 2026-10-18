@@ -85,6 +85,8 @@ const FALLBACK_CLUBS: RelateClub[] = [
     tagline: "Growing strong, reaching high.",
     description:
       "Children in their formative years — needing nurturing, guidance, education support and a safe environment to grow.",
+    mission:
+      "Nurture foundational skills, financial literacy, and character through age-appropriate learning and practical application.",
     heroImage: "https://relateworld.org/images/heroes/sprout.webp",
     color: "#4CAF50",
     colorDark: "#2E7D32",
