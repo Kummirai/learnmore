@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import JoinCta from "@/components/join/JoinCta";
 import { notFound } from "next/navigation";
 import {
   LuArrowLeft,
@@ -448,7 +447,6 @@ export default async function TeamPage({
 
             <TeamMembers
               teamId={team.id}
-              clubSlug={team.clubSlug}
               teamName={team.name}
               clubName={club?.name}
             />
@@ -514,12 +512,12 @@ export default async function TeamPage({
                   </p>
                 </div>
               </div>
-              <JoinCta
-                href={`/join?club=${team.clubSlug}&team=${team.id}`}
+              <Link
+                href={`/sports/${team.id}/register`}
                 className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-navy/90 transition-colors"
               >
                 Register to join <LuArrowRight />
-              </JoinCta>
+              </Link>
             </div>
           </div>
         </section>

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FaCheck, FaCamera, FaExclamationTriangle } from "react-icons/fa";
 import { LuArrowRight, LuLoaderCircle } from "react-icons/lu";
 import { useSports } from "@/lib/useSports";
+import { useClubs } from "@/lib/useClubs";
 import { type RelateTeam } from "@/constants/relate";
 
 type Counts = Record<string, { taken: number; capacity: number }>;
@@ -50,6 +51,8 @@ export default function PlayerRegistrationForm({
   defaultPosition?: string;
 }) {
   const { sports, loading, error: catalogueError } = useSports();
+  const { find: findClub } = useClubs();
+  const club = findClub(team.clubSlug);
   const positions = useMemo(
     () => (sports ? sports.positionsForSport(team.sport) : []),
     [sports, team.sport],
@@ -70,6 +73,7 @@ export default function PlayerRegistrationForm({
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<Done | null>(null);
+  const [hasMembership, setHasMembership] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Places left per position, so nobody picks a full slot blind.
@@ -85,6 +89,26 @@ export default function PlayerRegistrationForm({
       cancelled = true;
     };
   }, [team.id]);
+
+  // Fill the basics from the member's club membership (async — safe for effects).
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/club-join/me", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        const m = json?.data;
+        if (cancelled || !m) return;
+        setHasMembership(true);
+        setName((v) => v || m.name || "");
+        setAge((v) => v || (m.age != null ? String(m.age) : ""));
+        setGender((v) => v || m.gender || "");
+        setPhone((v) => v || m.phone || "");
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -186,7 +210,9 @@ export default function PlayerRegistrationForm({
     try {
       const body = new FormData();
       body.set("clubSlug", team.clubSlug);
+      if (club?.name) body.set("clubName", club.name);
       body.set("teamId", team.id);
+      body.set("teamName", team.name);
       body.set("name", name.trim());
       body.set("age", String(ageNum));
       if (gender) body.set("gender", gender);
@@ -295,6 +321,22 @@ export default function PlayerRegistrationForm({
             players (starter plus cover).
           </p>
         </div>
+
+        {!hasMembership && club && (
+          <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800">
+            <span className="flex-1">
+              Not a Relate member yet? Joining{" "}
+              <strong>{club.name}</strong> gives you a Membership ID and your
+              age-based club home — you can do both.
+            </span>
+            <Link
+              href={`/join?club=${encodeURIComponent(club.slug)}`}
+              className="shrink-0 inline-flex items-center justify-center gap-1.5 bg-navy text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-navy/90 transition-colors"
+            >
+              Join {club.name} <LuArrowRight className="text-[10px]" />
+            </Link>
+          </div>
+        )}
 
         <form onSubmit={submit} className="space-y-6">
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">

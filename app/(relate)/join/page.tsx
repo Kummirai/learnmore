@@ -20,23 +20,17 @@ export default async function JoinPage({
   const member = parseMembership(
     (await cookies()).get(MEMBER_COOKIE)?.value,
   );
-  const query = [
-    sp?.club ? `club=${encodeURIComponent(String(sp.club))}` : "",
-    sp?.team ? `team=${encodeURIComponent(String(sp.team))}` : "",
-  ]
-    .filter(Boolean)
-    .join("&");
+  const query = sp?.club ? `club=${encodeURIComponent(String(sp.club))}` : "";
   return (
     <>
       <Navbar />
       <RequireAuth
-        title="Join a club or team"
+        title="Join a club"
         blurb="Sign in to register — your membership stays with your account, so it shows up on any device."
         next={query ? `/join?${query}` : "/join"}
       >
         <JoinForm
           defaultClub={String(sp?.club ?? "")}
-          defaultTeam={String(sp?.team ?? "")}
           member={member}
         />
       </RequireAuth>

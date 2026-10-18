@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import JoinCta from "@/components/join/JoinCta";
+import Link from "next/link";
 import { LuArrowRight, LuLoaderCircle } from "react-icons/lu";
 
 type Member = { firstName: string; joinedAt: string | null };
@@ -27,12 +27,10 @@ const initialsOf = (name: string) =>
  */
 export default function TeamMembers({
   teamId,
-  clubSlug,
   teamName,
   clubName,
 }: {
   teamId: string;
-  clubSlug: string;
   teamName: string;
   clubName?: string;
 }) {
@@ -85,12 +83,12 @@ export default function TeamMembers({
           <p className="text-sm text-slate-gray flex-1">
             No members registered yet — be the first on the squad list.
           </p>
-          <JoinCta
-            href={`/join?club=${encodeURIComponent(clubSlug)}&team=${encodeURIComponent(teamId)}`}
+          <Link
+            href={`/sports/${encodeURIComponent(teamId)}/register`}
             className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:bg-navy/90 transition-colors"
           >
             Join this team <LuArrowRight className="text-xs" />
-          </JoinCta>
+          </Link>
         </div>
       ) : (
         <>
@@ -114,12 +112,12 @@ export default function TeamMembers({
               </span>
             )}
           </div>
-          <JoinCta
-            href={`/join?club=${encodeURIComponent(clubSlug)}&team=${encodeURIComponent(teamId)}`}
+          <Link
+            href={`/sports/${encodeURIComponent(teamId)}/register`}
             className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-cyan hover:text-cyan-dark transition-colors"
           >
             Join this team <LuArrowRight />
-          </JoinCta>
+          </Link>
         </>
       )}
     </div>

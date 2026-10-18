@@ -111,12 +111,12 @@ async function TeamCard({ team }: { team: RelateTeam }) {
         >
           {team.name} page →
         </Link>
-        <JoinCta
-          href={`/join?club=${team.clubSlug}&team=${team.id}`}
+        <Link
+          href={`/sports/${team.id}/register`}
           className="inline-flex min-h-11 items-center gap-1.5 text-xs font-bold text-navy bg-alice-blue hover:bg-cyan/20 px-4 py-2.5 rounded-full transition-colors"
         >
           Join
-        </JoinCta>
+        </Link>
       </div>
     </article>
   );

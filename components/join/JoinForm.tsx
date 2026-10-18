@@ -15,9 +15,8 @@ import {
   membershipCookieString,
   type Membership,
 } from "@/lib/membership";
-import type { RelateTeam } from "@/constants/relate";
+import { useAuth } from "@/components/AuthProvider";
 import { useClubs } from "@/lib/useClubs";
-import { useSports } from "@/lib/useSports";
 
 type YesNo = "" | "yes" | "no";
 
@@ -139,24 +138,20 @@ function YesNoField({
 
 export default function JoinForm({
   defaultClub = "",
-  defaultTeam = "",
   member = null,
 }: {
   defaultClub?: string;
-  defaultTeam?: string;
-  /** Known membership record (read from the cookie) — prefills the form. */
+  /** Known membership record (cookie or /api/club-join/me) — prefills the form. */
   member?: Membership | null;
 }) {
+  const { user } = useAuth();
   const {
     find: findClub,
     loading: clubsLoading,
     error: clubsError,
   } = useClubs();
-  const { sports, loading: teamsLoading, error: teamsError } = useSports();
-  const linkedTeam = defaultTeam ? (sports?.getTeam(defaultTeam) ?? null) : null;
   const initialClub = defaultClub || member?.clubSlug || "";
   const [clubSlug, setClubSlug] = useState(initialClub);
-  const [teamId, setTeamId] = useState("");
   const [name, setName] = useState(member?.name ?? "");
   const [age, setAge] = useState(member?.age ?? "");
   const [gender, setGender] = useState(member?.gender ?? "");
@@ -175,7 +170,55 @@ export default function JoinForm({
   const [error, setError] = useState("");
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<Done | null>(null);
-  const prefilled = Boolean(member?.name);
+  const [remoteMember, setRemoteMember] = useState<Membership | null>(null);
+
+  // No saved membership cookie? Load what we already know about the signed-in
+  // member from the server and fill only the blanks (async — safe for effects).
+  useEffect(() => {
+    if (member) return;
+    let cancelled = false;
+    fetch("/api/club-join/me", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (cancelled) return;
+        const m = json?.data;
+        if (m) {
+          const known: Membership = {
+            id: String(m.id ?? ""),
+            reference: m.reference,
+            clubSlug: m.clubSlug ?? "",
+            clubName: m.clubName ?? "",
+            name: m.name ?? "",
+            age: m.age != null ? String(m.age) : "",
+            gender: m.gender ?? "",
+            phone: m.phone ?? "",
+            area: m.area ?? "",
+            interests: Array.isArray(m.interests) ? m.interests : [],
+            status: m.status ?? "active",
+            joinedAt: m.joinedAt ? String(m.joinedAt) : "",
+          };
+          setRemoteMember(known);
+          setName((v) => v || known.name || "");
+          setAge((v) => v || known.age || "");
+          setGender((v) => v || known.gender || "");
+          setPhone((v) => v || known.phone || "");
+          setArea((v) => v || known.area || "");
+          setInterests((v) => (v.length ? v : known.interests || []));
+          setClubSlug((v) => v || known.clubSlug || "");
+        } else if (!name && user?.name) {
+          setName(user.name);
+        }
+      })
+      .catch(() => {
+        if (!cancelled && !name && user?.name) setName(user.name);
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per mount; name is only read as a blank-check
+  }, [member]);
+
+  const prefilled = Boolean(member?.name || remoteMember?.name || name);
 
   const ageNum = Number(age);
   const isYouthClub = YOUTH_CLUBS.includes(clubSlug);
@@ -192,30 +235,9 @@ export default function JoinForm({
     [findClub],
   );
 
-  const teams = useMemo(
-    () => (sports?.teams ?? []).filter((t) => t.clubSlug === clubSlug),
-    [sports, clubSlug],
-  );
-
-  // A deep-linked team (?team=…) is adopted once the catalogue has loaded.
-  useEffect(() => {
-    if (!linkedTeam) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- adopts a URL deep link after the async sports catalogue arrives; there is no event handler to hook into
-    setClubSlug((prev) => prev || linkedTeam.clubSlug);
-  }, [linkedTeam]);
-
-  useEffect(() => {
-    if (!linkedTeam || teamId) return;
-    if (clubSlug && clubSlug !== linkedTeam.clubSlug) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- adopts a URL deep link after the async sports catalogue arrives; there is no event handler to hook into
-    setTeamId(linkedTeam.id);
-  }, [linkedTeam, clubSlug, teamId]);
-
   const selectedClub = clubs.find((c) => c.slug === clubSlug);
-  const selectedTeam = teams.find((t) => t.id === teamId);
 
   if (done) {
-    const joinedTeam = Boolean(selectedTeam);
     return (
       <section className="flex-1 px-4 py-16 bg-white">
         <div className="max-w-xl mx-auto text-center">
@@ -246,21 +268,9 @@ export default function JoinForm({
                   page.
                 </span>
               </li>
-              {joinedTeam && (
-                <li className="flex gap-3">
-                  <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
-                    2
-                  </span>
-                  <span>
-                    You&rsquo;re on the{" "}
-                    <strong className="text-navy">{selectedTeam!.name}</strong> squad —
-                    your name now shows on the team page with the rest of the members.
-                  </span>
-                </li>
-              )}
               <li className="flex gap-3">
                 <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
-                  {joinedTeam ? 3 : 2}
+                  2
                 </span>
                 <span>
                   Your leader will get in touch with the time and venue for your
@@ -269,7 +279,7 @@ export default function JoinForm({
               </li>
               <li className="flex gap-3">
                 <span className="shrink-0 size-6 rounded-full bg-gold-50 text-gold-700 flex items-center justify-center text-xs font-bold">
-                  {joinedTeam ? 4 : 3}
+                  3
                 </span>
                 <span>
                   You&rsquo;re part of the{" "}
@@ -288,10 +298,10 @@ export default function JoinForm({
               View my membership <LuArrowRight className="text-xs" />
             </Link>
             <Link
-              href={joinedTeam ? `/sports/${selectedTeam!.id}` : `/${clubSlug}`}
+              href={`/${clubSlug}`}
               className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
             >
-              {joinedTeam ? "Open my team page" : "Go to my club page"}
+              Go to my club page
             </Link>
           </div>
         </div>
@@ -338,9 +348,6 @@ export default function JoinForm({
     const payload = {
       clubSlug,
       clubName: selectedClub?.name,
-      teamId,
-      teamName: selectedTeam?.name,
-      sport: selectedTeam?.sport,
       name: name.trim(),
       age: ageNum,
       gender,
@@ -379,9 +386,6 @@ export default function JoinForm({
             clubName: selectedClub?.name,
             interests,
             reference: data.reference,
-            teamId: teamId || undefined,
-            teamName: selectedTeam?.name,
-            sport: selectedTeam?.sport,
             id: data.id,
             status: data.status,
             joinedAt: new Date().toISOString(),
@@ -406,27 +410,16 @@ export default function JoinForm({
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-1">
-            {selectedTeam ? "Relate · Join a Team" : "Relate · Join a Club"}
+            Relate · Join a Club
           </p>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-navy mb-2">
-            {selectedTeam ? `Join ${selectedTeam.name}` : "Register to join"}
+            Register to join
           </h2>
           <p className="text-sm text-slate-gray max-w-2xl">
-            {selectedTeam ? (
-              <>
-                Signing up for the{" "}
-                <strong className="text-navy">{selectedTeam.name}</strong> squad
-                ({selectedTeam.sport}) — one form, then you&rsquo;re on the team
-                list straight away. It also creates your{" "}
-                {selectedClub?.name ?? "Relate"} membership.
-              </>
-            ) : (
-              <>
-                Pick your club, tell us about yourself and we&rsquo;ll create your
-                membership record. Later, joining a squad or an activity takes
-                seconds — we already know the rest.
-              </>
-            )}
+            Pick your club, tell us about yourself and we&rsquo;ll create your
+            membership record — you&rsquo;ll get a Membership ID right away.
+            Later, joining a squad or an activity takes seconds — we already
+            know the rest.
           </p>
           {prefilled && (
             <div className="mt-4 flex items-start gap-2 rounded-lg border border-gold-200 bg-gold-50 px-3.5 py-2.5 text-sm text-gold-800">
@@ -441,7 +434,7 @@ export default function JoinForm({
 
         <form onSubmit={submit} className="space-y-6">
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-            <p className={sectionBadge}>1 · Club &amp; team</p>
+            <p className={sectionBadge}>1 · Your club</p>
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <label className={label} htmlFor="club">
@@ -458,10 +451,7 @@ export default function JoinForm({
                   className={input}
                   value={clubSlug}
                   disabled={clubsLoading}
-                  onChange={(e) => {
-                    setClubSlug(e.target.value);
-                    setTeamId("");
-                  }}
+                  onChange={(e) => setClubSlug(e.target.value)}
                 >
                   <option value="">
                     {clubsLoading ? "Loading clubs…" : "Choose your club…"}
@@ -473,49 +463,13 @@ export default function JoinForm({
                   ))}
                 </select>
               </div>
-              <div>
-                <label className={label} htmlFor="team">
-                  Team (optional)
-                </label>
-                {teamsError && (
-                  <p role="alert" className="text-xs text-red-600 mb-1">
-                    {teamsError}
-                  </p>
-                )}
-                <select
-                  id="team"
-                  className={`${input} disabled:opacity-60 disabled:cursor-not-allowed`}
-                  value={teamId}
-                  onChange={(e) => setTeamId(e.target.value)}
-                  disabled={!clubSlug || teams.length === 0 || teamsLoading}
-                >
-                  <option value="">
-                    {!clubSlug
-                      ? "Choose a club first…"
-                      : teamsLoading
-                        ? "Loading teams…"
-                        : teams.length === 0
-                        ? `No teams in ${selectedClub?.name ?? "this club"} yet`
-                        : "Choose your team…"}
-                  </option>
-                  {teams.map((t: RelateTeam) => (
-                    <option key={t.id} value={t.id}>
-                      {t.name} ({t.sport})
-                    </option>
-                  ))}
-                </select>
-              </div>
             </div>
             {selectedClub && (
               <div className="mt-4 flex items-center gap-2 text-xs text-slate-gray bg-alice-blue rounded-lg px-3 py-2">
                 <LuUsers className="text-cyan shrink-0" />
                 <span>
-                  {selectedClub.name} ·{" "}
-                  {selectedTeam
-                    ? selectedTeam.name
-                    : teams.length
-                      ? "choose a team below"
-                      : "no squads yet — join one later"} ·
+                  {selectedClub.name} · join squads any time from your club
+                  page ·
                   ages {ageRange?.label ?? "—"}.
                   {isYouthClub
                     ? " 18–21s in Surge and 21–33s in Pulse join as young adults with their own conduct standards below."
@@ -847,13 +801,11 @@ export default function JoinForm({
           >
             {sending ? (
               <>
-                <LuLoaderCircle className="animate-spin text-lg" />{" "}
-                {selectedTeam ? "Joining…" : "Submitting…"}
+                <LuLoaderCircle className="animate-spin text-lg" /> Joining…
               </>
             ) : (
               <>
-                {selectedTeam ? `Join ${selectedTeam.name}` : "Submit my registration"}{" "}
-                <FaChevronRight className="text-xs" />
+                Join {selectedClub?.name ?? "Relate"} <FaChevronRight className="text-xs" />
               </>
             )}
           </button>
