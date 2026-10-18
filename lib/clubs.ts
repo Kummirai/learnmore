@@ -131,64 +131,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
       Sanctuary: "Identity",
       Connect: "Fun & Action",
     },
-    programs: [
-      {
-        name: "The Launch Pad",
-        blurb: "Career exposure, internships and job placements.",
-        detail:
-          "Work-shadow days, internship placements and CV clinics that open doors into the working world.",
-        pillar: "Shift",
-      },
-      {
-        name: "Life Skills Workshops",
-        blurb: "Finance, CV writing and interview prep.",
-        detail:
-          "Hands-on workshops — open your first bank account, write a CV that gets read, and nail the interview.",
-        pillar: "Shift",
-      },
-      {
-        name: "Tuition Support",
-        blurb: "School and university fees.",
-        detail:
-          "Registration and tuition support for students who qualify, based on need and school reports.",
-        pillar: "Shift",
-      },
-      {
-        name: "School Supply Drive",
-        blurb: "Stationery, uniforms and books.",
-        detail:
-          "Annual drive collecting packs of stationery, uniforms and set-work books before each school year starts.",
-        pillar: "Shift",
-      },
-      {
-        name: "Surge Fire",
-        blurb: "Youth worship nights.",
-        detail:
-          "Monthly worship nights with music, testimony and prayer — optional and open to everyone.",
-        pillar: "Sanctuary",
-      },
-      {
-        name: "Purpose Quest",
-        blurb: "Identity and calling workshops.",
-        detail:
-          "A guided journey through identity, gifts and calling to help you find your purpose.",
-        pillar: "Sanctuary",
-      },
-      {
-        name: "Surge Outings",
-        blurb: "Park visits and beach days.",
-        detail:
-          "Regular outings to parks, the beach and local attractions — friendship and fresh air.",
-        pillar: "Connect",
-      },
-      {
-        name: "Impact Squad",
-        blurb: "Local volunteering and community service.",
-        detail:
-          "Serve alongside your crew on local projects — food drives, clean-ups and outreach in the neighbourhood.",
-        pillar: "Connect",
-      },
-    ],
+    programs: [],
   },
   {
     slug: "pulse",
