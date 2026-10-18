@@ -190,7 +190,17 @@ export default async function ClubPage({ slug }: { slug: string }) {
                           style={{ backgroundColor: level?.color ?? club.color }}
                           aria-hidden={"true"}
                         />
-                        {level?.name ?? "Skill"}
+                        <span
+                          className={
+                            skill.type === "Compulsory"
+                              ? "font-bold text-navy"
+                              : undefined
+                          }
+                        >
+                          {skill.type
+                            ? `${skill.type} · ${level?.name ?? "Skill"}`
+                            : (level?.name ?? "Skill")}
+                        </span>
                       </span>
                       <span
                         className={

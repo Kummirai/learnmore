@@ -25,6 +25,44 @@ export type SkillRequirement = {
   criteria: string[];
 };
 
+/** One level inside a single skill — the API passes the full nested copy. */
+export type SkillLevelEntry = {
+  id: string;
+  name: string;
+  levelNumber: number;
+  color: string;
+  colorDark: string;
+  description?: string;
+  requirements: SkillRequirement[];
+};
+
+export type SkillProject = {
+  title: string;
+  tier: string;
+  fee?: string;
+};
+
+/** Static widget content for the skill detail page (member state is derived at runtime). */
+export type SkillDetail = {
+  /** Tools the member uses — shown as chips in the overview. */
+  tools?: string[];
+  /** Curriculum provider shown in the learning tracker. */
+  learningProvider?: string;
+  /** Paid Relate Projects — order matches the skill's "Relate Projects" level requirements. */
+  projects?: SkillProject[];
+  /** Display copy for the project board's unlock rule. */
+  unlockRule?: string;
+  /** Requirement text (Learning level) that must complete before Tier 2+ projects unlock. */
+  unlockAfter?: string;
+  /** Launch Fund goal shown in the savings widget. */
+  launchFund?: {
+    goalName?: string;
+    targetAmount?: number;
+    autoRouting?: string;
+    disbursementRule?: string;
+  };
+};
+
 export type Skill = {
   id: string;
   name: string;
@@ -35,7 +73,15 @@ export type Skill = {
   /** Royalty-free photo shown on the skill card. */
   image?: string;
   color?: string;
+  /** Compulsory skills every club member takes; the rest are electives. */
+  type?: "Compulsory" | "Elective";
+  /** Ultimate deliverable of the skill — rendered as the output callout. */
+  output?: string;
+  /** Widget content for the skill detail page. */
+  detail?: SkillDetail;
   requirements: SkillRequirement[];
+  /** All levels of this skill, in order (the API passes the full nested copy). */
+  levels: SkillLevelEntry[];
 };
 
 export type SkillProgress = {

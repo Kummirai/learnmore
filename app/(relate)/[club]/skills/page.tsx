@@ -206,7 +206,17 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
                             style={{ backgroundColor: level.color ?? targetClub.color }}
                             aria-hidden={"true"}
                           />
-                          {level.name} · Skill
+                          <span
+                            className={
+                              skill.type === "Compulsory"
+                                ? "font-bold text-navy"
+                                : undefined
+                            }
+                          >
+                            {skill.type
+                              ? `${skill.type} · ${level.name}`
+                              : `${level.name} · Skill`}
+                          </span>
                         </span>
                         <span
                           className={

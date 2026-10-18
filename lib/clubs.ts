@@ -199,7 +199,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
     description:
       "Young adults building careers, finances and identity — needing network and direction.",
     mission:
-      "To equip young professionals and entrepreneurs with cutting-edge marketplace tools, long-term financial mastery, deep accountability networks, and an active marketplace calling.",
+      "Equip young professionals with marketplace tools, financial mastery, and pathways to accredited qualifications or business ownership.",
     vision:
       "A thriving network of young adults driving economic innovation and spiritual transformation within their specific corporate and civic industries.",
     heroImage: "https://relateworld.org/images/heroes/pulse.webp",

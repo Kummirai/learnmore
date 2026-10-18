@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
 import JoinCta from "@/components/join/JoinCta";
-import SkillProgress from "@/components/skills/SkillProgress";
+import SkillDashboard from "@/components/skills/SkillDashboard";
 import { getClub } from "@/lib/clubs";
 import { getSkills, type SkillsCatalog } from "@/lib/skills";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -73,6 +73,20 @@ export default async function SkillDetailPage({
   const idx = allSkills.findIndex((s) => s.id === skill);
   const prev = idx > 0 ? allSkills[idx - 1] : undefined;
   const next = idx >= 0 && idx < allSkills.length - 1 ? allSkills[idx + 1] : undefined;
+  const accent = level?.colorDark ?? targetClub?.colorDark ?? "#0fa3c4";
+  const entryLevels = (entry.levels ?? []).filter(Boolean);
+  const totalRequirements = entryLevels.length
+    ? entryLevels.reduce(
+        (sum, l) => sum + (l.requirements?.length ?? 0),
+        0,
+      )
+    : entry.requirements.length;
+  const heroFacts = [
+    { label: "Level", value: level?.name ?? "—" },
+    ...(entry.type ? [{ label: "Type", value: entry.type }] : []),
+    { label: "Requirements", value: String(totalRequirements) },
+    { label: "Club", value: capitalize(club) },
+  ];
 
   return (
     <>
@@ -131,6 +145,16 @@ export default async function SkillDetailPage({
             <span className={"text-white font-semibold"}>{entry.name}</span>
           </nav>
 
+          {entry.type && (
+            <p
+              className={
+                "mb-4 inline-block rounded-full border border-white/25 bg-white/10 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-white/90"
+              }
+            >
+              {entry.type} skill
+            </p>
+          )}
+
           <h1
             className={"font-black tracking-tight leading-[1.05] break-words"}
             style={{
@@ -159,11 +183,7 @@ export default async function SkillDetailPage({
               "mt-7 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-white/15 pt-5"
             }
           >
-            {[
-              { label: "Level", value: level?.name ?? "—" },
-              { label: "Requirements", value: String(entry.requirements.length) },
-              { label: "Club", value: capitalize(club) },
-            ].map((item) => (
+            {heroFacts.map((item) => (
               <div key={item.label}>
                 <dt
                   className={
@@ -212,23 +232,62 @@ export default async function SkillDetailPage({
                 className={
                   "text-xs uppercase tracking-widest font-medium"
                 }
-                style={{ color: level?.colorDark ?? targetClub?.colorDark ?? "#0fa3c4" }}
+                style={{ color: accent }}
               >
-                About this skill
+                Overview
               </span>
-              <h2 className={"mt-1 text-xl font-bold text-navy"}>
-                {capitalize(club)}
-              </h2>
               <p className={"mt-2 text-sm text-gray-600 leading-relaxed"}>
                 {entry.description ?? "No description provided."}
               </p>
-              {level && (
-                <p className={"mt-4 border-t border-gray-100 pt-4 text-sm text-gray-600 leading-relaxed"}>
-                  <strong className={"text-navy"}>{level.name}</strong> —{" "}
-                  {level.description ?? `Part of the ${level.name} level.`}
-                </p>
+              {entry.detail?.tools?.length ? (
+                <div className={"mt-4 border-t border-gray-100 pt-4"}>
+                  <p
+                    className={
+                      "text-[11px] font-bold uppercase tracking-widest text-gray-400"
+                    }
+                  >
+                    You&apos;ll use
+                  </p>
+                  <div className={"mt-2 flex flex-wrap gap-2"}>
+                    {entry.detail.tools.map((tool) => (
+                      <span
+                        key={tool}
+                        className={
+                          "rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-xs font-semibold text-gray-700"
+                        }
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {entry.output && (
+                <div
+                  className={
+                    "mt-4 rounded-xl border border-cyan/20 bg-alice-blue/60 px-4 py-3"
+                  }
+                >
+                  <p
+                    className={
+                      "text-[11px] font-bold uppercase tracking-widest text-cyan-dark"
+                    }
+                  >
+                    You walk away with
+                  </p>
+                  <p className={"mt-1 text-sm text-gray-700 leading-relaxed"}>
+                    {entry.output}
+                  </p>
+                </div>
               )}
             </div>
+
+            <SkillDashboard
+              skill={entry}
+              clubSlug={club}
+              whatsappGroupLink={targetClub?.whatsappGroupLink}
+              accent={accent}
+            />
 
             <div
               className={"rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"}
@@ -237,7 +296,7 @@ export default async function SkillDetailPage({
                 className={
                   "text-xs uppercase tracking-widest font-medium"
                 }
-                style={{ color: level?.colorDark ?? targetClub?.colorDark ?? "#0fa3c4" }}
+                style={{ color: accent }}
               >
                 Where it&apos;s developed
               </span>
@@ -332,13 +391,46 @@ export default async function SkillDetailPage({
           </div>
 
           <div className={"lg:sticky lg:top-6 space-y-5"}>
-            <SkillProgress
-              skillId={entry.id}
-              skillName={entry.name}
-              requirements={entry.requirements}
-              clubSlug={club}
-              whatsappGroupLink={targetClub?.whatsappGroupLink}
-            />
+            <div
+              className={"rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"}
+            >
+              <span
+                className={
+                  "text-xs uppercase tracking-widest font-medium"
+                }
+                style={{ color: accent }}
+              >
+                Quick facts
+              </span>
+              <dl className={"mt-3 space-y-3"}>
+                {[
+                  ...(entry.type ? [{ label: "Skill type", value: entry.type }] : []),
+                  {
+                    label: "Levels",
+                    value: entryLevels.length
+                      ? entryLevels.map((l) => l.name).join(" · ")
+                      : (level?.name ?? "—"),
+                  },
+                  { label: "Requirements", value: `${totalRequirements} to prove` },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className={"border-b border-gray-100 pb-3 last:border-0 last:pb-0"}
+                  >
+                    <dt
+                      className={
+                        "block text-[11px] uppercase tracking-widest text-gray-400"
+                      }
+                    >
+                      {item.label}
+                    </dt>
+                    <dd className={"text-sm font-semibold text-navy leading-snug"}>
+                      {item.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
 
             <div
               className={
