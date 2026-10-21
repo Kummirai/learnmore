@@ -30,7 +30,7 @@ export default function ClubBento() {
           <h2 className={"text-4xl font-semibold text-navy md:text-5xl"}>
             A club for every season of life
           </h2>
-          <p className={"mt-4 text-lg font-medium text-cyan-ink"}>
+          <p className={"mt-4 text-lg font-medium text-cyan"}>
             Seven clubs, one family — find the crew that fits yours.
           </p>
         </div>
@@ -103,34 +103,32 @@ export default function ClubBento() {
                   }}
                 />
               )}
-              <div className={"absolute inset-x-0 bottom-0 p-4"}>
-                <div
+              <div
+                className={"absolute inset-x-0 bottom-0 p-5"}
+                style={{
+                  textShadow:
+                    "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
+                }}
+              >
+                <p
                   className={
-                    "inline-flex max-w-full items-center gap-3 rounded-2xl bg-navy-dark/55 px-4 py-3 backdrop-blur-md"
+                    "mb-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white"
                   }
                 >
-                  <div className={"min-w-0"}>
-                    <p
-                      className={
-                        "truncate text-[11px] font-medium uppercase tracking-[0.12em] text-white/85"
-                      }
-                    >
-                      {club.ageRange}
-                    </p>
-                    <p
-                      className={
-                        "truncate text-lg font-semibold text-white"
-                      }
-                    >
-                      {club.name}
-                    </p>
-                  </div>
+                  {club.ageRange}
+                </p>
+                <p
+                  className={
+                    "flex items-center gap-1 text-xl font-semibold text-white"
+                  }
+                >
+                  {club.name}
                   <LuChevronRight
                     className={
-                      "shrink-0 -translate-x-1 text-white opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                      "-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
                     }
                   />
-                </div>
+                </p>
               </div>
             </Link>
           ))}
