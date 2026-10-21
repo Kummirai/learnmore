@@ -15,8 +15,8 @@ export default function ContactPage() {
   const [state, formAction, pending] = useActionState(submitContact, null);
 
   useEffect(() => {
-    if (state?.success && state.whatsappUrl) {
-      window.open(state.whatsappUrl, "_blank");
+    if (state?.success && state.mailtoUrl) {
+      window.location.href = state.mailtoUrl;
     }
   }, [state]);
 
