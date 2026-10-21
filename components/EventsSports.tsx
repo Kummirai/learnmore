@@ -179,13 +179,14 @@ export default function EventsSports() {
 
         {loading ? (
           <div className="space-y-5">
-            <div className="overflow-hidden rounded-3xl bg-navy">
-              <div className="px-6 py-10 text-center md:px-10 md:pt-14">
-                <div className="mx-auto h-3 w-44 animate-pulse rounded bg-white/15" />
-                <div className="mx-auto mt-4 h-9 w-2/3 max-w-xl animate-pulse rounded bg-white/15" />
-                <div className="mx-auto mt-3 h-4 w-1/2 max-w-md animate-pulse rounded bg-white/10" />
+            <div className="relative overflow-hidden rounded-3xl">
+              <div className="absolute inset-0 animate-pulse bg-navy-soft" />
+              <div className="relative flex min-h-[440px] flex-col items-center justify-center gap-4 px-6 py-14 text-center sm:min-h-[520px]">
+                <div className="h-3 w-44 rounded bg-white/15" />
+                <div className="h-9 w-2/3 max-w-xl rounded bg-white/20" />
+                <div className="h-4 w-1/2 max-w-md rounded bg-white/10" />
+                <div className="mt-2 h-10 w-40 rounded-full bg-white/20" />
               </div>
-              <div className="aspect-[16/9] animate-pulse bg-navy-soft sm:aspect-[21/9]" />
             </div>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
@@ -222,45 +223,49 @@ export default function EventsSports() {
         ) : (
           <>
             {/* Featured — the next event, advertised like a product */}
-            <article className="overflow-hidden rounded-3xl bg-navy text-white">
-              <div className="px-6 pb-9 pt-10 text-center md:px-10 md:pb-10 md:pt-14">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan">
+            <article className="relative overflow-hidden rounded-3xl">
+              {featuredImg ? (
+                <Image
+                  src={featuredImg}
+                  alt={featured.title}
+                  fill
+                  sizes="100vw"
+                  className="absolute inset-0 size-full object-cover"
+                />
+              ) : (
+                <div
+                  className="absolute inset-0"
+                  style={{
+                    background: `linear-gradient(135deg, ${featuredClub?.color ?? "#13c5dd"}, ${featuredClub?.colorDark ?? "#1d2a4d"})`,
+                  }}
+                />
+              )}
+              <div
+                className="relative flex min-h-[440px] flex-col items-center justify-center px-6 py-14 text-center sm:min-h-[520px] md:py-20"
+                style={{
+                  textShadow:
+                    "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
+                }}
+              >
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/90">
                   {featuredLine(featured)}
                 </p>
-                <h3 className="mx-auto mt-4 max-w-3xl text-3xl font-semibold md:text-5xl">
+                <h3 className="mt-4 max-w-3xl text-3xl font-semibold text-white md:text-5xl">
                   {featured.title}
                 </h3>
                 {featured.description && (
-                  <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-white/75 md:text-lg">
+                  <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/90 md:text-lg">
                     {featured.description}
                   </p>
                 )}
-                <div className="mt-6">
+                <div className="mt-7">
                   <Link
                     href={`/events/${featured._id}`}
-                    className="link-chevron"
+                    className="link-chevron text-white"
                   >
                     Save your spot
                   </Link>
                 </div>
-              </div>
-              <div className="relative aspect-[16/9] overflow-hidden sm:aspect-[21/9]">
-                {featuredImg ? (
-                  <Image
-                    src={featuredImg}
-                    alt={featured.title}
-                    fill
-                    sizes="100vw"
-                    className="absolute inset-0 size-full object-cover"
-                  />
-                ) : (
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `linear-gradient(135deg, ${featuredClub?.color ?? "#13c5dd"}, ${featuredClub?.colorDark ?? "#1d2a4d"})`,
-                    }}
-                  />
-                )}
               </div>
             </article>
 
