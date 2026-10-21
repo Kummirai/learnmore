@@ -30,7 +30,7 @@ export default function ClubBento() {
           <h2 className={"text-4xl font-semibold text-navy md:text-5xl"}>
             A club for every season of life
           </h2>
-          <p className={"mt-4 text-lg text-navy/70"}>
+          <p className={"mt-4 text-lg font-medium text-gold-700"}>
             Seven clubs, one family — find the crew that fits yours.
           </p>
         </div>
@@ -72,61 +72,56 @@ export default function ClubBento() {
             </div>
           </div>
 
-          {/* Club photo tiles */}
+          {/* Club tiles — photo with a clean caption below (no overlay) */}
           {seven.map((club, i) => (
             <Link
               key={club.slug}
               href={`/${club.slug}`}
               className={
-                "reveal group relative aspect-[4/3] min-h-[190px] overflow-hidden rounded-3xl sm:aspect-auto"
+                "reveal group flex flex-col overflow-hidden rounded-3xl border border-black/5 bg-white transition-shadow hover:shadow-lg"
               }
               style={{ transitionDelay: `${Math.min(i, 7) * 60}ms` }}
             >
-              {club.heroImage ? (
-                <Image
-                  src={club.heroImage}
-                  alt={club.name}
-                  fill
-                  sizes={
-                    "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  }
-                  className={
-                    "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  }
-                />
-              ) : (
-                <div
-                  className={"absolute inset-0"}
-                  style={{
-                    background: `linear-gradient(135deg, ${club.color}, ${club.colorDark})`,
-                  }}
-                />
-              )}
               <div
                 className={
-                  "absolute inset-0 bg-gradient-to-t from-navy-dark/85 via-navy-dark/20 to-transparent"
+                  "relative aspect-[4/3] w-full flex-1 overflow-hidden"
                 }
-              />
-              <div className={"absolute inset-x-0 bottom-0 p-5"}>
-                <span
-                  className={
-                    "mb-2 inline-block rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white/90 backdrop-blur"
-                  }
-                >
-                  {club.ageRange}
-                </span>
-                <p
-                  className={
-                    "flex items-center gap-1 text-xl font-semibold text-white"
-                  }
-                >
-                  {club.name}
-                  <LuChevronRight
+              >
+                {club.heroImage ? (
+                  <Image
+                    src={club.heroImage}
+                    alt={club.name}
+                    fill
+                    sizes={
+                      "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    }
                     className={
-                      "-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                      "absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
                     }
                   />
-                </p>
+                ) : (
+                  <div
+                    className={"absolute inset-0"}
+                    style={{
+                      background: `linear-gradient(135deg, ${club.color}, ${club.colorDark})`,
+                    }}
+                  />
+                )}
+              </div>
+              <div className={"flex items-center justify-between gap-2 p-4"}>
+                <div>
+                  <p className={"text-lg font-semibold text-navy"}>
+                    {club.name}
+                  </p>
+                  <p className={"mt-0.5 text-[13px] text-navy/70"}>
+                    {club.ageRange}
+                  </p>
+                </div>
+                <LuChevronRight
+                  className={
+                    "shrink-0 -translate-x-1 text-cyan-ink opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                  }
+                />
               </div>
             </Link>
           ))}
