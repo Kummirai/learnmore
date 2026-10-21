@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { LuChevronRight, LuLoaderCircle } from "react-icons/lu";
 import { useClubs } from "@/lib/useClubs";
@@ -14,6 +15,10 @@ type RelateEvent = {
   location?: string;
   description?: string;
   clubSlug?: string;
+  imageUrl?: string | null;
+  fee?: string;
+  feeAmount?: number;
+  feeSymbol?: string;
 };
 
 const dayOf = (iso?: string) => {
@@ -24,6 +29,11 @@ const dayOf = (iso?: string) => {
     month: d.toLocaleDateString("en-GB", { month: "short" }),
   };
 };
+
+const feeLabel = (e: RelateEvent) =>
+  (e.feeAmount ?? 0) > 0
+    ? `${e.feeSymbol ?? "R"}${(e.feeAmount ?? 0).toLocaleString("en-ZA")}`
+    : "Free";
 
 export default function EventsSports() {
   const { find } = useClubs();
@@ -53,6 +63,15 @@ export default function EventsSports() {
                 location: e.location ? String(e.location) : undefined,
                 description: e.description ? String(e.description) : undefined,
                 clubSlug: e.clubSlug ? String(e.clubSlug) : undefined,
+                imageUrl:
+                  typeof e.imageUrl === "string" && e.imageUrl
+                    ? e.imageUrl
+                    : null,
+                fee: e.fee ? String(e.fee) : "Free",
+                feeAmount:
+                  typeof e.feeAmount === "number" ? e.feeAmount : 0,
+                feeSymbol:
+                  typeof e.feeSymbol === "string" ? e.feeSymbol : "R",
               }))
               .filter((e: RelateEvent) => e.date)
               .slice(0, 8),
@@ -149,12 +168,18 @@ export default function EventsSports() {
               Upcoming Events
             </p>
             {loading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 3 }).map((_, i) => (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {Array.from({ length: 4 }).map((_, i) => (
                   <div
                     key={i}
-                    className="h-16 bg-gray-200 animate-pulse rounded-lg"
-                  />
+                    className="overflow-hidden rounded-xl border border-gray-200 bg-white"
+                  >
+                    <div className="aspect-[16/9] animate-pulse bg-gray-200" />
+                    <div className="space-y-2 p-4">
+                      <div className="h-4 w-3/4 animate-pulse rounded bg-gray-200" />
+                      <div className="h-3 w-1/2 animate-pulse rounded bg-gray-200" />
+                    </div>
+                  </div>
                 ))}
               </div>
             ) : error ? (
@@ -167,39 +192,63 @@ export default function EventsSports() {
                 calendar.
               </p>
             ) : (
-              <div className="space-y-3">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {upcoming.map((e) => {
                   const { day, month } = dayOf(e.date);
                   const club = clubOf(e.clubSlug);
+                  const img = e.imageUrl || club?.heroImage || null;
                   return (
                     <Link
                       key={e._id}
                       href="/events"
-                      className="flex items-start gap-4 p-3 rounded-xl bg-white border border-gray-200 hover:border-cyan/50 hover:shadow-md transition-all"
+                      className="group flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:border-cyan/50 hover:shadow-md"
                     >
-                      <div className="shrink-0 w-14 text-center bg-cyan text-navy rounded-lg py-2">
-                        <p className="text-[10px] leading-tight uppercase">
-                          {month}
-                        </p>
-                        <p className="text-lg font-bold leading-none">{day}</p>
+                      <div className="relative aspect-[16/9] overflow-hidden bg-tile">
+                        {img ? (
+                          <Image
+                            src={img}
+                            alt={e.title}
+                            fill
+                            sizes="(max-width: 640px) 100vw, 320px"
+                            className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div
+                            className="absolute inset-0"
+                            style={{
+                              background: `linear-gradient(135deg, ${club?.color ?? "#13c5dd"}, ${club?.colorDark ?? "#1d2a4d"})`,
+                            }}
+                          />
+                        )}
+                        <div className="absolute left-3 top-3 rounded-lg bg-cyan px-2.5 py-1.5 text-center text-navy shadow-sm">
+                          <p className="text-[10px] font-semibold uppercase leading-tight">
+                            {month}
+                          </p>
+                          <p className="text-lg font-bold leading-none">{day}</p>
+                        </div>
+                        <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-navy shadow-sm">
+                          {feeLabel(e)}
+                        </span>
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-sm font-semibold text-gray-800">
+                      <div className="flex flex-1 flex-col gap-1 p-4">
+                        <h3 className="text-sm font-semibold text-navy line-clamp-1 transition-colors group-hover:text-cyan">
                           {e.title}
                         </h3>
-                        <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">
-                          {e.description}
-                        </p>
-                        <p className="text-[11px] mt-1">
+                        {e.description && (
+                          <p className="text-xs leading-relaxed text-navy/70 line-clamp-2">
+                            {e.description}
+                          </p>
+                        )}
+                        <p className="mt-auto flex flex-wrap items-center gap-x-1 pt-1 text-[11px] text-slate-gray">
                           <span
-                            className="inline-block size-1.5 rounded-full mr-1"
-                            style={{ backgroundColor: club?.color ?? "#13c5dd" }}
+                            className="inline-block size-1.5 shrink-0 rounded-full"
+                            style={{
+                              backgroundColor: club?.color ?? "#13c5dd",
+                            }}
                           />
-                          <span className="text-slate-gray">
-                            {club?.name ?? "Relate"}
-                            {e.location ? ` · ${e.location}` : ""}
-                            {e.time ? ` · ${e.time}` : ""}
-                          </span>
+                          <span>{club?.name ?? "Relate"}</span>
+                          {e.location && <span>· {e.location}</span>}
+                          {e.time && <span>· {e.time}</span>}
                         </p>
                       </div>
                     </Link>
