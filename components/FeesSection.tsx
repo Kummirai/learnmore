@@ -49,33 +49,33 @@ export default function FeesSection() {
                     <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"}>
                         {featuredItems.map(({item, featured}) => (
                             <div key={item.id}
-                                 className={`bg-white rounded-2xl p-6 shadow-sm border-2 text-center flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ${featured ? "border-cyan relative" : "border-transparent"}`}>
+                                 className={`group relative flex flex-col overflow-hidden rounded-3xl bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${featured ? "ring-2 ring-cyan" : "ring-1 ring-black/5"}`}>
                                 {featured && (
-                                    <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan text-navy text-xs font-semibold px-4 py-1 rounded-full z-10"}>
+                                    <span className={"absolute left-4 top-4 z-10 rounded-full bg-cyan px-3 py-1 text-[11px] font-semibold text-navy shadow-sm"}>
                                         Most Popular
                                     </span>
                                 )}
-                                <a href={`/store/${item.id}`} className={"block aspect-square overflow-hidden mb-4 bg-gray-100 group"}>
+                                <a href={`/store/${item.id}`} className={"block aspect-square overflow-hidden bg-tile"}>
                                     <Image
                                         src={item.image}
                                         alt={item.name}
                                         width={640}
                                         height={640}
-                                        className={"size-full object-cover group-hover:scale-105 transition-transform duration-500"}
+                                        className={"size-full object-cover transition-transform duration-500 group-hover:scale-105"}
                                     />
                                 </a>
-                                <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>
-                                    <a href={`/store/${item.id}`} className="hover:text-cyan transition-colors inline-flex min-h-11 items-center">{item.name}</a>
-                                </h3>
-                                <p className={"text-3xl font-bold text-navy mb-1"}>{formatPrice(item.price)}</p>
-                                <p className={"text-sm text-gray-500 mb-4 flex-1"}>{item.blurb}</p>
-                                <div className={"flex flex-col gap-2 mt-auto"}>
+                                <div className={"flex flex-1 flex-col p-5"}>
+                                    <h3 className={"text-base font-semibold leading-snug text-navy"}>
+                                        <a href={`/store/${item.id}`} className="inline-flex min-h-11 items-center transition-colors hover:text-cyan">{item.name}</a>
+                                    </h3>
+                                    <p className={"-mt-1 text-sm leading-relaxed text-navy/70 flex-1"}>{item.blurb}</p>
+                                    <p className={"mt-3 text-2xl font-semibold tracking-tight text-navy"}>{formatPrice(item.price)}</p>
                                     <a href={`/store/checkout?item=${item.id}`}
-                                       className={`block text-sm font-medium py-3 min-h-11 rounded transition-colors ${featured ? "bg-navy text-white hover:bg-navy-dark" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}>
+                                       className={"btn-pill btn-brand mt-4 w-full"}>
                                         Order now
                                     </a>
                                     <a href={`/store/${item.id}`}
-                                       className="inline-flex min-h-11 items-center text-xs font-medium text-slate-gray hover:text-navy transition-colors">
+                                       className="link-chevron mt-3 self-start text-sm">
                                         View details
                                     </a>
                                 </div>
