@@ -391,7 +391,11 @@ export default async function PlayerPage({
                 {registrant ? (
                   <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                     {registrant.name} plays {registrant.position.toLowerCase()} for{" "}
-                    {team.name}, coached by {squad.coach.name}.{" "}
+                    {team.name}
+                    {squad.coach.name
+                      ? `, coached by ${squad.coach.name}`
+                      : ", led by the Head Coach"}
+                    .{" "}
                     {roster.registered} of {squad.players.length} spots on the team
                     sheet are filled so far this season.
                   </p>

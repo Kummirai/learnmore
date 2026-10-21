@@ -63,7 +63,7 @@ export async function generateMetadata({
   if (!team) return { title: "Team Not Found · Relate Sports" };
   return {
     title: `${team.name} · Relate Sports`,
-    description: `${team.name} — squad, coach and upcoming fixtures for ${club?.name ?? "Relate"}. Train through the week, play at the weekend. Free to join.`,
+    description: `${team.name} — squad, fixtures and registration for ${club?.name ?? "Relate"}. Train through the week, play at the weekend. Free to join.`,
   };
 }
 
@@ -232,11 +232,15 @@ export default async function TeamPage({
                     <LuUsers /> {roster.registered} of {squad.players.length} registered
                   </span>
                   <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                    <LuUser /> Coach {squad?.coach.name}
+                    <LuUser /> Head Coach{squad?.coach.name ? ` · ${squad.coach.name}` : ""}
                   </span>
-                  {squad?.fixtures[0] && (
+                  {squad?.fixtures[0] ? (
                     <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
                       <LuCalendar /> Next: {dayOf(squad.fixtures[0].date).weekday} {dayOf(squad.fixtures[0].date).day} {dayOf(squad.fixtures[0].date).month}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
+                      <LuCalendar /> Season starts March 2027
                     </span>
                   )}
                 </div>
@@ -286,7 +290,9 @@ export default async function TeamPage({
               <p className="text-gray-500 mt-1 text-sm max-w-2xl">
                 {roster.registered === 0
                   ? `Open to registration — the first ${squad.players.length} players to register make up the team sheet.`
-                  : `${roster.registered} of ${squad.players.length} spots filled, coached by ${squad.coach.name}.`}
+                  : squad.coach.name
+                    ? `${roster.registered} of ${squad.players.length} spots filled, coached by ${squad.coach.name}.`
+                    : `${roster.registered} of ${squad.players.length} spots filled · Head Coach to be announced.`}
               </p>
             </div>
 
@@ -410,7 +416,7 @@ export default async function TeamPage({
             {squad?.coach && (
               <div className="mt-12">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
-                  Coaching staff
+                  Head Coach
                 </p>
                 <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-6">
                   Who leads the team
@@ -421,11 +427,15 @@ export default async function TeamPage({
                       className="size-16 rounded-full flex items-center justify-center text-xl font-black text-white ring-4 ring-white shadow-lg shrink-0"
                       style={{ background: gradient }}
                     >
-                      {initialsOf(squad.coach.name)}
+                      {initialsOf(squad.coach.name || "Head Coach")}
                     </div>
                     <div>
-                      <h3 className="font-bold text-navy">{squad.coach.name}</h3>
-                      <p className="text-cyan text-xs font-semibold uppercase tracking-wider">{squad.coach.role} · {team.name}</p>
+                      <h3 className="font-bold text-navy">{squad.coach.name || "Head Coach"}</h3>
+                      <p className="text-cyan text-xs font-semibold uppercase tracking-wider">
+                        {squad.coach.name
+                          ? `${squad.coach.role || "Head Coach"} · ${team.name}`
+                          : `Leads ${team.name}`}
+                      </p>
                     </div>
                   </article>
                   {catalog.director.name && (
@@ -459,11 +469,14 @@ export default async function TeamPage({
                 Upcoming fixtures
               </h2>
               <p className="text-gray-500 mt-1 text-sm max-w-2xl mb-6">
-                The next five fixtures for {team.name} — home games at the Relate Grounds.
+                {squad.fixtures.length > 0
+                  ? `The next five fixtures for ${team.name} — home games at the Relate Grounds.`
+                  : "Match days are being set — the calendar lands here once the league confirms it."}
               </p>
 
-              <div className="space-y-3 max-w-3xl">
-                {squad?.fixtures.map((f) => {
+              {squad.fixtures.length > 0 ? (
+                <div className="space-y-3 max-w-3xl">
+                  {squad.fixtures.map((f) => {
                   const { day, month, weekday } = dayOf(f.date);
                   return (
                     <div
@@ -497,7 +510,21 @@ export default async function TeamPage({
                     </div>
                   );
                 })}
-              </div>
+                </div>
+              ) : (
+                <div className="max-w-3xl rounded-2xl border border-dashed border-cyan/40 bg-alice-blue px-6 py-12 text-center">
+                  <span className="mx-auto mb-4 size-12 rounded-full bg-white flex items-center justify-center shadow-sm">
+                    <LuCalendar className="text-cyan text-xl" />
+                  </span>
+                  <p className="text-lg md:text-xl font-black text-navy">
+                    Season starts in March 2027
+                  </p>
+                  <p className="text-sm text-slate-gray mt-1.5 max-w-md mx-auto">
+                    Fixtures will be published here once the league confirms the
+                    match calendar.
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="mt-12 rounded-2xl border border-gray-100 bg-white p-6 md:p-8 flex flex-col md:flex-row md:items-center md:justify-between gap-5 max-w-3xl">
