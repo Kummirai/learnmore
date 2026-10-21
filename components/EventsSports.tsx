@@ -88,21 +88,45 @@ export default function EventsSports() {
   const clubOf = (slug?: string) => find(slug);
 
   return (
-    <section className="reveal bg-white px-4 py-24 md:py-32">
+    <section className="reveal bg-white px-6 py-24 md:px-4 md:py-32">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
-          <div>
+        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+          <div className="max-w-2xl">
             <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan mb-2">
               Events &amp; Sports
             </p>
             <h2 className="text-3xl md:text-4xl font-semibold text-navy">
-              What&rsquo;s happening
+              Don&rsquo;t miss what&rsquo;s next
             </h2>
             <p className="text-[15px] text-navy/70 mt-2">
-              {live
-                ? "Live from the Relate community."
-                : "Community events and club teams."}
+              {live ? (
+                <span className="inline-flex items-center gap-2">
+                  <span className="relative flex size-2 shrink-0">
+                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-cyan opacity-75" />
+                    <span className="relative inline-flex size-2 rounded-full bg-cyan" />
+                  </span>
+                  Live from the Relate community.
+                </span>
+              ) : (
+                "Games, meetups and community days — everyone's welcome."
+              )}
             </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {["Free to attend", "Everyone welcome", "New events every week"].map(
+                (chip) => (
+                  <span
+                    key={chip}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-cyan/40 bg-cyan/10 px-3 py-1.5 text-xs font-semibold text-navy"
+                  >
+                    <span
+                      className="size-1.5 rounded-full bg-cyan"
+                      aria-hidden={true}
+                    />
+                    {chip}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-5">
             {loading && (
@@ -139,7 +163,8 @@ export default function EventsSports() {
               </p>
             ) : upcoming.length === 0 ? (
               <p className="text-sm text-slate-gray p-3">
-                No upcoming events right now — check back soon.
+                New events land every week — check back soon or open the full
+                calendar.
               </p>
             ) : (
               <div className="space-y-3">
@@ -173,6 +198,7 @@ export default function EventsSports() {
                           <span className="text-slate-gray">
                             {club?.name ?? "Relate"}
                             {e.location ? ` · ${e.location}` : ""}
+                            {e.time ? ` · ${e.time}` : ""}
                           </span>
                         </p>
                       </div>
@@ -184,7 +210,7 @@ export default function EventsSports() {
           </div>
 
           <div className="lg:col-span-2 rounded-2xl border border-gray-200 p-5 flex flex-col">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-1">
               <p className="text-[11px] font-semibold uppercase tracking-widest text-cyan">
                 Sports Teams
               </p>
@@ -195,6 +221,10 @@ export default function EventsSports() {
                 Explore sports
               </Link>
             </div>
+            <p className="mb-4 text-[13px] leading-relaxed text-navy/70">
+              Play for a Relate team — all skill levels welcome, only 4 spots
+              per position.
+            </p>
             <div className="space-y-3 flex-1">
               {sportsError && (
                 <p role="alert" className="text-xs text-red-700">
