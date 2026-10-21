@@ -103,30 +103,34 @@ export default function ClubBento() {
                   }}
                 />
               )}
-              <div className={"absolute inset-x-0 bottom-0 p-5"}>
-                <span
+              <div className={"absolute inset-x-0 bottom-0 p-4"}>
+                <div
                   className={
-                    "mb-2 inline-block rounded-full bg-navy-dark/45 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md"
+                    "inline-flex max-w-full items-center gap-3 rounded-2xl bg-navy-dark/55 px-4 py-3 backdrop-blur-md"
                   }
                 >
-                  {club.ageRange}
-                </span>
-                <p
-                  className={
-                    "flex items-center gap-1 text-xl font-semibold text-white"
-                  }
-                  style={{
-                    textShadow:
-                      "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85)",
-                  }}
-                >
-                  {club.name}
+                  <div className={"min-w-0"}>
+                    <p
+                      className={
+                        "truncate text-[11px] font-medium uppercase tracking-[0.12em] text-white/85"
+                      }
+                    >
+                      {club.ageRange}
+                    </p>
+                    <p
+                      className={
+                        "truncate text-lg font-semibold text-white"
+                      }
+                    >
+                      {club.name}
+                    </p>
+                  </div>
                   <LuChevronRight
                     className={
-                      "-translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
+                      "shrink-0 -translate-x-1 text-white opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100"
                     }
                   />
-                </p>
+                </div>
               </div>
             </Link>
           ))}
