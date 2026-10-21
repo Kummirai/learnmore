@@ -39,7 +39,7 @@ export default function ClubBento() {
           {/* Live anchor — counts down to the next prayer moment */}
           <div
             className={
-              "reveal relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-3xl border border-cyan/35 bg-[linear-gradient(135deg,#13c5dd_0%,#1d2a4d_100%)] p-7 text-white shadow-[0_18px_42px_rgba(21,31,58,0.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2"
+              "reveal relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-3xl bg-[linear-gradient(135deg,#13c5dd_0%,#1d2a4d_100%)] p-7 text-white shadow-[0_18px_42px_rgba(21,31,58,0.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2"
             }
           >
             <div>
