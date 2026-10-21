@@ -38,10 +38,10 @@ export default function EnrollPage() {
 
     if (state?.success) {
         return (
-            <section className={"flex-1 flex items-center justify-center px-4 py-16"}>
+            <section className={"reveal flex-1 flex items-center justify-center px-4 py-16"}>
                 <div className={"max-w-lg w-full bg-white rounded-xl p-8 md:p-12 text-center shadow-sm"}>
                     <LuCircleCheck className={"text-6xl text-cyan mx-auto mb-4"}/>
-                    <h1 className={"text-2xl md:text-3xl font-semibold text-gray-800 mb-3"}>Enrollment Submitted!</h1>
+                    <h1 className={"text-2xl md:text-3xl font-semibold text-navy mb-3"}>Enrollment Submitted!</h1>
                     <p className={"text-gray-600 leading-relaxed mb-6"}>{state.message}</p>
 
                 </div>
@@ -50,11 +50,11 @@ export default function EnrollPage() {
     }
 
     return (
-        <section className={"flex-1 flex items-center justify-center px-4 py-12"}>
+        <section className={"reveal flex-1 flex items-center justify-center px-4 py-12"}>
             <div className={"max-w-2xl w-full"}>
                 <div className={"bg-white rounded-xl p-8 md:p-10 shadow-sm"}>
                     <div className={"mb-8"}>
-                        <h1 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>Enroll Your Child</h1>
+                        <h1 className={"text-2xl md:text-3xl font-semibold text-navy"}>Enroll Your Child</h1>
                         <p className={"text-gray-500 text-sm mt-1"}>Fill in the details below and we&rsquo;ll get back to
                             you.</p>
                     </div>

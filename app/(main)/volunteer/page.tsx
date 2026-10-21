@@ -214,12 +214,12 @@ export default function VolunteerPage() {
                 navbar={false}
             />
 
-            <section className={"flex-1 px-4 py-14"}>
+            <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
                 <div className={"max-w-5xl mx-auto space-y-14"}>
                     {categories.map((cat) => (
                         <div key={cat.heading}>
                             <div className={"mb-6"}>
-                                <h2 className={"text-2xl md:text-3xl font-black tracking-tight text-navy"}>
+                                <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>
                                     {cat.heading}
                                 </h2>
                                 <p className={"text-slate-gray text-sm mt-1.5 max-w-2xl"}>
@@ -261,9 +261,9 @@ export default function VolunteerPage() {
                 </div>
             </section>
 
-            <section className={"bg-white px-4 py-16 border-t border-gray-100"}>
+            <section className={"reveal bg-white px-4 py-16 border-t border-gray-100"}>
                 <div className={"max-w-5xl mx-auto"}>
-                    <h2 className={"text-2xl md:text-3xl font-black tracking-tight text-navy text-center mb-2"}>
+                    <h2 className={"text-3xl md:text-4xl font-semibold text-navy text-center mb-2"}>
                         How to get started
                     </h2>
                     <p className={"text-slate-gray text-sm text-center mb-10 max-w-lg mx-auto"}>
@@ -296,7 +296,7 @@ export default function VolunteerPage() {
                 </div>
             </section>
 
-            <section id="apply" className={"px-4 py-16 bg-[#f5f8fb] border-t border-gray-100 scroll-mt-20"}>
+            <section id="apply" className={"reveal px-4 py-16 bg-[#f5f8fb] border-t border-gray-100 scroll-mt-20"}>
                 <div className={"max-w-3xl mx-auto"}>
                     <VolunteerApplyForm/>
                     <p className={"mt-6 text-center text-xs text-gray-400"}>

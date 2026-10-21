@@ -45,14 +45,20 @@ export default function Contact() {
   };
 
   return (
-    <section className={"py-16 md:py-24 bg-gray-50 px-4"}>
+    <section className={"reveal bg-white px-6 py-24 md:px-4 md:py-36"}>
       <div className={"max-w-6xl mx-auto"}>
-        <div className={"text-center mb-12 md:mb-16"}>
-          <h4 className={"text-cyan font-medium mb-3"}>GET IN TOUCH</h4>
-          <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-            We&apos;d Love to <span className={"text-cyan"}>Hear From You</span>
+        <div className={"mb-12 max-w-2xl md:mb-16"}>
+          <p
+            className={
+              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
+            }
+          >
+            Get in touch
+          </p>
+          <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>
+            We&apos;d love to hear from you
           </h2>
-          <p className={"text-gray-500 max-w-xl mx-auto mt-3"}>
+          <p className={"mt-4 text-lg text-navy/70"}>
             Want to join a club, ask for help in a hard season, or partner with
             us to fund lasting change? Reach out — someone will walk with you.
           </p>
@@ -69,19 +75,19 @@ export default function Contact() {
                 <div className={"mt-0.5 shrink-0"}>{d.icon}</div>
                 <div>
                   <div className={"text-sm text-gray-500"}>{d.label}</div>
-                  <div className={"font-medium text-gray-800"}>{d.value}</div>
+                  <div className={"font-medium text-navy"}>{d.value}</div>
                 </div>
               </div>
             ))}
           </div>
           <div className={"bg-white rounded-xl border border-gray-200 p-8"}>
-            <h3 className={"text-xl font-semibold text-gray-800 mb-4"}>
+            <h3 className={"text-xl font-semibold text-navy mb-4"}>
               Say Hello
             </h3>
             <form className={"space-y-4"} onSubmit={onSubmit}>
               <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                 <div>
-                  <label htmlFor={"contact-name"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                  <label htmlFor={"contact-name"} className={"block text-xs font-bold uppercase tracking-wider text-navy/70 mb-1.5"}>
                     Your Name
                   </label>
                   <input
@@ -97,7 +103,7 @@ export default function Contact() {
                   />
                 </div>
                 <div>
-                  <label htmlFor={"contact-email"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                  <label htmlFor={"contact-email"} className={"block text-xs font-bold uppercase tracking-wider text-navy/70 mb-1.5"}>
                     Your Email
                   </label>
                   <input
@@ -116,7 +122,7 @@ export default function Contact() {
                 </div>
               </div>
               <div>
-                <label htmlFor={"contact-subject"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                <label htmlFor={"contact-subject"} className={"block text-xs font-bold uppercase tracking-wider text-navy/70 mb-1.5"}>
                   Subject
                 </label>
                 <input
@@ -130,7 +136,7 @@ export default function Contact() {
                 />
               </div>
               <div>
-                <label htmlFor={"contact-message"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
+                <label htmlFor={"contact-message"} className={"block text-xs font-bold uppercase tracking-wider text-navy/70 mb-1.5"}>
                   Your Message
                 </label>
                 <textarea
@@ -147,7 +153,7 @@ export default function Contact() {
               <button
                 type="submit"
                 className={
-                  "inline-flex w-full items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-navy-dark transition-colors cursor-pointer sm:w-auto"
+                  "btn-pill btn-brand cursor-pointer sm:w-auto"
                 }
               >
                 Send via Email <LuArrowRight />

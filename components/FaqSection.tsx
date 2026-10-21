@@ -2,7 +2,7 @@
 
 import {useState} from "react"
 import Link from "next/link"
-import {LuChevronDown, LuArrowRight} from "react-icons/lu"
+import {LuChevronDown} from "react-icons/lu"
 
 const faqs = [
     {
@@ -27,25 +27,25 @@ export default function FaqSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(null)
 
     return (
-        <section className={"py-16 md:py-24 bg-white px-4"}>
+        <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-36"}>
             <div className={"max-w-3xl mx-auto"}>
-                <div className={"text-center mb-12"}>
-                    <h4 className={"text-cyan font-medium mb-3"}>FAQ</h4>
-                    <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
-                        Frequently Asked <span className={"text-cyan"}>Questions</span>
+                <div className={"mb-12 text-center"}>
+                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>FAQ</p>
+                    <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>
+                        Frequently asked questions
                     </h2>
                 </div>
                 <div className={"space-y-3 mb-8"}>
                     {faqs.map((faq, i) => (
-                        <div key={i} className={"bg-gray-50 rounded-xl overflow-hidden"}>
+                        <div key={i} className={"bg-white rounded-2xl overflow-hidden border border-black/5"}>
                             <button onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                    className={"w-full flex items-center justify-between p-5 text-left hover:bg-gray-100 transition-colors"}>
-                                <span className={"font-medium text-gray-800 text-sm md:text-base pr-4"}>{faq.q}</span>
+                                    className={"w-full flex items-center justify-between p-5 text-left hover:bg-tile transition-colors"}>
+                                <span className={"font-medium text-navy text-sm md:text-base pr-4"}>{faq.q}</span>
                                 <LuChevronDown
-                                    className={`text-lg text-gray-400 shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}/>
+                                    className={`text-lg text-cyan shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}/>
                             </button>
                             <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-none" : "max-h-0"}`}>
-                                <div className={"px-5 pb-5 text-sm text-gray-600 leading-relaxed border-t border-gray-200 pt-4"}>
+                                <div className={"px-5 pb-5 text-sm text-navy/75 leading-relaxed border-t border-black/5 pt-4"}>
                                     {faq.a}
                                 </div>
                             </div>
@@ -54,8 +54,8 @@ export default function FaqSection() {
                 </div>
                 <div className={"text-center"}>
                     <Link href={"/faq"}
-                          className={"inline-flex min-h-11 items-center gap-2 text-cyan font-medium text-sm hover:text-cyan-dark transition-colors"}>
-                        View All FAQs <LuArrowRight/>
+                          className={"link-chevron"}>
+                        View all FAQs
                     </Link>
                 </div>
             </div>

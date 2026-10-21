@@ -1,4 +1,3 @@
-import { LuChevronRight } from "react-icons/lu";
 import Link from "next/link";
 
 const posts = [
@@ -30,30 +29,31 @@ const posts = [
 
 export default function NewsHighlights() {
   return (
-    <section className={"py-16 md:py-20 bg-gray-50 px-4"}>
+    <section className={"reveal bg-tile px-6 py-24 md:px-4 md:py-32"}>
       <div className={"max-w-6xl mx-auto"}>
-        <div className={"flex items-center justify-between mb-8"}>
+        <div className={"mb-10 flex items-center justify-between gap-4"}>
           <div>
-            <h4 className={"text-cyan font-medium mb-1"}>LATEST NEWS</h4>
-            <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>
-              From the Relate Community
+            <p
+              className={
+                "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
+              }
+            >
+              Latest news
+            </p>
+            <h2 className={"text-3xl font-semibold text-navy md:text-4xl"}>
+              From the Relate community
             </h2>
           </div>
-          <Link
-            href={"/news"}
-            className={
-              "text-sm text-cyan font-medium flex min-h-11 items-center gap-1 hover:gap-2 transition-all"
-            }
-          >
-            View All <LuChevronRight />
+          <Link href={"/news"} className={"link-chevron"}>
+            View all
           </Link>
         </div>
-        <div className={"grid grid-cols-1 md:grid-cols-3 gap-6"}>
+        <div className={"grid grid-cols-1 gap-6 md:grid-cols-3"}>
           {posts.map((p, i) => (
             <div
               key={i}
               className={
-                "bg-white rounded-lg p-6 border border-gray-200 hover:shadow-lg transition-shadow"
+                "bg-white rounded-2xl p-6 border border-black/5 hover:shadow-lg transition-shadow"
               }
             >
               <span
@@ -61,13 +61,13 @@ export default function NewsHighlights() {
               >
                 {p.tag}
               </span>
-              <h3 className={"text-base font-semibold text-gray-800 mb-2"}>
+              <h3 className={"text-base font-semibold text-navy mb-2"}>
                 {p.title}
               </h3>
-              <p className={"text-sm text-gray-600 leading-relaxed mb-3"}>
+              <p className={"text-sm text-navy/70 leading-relaxed mb-3"}>
                 {p.excerpt}
               </p>
-              <p className={"text-xs text-gray-400"}>{p.date}</p>
+              <p className={"text-xs text-navy/70"}>{p.date}</p>
             </div>
           ))}
         </div>
