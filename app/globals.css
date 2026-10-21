@@ -9,6 +9,8 @@
   --color-cyan: #13c5dd;
   --color-cyan-light: #67e3f5;
   --color-cyan-dark: #0fa3c4;
+  /* Text-safe cyan — AA-contrast cyan for links and accents on light stages. */
+  --color-cyan-ink: #0a7e99;
   --color-alice-blue: #eff5f9;
   --color-ghost-white: #f5f8fb;
   --color-ice-blue: #d4eef5;
@@ -123,7 +125,7 @@
     display: inline-flex;
     align-items: baseline;
     gap: 0.25em;
-    color: var(--color-cyan-dark);
+    color: var(--color-cyan-ink);
     font-weight: 500;
     font-size: 1.0625rem;
   }

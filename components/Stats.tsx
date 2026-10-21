@@ -1,26 +1,31 @@
-import {LuUsers, LuBookOpen, LuHeartHandshake, LuSun} from "react-icons/lu";
-
 export default function Stats() {
-    const stats = [
-        {icon: <LuUsers className={"text-4xl"}/>, value: "7", label: "Clubs for Every Age"},
-        {icon: <LuBookOpen className={"text-4xl"}/>, value: "60+", label: "Weekly Programs"},
-        {icon: <LuSun className={"text-4xl"}/>, value: "360+", label: "Daily Verses & Prayers"},
-        {icon: <LuHeartHandshake className={"text-4xl"}/>, value: "100%", label: "Free to Join"}
-    ]
+  const stats = [
+    { value: "7", label: "Clubs for every age" },
+    { value: "60+", label: "Weekly programs" },
+    { value: "360+", label: "Daily verses & prayers" },
+    { value: "100%", label: "Free to join" },
+  ];
 
-    return (
-        <section className={"py-16 md:py-20 bg-navy px-4"}>
-            <div className={"max-w-6xl mx-auto"}>
-                <div className={"grid grid-cols-1 min-[400px]:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8"}>
-                    {stats.map((stat, i) => (
-                        <div key={i} className={"text-center text-white"}>
-                            <div className={"flex justify-center mb-4"}>{stat.icon}</div>
-                            <p className={"text-3xl md:text-4xl font-bold mb-1"}>{stat.value}</p>
-                            <p className={"text-cyan-light text-sm md:text-base"}>{stat.label}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    )
+  return (
+    <section className={"reveal bg-tile px-4 py-24 md:py-32"}>
+      <div
+        className={
+          "mx-auto grid max-w-5xl grid-cols-2 gap-x-8 gap-y-12 text-center lg:grid-cols-4"
+        }
+      >
+        {stats.map((stat) => (
+          <div key={stat.label}>
+            <p
+              className={
+                "text-5xl font-semibold tracking-tight text-navy md:text-6xl"
+              }
+            >
+              {stat.value}
+            </p>
+            <p className={"mt-2 text-[13px] text-navy/70"}>{stat.label}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
 }

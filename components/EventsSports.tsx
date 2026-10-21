@@ -88,15 +88,17 @@ export default function EventsSports() {
   const clubOf = (slug?: string) => find(slug);
 
   return (
-    <section className="py-16 md:py-20 bg-white px-4">
+    <section className="reveal bg-white px-4 py-24 md:py-32">
       <div className="max-w-6xl mx-auto">
-        <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
+        <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
           <div>
-            <h4 className="text-cyan font-medium mb-1">EVENTS &amp; SPORTS</h4>
-            <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy">
-              What&rsquo;s Happening
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70 mb-2">
+              Events &amp; Sports
+            </p>
+            <h2 className="text-3xl md:text-4xl font-semibold text-navy">
+              What&rsquo;s happening
             </h2>
-            <p className="text-sm text-slate-gray mt-1">
+            <p className="text-[15px] text-navy/70 mt-2">
               {live
                 ? "Live from the Relate community."
                 : "Community events and club teams."}
@@ -104,15 +106,15 @@ export default function EventsSports() {
           </div>
           <div className="flex items-center gap-5">
             {loading && (
-              <span className="flex items-center gap-1.5 text-sm text-gray-400">
+              <span className="flex items-center gap-1.5 text-sm text-navy/60">
                 <LuLoaderCircle className="animate-spin" /> Loading…
               </span>
             )}
             <Link
               href="/events"
-              className="text-sm text-cyan font-medium flex min-h-11 items-center gap-1 hover:gap-2 transition-all"
+              className="link-chevron"
             >
-              View All Events <LuChevronRight />
+              View all events
             </Link>
           </div>
         </div>
@@ -188,7 +190,7 @@ export default function EventsSports() {
               </p>
               <Link
                 href="/sports"
-                className="text-xs text-cyan font-semibold inline-flex min-h-11 items-center hover:underline"
+                className="text-[13px] font-semibold text-cyan-ink inline-flex min-h-11 items-center hover:underline"
               >
                 Explore sports
               </Link>
@@ -218,7 +220,7 @@ export default function EventsSports() {
                         .join(" · ")}
                     </p>
                   </div>
-                  <LuChevronRight className="text-cyan shrink-0" />
+                  <LuChevronRight className="text-cyan-ink shrink-0" />
                 </Link>
               ))}
             </div>

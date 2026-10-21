@@ -39,11 +39,17 @@ export default function PhotoHighlights() {
   const prev = () => setStart((s) => Math.max(s - 1, 0));
 
   return (
-    <section className={"py-16 md:py-20 bg-white px-4"}>
+    <section className={"reveal bg-stage px-4 py-24 md:py-32"}>
       <div className={"max-w-6xl mx-auto"}>
-        <div className={"text-center mb-8"}>
-          <h4 className={"text-cyan font-medium mb-1"}>CLUB LIFE</h4>
-          <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800"}>
+        <div className={"mb-10 text-center"}>
+          <p
+            className={
+              "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+            }
+          >
+            Club life
+          </p>
+          <h2 className={"text-3xl font-semibold text-navy md:text-4xl"}>
             Moments at Relate
           </h2>
         </div>
@@ -53,7 +59,7 @@ export default function PhotoHighlights() {
               <div
                 key={i}
                 className={
-                  "relative rounded-xl aspect-[4/3] overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer"
+                  "relative rounded-2xl aspect-[4/3] overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer"
                 }
               >
                 <Image
@@ -82,7 +88,7 @@ export default function PhotoHighlights() {
                 onClick={prev}
                 disabled={start === 0}
                 className={
-                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan-ink disabled:opacity-30 disabled:cursor-not-allowed transition"
                 }
               >
                 <LuChevronLeft className={"text-xl"} />
@@ -91,7 +97,7 @@ export default function PhotoHighlights() {
                 onClick={next}
                 disabled={start >= photos.length - visible}
                 className={
-                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan-ink disabled:opacity-30 disabled:cursor-not-allowed transition"
                 }
               >
                 <LuChevronRight className={"text-xl"} />
