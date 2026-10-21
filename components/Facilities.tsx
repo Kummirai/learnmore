@@ -14,7 +14,7 @@ export default function Facilities() {
         <section className={"reveal bg-white px-4 py-24 md:py-32"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"mb-12 max-w-2xl md:mb-16"}>
-                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"}>
+                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>
                         Inside the app
                     </p>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>

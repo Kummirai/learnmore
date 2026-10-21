@@ -12,22 +12,22 @@ import { buildContactMailto } from "@/lib/contact-mailto";
 export default function Contact() {
   const details = [
     {
-      icon: <LuMapPin className={"text-2xl text-cyan-ink"} />,
+      icon: <LuMapPin className={"text-2xl text-cyan"} />,
       label: "Address",
       value: "123 Education Street, Learning City, 2000",
     },
     {
-      icon: <LuPhone className={"text-2xl text-cyan-ink"} />,
+      icon: <LuPhone className={"text-2xl text-cyan"} />,
       label: "Phone",
       value: "+27 78 267 7436",
     },
     {
-      icon: <LuMail className={"text-2xl text-cyan-ink"} />,
+      icon: <LuMail className={"text-2xl text-cyan"} />,
       label: "Email",
       value: "info@relateworld.org",
     },
     {
-      icon: <LuClock className={"text-2xl text-cyan-ink"} />,
+      icon: <LuClock className={"text-2xl text-cyan"} />,
       label: "Club Times",
       value: "Weekly meetups · Saturdays & evenings",
     },
@@ -50,7 +50,7 @@ export default function Contact() {
         <div className={"mb-12 max-w-2xl md:mb-16"}>
           <p
             className={
-              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
             }
           >
             Get in touch

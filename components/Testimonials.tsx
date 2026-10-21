@@ -33,7 +33,7 @@ export default function Testimonials() {
         <div className={"mb-12 text-center md:mb-16"}>
           <p
             className={
-              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
             }
           >
             Testimonials
@@ -60,7 +60,7 @@ export default function Testimonials() {
           <figcaption className={"mt-7 flex items-center justify-center gap-3"}>
             <span
               className={
-                "grid size-10 place-items-center rounded-full bg-navy text-sm font-semibold text-white"
+                  "grid size-10 place-items-center rounded-full bg-cyan text-sm font-semibold text-navy"
               }
             >
               {featured.initials}
@@ -91,7 +91,7 @@ export default function Testimonials() {
               <div className={"mt-6 flex items-center gap-3"}>
                 <span
                   className={
-                    "grid size-10 place-items-center rounded-full bg-navy text-sm font-semibold text-white"
+                "grid size-10 place-items-center rounded-full bg-cyan text-sm font-semibold text-navy"
                   }
                 >
                   {t.initials}

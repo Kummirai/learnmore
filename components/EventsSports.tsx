@@ -92,7 +92,7 @@ export default function EventsSports() {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70 mb-2">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan mb-2">
               Events &amp; Sports
             </p>
             <h2 className="text-3xl md:text-4xl font-semibold text-navy">
@@ -121,7 +121,7 @@ export default function EventsSports() {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-5">
           <div className="lg:col-span-3 bg-alice-blue rounded-2xl p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-4">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-cyan mb-4">
               Upcoming Events
             </p>
             {loading ? (
@@ -152,7 +152,7 @@ export default function EventsSports() {
                       href="/events"
                       className="flex items-start gap-4 p-3 rounded-xl bg-white border border-gray-200 hover:border-cyan/50 hover:shadow-md transition-all"
                     >
-                      <div className="shrink-0 w-14 text-center bg-navy text-white rounded-lg py-2">
+                      <div className="shrink-0 w-14 text-center bg-cyan text-navy rounded-lg py-2">
                         <p className="text-[10px] leading-tight uppercase">
                           {month}
                         </p>
@@ -185,12 +185,12 @@ export default function EventsSports() {
 
           <div className="lg:col-span-2 rounded-2xl border border-gray-200 p-5 flex flex-col">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-cyan">
                 Sports Teams
               </p>
               <Link
                 href="/sports"
-                className="text-[13px] font-semibold text-cyan-ink inline-flex min-h-11 items-center hover:underline"
+                className="text-[13px] font-semibold text-cyan inline-flex min-h-11 items-center hover:underline"
               >
                 Explore sports
               </Link>
@@ -220,7 +220,7 @@ export default function EventsSports() {
                         .join(" · ")}
                     </p>
                   </div>
-                  <LuChevronRight className="text-cyan-ink shrink-0" />
+                  <LuChevronRight className="text-cyan shrink-0" />
                 </Link>
               ))}
             </div>

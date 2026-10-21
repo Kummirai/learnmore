@@ -35,7 +35,7 @@ export default function NewsHighlights() {
           <div>
             <p
               className={
-                "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+                "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
               }
             >
               Latest news

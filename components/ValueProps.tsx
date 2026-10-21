@@ -32,7 +32,7 @@ export default function ValueProps() {
         <div className={"mb-12 max-w-2xl md:mb-16"}>
           <p
             className={
-              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
             }
           >
             What Relate does
@@ -47,7 +47,7 @@ export default function ValueProps() {
           }
         >
           {points.map((point) => (
-            <div key={point.title} className={"border-t border-black/10 pt-5"}>
+            <div key={point.title} className={"border-t-2 border-cyan/70 pt-5"}>
               <h3 className={"text-lg font-semibold text-navy"}>
                 {point.title}
               </h3>

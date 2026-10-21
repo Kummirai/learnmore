@@ -44,7 +44,7 @@ export default function PhotoHighlights() {
         <div className={"mb-10 text-center"}>
           <p
             className={
-              "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+              "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
             }
           >
             Club life
@@ -88,7 +88,7 @@ export default function PhotoHighlights() {
                 onClick={prev}
                 disabled={start === 0}
                 className={
-                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan-ink disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
                 }
               >
                 <LuChevronLeft className={"text-xl"} />
@@ -97,7 +97,7 @@ export default function PhotoHighlights() {
                 onClick={next}
                 disabled={start >= photos.length - visible}
                 className={
-                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan-ink disabled:opacity-30 disabled:cursor-not-allowed transition"
+                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
                 }
               >
                 <LuChevronRight className={"text-xl"} />

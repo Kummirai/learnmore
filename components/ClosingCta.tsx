@@ -9,6 +9,13 @@ export default function ClosingCta() {
   return (
     <section className={"bg-navy px-4 py-24 md:py-36"}>
       <div className={"reveal mx-auto max-w-3xl text-center"}>
+        <p
+          className={
+            "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
+          }
+        >
+          Join the family
+        </p>
         <h2 className={"text-4xl font-semibold text-white md:text-5xl"}>
           Find your crew.
         </h2>
@@ -38,7 +45,7 @@ export default function ClosingCta() {
         </div>
         <p
           className={
-            "mt-6 flex items-center justify-center gap-2 text-sm text-white/50"
+            "mt-6 flex items-center justify-center gap-2 text-sm text-cyan"
           }
         >
           <LuArrowDownToLine /> Free download · Android 8.0+ · iOS coming soon

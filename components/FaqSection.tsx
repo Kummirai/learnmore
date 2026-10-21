@@ -30,7 +30,7 @@ export default function FaqSection() {
         <section className={"reveal bg-stage px-4 py-24 md:py-36"}>
             <div className={"max-w-3xl mx-auto"}>
                 <div className={"mb-12 text-center"}>
-                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"}>FAQ</p>
+                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>FAQ</p>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>
                         Frequently asked questions
                     </h2>
@@ -42,7 +42,7 @@ export default function FaqSection() {
                                     className={"w-full flex items-center justify-between p-5 text-left hover:bg-tile transition-colors"}>
                                 <span className={"font-medium text-navy text-sm md:text-base pr-4"}>{faq.q}</span>
                                 <LuChevronDown
-                                    className={`text-lg text-navy/60 shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}/>
+                                    className={`text-lg text-cyan shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}/>
                             </button>
                             <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-none" : "max-h-0"}`}>
                                 <div className={"px-5 pb-5 text-sm text-navy/75 leading-relaxed border-t border-black/5 pt-4"}>

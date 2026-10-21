@@ -17,7 +17,7 @@ export default function Stats() {
           <div key={stat.label}>
             <p
               className={
-                "text-5xl font-semibold tracking-tight text-navy md:text-6xl"
+                "text-5xl font-semibold tracking-tight text-cyan md:text-6xl"
               }
             >
               {stat.value}

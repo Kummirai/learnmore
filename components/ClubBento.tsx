@@ -22,7 +22,7 @@ export default function ClubBento() {
         <div className={"reveal mx-auto mb-12 max-w-2xl text-center md:mb-16"}>
           <p
             className={
-              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"
+              "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
             }
           >
             Our clubs
@@ -39,26 +39,26 @@ export default function ClubBento() {
           {/* Live anchor — counts down to the next prayer moment */}
           <div
             className={
-              "reveal relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-3xl bg-navy p-7 text-white sm:col-span-2 lg:col-span-2 lg:row-span-2"
+              "reveal relative flex min-h-[240px] flex-col justify-between overflow-hidden rounded-3xl border border-cyan/35 bg-[linear-gradient(135deg,#13c5dd_0%,#1d2a4d_100%)] p-7 text-white shadow-[0_18px_42px_rgba(21,31,58,0.16)] sm:col-span-2 lg:col-span-2 lg:row-span-2"
             }
           >
             <div>
-              <p className={"text-[11px] uppercase tracking-[0.18em] text-white/60"}>
+              <p className={"text-[11px] font-bold uppercase tracking-[0.18em] text-white/80"}>
                 Daily rhythm
               </p>
-              <p className={"mt-1 text-base font-medium text-white/90"}>
+              <p className={"mt-1 text-base font-medium text-white"}>
                 {prayer ? `${prayer.label} prayer` : "Pray with us"}
               </p>
             </div>
             <div>
               <p
                 className={
-                  "text-5xl font-semibold tracking-tight tabular-nums md:text-6xl"
+                  "text-5xl font-semibold tracking-tight tabular-nums text-white md:text-6xl"
                 }
               >
                 {prayer ? prayer.countdown : "6×"}
               </p>
-              <p className={"mt-2 text-sm text-white/70"}>
+              <p className={"mt-2 text-sm text-white/85"}>
                 {prayer ? "until the next moment" : "six moments, every day"}
               </p>
               <Link
@@ -73,7 +73,7 @@ export default function ClubBento() {
           </div>
 
           {/* Club photo tiles — caption sits on the photo, kept readable by
-              a frosted chip and a navy text shadow instead of a scrim */}
+              a navy text shadow instead of a scrim */}
           {seven.map((club, i) => (
             <Link
               key={club.slug}
@@ -137,11 +137,11 @@ export default function ClubBento() {
           <Link
             href={"/enroll"}
             className={
-              "reveal flex min-h-[190px] flex-col justify-between rounded-3xl border border-black/5 bg-tile p-6 transition-colors hover:border-cyan-ink/40"
+              "reveal flex min-h-[190px] flex-col justify-between rounded-3xl border border-black/5 bg-tile p-6 transition-colors hover:border-cyan/50"
             }
             style={{ transitionDelay: "420ms" }}
           >
-            <p className={"text-[11px] uppercase tracking-[0.18em] text-navy/70"}>
+            <p className={"text-[11px] uppercase tracking-[0.18em] text-cyan"}>
               Not sure?
             </p>
             <div>

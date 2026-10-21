@@ -19,7 +19,7 @@ export default function FeesSection() {
         <section className={"reveal bg-stage px-4 py-24 md:py-32"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"mb-12 max-w-2xl md:mb-16"}>
-                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/70"}>
+                    <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>
                         Relate Store
                     </p>
                     <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>
@@ -51,7 +51,7 @@ export default function FeesSection() {
                             <div key={item.id}
                                  className={`bg-white rounded-2xl p-6 shadow-sm border-2 text-center flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 ${featured ? "border-cyan relative" : "border-transparent"}`}>
                                 {featured && (
-                                    <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-navy text-white text-xs font-medium px-4 py-1 rounded-full z-10"}>
+                                    <span className={"absolute -top-3 left-1/2 -translate-x-1/2 bg-cyan text-navy text-xs font-semibold px-4 py-1 rounded-full z-10"}>
                                         Most Popular
                                     </span>
                                 )}
@@ -65,7 +65,7 @@ export default function FeesSection() {
                                     />
                                 </a>
                                 <h3 className={"text-lg font-semibold text-gray-800 mb-1"}>
-                                    <a href={`/store/${item.id}`} className="hover:text-cyan-dark transition-colors inline-flex min-h-11 items-center">{item.name}</a>
+                                    <a href={`/store/${item.id}`} className="hover:text-cyan transition-colors inline-flex min-h-11 items-center">{item.name}</a>
                                 </h3>
                                 <p className={"text-3xl font-bold text-navy mb-1"}>{formatPrice(item.price)}</p>
                                 <p className={"text-sm text-gray-500 mb-4 flex-1"}>{item.blurb}</p>
