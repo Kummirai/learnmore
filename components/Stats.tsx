@@ -7,7 +7,7 @@ export default function Stats() {
   ];
 
   return (
-    <section className={"reveal bg-tile px-4 py-24 md:py-32"}>
+    <section className={"reveal bg-tile px-6 py-24 md:px-4 md:py-32"}>
       <div
         className={
           "mx-auto grid max-w-5xl grid-cols-2 gap-x-8 gap-y-12 text-center lg:grid-cols-4"

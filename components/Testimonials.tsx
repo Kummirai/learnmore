@@ -28,7 +28,7 @@ export default function Testimonials() {
   const [featured, ...rest] = testimonials;
 
   return (
-    <section className={"reveal bg-white px-4 py-24 md:py-36"}>
+    <section className={"reveal bg-white px-6 py-24 md:px-4 md:py-36"}>
       <div className={"max-w-5xl mx-auto"}>
         <div className={"mb-12 text-center md:mb-16"}>
           <p

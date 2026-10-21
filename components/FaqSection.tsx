@@ -27,7 +27,7 @@ export default function FaqSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(null)
 
     return (
-        <section className={"reveal bg-stage px-4 py-24 md:py-36"}>
+        <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-36"}>
             <div className={"max-w-3xl mx-auto"}>
                 <div className={"mb-12 text-center"}>
                     <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>FAQ</p>

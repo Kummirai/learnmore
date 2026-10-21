@@ -27,7 +27,7 @@ const points = [
 
 export default function ValueProps() {
   return (
-    <section className={"reveal bg-stage px-4 py-24 md:py-36"}>
+    <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-36"}>
       <div className={"max-w-5xl mx-auto"}>
         <div className={"mb-12 max-w-2xl md:mb-16"}>
           <p
@@ -37,7 +37,7 @@ export default function ValueProps() {
           >
             What Relate does
           </p>
-          <h2 className={"text-4xl font-semibold text-navy md:text-5xl"}>
+          <h2 className={"text-3xl font-semibold text-navy sm:text-4xl md:text-5xl"}>
             Grow in every area of life
           </h2>
         </div>

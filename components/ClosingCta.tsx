@@ -7,7 +7,7 @@ const APK_URL = "/relate-app.apk";
 /** One dark closing band — enrolment and the club visit, side by side. */
 export default function ClosingCta() {
   return (
-    <section className={"bg-navy px-4 py-24 md:py-36"}>
+    <section className={"bg-navy px-6 py-24 md:px-4 md:py-36"}>
       <div className={"reveal mx-auto max-w-3xl text-center"}>
         <p
           className={

@@ -39,7 +39,7 @@ export default function PhotoHighlights() {
   const prev = () => setStart((s) => Math.max(s - 1, 0));
 
   return (
-    <section className={"reveal bg-stage px-4 py-24 md:py-32"}>
+    <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-32"}>
       <div className={"max-w-6xl mx-auto"}>
         <div className={"mb-10 text-center"}>
           <p

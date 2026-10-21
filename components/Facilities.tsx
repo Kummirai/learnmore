@@ -11,7 +11,7 @@ export default function Facilities() {
     ]
 
     return (
-        <section className={"reveal bg-white px-4 py-24 md:py-32"}>
+        <section className={"reveal bg-white px-6 py-24 md:px-4 md:py-32"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"mb-12 max-w-2xl md:mb-16"}>
                     <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>

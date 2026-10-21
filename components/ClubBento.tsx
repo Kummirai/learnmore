@@ -17,7 +17,7 @@ export default function ClubBento() {
   const skeleton = loading && seven.length === 0;
 
   return (
-    <section className={"bg-white px-4 py-24 md:py-36"}>
+    <section className={"bg-white px-6 py-24 md:px-4 md:py-36"}>
       <div className={"max-w-6xl mx-auto"}>
         <div className={"reveal mx-auto mb-12 max-w-2xl text-center md:mb-16"}>
           <p
