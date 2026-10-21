@@ -49,10 +49,10 @@ const extra = [
 
 export default function FeesPage() {
     return (
-        <section className={"flex-1 px-4 py-12"}>
+        <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-10"}>
-                    <h1 className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}>School Fees</h1>
+                    <h1 className={"text-4xl md:text-5xl font-semibold text-navy mb-4"}>School Fees</h1>
                     <p className={"text-gray-500 max-w-xl mx-auto"}>Affordable, transparent fee structure for the 2026 academic year. Payment plans available.</p>
                 </div>
 

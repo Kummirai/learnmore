@@ -40,11 +40,11 @@ const principles = [
 
 export default function AboutPage() {
   return (
-    <section className={"flex-1 px-4 py-12"}>
+    <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
       <div className={"max-w-4xl mx-auto"}>
         <div className={"text-center mb-12"}>
           <h1
-            className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}
+            className={"text-4xl md:text-5xl font-semibold text-navy mb-4"}
           >
             About Relate
           </h1>

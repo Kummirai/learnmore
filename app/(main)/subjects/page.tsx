@@ -70,10 +70,10 @@ const subjects = [
 
 export default function SubjectsPage() {
     return (
-        <section className={"flex-1 px-4 py-12"}>
+        <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"text-center mb-12"}>
-                    <h1 className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}>Our Subjects</h1>
+                    <h1 className={"text-4xl md:text-5xl font-semibold text-navy mb-4"}>Our Subjects</h1>
                     <p className={"text-gray-500 max-w-xl mx-auto"}>
                         A rich and balanced curriculum designed to nurture every child&rsquo;s
                         academic, creative, and physical development from Grade R to Grade 7.

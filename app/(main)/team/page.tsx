@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 export default function TeamPage() {
   return (
     <>
-      <section className={"flex-1 px-4 pt-12 pb-4"}>
+      <section className={"reveal flex-1 px-4 pt-16 md:pt-24 pb-4"}>
         <div className={"max-w-4xl mx-auto text-center"}>
           <h1
-            className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}
+            className={"text-4xl md:text-5xl font-semibold text-navy mb-4"}
           >
             Our Team
           </h1>
@@ -27,7 +27,7 @@ export default function TeamPage() {
           <Link
             href={"/volunteer"}
             className={
-              "mt-6 inline-flex items-center gap-2 bg-[#13c5dd] text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-[#67e3f5] transition-colors"
+              "btn-pill btn-brand mt-6"
             }
           >
             <LuHandHeart /> Volunteer with us
