@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import ThemeSync from "@/components/ThemeSync";
+import RevealObserver from "@/components/RevealObserver";
 import { AuthProvider } from "@/components/AuthProvider";
 
 const SITE_URL = "https://relateworld.org";
@@ -72,6 +73,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <ThemeSync />
+        <RevealObserver />
         <AuthProvider>
           <main className={"flex-1"}>{children}</main>
         </AuthProvider>

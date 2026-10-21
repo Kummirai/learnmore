@@ -14,6 +14,9 @@
   --color-ice-blue: #d4eef5;
   --color-ink: #1d2a4d;
   --color-slate-gray: #6b7a8d;
+  /* Apple-inspired stage neutrals — page and tile backgrounds. */
+  --color-stage: #fbfbfd;
+  --color-tile: #f5f5f7;
   /* Brand gold — the Relate emblem gold, previously hardcoded in the quiz medal. */
   --color-gold-50: #fdf9ee;
   --color-gold-100: #faefcd;
@@ -30,6 +33,140 @@
   --club-accent: #13c5dd;
   --club-accent-dark: #0fa3c4;
   --club-on-accent: #1d2a4d;
+}
+
+@layer base {
+  /* Apple-like reading rhythm: 17px body, tightened display tracking. */
+  body {
+    font-size: 17px;
+    line-height: 1.47;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.022em;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--color-cyan-dark);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Fully-rounded pill buttons — the Apple primary/secondary pair. */
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.72rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.15s ease;
+  }
+
+  .btn-pill:active {
+    transform: scale(0.97);
+  }
+
+  .btn-light {
+    background-color: #ffffff;
+    color: var(--color-navy);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  .btn-light:hover {
+    background-color: #f2f5f8;
+  }
+
+  .btn-brand {
+    background-color: var(--color-navy);
+    color: #ffffff;
+  }
+
+  .btn-brand:hover {
+    background-color: var(--color-navy-dark);
+  }
+
+  .btn-outline-light {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+  .btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.65);
+  }
+
+  /* "Learn more ›" — the Apple chevron link. */
+  .link-chevron {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.25em;
+    color: var(--color-cyan-dark);
+    font-weight: 500;
+    font-size: 1.0625rem;
+  }
+
+  .link-chevron::after {
+    content: "\203A";
+    font-size: 1.15em;
+    transition: transform 0.2s ease;
+  }
+
+  .link-chevron:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .link-chevron:hover::after {
+    transform: translateX(2px);
+  }
+}
+
+/* ── Scroll reveals ──────────────────────────────────────────────────────────
+   Hidden state only applies once RevealObserver marks the document ready, so
+   content stays visible if JavaScript never runs. */
+.reveal {
+  transition:
+    opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.reveal-ready .reveal:not([data-visible="true"]) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none !important;
+  }
+
+  html.reveal-ready .reveal:not([data-visible="true"]) {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .glass-card {
