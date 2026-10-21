@@ -106,18 +106,32 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
 
   // Hover accent per variant: bright cyan on dark heroes, darker cyan for contrast on white.
   const hoverText = overlay ? "hover:text-cyan-light" : "hover:text-cyan-dark";
+  // Kept off the dropdown panels (white bg) — only the triggers that sit over the hero.
+  const triggerShadow = overlay
+    ? { textShadow: "0 1px 8px rgba(21,31,58,0.6)" }
+    : undefined;
 
   return (
     <section
       className={
         overlay
-          ? "absolute inset-x-0 top-0 z-30 backdrop-blur-xl bg-navy/45 border-b border-white/10"
-          : // Sticky frosted bar keeps the Apple-style chrome present while
-            // scrolling; a high z-index keeps it above hero art on every page
-            // that renders the Navbar outside a PageHero.
-            "sticky top-0 z-40 bg-white/75 backdrop-blur-xl border-b border-black/[0.06]"
+          ? "absolute inset-x-0 top-0 z-30 pt-0 sm:mb-30"
+          : // Relative + a high z-index keeps the bar above hero art and other
+            // decorative layers on every page that renders the Navbar outside a
+            // PageHero, without pinning it and changing the scroll behaviour.
+            "relative z-40 bg-white border-b border-gray-100"
       }
     >
+      {overlay && (
+        <div
+          aria-hidden={true}
+          className={"pointer-events-none absolute inset-x-0 top-0 h-32 -z-10"}
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(21,31,58,0.65) 0%, rgba(21,31,58,0.25) 60%, transparent 100%)",
+          }}
+        />
+      )}
       <div
         className={
           "max-w-6xl mx-auto px-4 md:px-0 flex items-center justify-between gap-4"
@@ -125,7 +139,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
       >
         <Link
           href={"/"}
-          className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-2`}
+          className={`${overlay ? "text-white" : "text-navy"} flex items-center gap-2 py-3 md:py-4`}
         >
           <Image
             src={"/images/relate-world-logo.png"}
@@ -133,7 +147,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             width={500}
             height={500}
             priority
-            className={`relative h-10 md:h-12 w-auto object-contain self-center`}
+            className={`relative h-14 md:h-20 w-auto object-contain self-center`}
           />
         </Link>
         <nav className={"hidden lg:block"}>
@@ -143,7 +157,8 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             <li>
               <Link
                 href={"/"}
-                className={`block text-[13px] font-medium ${hoverText} transition-colors`}
+                className={`block text-sm  ${hoverText} transition-colors`}
+                style={triggerShadow}
               >
                 Home
               </Link>
@@ -151,12 +166,13 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             {groups.map((group) => (
               <li key={group.link} className={"relative group"}>
                 <span
-                  className={`flex items-center gap-1 text-[13px] font-medium ${hoverText} transition-colors cursor-default`}
+                  className={`flex items-center gap-1 text-sm  ${hoverText} transition-colors cursor-default`}
+                  style={triggerShadow}
                 >
                   {group.link}
                   <LuChevronDown
                     className={
-                      "text-[10px] mt-0.5 group-hover:rotate-180 transition-transform"
+                      "text-xs mt-0.5 group-hover:rotate-180 transition-transform"
                     }
                   />
                 </span>
@@ -167,7 +183,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                 >
                   <div
                     className={
-                      "bg-white/95 backdrop-blur-xl rounded-2xl shadow-[0_16px_48px_rgba(21,31,58,0.14)] border border-black/5 py-2 min-w-48"
+                      "bg-white rounded-lg shadow-xl border border-gray-100 py-2 min-w-44"
                     }
                   >
                     {group.items.map((item) =>
@@ -177,7 +193,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                           href={item.path}
                           memberLabel={null}
                           className={
-                            "block px-4 py-2.5 text-[13px] text-navy/80 rounded-lg mx-1.5 w-[calc(100%-12px)] hover:bg-stage hover:text-navy transition-colors"
+                            "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
                           }
                         >
                           {item.link}
@@ -187,7 +203,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                           key={item.path}
                           href={item.path}
                           className={
-                            "block px-4 py-2.5 text-[13px] text-navy/80 rounded-lg mx-1.5 w-[calc(100%-12px)] hover:bg-stage hover:text-navy transition-colors"
+                            "block px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
                           }
                         >
                           {item.link}
@@ -201,7 +217,8 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
             <li>
               <Link
                 href={"/store"}
-                className={`block text-[13px] font-medium ${hoverText} transition-colors`}
+                className={`block text-sm  ${hoverText} transition-colors`}
+                style={triggerShadow}
               >
                 Store
               </Link>
