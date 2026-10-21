@@ -1,4 +1,5 @@
-import Link from "next/link";
+"use client";
+
 import {
   LuMapPin,
   LuPhone,
@@ -6,6 +7,7 @@ import {
   LuClock,
   LuArrowRight,
 } from "react-icons/lu";
+import { buildContactMailto } from "@/lib/contact-mailto";
 
 export default function Contact() {
   const details = [
@@ -30,6 +32,17 @@ export default function Contact() {
       value: "Weekly meetups · Saturdays & evenings",
     },
   ];
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const name = String(data.get("name") || "").trim();
+    const email = String(data.get("email") || "").trim();
+    const subject = String(data.get("subject") || "").trim();
+    const message = String(data.get("message") || "").trim();
+    if (!name || !email || !message) return;
+    window.location.href = buildContactMailto(name, email, subject, message);
+  };
 
   return (
     <section className={"py-16 md:py-24 bg-gray-50 px-4"}>
@@ -65,7 +78,7 @@ export default function Contact() {
             <h3 className={"text-xl font-semibold text-gray-800 mb-4"}>
               Say Hello
             </h3>
-            <form className={"space-y-4"}>
+            <form className={"space-y-4"} onSubmit={onSubmit}>
               <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
                 <div>
                   <label htmlFor={"contact-name"} className={"block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5"}>
@@ -131,17 +144,14 @@ export default function Contact() {
                   }
                 />
               </div>
-              <Link
-                href={
-                  "https://wa.me/27782677436?text=Hello%20RelateWorld!%20I%27d%20like%20to%20make%20an%20enquiry."
-                }
-                target={"_blank"}
+              <button
+                type="submit"
                 className={
-                  "inline-flex w-full items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-navy-dark transition-colors sm:w-auto"
+                  "inline-flex w-full items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg text-sm font-medium hover:bg-navy-dark transition-colors cursor-pointer sm:w-auto"
                 }
               >
-                Send via WhatsApp <LuArrowRight />
-              </Link>
+                Send via Email <LuArrowRight />
+              </button>
             </form>
           </div>
         </div>
