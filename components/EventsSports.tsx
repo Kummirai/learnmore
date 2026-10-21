@@ -192,14 +192,8 @@ export default function EventsSports() {
               {Array.from({ length: 3 }).map((_, i) => (
                 <div
                   key={i}
-                  className="overflow-hidden rounded-2xl border border-black/5 bg-white"
-                >
-                  <div className="aspect-[16/9] animate-pulse bg-tile" />
-                  <div className="space-y-2 p-4">
-                    <div className="h-4 w-3/4 animate-pulse rounded bg-tile" />
-                    <div className="h-3 w-1/2 animate-pulse rounded bg-tile" />
-                  </div>
-                </div>
+                  className="min-h-[260px] animate-pulse rounded-2xl bg-tile"
+                />
               ))}
             </div>
           </div>
@@ -279,45 +273,49 @@ export default function EventsSports() {
                     <Link
                       key={e._id}
                       href={`/events/${e._id}`}
-                      className="group flex flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-all hover:border-cyan/50 hover:shadow-md"
+                      className="group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl transition-shadow hover:shadow-lg"
                     >
-                      <div className="relative aspect-[16/9] overflow-hidden bg-tile">
-                        {img ? (
-                          <Image
-                            src={img}
-                            alt={e.title}
-                            fill
-                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
-                            className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        ) : (
-                          <div
-                            className="absolute inset-0"
-                            style={{
-                              background: `linear-gradient(135deg, ${club?.color ?? "#13c5dd"}, ${club?.colorDark ?? "#1d2a4d"})`,
-                            }}
-                          />
-                        )}
-                        <div className="absolute left-3 top-3 rounded-lg bg-cyan px-2.5 py-1.5 text-center text-navy shadow-sm">
-                          <p className="text-[10px] font-semibold uppercase leading-tight">
-                            {month}
-                          </p>
-                          <p className="text-lg font-bold leading-none">{day}</p>
-                        </div>
-                        <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-navy shadow-sm">
-                          {feeLabel(e)}
-                        </span>
+                      {img ? (
+                        <Image
+                          src={img}
+                          alt={e.title}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+                          className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div
+                          className="absolute inset-0"
+                          style={{
+                            background: `linear-gradient(135deg, ${club?.color ?? "#13c5dd"}, ${club?.colorDark ?? "#1d2a4d"})`,
+                          }}
+                        />
+                      )}
+                      <div className="absolute left-3 top-3 rounded-lg bg-cyan px-2.5 py-1.5 text-center text-navy shadow-sm">
+                        <p className="text-[10px] font-semibold uppercase leading-tight">
+                          {month}
+                        </p>
+                        <p className="text-lg font-bold leading-none">{day}</p>
                       </div>
-                      <div className="flex flex-1 flex-col gap-1 p-4">
-                        <h3 className="text-sm font-semibold text-navy line-clamp-1 transition-colors group-hover:text-cyan">
+                      <span className="absolute right-3 top-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-navy shadow-sm">
+                        {feeLabel(e)}
+                      </span>
+                      <div
+                        className="relative p-4"
+                        style={{
+                          textShadow:
+                            "0 1px 2px rgba(21,31,58,0.95), 0 2px 14px rgba(21,31,58,0.85), 0 4px 36px rgba(21,31,58,0.6)",
+                        }}
+                      >
+                        <h3 className="text-base font-semibold text-white line-clamp-1">
                           {e.title}
                         </h3>
                         {e.description && (
-                          <p className="text-xs leading-relaxed text-navy/70 line-clamp-2">
+                          <p className="mt-1 text-xs leading-relaxed text-white/90 line-clamp-2">
                             {e.description}
                           </p>
                         )}
-                        <p className="mt-auto flex flex-wrap items-center gap-x-1 pt-1 text-[11px] text-slate-gray">
+                        <p className="mt-1.5 flex flex-wrap items-center gap-x-1 text-[11px] text-white/85">
                           <span
                             className="inline-block size-1.5 shrink-0 rounded-full"
                             style={{
