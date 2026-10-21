@@ -127,7 +127,7 @@ export default function Footer() {
                 <LuMail
                   className={"shrink-0 text-[color:var(--club-accent)]"}
                 />
-                <span>info@RelateWorld.edu</span>
+                <span>info@relateworld.org</span>
               </li>
               <li className={"flex items-start gap-2"}>
                 <LuClock

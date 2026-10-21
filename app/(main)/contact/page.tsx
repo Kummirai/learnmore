@@ -159,7 +159,7 @@ export default function ContactPage() {
                 </div>
                 <div className={"flex items-center gap-3"}>
                   <LuMail className={"shrink-0 text-cyan"} />
-                  <span className={"text-gray-600"}>info@RelateWorld.edu</span>
+                  <span className={"text-gray-600"}>info@relateworld.org</span>
                 </div>
                 <div className={"flex items-start gap-3"}>
                   <LuClock className={"mt-0.5 shrink-0 text-cyan"} />

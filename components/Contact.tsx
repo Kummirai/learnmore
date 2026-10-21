@@ -22,7 +22,7 @@ export default function Contact() {
     {
       icon: <LuMail className={"text-2xl text-cyan"} />,
       label: "Email",
-      value: "info@RelateWorld.edu",
+      value: "info@relateworld.org",
     },
     {
       icon: <LuClock className={"text-2xl text-cyan"} />,
