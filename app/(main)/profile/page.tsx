@@ -118,7 +118,7 @@ function ProfileBody() {
             <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="bg-alice-blue rounded-xl px-4 py-3">
                     <dt className="text-[11px] uppercase tracking-widest text-gray-500">Member role</dt>
-                    <dd className="text-sm font-semibold text-gray-800 capitalize">{user.role === "facilitator" ? "Facilitator" : user.role === "admin" ? "Admin" : "Member"}</dd>
+                    <dd className="text-sm font-semibold text-gray-800 capitalize">{user.role === "admin" ? "Admin" : "Member"}</dd>
                 </div>
                 <div className="bg-alice-blue rounded-xl px-4 py-3">
                     <dt className="text-[11px] uppercase tracking-widest text-gray-500">Email status</dt>

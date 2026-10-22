@@ -15,6 +15,8 @@ import {
     LuBadgeCheck,
     LuCalendarDays,
     LuTicket,
+    LuBriefcase,
+    LuBuilding2,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -78,6 +80,20 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Social",
                 icon: LuMessageSquare,
                 description: "Approve or decline WhatsApp community join requests.",
+            },
+            {
+                href: "/admin/services",
+                label: "Services",
+                short: "Services",
+                icon: LuBriefcase,
+                description: "Post tasks and design work for members to claim and deliver.",
+            },
+            {
+                href: "/admin/offices",
+                label: "Volunteer Offices",
+                short: "Offices",
+                icon: LuBuilding2,
+                description: "Open roles for the community and the applications they bring in.",
             },
         ],
     },

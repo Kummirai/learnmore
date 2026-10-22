@@ -13,16 +13,14 @@ type Member = {
     createdAt: string | null;
 };
 
-const ROLES = ["user", "facilitator", "admin"] as const;
+const ROLES = ["user", "admin"] as const;
 const ROLE_TONE: Record<string, "gold" | "sky" | "slate"> = {
     admin: "gold",
-    facilitator: "sky",
     user: "slate",
     member: "slate",
 };
 const ROLE_HINT: Record<string, string> = {
     user: "Standard member account.",
-    facilitator: "Can run clubs and groups once facilitator training is complete.",
     admin: "Full dashboard access — treat sparingly.",
 };
 
@@ -96,7 +94,7 @@ export default function AdminMembersPage() {
     };
 
     const counts = useMemo(() => {
-        const c: Record<string, number> = {admin: 0, facilitator: 0, user: 0};
+        const c: Record<string, number> = {admin: 0, user: 0};
         for (const m of members ?? []) if (c[m.role] !== undefined) c[m.role] += 1;
         return c;
     }, [members]);

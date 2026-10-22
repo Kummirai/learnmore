@@ -349,7 +349,7 @@ export const chapters: ManualChapter[] = [
           "Lead prayer groups and prayer requests",
           "Handle sensitive prayer requests with confidentiality",
           "Encourage daily prayer and Bible reading among members",
-          "Coordinate with facilitators and group moderators",
+          "Coordinate with group moderators and admins",
         ],
       },
       {
