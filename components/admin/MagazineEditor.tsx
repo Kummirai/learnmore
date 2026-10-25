@@ -346,7 +346,7 @@ export default function MagazineEditor({
                     <div className="mt-5 grid grid-cols-1 gap-4">
                         <ImageUpload value={draft.cover}
                                      onChange={(url) => set({ cover: url })}
-                                     hint="Uploads go to Supabase Storage (JPEG/PNG/WebP, 4 MB), or paste a direct image URL."/>
+                                     hint="Uploads go to Cloudinary (JPEG/PNG/WebP, 4 MB), or paste a direct image URL."/>
                         <Field label="Theme">
                             <Input value={draft.theme} onChange={(e) => set({ theme: e.target.value })} placeholder="Season theme" />
                         </Field>

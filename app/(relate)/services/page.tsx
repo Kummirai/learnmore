@@ -17,7 +17,7 @@ import {
 } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import {useAuth} from "@/components/AuthProvider";
-import {getSupabase, isSupabaseConfigured} from "@/lib/supabase";
+import {uploadToCloudinary} from "@/lib/cloudinary";
 
 type ServiceType = "bug" | "design" | "other";
 type ServiceStatus = "open" | "accepted" | "submitted" | "approved" | "closed";
@@ -81,22 +81,9 @@ function dateText(value?: string | null): string {
 }
 
 async function uploadImage(file: File): Promise<string> {
-    if (!isSupabaseConfigured) {
-        throw new Error("Image uploads are not configured on this site yet.");
-    }
-    const client = getSupabase();
-    if (!client) throw new Error("Image uploads are not configured on this site yet.");
-    const ext = (file.name.split(".").pop() || "jpg").replace(/[^a-z0-9]/gi, "").toLowerCase() || "jpg";
-    const path = `services/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const {error} = await client.storage.from("event-images").upload(path, file, {
-        contentType: file.type || "image/jpeg",
-        cacheControl: "3600",
-        upsert: false,
-    });
-    if (error) throw new Error(error.message || "Upload failed.");
-    const {data} = client.storage.from("event-images").getPublicUrl(path);
-    if (!data?.publicUrl) throw new Error("Upload failed.");
-    return data.publicUrl;
+    // Unsigned direct-to-Cloudinary upload; the public URL lands on the
+    // submission record unchanged (backend stores the string only).
+    return uploadToCloudinary(file, "relate/services");
 }
 
 function SignInCta({label}: {label: string}) {

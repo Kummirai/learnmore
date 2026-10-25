@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { LuImagePlus, LuLoader, LuUpload, LuX } from "react-icons/lu";
 import { Button, Input } from "@/components/admin/ui";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 const MAX_BYTES = 4 * 1024 * 1024;
 const ACCEPT = "image/jpeg,image/png,image/webp,image/avif";
@@ -15,12 +16,12 @@ function formatBytes(bytes: number): string {
 }
 
 /**
- * Admin image field: paste a URL or upload the file to Supabase Storage.
+ * Admin image field: paste a URL or upload the file straight to Cloudinary.
  *
- * The browser never touches Supabase — it POSTs the file to
- * /api/admin/uploads, which authenticates the admin and writes the object
- * server-side. On success `onChange` receives the public URL, so this drops
- * into any controlled string field.
+ * The upload is unsigned — the browser posts the file directly with the
+ * public preset, so no server round-trip or API secret is involved. On
+ * success `onChange` receives the Cloudinary secure URL, so this drops into
+ * any controlled string field.
  */
 export default function ImageUpload({
                                    value,
@@ -54,12 +55,7 @@ export default function ImageUpload({
         setError(null);
         setName(file.name);
         try {
-            const body = new FormData();
-            body.append("file", file);
-            const res = await fetch("/api/admin/uploads", { method: "POST", body });
-            const json = await res.json().catch(() => null);
-            if (!res.ok) throw new Error(json?.error || "Upload failed.");
-            onChange(json.url as string);
+            onChange(await uploadToCloudinary(file, "relate/covers"));
         } catch (e) {
             setError(e instanceof Error ? e.message : "Upload failed.");
             setName(null);
