@@ -5,7 +5,7 @@
  * always point at the same build.
  *
  * On every release:
- *   1. Bump LATEST_VERSION below.
+ *   1. Bump LATEST_VERSION below and the mobile app's `expo.version`.
  *   2. Build the APK, then publish it as a GitHub Release on
  *      Kummirai/learnmore (public, so the asset downloads without a login)
  *      with tag `vX.Y.Z` and the asset named `relate-world-vX.Y.Z.apk` —
@@ -24,7 +24,7 @@ export type AppVersionInfo = {
     forceUpdate: boolean;
 };
 
-const LATEST_VERSION = "1.0.1";
+const LATEST_VERSION = "1.0.2";
 
 /** Release-asset URL for a given version — GitHub serves it as an attachment. */
 export const LATEST_APK_URL =
@@ -35,6 +35,6 @@ export const APP_VERSION: AppVersionInfo = {
     minSupportedVersion: "1.0.0",
     apkUrl: LATEST_APK_URL,
     releaseNotes:
-        "• New Sprout Netball match tracking\n• Performance improvements and bug fixes",
+        "• Custom prayer tones for background notifications\n• Fixed team registration photo uploads\n• Smoother event creation",
     forceUpdate: false,
 };
