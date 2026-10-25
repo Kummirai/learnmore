@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Relate World
 
-## Getting Started
+**Relate World** is a comprehensive, multi-platform ecosystem built to empower youth development across sports clubs (football, netball, volleyball), skill labs (programming, graphic design), and community programs. 
 
-First, run the development server:
+The platform bridges web and mobile access, featuring a [Next.js](https://nextjs.org/) web application and an **Expo (React Native)** mobile application optimized for seamless performance across all devices.
 
+---
+
+## 🚀 Tech Stack
+
+* **Frontend Web:** [Next.js](https://nextjs.org/) (React, TypeScript, Tailwind CSS)
+* **Mobile App:** [Expo](https://expo.dev/) / React Native (Android APK distribution via [GitHub Releases](https://github.com/Kummirai/learnmore/releases))
+* **Backend & Database:** [Supabase](https://supabase.com/) (PostgreSQL, Authentication, Row Level Security)
+* **Media Management:** [Cloudinary](https://cloudinary.com/) (Automated image optimization, fast WebP delivery, profile avatars, and sports galleries)
+* **Communications & Support:** [Brevo](https://www.brevo.com/) (Transactional emails for system alerts, store orders, and support tickets sent to `info@relateworld.org`)
+
+---
+
+## 📱 Mobile Application & Updates
+
+The mobile app is distributed directly via Android APK builds hosted on GitHub Releases:
+* **Current Version:** `v1.0.1`
+* **Download Latest APK:** [Relate World App v1.0.1 Release](https://github.com/Kummirai/learnmore/releases/tag/v1.0.1)
+* **In-App Updates:** The app automatically checks your Next.js API endpoint on startup and prompts users when a new APK build is available.
+
+---
+
+## 🛠️ Getting Started Locally
+
+### Prerequisites
+Make sure you have Node.js installed on your machine.
+
+### 1. Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+git clone [https://github.com/Kummirai/learnmore.git](https://github.com/Kummirai/learnmore.git)
+cd learnmore
