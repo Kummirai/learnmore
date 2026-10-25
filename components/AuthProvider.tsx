@@ -9,7 +9,7 @@ export type User = {
     name: string;
     email: string;
     image?: string | null;
-    role: "member" | "admin" | "facilitator" | "user";
+    role: "member" | "admin" | "user";
     emailVerified?: boolean;
 };
 
@@ -43,7 +43,9 @@ function toAppUser(u: {
         name: typeof u.name === "string" ? u.name : "User",
         email: typeof u.email === "string" ? u.email : "",
         image: typeof u.image === "string" && u.image ? u.image : null,
-        role: raw === "admin" || raw === "facilitator" ? raw : "member",
+        // Legacy accounts may still hold the retired "facilitator" role — treat
+        // them as ordinary members until an admin changes them.
+        role: raw === "admin" ? "admin" : "member",
         emailVerified: Boolean(u.emailVerified),
     };
 }

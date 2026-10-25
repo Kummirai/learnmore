@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FaAndroid } from "react-icons/fa";
 import { LuArrowDownToLine } from "react-icons/lu";
 
-const APK_URL = "/relate-app.apk";
+import { LATEST_APK_URL as APK_URL } from "@/lib/app-version";
 
 /** One dark closing band — enrolment and the club visit, side by side. */
 export default function ClosingCta() {

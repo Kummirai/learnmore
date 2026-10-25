@@ -4,6 +4,8 @@ import {useCallback, useEffect, useState} from "react";
 import Link from "next/link";
 import {
     LuArrowRight,
+    LuBriefcase,
+    LuBuilding2,
     LuHandHeart,
     LuLifeBuoy,
     LuMessageSquare,
@@ -16,6 +18,8 @@ const QUEUES = [
     {href: "/admin/volunteers", label: "Volunteer requests", icon: LuHandHeart},
     {href: "/admin/help-requests", label: "Help requests", icon: LuLifeBuoy},
     {href: "/admin/social-joins", label: "Social joins", icon: LuMessageSquare},
+    {href: "/admin/services", label: "Service reviews", icon: LuBriefcase},
+    {href: "/admin/offices", label: "Office applications", icon: LuBuilding2},
 ] as const;
 
 const QUEUE_HREFS = new Set<string>(QUEUES.map((q) => q.href));
@@ -24,7 +28,6 @@ const QUEUE_HREFS = new Set<string>(QUEUES.map((q) => q.href));
 const PENDING_ADMIN_AREAS = [
     "School grant applications",
     "Sponsorships & banking details",
-    "Facilitator applications",
     "Broadcast notifications",
 ];
 
@@ -70,15 +73,17 @@ export default function AdminDashboardPage() {
             }
         };
 
-        const [volunteers, help, social, members, pubs] = await Promise.all([
+        const [volunteers, help, social, services, offices, members, pubs] = await Promise.all([
             safe("/api/admin/volunteers?status=new&countOnly=1"),
             safe("/api/help-requests?status=open&countOnly=1"),
             safe("/api/community/social-join?status=pending&countOnly=1"),
             safe("/api/admin/club-join?status=active&countOnly=1"),
+            safe("/api/community/services?status=submitted"),
+            safe("/api/community/offices/applications?status=pending"),
             listPubs(),
         ]);
 
-        setCounts({volunteers, help, social});
+        setCounts({volunteers, help, social, services, offices});
         setTotals({
             publications: pubs ? pubs.length : null,
             drafts: pubs ? pubs.filter((p) => p.status === "draft").length : null,
@@ -98,6 +103,8 @@ export default function AdminDashboardPage() {
         if (href === "/admin/volunteers") return counts.volunteers ?? null;
         if (href === "/admin/help-requests") return counts.help ?? null;
         if (href === "/admin/social-joins") return counts.social ?? null;
+        if (href === "/admin/services") return counts.services ?? null;
+        if (href === "/admin/offices") return counts.offices ?? null;
         return null;
     };
 

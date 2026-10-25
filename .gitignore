@@ -42,3 +42,4 @@ next-env.d.ts
 
 # large app binaries (hosted externally, not in git)
 public/relate-app.apk
+public/downloads/*.apk

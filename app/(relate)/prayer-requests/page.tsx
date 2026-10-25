@@ -12,6 +12,7 @@ import {
 } from "react-icons/lu";
 import PageHero from "@/components/PageHero";
 import RequestAppCta from "@/components/RequestAppCta";
+import { LATEST_APK_URL } from "@/lib/app-version";
 
 const STEPS = [
   {
@@ -52,7 +53,7 @@ export default function PrayerRequestsPage() {
         actions={
           <>
             <a
-              href={"/relate-app.apk"}
+              href={LATEST_APK_URL}
               download
               className={"inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"}
             >
@@ -149,7 +150,7 @@ export default function PrayerRequestsPage() {
               prayer moments.
             </p>
             <a
-              href={"/relate-app.apk"}
+              href={LATEST_APK_URL}
               download
               className="mt-4 inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-cyan-dark hover:underline"
             >

@@ -94,6 +94,8 @@ export default function Footer() {
                 { label: "Store", path: "/store" },
                 { label: "FAQ", path: "/faq" },
                 { label: "Contact", path: "/contact" },
+                { label: "Privacy Policy", path: "/privacy" },
+                { label: "Terms of Service", path: "/terms" },
               ].map((link, i) => (
                 <li key={i}>
                   <Link

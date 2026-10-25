@@ -70,6 +70,15 @@ const navGroups: NavGroup[] = [
       { link: "Read & Pray Plans", path: "/plans" },
     ],
   },
+  {
+    link: "Serve",
+    short: "Serve",
+    items: [
+      { link: "Services", path: "/services" },
+      { link: "Volunteer Offices", path: "/offices" },
+      { link: "Volunteer with us", path: "/volunteer" },
+    ],
+  },
 ];
 
 const flatLinks = [

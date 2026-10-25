@@ -13,7 +13,7 @@ const points = [
   },
   {
     title: "Real community",
-    body: "A WhatsApp group with weekly meetups — not a mailing list. Trained facilitators walk with you.",
+    body: "A WhatsApp group with weekly meetups — not a mailing list. Small-group leaders walk with you.",
   },
   {
     title: "Free to join, always",
