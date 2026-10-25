@@ -12,6 +12,7 @@ import {
 } from "@/constants/relate";
 import { useClubs } from "@/lib/useClubs";
 import { useNextPrayer } from "@/lib/useNextPrayer";
+import { LATEST_APK_URL } from "@/lib/app-version";
 
 /* ── Slide model ────────────────────────────────────────────────────────────── */
 
@@ -150,7 +151,7 @@ function clubSlide(club: RelateClub): Slide {
     },
     actions: (
       <>
-        <a href={"/relate-app.apk"} download className={btnPrimary}>
+        <a href={LATEST_APK_URL} download className={btnPrimary}>
           <FaAndroid /> Download App Apk
         </a>
         <Link href={`/${club.slug}`} className={btnGhost}>
@@ -180,7 +181,7 @@ function charitySlide(): Slide {
         <Link href={"/requests"} className={btnPrimary}>
           Give or get help
         </Link>
-        <a href={"/relate-app.apk"} download className={btnGhost}>
+        <a href={LATEST_APK_URL} download className={btnGhost}>
           <FaAndroid /> Send it in the app
         </a>
       </>

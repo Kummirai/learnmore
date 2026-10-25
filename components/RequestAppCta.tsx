@@ -1,7 +1,7 @@
 import { FaAndroid, FaWhatsapp } from "react-icons/fa";
 import { LuArrowDownToLine } from "react-icons/lu";
 
-const APK_URL = "/relate-app.apk";
+import { LATEST_APK_URL as APK_URL } from "@/lib/app-version";
 
 export default function RequestAppCta({
   eyebrow,
