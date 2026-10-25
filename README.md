@@ -1,8 +1,8 @@
 # Relate World
 
-**Relate World** is a comprehensive, multi-platform ecosystem built to empower youth development across sports clubs, skill labs, and community programs. 
+**Relate World** is a vibrant, multi-platform ecosystem designed to foster multigenerational community, spiritual growth, and practical life support. The platform brings together specialized clubs for every age and season of life, daily community rhythms, and holistic care (including family mentorship and relief support).
 
-The platform bridges web and mobile access, featuring a [Next.js](https://nextjs.org/) web application and an **Expo (React Native)** mobile application optimized for seamless performance across all devices.
+The ecosystem bridges web and mobile access, featuring a [Next.js](https://nextjs.org/) web application and an **Expo (React Native)** mobile application optimized for seamless performance across all devices.
 
 ---
 
