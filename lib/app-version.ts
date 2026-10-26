@@ -24,7 +24,7 @@ export type AppVersionInfo = {
     forceUpdate: boolean;
 };
 
-const LATEST_VERSION = "1.0.2";
+const LATEST_VERSION = "1.0.3";
 
 /** Release-asset URL for a given version — GitHub serves it as an attachment. */
 export const LATEST_APK_URL =
@@ -35,6 +35,6 @@ export const APP_VERSION: AppVersionInfo = {
     minSupportedVersion: "1.0.0",
     apkUrl: LATEST_APK_URL,
     releaseNotes:
-        "• Custom prayer tones for background notifications\n• Fixed team registration photo uploads\n• Smoother event creation",
+        "• Prayer notifications restored to stable behaviour\n• Profile shows your real app version\n• General stability fixes",
     forceUpdate: false,
 };
