@@ -42,6 +42,36 @@ export type SkillProject = {
   fee?: string;
 };
 
+/** Curriculum domain a module belongs to (Pulse tracks; Prime's single track). */
+export type SkillTrackCategory =
+  | "smart_saver"
+  | "career_launch"
+  | "digital_productivity"
+  | "wellness_fitness";
+
+/** One curriculum module inside a skill (spec: SkillModule). */
+export type SkillModule = {
+  id: string;
+  trackCategory: SkillTrackCategory;
+  title: string;
+  description: string;
+  order: number;
+  durationMinutes: number;
+  deliverableDescription: string;
+};
+
+/** The member's saved row for one module (spec: MemberModuleProgress). */
+export type ModuleProgress = {
+  id?: string;
+  skillId?: string;
+  moduleId: string;
+  completed: boolean;
+  completedAt?: string | null;
+  deliverableSubmitted: boolean;
+  deliverableUrl?: string | null;
+  updatedAt?: string;
+};
+
 /** Static widget content for the skill detail page (member state is derived at runtime). */
 export type SkillDetail = {
   /** Tools the member uses — shown as chips in the overview. */
@@ -88,6 +118,8 @@ export type Skill = {
   output?: string;
   /** Widget content for the skill detail page. */
   detail?: SkillDetail;
+  /** Curriculum modules — progress tracked per module (see ModuleProgress). */
+  modules?: SkillModule[];
   requirements: SkillRequirement[];
   /** All levels of this skill, in order (the API passes the full nested copy). */
   levels: SkillLevelEntry[];

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 import Navbar from "@/components/Navbar";
 import JoinCta from "@/components/join/JoinCta";
+import ModuleTracker from "@/components/skills/ModuleTracker";
 import SkillDashboard from "@/components/skills/SkillDashboard";
 import { getClub } from "@/lib/clubs";
 import { getSkills, type SkillsCatalog } from "@/lib/skills";
@@ -358,12 +359,18 @@ export default async function SkillDetailPage({
               </div>
             )}
 
-            <SkillDashboard
-              skill={entry}
-              clubSlug={club}
-              whatsappGroupLink={targetClub?.whatsappGroupLink}
-              accent={accent}
-            />
+            {entry.modules?.length ? (
+              <ModuleTracker skill={entry} clubSlug={club} accent={accent} />
+            ) : null}
+
+            {entry.levels.some((level) => level.requirements.length > 0) ? (
+              <SkillDashboard
+                skill={entry}
+                clubSlug={club}
+                whatsappGroupLink={targetClub?.whatsappGroupLink}
+                accent={accent}
+              />
+            ) : null}
 
             <div
               className={"rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"}
