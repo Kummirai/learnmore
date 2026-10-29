@@ -45,16 +45,16 @@ export default function CodeSandbox({
   doneKeys: Set<string>;
   onTestPass: (milestone: PortalMilestone) => void;
 }) {
-  const [code, setCode] = useState<PortalStarter>(() => loadDraft(year));
+  const [code, setCode] = useState<PortalStarter>(() => ({ ...year.starter }));
   const [pane, setPane] = useState<SandboxPane>("html");
   const [pageId, setPageId] = useState<string>(
     year.starter.pages?.[0]?.id ?? "index",
   );
   const [preview, setPreview] = useState<string>(() =>
     composePreview({
-      html: code.pages?.[0]?.html ?? code.html,
-      css: code.css,
-      js: code.js,
+      html: year.starter.pages?.[0]?.html ?? year.starter.html,
+      css: year.starter.css,
+      js: year.starter.js,
     }),
   );
   const [testResults, setTestResults] = useState<
@@ -63,6 +63,32 @@ export default function CodeSandbox({
   const [testing, setTesting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const sandboxRef = useRef<HTMLDivElement>(null);
+
+  // Hydrate any saved local draft after mount — localStorage only exists in
+  // the browser, so seeding it during render would break SSR hydration.
+  useEffect(() => {
+    const draft = loadDraft(year);
+    const changed =
+      draft.html !== year.starter.html ||
+      draft.css !== year.starter.css ||
+      draft.js !== year.starter.js ||
+      !!draft.pages?.some(
+        (page, i) => page.html !== year.starter.pages?.[i]?.html,
+      );
+    if (!changed) return;
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setCode(draft);
+    setPageId(draft.pages?.[0]?.id ?? "index");
+    setPreview(
+      composePreview({
+        html: draft.pages?.[0]?.html ?? draft.html,
+        css: draft.css,
+        js: draft.js,
+      }),
+    );
+    /* eslint-enable react-hooks/set-state-in-effect */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const activeHtml = useMemo(() => {
     if (code.pages?.length) {

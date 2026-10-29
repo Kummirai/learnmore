@@ -48,6 +48,15 @@ export type PortalQuiz = {
   questions: PortalQuizQuestion[];
 };
 
+export type PortalLesson = {
+  id: string;
+  title: string;
+  /** Short study note the student reads before coding the milestone. */
+  body: string;
+  /** Optional runnable snippet shown in monospace. */
+  example?: { lang: string; code: string };
+};
+
 export type SandboxPage = { id: string; label: string; html: string };
 
 export type PortalStarter = {
@@ -66,6 +75,7 @@ export type PortalYear = {
   focus: string;
   profileAddition: string;
   concepts: string[];
+  lessons: PortalLesson[];
   starter: PortalStarter;
   milestones: PortalMilestone[];
   quiz: PortalQuiz;
@@ -555,6 +565,73 @@ export const PORTAL_YEARS: PortalYear[] = [
       "margin & padding",
       "border",
     ],
+    lessons: [
+      {
+        id: "y1-lesson-1",
+        title: "The page skeleton every website shares",
+        body:
+          "Every page starts the same way: <!DOCTYPE html> tells the browser this is modern HTML, <html> wraps everything, <head> holds settings like the page title, and <body> holds what people actually see.",
+        example: {
+          lang: "html",
+          code: `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My page</title>
+  </head>
+  <body>
+    <!-- everything visitors see lives here -->
+  </body>
+</html>`,
+        },
+      },
+      {
+        id: "y1-lesson-2",
+        title: "Headings, paragraphs & pictures",
+        body:
+          "<h1> is your biggest heading (use one per page), then <h2>, <h3>. <p> holds sentences. <img> needs two important attributes: src (the picture file) and alt (words describing it for screen readers and broken links).",
+        example: {
+          lang: "html",
+          code: `<h1>Hi, I'm Themba!</h1>
+<h2>About me</h2>
+<p>I'm 9 and I love chess.</p>
+<img src="me.jpg" alt="Smiling boy in a green shirt" />`,
+        },
+      },
+      {
+        id: "y1-lesson-3",
+        title: "Sections that mean something",
+        body:
+          "<header> tops the page, <nav> holds your links, <main> wraps your unique content, and <footer> closes the page. Browsers and search engines understand these tags — they're better than plain <div>s.",
+        example: {
+          lang: "html",
+          code: `<header>
+  <nav>Hi, I'm Themba</nav>
+</header>
+<main> ... your story ... </main>
+<footer>&copy; 2026 · Sprout Club</footer>`,
+        },
+      },
+      {
+        id: "y1-lesson-4",
+        title: "Paint it with CSS",
+        body:
+          "CSS rules have a selector and braces: body { background-color: #0B2545; }. Try background-color, color (text), font-family, padding (space inside a box), margin (space outside) and border (a sharp outline).",
+        example: {
+          lang: "css",
+          code: `body {
+  background-color: #f4f7f6;
+  color: #0B2545;
+  font-family: Arial, sans-serif;
+}
+header {
+  background-color: #0B2545;
+  color: #ffffff;
+  padding: 16px;
+  border: 2px solid #008080;
+}`,
+        },
+      },
+    ],
     starter: {
       html: YEAR_1_HTML,
       css: YEAR_1_CSS,
@@ -667,6 +744,75 @@ export const PORTAL_YEARS: PortalYear[] = [
       "<textarea>",
       "<button type='submit'>",
     ],
+    lessons: [
+      {
+        id: "y2-lesson-1",
+        title: "Lists keep things tidy",
+        body:
+          "<ul> makes bullet points, <ol> numbers them. Every item sits in an <li>. Use them for likes, dislikes, hobbies — anything that is a set of things.",
+        example: {
+          lang: "html",
+          code: `<ul>
+  <li>Chess club</li>
+  <li>Drawing</li>
+  <li>Football</li>
+</ul>`,
+        },
+      },
+      {
+        id: "y2-lesson-2",
+        title: "Rows with flexbox, grids with grid",
+        body:
+          "display: flex lines children up in one row. display: grid + grid-template-columns makes real columns that wrap — perfect for a gallery of hobby cards. Change the number to change the columns!",
+        example: {
+          lang: "css",
+          code: `.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}`,
+        },
+      },
+      {
+        id: "y2-lesson-3",
+        title: "Hover makes it feel alive",
+        body:
+          "The :hover selector applies styles only while the mouse is over an element. Add a teal border or glow so your cards respond to visitors — tiny touches make a site feel real.",
+        example: {
+          lang: "css",
+          code: `.card {
+  border: 2px solid #30363d;
+}
+.card:hover {
+  border-color: #008080;
+  box-shadow: 0 0 12px rgba(0, 128, 128, 0.5);
+}`,
+        },
+      },
+      {
+        id: "y2-lesson-4",
+        title: "Forms that listen",
+        body:
+          "A form has <label> words telling visitors what to type, an <input> for short answers, a <textarea> for long ones, and <button type=\"submit\"> to send it. Always label your inputs — that's good accessibility.",
+        example: {
+          lang: "html",
+          code: `<form>
+  <label for="name">Your name</label>
+  <input type="text" id="name" />
+
+  <label for="msg">Message</label>
+  <textarea id="msg"></textarea>
+
+  <button type="submit">Send feedback</button>
+</form>`,
+        },
+      },
+    ],
     starter: {
       html: YEAR_2_HTML,
       css: YEAR_2_CSS,
@@ -771,6 +917,65 @@ export const PORTAL_YEARS: PortalYear[] = [
       "onclick",
       "addEventListener('click')",
       "if / else",
+    ],
+    lessons: [
+      {
+        id: "y3-lesson-1",
+        title: "Variables: boxes that hold values",
+        body:
+          "let makes a value that can change (a score, a counter). const makes one that never changes (your name, a colour). Text is a string in quotes, numbers are plain, true/false are booleans.",
+        example: {
+          lang: "js",
+          code: `let clicks = 0;          // number — will change
+const player = "Themba"; // string — never reassigned
+const isMember = true;   // boolean`,
+        },
+      },
+      {
+        id: "y3-lesson-2",
+        title: "Find and change the page (the DOM)",
+        body:
+          "Your script can reach into the page: document.getElementById('counter') grabs an element by its id. Then read or write it with .innerText (its text) or .style (its colours).",
+        example: {
+          lang: "js",
+          code: `const banner = document.getElementById("welcome");
+banner.innerText = "Welcome, friend!";
+banner.style.color = "#008080";`,
+        },
+      },
+      {
+        id: "y3-lesson-3",
+        title: "React to clicks with events",
+        body:
+          "addEventListener('click', myFunction) waits for a click, then runs your function. Put the element first, then the event name, then what should happen. This powers toggles, counters and popups.",
+        example: {
+          lang: "js",
+          code: `let clicks = 0;
+const btn = document.getElementById("count-btn");
+const out = document.getElementById("counter");
+
+btn.addEventListener("click", function () {
+  clicks = clicks + 1;
+  out.innerText = clicks;
+});`,
+        },
+      },
+      {
+        id: "y3-lesson-4",
+        title: "Decide with if/else, reuse with functions",
+        body:
+          "if runs code only when a condition is true; else handles the other case. Wrapping logic in a function means you can run it again and again — like an age-in-days calculator.",
+        example: {
+          lang: "js",
+          code: `function toDays(years) {
+  if (years < 0 || years > 120) {
+    return "That age doesn't look right!";
+  }
+  return years * 365 + " days old";
+}
+toDays(10); // "3650 days old"`,
+        },
+      },
     ],
     starter: {
       html: YEAR_3_HTML,
@@ -881,6 +1086,62 @@ export const PORTAL_YEARS: PortalYear[] = [
       "external stylesheets",
       "code refactoring",
       "publishing",
+    ],
+    lessons: [
+      {
+        id: "y4-lesson-1",
+        title: "One site, four files",
+        body:
+          "Split your hub into index.html (home), about.html, projects.html and contact.html. <a href=\"about.html\"> sends visitors there. The browser loads each file — they're separate pages, one website.",
+        example: {
+          lang: "html",
+          code: `<nav class="site-nav">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="projects.html">Projects</a>
+  <a href="contact.html">Contact</a>
+</nav>`,
+        },
+      },
+      {
+        id: "y4-lesson-2",
+        title: "Refactor: one stylesheet for all pages",
+        body:
+          "Refactoring means improving code without changing what it does. Put every shared rule in styles.css and each page links it with <link rel=\"stylesheet\" href=\"styles.css\">. Change it once — all four pages update.",
+        example: {
+          lang: "html",
+          code: `<head>
+  <meta charset="UTF-8" />
+  <title>Home · My Master Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>`,
+        },
+      },
+      {
+        id: "y4-lesson-3",
+        title: "Responsive: phones get their own layout",
+        body:
+          "@media queries apply CSS only on certain screens. max-width means 'smaller than' — stack your navigation vertically under 600px so phones get a layout that fits.",
+        example: {
+          lang: "css",
+          code: `.site-nav {
+  display: flex;
+  gap: 16px;
+}
+@media (max-width: 600px) {
+  .site-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+}`,
+        },
+      },
+      {
+        id: "y4-lesson-4",
+        title: "Publish: your ship-it checklist",
+        body:
+          "Before submitting: every page has an <h1> and real content, all links work, your @media query is in, and the design looks right in the preview at phone width. Then claim the Master Web Builder Badge.",
+      },
     ],
     starter: {
       html: YEAR_4_INDEX,

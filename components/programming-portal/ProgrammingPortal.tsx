@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { LuX } from "react-icons/lu";
 import GamificationHeader from "@/components/programming-portal/GamificationHeader";
+import LessonNotes from "@/components/programming-portal/LessonNotes";
 import MasterBadgeCard from "@/components/programming-portal/MasterBadgeCard";
 import MilestoneChecklist from "@/components/programming-portal/MilestoneChecklist";
 import CodeSandbox from "@/components/programming-portal/CodeSandbox";
@@ -290,6 +291,8 @@ export default function ProgrammingPortal() {
         </section>
 
         <div className={"mt-4 space-y-4"}>
+          <LessonNotes year={year} />
+
           <MilestoneChecklist
             year={year}
             doneKeys={doneKeys}
