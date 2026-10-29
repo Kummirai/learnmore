@@ -1,0 +1,1007 @@
+/**
+ * Sprout Tweens Programming Portal — the 4-Year Evolving Profile curriculum.
+ *
+ * Students build ONE personal website that grows with them:
+ *   Year 1 (age 9)   — HTML foundations + CSS basics ("The Digital Identity")
+ *   Year 2 (age 10)  — Grids, flexbox & forms ("The Showcase & Hobby Hub")
+ *   Year 3 (age 11)  — JavaScript DOM & logic ("The Interactive Profile")
+ *   Year 4 (age 12)  — Multi-page architecture ("The Master Showcase Hub")
+ *
+ * Nothing is ever discarded — each year's starter code carries the previous
+ * year's work forward. Milestones are validated against live sandbox code by
+ * declarative regex rules; quizzes are 3-question concept checks.
+ */
+
+export type SandboxPane = "html" | "css" | "js";
+
+export type SandboxRule = {
+  pane: SandboxPane;
+  /** Regex source, matched case-insensitively. */
+  pattern: string;
+  /** Kid-friendly message shown when the rule fails. */
+  message: string;
+  /** Minimum matches required (default 1). */
+  minMatches?: number;
+  /** Year 4 only: restrict the match to one page id (default: all pages). */
+  page?: string;
+};
+
+export type PortalMilestone = {
+  id: string;
+  title: string;
+  brief: string;
+  /** Present = tested in the sandbox. Absent = manual reflective checkbox. */
+  rules?: SandboxRule[];
+};
+
+export type PortalQuizQuestion = {
+  id: string;
+  prompt: string;
+  options: string[];
+  correctIndex: number;
+  explain: string;
+};
+
+export type PortalQuiz = {
+  id: string;
+  title: string;
+  questions: PortalQuizQuestion[];
+};
+
+export type SandboxPage = { id: string; label: string; html: string };
+
+export type PortalStarter = {
+  html: string;
+  css: string;
+  js: string;
+  /** Year 4 multi-page set. When present the sandbox shows page tabs. */
+  pages?: SandboxPage[];
+};
+
+export type PortalYear = {
+  year: 1 | 2 | 3 | 4;
+  age: number;
+  title: string;
+  subtitle: string;
+  focus: string;
+  profileAddition: string;
+  concepts: string[];
+  starter: PortalStarter;
+  milestones: PortalMilestone[];
+  quiz: PortalQuiz;
+};
+
+/* ── Gamification constants (mirrored by the backend) ──────────────────── */
+
+export const MILESTONE_XP = 50;
+export const QUIZ_XP_PER_POINT = 25;
+export const MASTER_BADGE_XP = 200;
+export const QUIZ_PASS_SCORE = 2;
+export const QUIZ_TOTAL = 3;
+export const LEVEL_XP = 200;
+export const TOTAL_MILESTONES = 16;
+export const TOTAL_QUIZZES = 4;
+
+export const PORTAL_PATH =
+  "/sprout-tweens/skills/sprout_03_programming/learn";
+export const PORTAL_SKILL_ID = "sprout_03_programming";
+export const MASTER_BADGE_NAME = "Sprout Tweens Master Web Builder Badge";
+
+export type PortalProgress = {
+  skillId: string;
+  xp: number;
+  milestones: string[];
+  quizzes: Record<
+    string,
+    { score: number; total: number; attempts: number; passed: boolean }
+  >;
+  masterBadgeAwarded: boolean;
+  streak: { current: number; longest: number; lastActiveDate: string | null };
+};
+
+export function milestoneKey(year: number, id: string) {
+  return `${year}:${id}`;
+}
+
+export function levelFromXp(xp: number) {
+  const safe = Math.max(0, xp);
+  const level = Math.floor(safe / LEVEL_XP) + 1;
+  const into = safe % LEVEL_XP;
+  return {
+    level,
+    into,
+    needed: LEVEL_XP - into,
+    pct: Math.round((into / LEVEL_XP) * 100),
+  };
+}
+
+/* ── Sandbox code composition + validation ─────────────────────────────── */
+
+export type SandboxCode = {
+  html: string;
+  css: string;
+  js: string;
+  pages?: SandboxPage[];
+};
+
+/** Build the single-document preview the sandbox iframe renders. */
+export function composePreview(code: {
+  html: string;
+  css: string;
+  js: string;
+}): string {
+  const cssBlock = code.css.trim()
+    ? `<style>\n${code.css}\n</style>`
+    : "";
+  const jsBlock = code.js.trim()
+    ? `<script>\ntry {\n${code.js}\n} catch (err) {\n  console.error(err);\n}\n</script>`
+    : "";
+  let html = code.html || "<!DOCTYPE html><html><body></body></html>";
+  if (/<\/body>/i.test(html)) {
+    html = html.replace(/<\/body>/i, `${cssBlock}\n${jsBlock}\n</body>`);
+  } else {
+    html = `${html}\n${cssBlock}\n${jsBlock}`;
+  }
+  return html;
+}
+
+function paneSource(pane: SandboxPane, code: SandboxCode): string {
+  if (pane === "css") return code.css;
+  if (pane === "js") return code.js;
+  if (code.pages?.length) return code.pages.map((p) => p.html).join("\n");
+  return code.html;
+}
+
+function pageSource(page: string | undefined, code: SandboxCode): string {
+  if (!page || !code.pages?.length) return paneSource("html", code);
+  const found = code.pages.find((p) => p.id === page);
+  return found?.html ?? "";
+}
+
+export type RuleResult = { rule: SandboxRule; passed: boolean; found: number };
+
+export function validateRules(
+  rules: SandboxRule[],
+  code: SandboxCode,
+): { ok: boolean; results: RuleResult[] } {
+  const results: RuleResult[] = rules.map((rule) => {
+    let source: string;
+    if (rule.pane === "html" && rule.page) source = pageSource(rule.page, code);
+    else source = paneSource(rule.pane, code);
+    let found = 0;
+    try {
+      const re = new RegExp(rule.pattern, "gi");
+      found = (source.match(re) ?? []).length;
+    } catch {
+      found = 0;
+    }
+    const min = rule.minMatches ?? 1;
+    return { rule, passed: found >= min, found };
+  });
+  return { ok: results.every((r) => r.passed), results };
+}
+
+/** First incomplete milestone that has testable rules, for "Test Code". */
+export function nextTestableMilestone(
+  year: PortalYear,
+  doneKeys: Set<string>,
+): PortalMilestone | undefined {
+  return year.milestones.find(
+    (m) => m.rules?.length && !doneKeys.has(milestoneKey(year.year, m.id)),
+  );
+}
+
+/* ── Local draft persistence (browser only) ────────────────────────────── */
+
+const DRAFT_PREFIX = "sprout-programming-portal:v1:";
+
+export function loadDraft(year: PortalYear): PortalStarter {
+  if (typeof window === "undefined") return year.starter;
+  try {
+    const raw = window.localStorage.getItem(DRAFT_PREFIX + year.year);
+    if (!raw) return year.starter;
+    const saved = JSON.parse(raw) as Partial<PortalStarter>;
+    return {
+      html: typeof saved.html === "string" ? saved.html : year.starter.html,
+      css: typeof saved.css === "string" ? saved.css : year.starter.css,
+      js: typeof saved.js === "string" ? saved.js : year.starter.js,
+      pages: year.starter.pages
+        ? year.starter.pages.map((page) => {
+            const savedPage = saved.pages?.find((p) => p.id === page.id);
+            return {
+              ...page,
+              html:
+                typeof savedPage?.html === "string"
+                  ? savedPage.html
+                  : page.html,
+            };
+          })
+        : undefined,
+    };
+  } catch {
+    return year.starter;
+  }
+}
+
+export function saveDraft(year: number, code: PortalStarter): void {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(DRAFT_PREFIX + year, JSON.stringify(code));
+  } catch {
+    /* quota or private mode — drafts are best-effort */
+  }
+}
+
+/* ── The 4-year curriculum ─────────────────────────────────────────────── */
+
+const YEAR_1_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Digital Identity</title>
+</head>
+<body>
+
+  <!-- MILESTONE 1: top navbar — "Hi, I'm ..." -->
+  
+
+  <!-- MILESTONE 2: hero with your photo + welcome greeting -->
+  
+
+  <!-- MILESTONE 3: biography — grade, favourite subject, goals -->
+  
+
+  <!-- MILESTONE 4: footer with © and the Sprout Club tag -->
+  
+
+</body>
+</html>`;
+
+const YEAR_1_CSS = `/* Year 1 — colours, fonts, spacing, borders */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #0B2545;
+}
+
+/* TODO: style your navbar, hero, bio and footer.
+   Try: background-color, color, font-family,
+        margin, padding and border. */`;
+
+const YEAR_2_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Showcase &amp; Hobby Hub</title>
+</head>
+<body>
+
+  <header>
+    <nav>Hi, I'm a Tween Coder</nav>
+  </header>
+
+  <main>
+    <h1>Welcome to my Hub!</h1>
+
+    <!-- MILESTONE 1: Hobby & Gallery grid (side-by-side cards) -->
+    <section class="gallery">
+      
+    </section>
+
+    <!-- MILESTONE 2: Likes vs Dislikes comparison -->
+    <section class="compare">
+      
+    </section>
+
+    <!-- MILESTONE 4: Fan Feedback / Contact Me form -->
+    <section class="feedback">
+      
+    </section>
+  </main>
+
+  <footer>&copy; 2026 · Sprout Tweens Club</footer>
+
+</body>
+</html>`;
+
+const YEAR_2_CSS = `body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #0B2545;
+}
+
+header {
+  background-color: #0B2545;
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+}
+
+.gallery {
+  /* MILESTONE 1: turn this into a CSS grid of cards */
+}
+
+/* MILESTONE 3: add a :hover effect that makes cards glow teal */`;
+
+const YEAR_3_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The Interactive Profile</title>
+</head>
+<body>
+
+  <header>
+    <nav>
+      Hi, I'm a Tween Coder
+      <!-- MILESTONE 1: dark/light toggle button -->
+      
+    </nav>
+  </header>
+
+  <main>
+    <h1>My Interactive Profile</h1>
+
+    <!-- MILESTONE 2: click counter / fun facts widget -->
+    <section id="fun-facts">
+      
+    </section>
+
+    <!-- MILESTONE 3: mini calculator (age in days) -->
+    <section id="calculator">
+      
+    </section>
+
+    <!-- MILESTONE 4: personalised welcome banner -->
+    <section id="welcome">
+      
+    </section>
+  </main>
+
+  <footer>&copy; 2026 · Sprout Tweens Club</footer>
+
+</body>
+</html>`;
+
+const YEAR_3_CSS = `body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #0B2545;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+header {
+  background-color: #0B2545;
+  color: #ffffff;
+  padding: 1rem 1.5rem;
+}
+
+/* MILESTONE 1: a .dark theme your toggle can switch on the body */`;
+
+const YEAR_3_JS = `// Year 3 — JavaScript powers everything interactive.
+
+// MILESTONE 1: find your toggle button and swap the theme on click.
+//   document.getElementById(...)  +  addEventListener("click", ...)
+
+// MILESTONE 2: click counter — increase a number and show it with
+//   innerText (or textContent) every time a button is clicked.
+
+// MILESTONE 3: age-in-days calculator — a function, some maths and an
+//   if/else check to keep the answer sensible.
+
+// MILESTONE 4: welcome popup — ask the visitor's name with prompt(...),
+//   then write a custom greeting into your banner.`;
+
+const YEAR_4_INDEX = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home · My Master Hub</title>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <main>
+    <h1>Hi, I'm a Tween Web Builder!</h1>
+    <p>Welcome to my master showcase hub — four years in the making.</p>
+    <!-- Highlight cards linking into your other pages -->
+    
+  </main>
+
+  <footer>&copy; 2026 · Sprout Tweens Club</footer>
+
+</body>
+</html>`;
+
+const YEAR_4_ABOUT = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About · My Master Hub</title>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <main>
+    <h1>About Me</h1>
+    <p>My grade, my favourite subject and my goals — the long version.</p>
+    <!-- MILESTONE 2: add your grade timeline here -->
+    
+  </main>
+
+  <footer>&copy; 2026 · Sprout Tweens Club</footer>
+
+</body>
+</html>`;
+
+const YEAR_4_PROJECTS = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Projects · My Master Hub</title>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <main>
+    <h1>My Project Gallery</h1>
+    <p>Every widget from four years, collected in one place.</p>
+    <!-- MILESTONE 2: gallery cards for your widgets -->
+    
+  </main>
+
+  <footer>&copy; 2026 · Sprout Tweens Club</footer>
+
+</body>
+</html>`;
+
+const YEAR_4_CONTACT = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Contact · My Master Hub</title>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <main>
+    <h1>Fan Feedback</h1>
+    <!-- MILESTONE 2: bring back your feedback form -->
+    
+  </main>
+
+  <footer>&copy; 2026 · Sprout Tweens Club</footer>
+
+</body>
+</html>`;
+
+const YEAR_4_CSS = `/* One shared stylesheet — every page links to these rules. */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f7f6;
+  color: #0B2545;
+}
+
+.site-nav {
+  background-color: #0B2545;
+  padding: 1rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.site-nav a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  color: #008080;
+}
+
+/* MILESTONE 3: add an @media query so phones get a stacked layout */`;
+
+const YEAR_4_JS = `// Small shared script — keep it light and useful.
+document.addEventListener("DOMContentLoaded", function () {
+  // TODO: a tiny interactive touch that works on every page.
+});`;
+
+export const PORTAL_YEARS: PortalYear[] = [
+  {
+    year: 1,
+    age: 9,
+    title: "The Digital Identity",
+    subtitle: "HTML Foundations & CSS Basics",
+    focus:
+      "Write your first real web page — structure it with HTML tags and paint it with CSS colours, fonts and spacing.",
+    profileAddition:
+      "A navy/teal navbar, hero photo + greeting, biography section and Sprout Club footer.",
+    concepts: [
+      "<!DOCTYPE html>",
+      "<html> <head> <body>",
+      "<h1>–<h3>",
+      "<p>",
+      "<header> <nav> <main> <footer>",
+      "<img src alt>",
+      "background-color",
+      "color",
+      "font-family",
+      "margin & padding",
+      "border",
+    ],
+    starter: {
+      html: YEAR_1_HTML,
+      css: YEAR_1_CSS,
+      js: "",
+    },
+    milestones: [
+      {
+        id: "navbar",
+        title: "Build the top navbar",
+        brief:
+          'Add a <header> with a <nav> that greets the world: "Hi, I\'m [Your Name]".',
+        rules: [
+          { pane: "html", pattern: "<header", message: "Add a <header> element to wrap the top of your page." },
+          { pane: "html", pattern: "<nav", message: "Put your greeting inside a <nav> element." },
+          { pane: "html", pattern: "Hi,?\\s+I'm", message: 'Your navbar needs the greeting text "Hi, I\'m ...".' },
+        ],
+      },
+      {
+        id: "hero",
+        title: "Add the hero photo & greeting",
+        brief:
+          "A big <h1> welcome plus a profile <img> with helpful alt text.",
+        rules: [
+          { pane: "html", pattern: "<h1", message: "Add a big <h1> welcome heading in your hero." },
+          { pane: "html", pattern: "<img[^>]+src", message: "Add an <img> with a src= for your profile photo." },
+          { pane: "html", pattern: "<img[^>]+alt=", message: "Always describe your image with an alt= attribute." },
+        ],
+      },
+      {
+        id: "bio",
+        title: "Write your biography",
+        brief:
+          "Use a <main> section with headings and paragraphs for grade, favourite subject and goals.",
+        rules: [
+          { pane: "html", pattern: "<main", message: "Wrap your main content in a <main> element." },
+          { pane: "html", pattern: "<h2", message: "Add an <h2> subheading for your biography." },
+          { pane: "html", pattern: "<p", minMatches: 2, message: "Write at least two <p> paragraphs about yourself." },
+        ],
+      },
+      {
+        id: "footer",
+        title: "Finish the footer bar",
+        brief:
+          "Close the page with a <footer> holding the © line and the Sprout Club tag.",
+        rules: [
+          { pane: "html", pattern: "<footer", message: "Add a <footer> element at the bottom of your page." },
+          { pane: "html", pattern: "(&copy;|©|copyright)", message: "Include a © (copyright) line in your footer." },
+          { pane: "html", pattern: "sprout", message: "Tag your footer with the Sprout Club name." },
+        ],
+      },
+    ],
+    quiz: {
+      id: "year-1",
+      title: "Year 1 Concept Check",
+      questions: [
+        {
+          id: "y1q1",
+          prompt: "Which tag makes the biggest heading on a page?",
+          options: ["<h6>", "<h1>", "<head>", "<p>"],
+          correctIndex: 1,
+          explain: "<h1> is the biggest heading. <head> holds page settings, not headings.",
+        },
+        {
+          id: "y1q2",
+          prompt: "Why do we add alt text to an <img>?",
+          options: [
+            "To make the image bigger",
+            "To change the image colours",
+            "To describe the image for screen readers and broken links",
+            "alt text is not needed",
+          ],
+          correctIndex: 2,
+          explain:
+            "alt text describes the picture for people using screen readers — and shows if the image fails to load.",
+        },
+        {
+          id: "y1q3",
+          prompt: "Where do you write CSS rules like background-color?",
+          options: [
+            "Inside <h1> tags",
+            "In a <style> block or stylesheet, inside CSS rules like body { }",
+            "Only on the server",
+            "In the <img> tag",
+          ],
+          correctIndex: 1,
+          explain:
+            "CSS lives in <style> blocks (or .css files) as selector rules such as body { background-color: ... }.",
+        },
+      ],
+    },
+  },
+  {
+    year: 2,
+    age: 10,
+    title: "The Showcase & Hobby Hub",
+    subtitle: "Layouts, Grids & Forms",
+    focus:
+      "Level up your profile with side-by-side grids, hover effects and a real feedback form your visitors can fill in.",
+    profileAddition:
+      "A hobby gallery grid, likes-vs-dislikes cards and a Fan Feedback contact form.",
+    concepts: [
+      "<ul> <ol> <li>",
+      "<div>",
+      "display: flex",
+      "display: grid",
+      "grid-template-columns",
+      ":hover",
+      "<form> <label>",
+      "<input type='text'>",
+      "<textarea>",
+      "<button type='submit'>",
+    ],
+    starter: {
+      html: YEAR_2_HTML,
+      css: YEAR_2_CSS,
+      js: "",
+    },
+    milestones: [
+      {
+        id: "gallery-grid",
+        title: "Build the hobby gallery grid",
+        brief:
+          "Turn your .gallery into a CSS grid of sharp-edged cards for sports, games, art or books.",
+        rules: [
+          { pane: "css", pattern: "display:\\s*grid", message: "Set display: grid on your gallery container." },
+          { pane: "css", pattern: "grid-template-columns", message: "Choose columns with grid-template-columns." },
+          { pane: "html", pattern: "<div", minMatches: 2, message: "Add at least two <div> cards inside your gallery." },
+        ],
+      },
+      {
+        id: "likes-dislikes",
+        title: "Add Likes vs Dislikes cards",
+        brief:
+          "Use lists (<ul>/<li>) inside two comparison cards so visitors can see what you love and loathe.",
+        rules: [
+          { pane: "html", pattern: "likes", message: "Create a Likes card with the word 'Likes'." },
+          { pane: "html", pattern: "dislikes", message: "Create a Dislikes card with the word 'Dislikes'." },
+          { pane: "html", pattern: "<li", minMatches: 2, message: "List at least two items with <li> tags." },
+        ],
+      },
+      {
+        id: "hover-cards",
+        title: "Make cards glow on hover",
+        brief:
+          "Add a :hover rule so cards light up in teal when the mouse moves over them.",
+        rules: [
+          { pane: "css", pattern: ":hover", message: "Add a :hover selector to your cards in CSS." },
+        ],
+      },
+      {
+        id: "feedback-form",
+        title: "Create the Fan Feedback form",
+        brief:
+          "A <form> with a label, a text input, a <textarea> and a submit button.",
+        rules: [
+          { pane: "html", pattern: "<form", message: "Wrap your form in a <form> element." },
+          { pane: "html", pattern: "<label", message: "Every input needs a <label>." },
+          { pane: "html", pattern: "type=[\"']?text", message: "Add a text input: <input type=\"text\">." },
+          { pane: "html", pattern: "<textarea", message: "Add a <textarea> for longer messages." },
+          { pane: "html", pattern: "<button[^>]*type=[\"']?submit|<input[^>]+type=[\"']?submit", message: "Finish with a submit button." },
+        ],
+      },
+    ],
+    quiz: {
+      id: "year-2",
+      title: "Year 2 Concept Check",
+      questions: [
+        {
+          id: "y2q1",
+          prompt: "Which property turns a <div> into a grid container?",
+          options: ["display: flex", "display: grid", "grid-line: on", "position: grid"],
+          correctIndex: 1,
+          explain:
+            "display: grid makes the element a grid container. display: flex is the one-row flexbox layout.",
+        },
+        {
+          id: "y2q2",
+          prompt: "What does the :hover selector do?",
+          options: [
+            "Styles an element when the mouse is over it",
+            "Deletes an element",
+            "Loads a new page",
+            "Styles an element only on Mondays",
+          ],
+          correctIndex: 0,
+          explain: ":hover applies styles while the visitor's mouse is over the element.",
+        },
+        {
+          id: "y2q3",
+          prompt: "Which tag lets a visitor type a long message in a form?",
+          options: ["<img>", "<textarea>", "<nav>", "<li>"],
+          correctIndex: 1,
+          explain: "<textarea> is the multi-line text box. <input type=\"text\"> is for short answers.",
+        },
+      ],
+    },
+  },
+  {
+    year: 3,
+    age: 11,
+    title: "The Interactive Profile",
+    subtitle: "JavaScript DOM & Logic",
+    focus:
+      "Make your profile react — a theme toggle, a click counter, a mini calculator and a personalised welcome popup, all written in JavaScript.",
+    profileAddition:
+      "Dark/light mode toggle, fun-facts counter, age-in-days calculator and a visitor welcome popup.",
+    concepts: [
+      "let & const",
+      "data types",
+      "functions",
+      "document.getElementById()",
+      ".innerText",
+      ".style",
+      "onclick",
+      "addEventListener('click')",
+      "if / else",
+    ],
+    starter: {
+      html: YEAR_3_HTML,
+      css: YEAR_3_CSS,
+      js: YEAR_3_JS,
+    },
+    milestones: [
+      {
+        id: "theme-toggle",
+        title: "Add the dark/light mode toggle",
+        brief:
+          "A button wired with JavaScript that swaps your whole profile's theme.",
+        rules: [
+          { pane: "html", pattern: "id=[\"']theme-toggle", message: 'Give your toggle button id="theme-toggle".' },
+          { pane: "js", pattern: "getElementById", message: "Find the button with document.getElementById()." },
+          { pane: "js", pattern: "(addEventListener|onclick)", message: "Run code when the button is clicked." },
+          { pane: "js", pattern: "(classList|style)", message: "Change the theme with classList or .style." },
+        ],
+      },
+      {
+        id: "click-counter",
+        title: "Build the click counter widget",
+        brief: "Every click bumps a number you show with innerText.",
+        rules: [
+          { pane: "html", pattern: "id=[\"']counter", message: 'Add an element with id="counter" to show the number.' },
+          { pane: "js", pattern: "(addEventListener\\([\"']click|onclick)", message: "Listen for clicks on your button." },
+          { pane: "js", pattern: "(innerText|textContent)", message: "Update the screen with innerText or textContent." },
+        ],
+      },
+      {
+        id: "age-calculator",
+        title: "Create the age-in-days calculator",
+        brief:
+          "A function with maths and an if/else check that turns an age in years into days.",
+        rules: [
+          { pane: "js", pattern: "function", message: "Wrap your logic in a function." },
+          { pane: "js", pattern: "getElementById", message: "Read the visitor's age from an input with getElementById()." },
+          { pane: "js", pattern: "if\\s*\\(", message: "Check the answer with an if (or if/else)." },
+          { pane: "js", pattern: "[-+*/]", message: "Do some maths (* 365 is a good start!) to convert years to days." },
+        ],
+      },
+      {
+        id: "welcome-popup",
+        title: "Craft the welcome popup",
+        brief:
+          "Ask the visitor's name with prompt(), then write a custom greeting into your banner.",
+        rules: [
+          { pane: "js", pattern: "prompt\\s*\\(", message: "Ask for the visitor's name with prompt()." },
+          { pane: "js", pattern: "getElementById", message: "Grab your welcome banner with getElementById()." },
+          { pane: "js", pattern: "(innerText|textContent)", message: "Write the greeting with innerText or textContent." },
+        ],
+      },
+    ],
+    quiz: {
+      id: "year-3",
+      title: "Year 3 Concept Check",
+      questions: [
+        {
+          id: "y3q1",
+          prompt: "Which method finds an element by its id?",
+          options: [
+            "document.querySelector()",
+            "document.getElementById()",
+            "document.findId()",
+            "window.getElement()",
+          ],
+          correctIndex: 1,
+          explain:
+            "document.getElementById('counter') returns the element with that id so you can change it.",
+        },
+        {
+          id: "y3q2",
+          prompt: "What does addEventListener('click', ...) do?",
+          options: [
+            "Deletes the element when clicked",
+            "Reloads the page",
+            "Runs your function when the element is clicked",
+            "Styles the element in teal",
+          ],
+          correctIndex: 2,
+          explain:
+            "It attaches a click handler — your function runs every time the visitor clicks that element.",
+        },
+        {
+          id: "y3q3",
+          prompt: "Which keyword creates a value that CAN change later?",
+          options: ["const", "let", "static", "final"],
+          correctIndex: 1,
+          explain:
+            "let is for values that change (like a counter). const is for values that never get reassigned.",
+        },
+      ],
+    },
+  },
+  {
+    year: 4,
+    age: 12,
+    title: "The Master Showcase Hub",
+    subtitle: "Multi-Page Architecture & Publishing",
+    focus:
+      "Grow your profile into a real 4-page website, make it work on phones with media queries, then officially publish it for your Master badge.",
+    profileAddition:
+      "index, about, projects and contact pages — a connected multi-page site with one shared stylesheet.",
+    concepts: [
+      "<a href='...'>",
+      "multi-page file structure",
+      "@media queries",
+      "external stylesheets",
+      "code refactoring",
+      "publishing",
+    ],
+    starter: {
+      html: YEAR_4_INDEX,
+      css: YEAR_4_CSS,
+      js: YEAR_4_JS,
+      pages: [
+        { id: "index", label: "index.html", html: YEAR_4_INDEX },
+        { id: "about", label: "about.html", html: YEAR_4_ABOUT },
+        { id: "projects", label: "projects.html", html: YEAR_4_PROJECTS },
+        { id: "contact", label: "contact.html", html: YEAR_4_CONTACT },
+      ],
+    },
+    milestones: [
+      {
+        id: "hyperlinks",
+        title: "Link your pages with hyperlinks",
+        brief:
+          "Use <a href=\"...\"> so visitors can travel between every page of your hub.",
+        rules: [
+          { pane: "html", pattern: "<a\\s+[^>]*href", minMatches: 3, message: "Add at least three <a href=\"...\"> links across your pages." },
+          { pane: "html", pattern: "href=[\"']?about\\.html", message: "Include a link to about.html." },
+          { pane: "html", pattern: "href=[\"']?projects\\.html", message: "Include a link to projects.html." },
+          { pane: "html", pattern: "href=[\"']?contact\\.html", message: "Include a link to contact.html." },
+        ],
+      },
+      {
+        id: "four-pages",
+        title: "Fill out all four pages",
+        brief:
+          "Give index, about, projects and contact real headings and content — no empty rooms.",
+        rules: [
+          { pane: "html", page: "index", pattern: "<h1", message: "index.html needs a <h1> heading." },
+          { pane: "html", page: "about", pattern: "<h1", message: "about.html needs a <h1> heading." },
+          { pane: "html", page: "projects", pattern: "<h1", message: "projects.html needs a <h1> heading." },
+          { pane: "html", page: "contact", pattern: "<h1", message: "contact.html needs a <h1> heading." },
+          { pane: "html", page: "about", pattern: "<p", message: "Tell your story on about.html with a <p>." },
+        ],
+      },
+      {
+        id: "responsive",
+        title: "Make it phone-friendly",
+        brief:
+          "Add an @media query so your layout adapts on small screens.",
+        rules: [
+          { pane: "css", pattern: "@media", message: "Add an @media query to your shared stylesheet." },
+          { pane: "css", pattern: "@media[^{]*\\(\\s*max-width", message: "Use a max-width condition so phones get the new layout." },
+        ],
+      },
+      {
+        id: "publish",
+        title: "Polish & publish your hub",
+        brief:
+          "Check every page, tidy your code, then claim your Master Web Builder Badge below.",
+      },
+    ],
+    quiz: {
+      id: "year-4",
+      title: "Year 4 Concept Check",
+      questions: [
+        {
+          id: "y4q1",
+          prompt: "Which attribute makes a link open another page?",
+          options: ["src", "link", "href", "to"],
+          correctIndex: 2,
+          explain: "<a href=\"about.html\">About</a> sends visitors to about.html.",
+        },
+        {
+          id: "y4q2",
+          prompt: "What does an @media query let your site do?",
+          options: [
+            "Play music",
+            "Change the layout for different screen sizes",
+            "Send emails",
+            "Delete old pages",
+          ],
+          correctIndex: 1,
+          explain:
+            "@media (max-width: ...) applies styles only on smaller screens — that's responsive design.",
+        },
+        {
+          id: "y4q3",
+          prompt: "Why share ONE stylesheet across all four pages?",
+          options: [
+            "It makes the internet faster",
+            "It makes files bigger",
+            "One shared file keeps colours and fonts consistent everywhere",
+            "Browsers cannot read more than one file",
+          ],
+          correctIndex: 2,
+          explain:
+            "A shared stylesheet means one edit updates every page — the heart of refactoring.",
+        },
+      ],
+    },
+  },
+];
+
+export function getPortalYear(year: number): PortalYear | undefined {
+  return PORTAL_YEARS.find((y) => y.year === year);
+}
+
+/** Milestone keys + quiz pass state → what still blocks the Master badge. */
+export function masterBadgeGaps(progress: PortalProgress | null): string[] {
+  const gaps: string[] = [];
+  if (!progress) {
+    gaps.push("Sign in and save your progress.");
+    return gaps;
+  }
+  const done = new Set(progress.milestones);
+  if (done.size < TOTAL_MILESTONES) {
+    gaps.push(
+      `${TOTAL_MILESTONES - done.size} milestone${TOTAL_MILESTONES - done.size === 1 ? "" : "s"} still to complete.`,
+    );
+  }
+  const failed = PORTAL_YEARS.filter(
+    (y) => !progress.quizzes[y.quiz.id]?.passed,
+  );
+  if (failed.length) {
+    gaps.push(
+      `Pass the concept check for Year ${failed.map((y) => y.year).join(", Year ")}.`,
+    );
+  }
+  return gaps;
+}
