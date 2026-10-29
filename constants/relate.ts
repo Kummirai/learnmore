@@ -184,7 +184,7 @@ export const MAGAZINES: RelateMagazine[] = [
       },
       {
         label: "Rooted — Tweens",
-        ageRange: "9–11 yrs",
+        ageRange: "9–12 yrs",
         clubSlug: "sprout",
         summary:
           "The hidden root, living water, storms, pruning and fruit — with a verse and a try-it for every day.",

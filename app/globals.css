@@ -29,6 +29,17 @@
   --color-gold-600: #cf9c14;
   --color-gold-700: #a57d10;
   --color-gold-800: #8a680d;
+  /* Sprout Tweens programming portal — Deep Navy / Teal brand set. */
+  --color-deep-navy: #0b2545;
+  --color-deep-navy-soft: #123158;
+  --color-teal: #008080;
+  --color-teal-dark: #006666;
+  --color-teal-glow: #14b8a6;
+  --color-portal-slate: #161b22;
+  --color-portal-ink: #0d1117;
+  --color-portal-line: #30363d;
+  /* Monospace stack for sandbox editors and code snippets. */
+  --font-code: "Fira Code", "Courier New", ui-monospace, monospace;
 }
 
 :root {
@@ -143,6 +154,159 @@
 
   .link-chevron:hover::after {
     transform: translateX(2px);
+  }
+
+  /* ── Sprout Tweens programming portal ────────────────────────────────────
+     Strict-geometry design system: every card, button, input, tab and modal
+     in the learning portal is sharp-edged (border-radius: 0). */
+  .portal-card {
+    border-radius: 0;
+    background-color: var(--color-portal-slate);
+    border: 1px solid var(--color-portal-line);
+  }
+
+  .portal-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 0;
+    padding: 0.62rem 1.15rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    transition:
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  .portal-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .portal-btn-primary {
+    background-color: var(--color-teal);
+    color: #ffffff;
+    border: 1px solid var(--color-teal);
+    box-shadow: 0 0 0 rgba(0, 128, 128, 0);
+  }
+
+  .portal-btn-primary:hover:not(:disabled) {
+    background-color: var(--color-teal-dark);
+    border-color: var(--color-teal-dark);
+    box-shadow: 0 0 18px rgba(0, 128, 128, 0.45);
+  }
+
+  .portal-btn-ghost {
+    background-color: transparent;
+    color: #d8dee9;
+    border: 1px solid var(--color-portal-line);
+  }
+
+  .portal-btn-ghost:hover:not(:disabled) {
+    border-color: var(--color-teal);
+    color: #ffffff;
+  }
+
+  .portal-input {
+    border-radius: 0;
+    background-color: var(--color-portal-ink);
+    border: 1px solid var(--color-portal-line);
+    color: #e6edf3;
+    font-family: var(--font-code);
+  }
+
+  .portal-input:focus {
+    border-color: var(--color-teal);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 128, 128, 0.35);
+  }
+
+  .portal-tab {
+    border-radius: 0;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #8b949e;
+    border: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .portal-tab:hover {
+    color: #e6edf3;
+  }
+
+  .portal-tab[aria-selected="true"] {
+    color: #ffffff;
+    background-color: rgba(0, 128, 128, 0.16);
+    border-bottom-color: var(--color-teal);
+    text-shadow: 0 0 12px rgba(20, 184, 166, 0.55);
+  }
+}
+
+/* Portal motion — XP bursts and teal glow pulses (reduced-motion safe). */
+@keyframes portal-xp-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+  18% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-46px) scale(1.05);
+  }
+}
+
+@keyframes portal-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(0, 128, 128, 0);
+  }
+  50% {
+    box-shadow: 0 0 22px rgba(0, 128, 128, 0.55);
+  }
+}
+
+@keyframes portal-burst-spark {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--spark-x, 20px), var(--spark-y, -30px)) scale(0.2);
+  }
+}
+
+.portal-xp-toast {
+  animation: portal-xp-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.portal-glow {
+  animation: portal-glow-pulse 2.4s ease-in-out infinite;
+}
+
+.portal-spark {
+  animation: portal-burst-spark 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-xp-toast,
+  .portal-glow,
+  .portal-spark {
+    animation: none !important;
   }
 }
 

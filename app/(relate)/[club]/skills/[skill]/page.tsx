@@ -76,6 +76,8 @@ export default async function SkillDetailPage({
   const next = idx >= 0 && idx < allSkills.length - 1 ? allSkills[idx + 1] : undefined;
   const accent = level?.colorDark ?? targetClub?.colorDark ?? "#0fa3c4";
   const entryLevels = (entry.levels ?? []).filter(Boolean);
+  const hasLearningPortal =
+    club === "sprout-tweens" && skill === "sprout_03_programming";
   const totalRequirements = entryLevels.length
     ? entryLevels.reduce(
         (sum, l) => sum + (l.requirements?.length ?? 0),
@@ -201,6 +203,16 @@ export default async function SkillDetailPage({
           </dl>
 
           <div className={"mt-7 flex flex-wrap gap-3"}>
+            {hasLearningPortal && (
+              <Link
+                href={`/${club}/skills/${skill}/learn`}
+                className={
+                  "inline-flex items-center gap-2 bg-teal px-6 py-3 font-semibold text-white transition-colors hover:bg-teal-dark"
+                }
+              >
+                Open Learning Portal →
+              </Link>
+            )}
             <JoinCta
               href={`/join?club=${club}`}
               className={
@@ -228,6 +240,51 @@ export default async function SkillDetailPage({
           }
         >
           <div className={"space-y-5"}>
+            {hasLearningPortal && (
+              <div
+                className={
+                  "relative overflow-hidden bg-deep-navy p-6 text-white"
+                }
+              >
+                <span
+                  aria-hidden={"true"}
+                  className={
+                    "absolute -right-12 -top-12 size-48 rounded-full bg-teal/25 blur-3xl"
+                  }
+                />
+                <div className={"relative"}>
+                  <span
+                    className={
+                      "inline-block border border-teal/50 bg-teal/15 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-teal-glow"
+                    }
+                  >
+                    Ages 9–12 · 4-Year Cycle
+                  </span>
+                  <h2 className={"mt-3 text-xl font-black"}>
+                    The 4-Year Evolving Profile portal
+                  </h2>
+                  <p
+                    className={
+                      "mt-2 text-sm leading-relaxed text-white/75"
+                    }
+                  >
+                    Build one personal website that grows with you — HTML &amp;
+                    CSS at 9, grids &amp; forms at 10, JavaScript at 11, a
+                    published multi-page hub at 12. Code in the live sandbox,
+                    tick milestones, pass quizzes and earn XP without ever
+                    starting over.
+                  </p>
+                  <Link
+                    href={`/${club}/skills/${skill}/learn`}
+                    className={
+                      "mt-4 inline-flex items-center gap-2 bg-teal px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-teal-dark"
+                    }
+                  >
+                    Enter the Learning Portal →
+                  </Link>
+                </div>
+              </div>
+            )}
             <div
               className={"rounded-2xl border border-gray-200 bg-white p-6 shadow-sm"}
             >

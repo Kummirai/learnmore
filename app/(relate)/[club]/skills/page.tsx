@@ -119,6 +119,46 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
 
       <section className={"flex-1 px-4 py-12 bg-white"}>
         <div className={"max-w-6xl mx-auto"}>
+          {club === "sprout-tweens" && (
+            <Link
+              href={"/sprout-tweens/skills/sprout_03_programming/learn"}
+              className={
+                "group relative mb-10 block overflow-hidden bg-deep-navy p-6 text-white md:p-8"
+              }
+            >
+              <span
+                aria-hidden={"true"}
+                className={
+                  "absolute -right-12 -top-12 size-44 rounded-full bg-teal/25 blur-3xl"
+                }
+              />
+              <div className={"relative flex flex-wrap items-center gap-5"}>
+                <div className={"min-w-0 flex-1"}>
+                  <span
+                    className={
+                      "inline-block border border-teal/50 bg-teal/15 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-teal-glow"
+                    }
+                  >
+                    Ages 9–12 · Live sandbox
+                  </span>
+                  <h2 className={"mt-3 text-xl font-black md:text-2xl"}>
+                    Programming Learning Portal
+                  </h2>
+                  <p className={"mt-1.5 max-w-2xl text-sm leading-relaxed text-white/75"}>
+                    Your 4-year evolving profile website — study the lessons,
+                    write code in the browser, pass quizzes and earn XP.
+                  </p>
+                </div>
+                <span
+                  className={
+                    "portal-btn portal-btn-primary !px-5 !py-3 shrink-0 group-hover:shadow-[0_0_18px_rgba(0,128,128,0.5)]"
+                  }
+                >
+                  Open the portal →
+                </span>
+              </div>
+            </Link>
+          )}
           {catalog.levels.map((level) => {
             const levelSkills = catalog.skillsByLevel(level.id);
             if (levelSkills.length === 0) return null;
