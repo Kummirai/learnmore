@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import {
   LuAward,
@@ -27,9 +27,6 @@ type Progress = {
 };
 
 type ModuleStatus = "completed" | "in_progress" | "not_started" | "locked";
-
-const input =
-  "mt-0.5 size-4 shrink-0 accent-cyan focus:ring-cyan/40 cursor-pointer";
 
 function blankCriteria(requirements: SkillRequirement[]): boolean[][] {
   return requirements.map((req) => req.criteria.map(() => false));
@@ -103,47 +100,10 @@ function LevelChip({ level }: { level: SkillLevelEntry }) {
 function RequirementList({
   requirements,
   grid,
-  editable,
-  onToggle,
 }: {
   requirements: SkillRequirement[];
   grid: boolean[][];
-  editable: boolean;
-  onToggle?: (reqIndex: number, critIndex: number) => void;
 }) {
-  if (!editable) {
-    return (
-      <ol className={"space-y-3"}>
-        {requirements.map((req, i) => (
-          <li key={req.text} className={"rounded-lg bg-gray-50 px-3.5 py-3"}>
-            <div className={"flex gap-3"}>
-              <span
-                className={
-                  "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-white text-[11px] font-bold text-gray-400"
-                }
-              >
-                {i + 1}
-              </span>
-              <span className={"text-sm text-gray-700 leading-snug"}>
-                {req.text}
-              </span>
-            </div>
-            <ul className={"mt-2 space-y-1.5 border-l-2 border-cyan/30 pl-6"}>
-              {req.criteria.map((criterion) => (
-                <li
-                  key={criterion}
-                  className={"text-[13px] leading-snug text-slate-gray"}
-                >
-                  {criterion}
-                </li>
-              ))}
-            </ul>
-          </li>
-        ))}
-      </ol>
-    );
-  }
-
   return (
     <ol className={"space-y-3"}>
       {requirements.map((req, i) => {
@@ -153,10 +113,10 @@ function RequirementList({
         return (
           <li
             key={req.text}
-            className={`rounded-xl border px-3.5 py-3 transition-colors ${
+            className={`rounded-xl border px-3.5 py-3 ${
               reqProven
                 ? "border-green-200 bg-green-50/50"
-                : "border-gray-100 hover:border-cyan/40"
+                : "border-gray-100"
             }`}
           >
             <div className={"flex items-start justify-between gap-3"}>
@@ -169,7 +129,7 @@ function RequirementList({
               </span>
               <span
                 className={`shrink-0 text-[11px] font-bold ${
-                  reqProven ? "text-green-700" : "text-cyan-dark"
+                  reqProven ? "text-green-700" : "text-gray-400"
                 }`}
               >
                 {reqProven
@@ -182,32 +142,36 @@ function RequirementList({
             </p>
 
             <ul className={"mt-2.5 space-y-1"}>
-              {req.criteria.map((criterion, j) => (
-                <li key={criterion}>
-                  <label
+              {req.criteria.map((criterion, j) => {
+                const done = row[j] === true;
+                return (
+                  <li
+                    key={criterion}
                     className={
-                      "flex cursor-pointer items-start gap-2.5 rounded-lg px-2 py-1.5 -mx-0.5 transition-colors hover:bg-alice-blue/50"
+                      "flex items-start gap-2.5 rounded-lg px-2 py-1.5 -mx-0.5"
                     }
                   >
-                    <input
-                      type={"checkbox"}
-                      checked={row[j] === true}
-                      onChange={() => onToggle?.(i, j)}
-                      className={input}
-                      aria-label={`Criterion for requirement ${i + 1}: ${criterion}`}
-                    />
+                    {done ? (
+                      <LuCircleCheck
+                        aria-hidden="true"
+                        className={"mt-0.5 shrink-0 text-sm text-green-600"}
+                      />
+                    ) : (
+                      <LuCircle
+                        aria-hidden="true"
+                        className={"mt-0.5 shrink-0 text-sm text-gray-300"}
+                      />
+                    )}
                     <span
                       className={`text-[13px] leading-snug ${
-                        row[j]
-                          ? "text-gray-400 line-through"
-                          : "text-slate-gray"
+                        done ? "text-gray-400 line-through" : "text-slate-gray"
                       }`}
                     >
                       {criterion}
                     </span>
-                  </label>
-                </li>
-              ))}
+                  </li>
+                );
+              })}
             </ul>
 
             {reqProven && (
@@ -650,10 +614,8 @@ export default function SkillDashboard({
   const [grids, setGrids] = useState<Record<string, boolean[][]>>({});
   const [prog, setProg] = useState<Record<string, Progress | null>>({});
   const [loaded, setLoaded] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState("");
-  const inFlight = useRef(0);
 
   useEffect(() => {
     if (!user) return;
@@ -689,35 +651,6 @@ export default function SkillDashboard({
     };
   }, [user, skill.id, levels]);
 
-  async function save(levelId: string, next: boolean[][]) {
-    const snapshot = grids[levelId];
-    const ticket = ++inFlight.current;
-    setGrids((g) => ({ ...g, [levelId]: next }));
-    setSaving(true);
-    setError("");
-    try {
-      const res = await fetch(`/api/skills/${encodeURIComponent(skill.id)}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ levelId, criteria: next }),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (res.status === 401)
-        throw new Error("Your sign-in has expired — please sign in again.");
-      if (!res.ok) throw new Error(json?.error || "Could not save your progress.");
-      if (ticket === inFlight.current && json?.data) {
-        setProg((p) => ({ ...p, [levelId]: json.data }));
-      }
-    } catch (err) {
-      if (ticket === inFlight.current && snapshot) {
-        setGrids((g) => ({ ...g, [levelId]: snapshot }));
-      }
-      setError((err as Error).message);
-    } finally {
-      if (ticket === inFlight.current) setSaving(false);
-    }
-  }
-
   async function enroll() {
     setEnrolling(true);
     setError("");
@@ -744,14 +677,6 @@ export default function SkillDashboard({
     } finally {
       setEnrolling(false);
     }
-  }
-
-  function toggle(level: SkillLevelEntry, reqIndex: number, critIndex: number) {
-    const grid = grids[level.id] ?? blankCriteria(level.requirements ?? []);
-    const next = grid.map((row, i) =>
-      i === reqIndex ? row.map((v, j) => (j === critIndex ? !v : v)) : row,
-    );
-    void save(level.id, next);
   }
 
   const detail = skill.detail;
@@ -857,7 +782,6 @@ export default function SkillDashboard({
               <RequirementList
                 requirements={level.requirements ?? []}
                 grid={blankCriteria(level.requirements ?? [])}
-                editable={false}
               />
             </div>
           ))}
@@ -930,7 +854,6 @@ export default function SkillDashboard({
               <RequirementList
                 requirements={level.requirements ?? []}
                 grid={blankCriteria(level.requirements ?? [])}
-                editable={false}
               />
             </div>
           ))}
@@ -1007,8 +930,6 @@ export default function SkillDashboard({
                 <RequirementList
                   requirements={requirements}
                   grid={grid}
-                  editable
-                  onToggle={(i, j) => toggle(level, i, j)}
                 />
               </section>
             );
@@ -1030,15 +951,15 @@ export default function SkillDashboard({
                 }) ? (
                   <>
                     <FaCheck className={"mr-1.5 inline text-green-600"} />
-                    Every criterion is ticked. Show this record to your leader —
-                    they confirm and award{" "}
+                    Every criterion is proven. Your instructor confirms the
+                    sign-off and awards{" "}
                     <strong className={"text-navy"}>{skill.name}</strong>.
                   </>
                 ) : (
                   <>
-                    Tick each criterion as you prove it — a requirement is proven
-                    when all of its criteria are ticked. A leader checks the same
-                    record before the skill is awarded.
+                    Your instructor marks each criterion as you prove it — a
+                    requirement counts once all of its criteria are signed off.
+                    Progress updates here automatically.
                   </>
                 )}
               </p>
@@ -1057,16 +978,8 @@ export default function SkillDashboard({
             </div>
 
             <p className={"mt-3 flex items-center gap-2 text-[11px] text-slate-gray"}>
-              {saving ? (
-                <>
-                  <LuLoaderCircle className={"animate-spin"} /> Saving…
-                </>
-              ) : (
-                <>
-                  <LuCircle className={"text-[6px]"} /> Saved automatically to your
-                  account.
-                </>
-              )}
+              <LuCircle className={"text-[6px]"} /> Synced with your instructor&rsquo;s
+              sign-off record.
             </p>
           </div>
         </>

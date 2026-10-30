@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AdminHeader, Badge, Select } from "@/components/admin/ui";
+import type { SkillRequirement } from "@/lib/skills";
 import { useSkills } from "@/lib/useSkills";
-import { LuExternalLink, LuSearch } from "react-icons/lu";
+import { LuCheck, LuExternalLink, LuLoaderCircle, LuSearch, LuX } from "react-icons/lu";
 
 type Status = "not_started" | "in_progress" | "complete";
 
 type Row = {
     userId: string;
     skillId: string;
+    levelId: string;
     clubSlug: string;
     name: string;
     email: string;
@@ -22,6 +24,23 @@ type Row = {
     completedAt: string | null;
     updatedAt: string | null;
 };
+
+type SignOff = {
+    userId: string;
+    skillId: string;
+    levelId: string;
+    name: string;
+};
+
+function blankGrid(requirements: SkillRequirement[]): boolean[][] {
+    return requirements.map((req) => req.criteria.map(() => false));
+}
+
+function hydrateGrid(raw: boolean[][] | undefined, requirements: SkillRequirement[]): boolean[][] {
+    const blank = blankGrid(requirements);
+    if (!Array.isArray(raw)) return blank;
+    return blank.map((row, i) => row.map((_, j) => raw[i]?.[j] === true));
+}
 
 /** Empty filter = every record, whatever skill it belongs to. */
 const ALL_SKILLS = "";
@@ -45,6 +64,12 @@ function SkillsBody() {
     const [payload, setPayload] = useState<{ skill: string; clubSlug: string; rows: Row[] } | null>(null);
     const [error, setError] = useState("");
     const [query, setQuery] = useState("");
+    const [signOff, setSignOff] = useState<SignOff | null>(null);
+    const [grid, setGrid] = useState<boolean[][]>([]);
+    const [gridLoading, setGridLoading] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const [signOffError, setSignOffError] = useState("");
+    const [savedAt, setSavedAt] = useState<number | null>(null);
     const { skills, loading: skillsLoading, error: skillsError } = useSkills(clubSlug);
     const effectiveSkillId = clubSlug !== (payload?.clubSlug ?? clubSlug) ? ALL_SKILLS : filterSkillId;
 
@@ -101,6 +126,94 @@ function SkillsBody() {
             pct: criteria ? Math.round((proven / criteria) * 100) : 0,
         };
     }, [rows]);
+
+    const signOffSkill = signOff ? skills?.getSkill(signOff.skillId) : undefined;
+    const signOffRequirements = signOffSkill?.requirements ?? [];
+
+    async function openSignOff(row: Row) {
+        const skill = skills?.getSkill(row.skillId);
+        const requirements = skill?.requirements ?? [];
+        setSignOff({
+            userId: row.userId,
+            skillId: row.skillId,
+            levelId: row.levelId,
+            name: row.name,
+        });
+        setGrid(blankGrid(requirements));
+        setSignOffError("");
+        setSavedAt(null);
+        setGridLoading(true);
+        try {
+            const qs = new URLSearchParams({
+                userId: row.userId,
+                skillId: row.skillId,
+                levelId: row.levelId,
+            });
+            const res = await fetch(`/api/admin/skills?${qs.toString()}`);
+            const json = await res.json().catch(() => null);
+            if (!res.ok) throw new Error(json?.error || "Couldn't load this member's ticks.");
+            const doc = Array.isArray(json?.data) ? json.data[0] : null;
+            setGrid(hydrateGrid(doc?.criteria, requirements));
+        } catch (err) {
+            setSignOffError((err as Error).message);
+        } finally {
+            setGridLoading(false);
+        }
+    }
+
+    function toggleCriterion(reqIndex: number, critIndex: number) {
+        setGrid((g) =>
+            g.map((row, i) => (i === reqIndex ? row.map((v, j) => (j === critIndex ? !v : v)) : row)),
+        );
+        setSavedAt(null);
+    }
+
+    async function saveSignOff() {
+        if (!signOff) return;
+        setSaving(true);
+        setSignOffError("");
+        try {
+            const res = await fetch("/api/admin/skills", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userId: signOff.userId,
+                    skillId: signOff.skillId,
+                    levelId: signOff.levelId,
+                    criteria: grid,
+                }),
+            });
+            const json = await res.json().catch(() => null);
+            if (!res.ok) throw new Error(json?.error || "Couldn't save the sign-off.");
+            const data = json?.data;
+            setSavedAt(Date.now());
+            setPayload((p) =>
+                p
+                    ? {
+                          ...p,
+                          rows: p.rows.map((r) =>
+                              r.userId === signOff.userId && r.skillId === signOff.skillId && r.levelId === signOff.levelId
+                                  ? {
+                                        ...r,
+                                        status: data?.status ?? r.status,
+                                        criteriaDone: data?.criteriaDone ?? r.criteriaDone,
+                                        criteriaTotal: data?.criteriaTotal ?? r.criteriaTotal,
+                                        requirementsDone: data?.requirementsDone ?? r.requirementsDone,
+                                        requirementsTotal: data?.requirementsTotal ?? r.requirementsTotal,
+                                        completedAt: data?.completedAt ?? r.completedAt,
+                                        updatedAt: new Date().toISOString(),
+                                    }
+                                  : r,
+                          ),
+                      }
+                    : p,
+            );
+        } catch (err) {
+            setSignOffError((err as Error).message);
+        } finally {
+            setSaving(false);
+        }
+    }
 
     if (skillsError || skillsLoading || !skills) {
         return (
@@ -204,6 +317,7 @@ function SkillsBody() {
                             <th className="px-4 py-3 font-semibold">Requirements</th>
                             <th className="px-4 py-3 font-semibold">Status</th>
                             <th className="px-4 py-3 text-right font-semibold">Updated</th>
+                            <th className="px-4 py-3 text-right font-semibold">Sign-off</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -266,19 +380,28 @@ function SkillsBody() {
                                               })
                                             : "—"}
                                     </td>
+                                    <td className="px-4 py-3.5 text-right">
+                                        <button
+                                            type="button"
+                                            onClick={() => void openSignOff(row)}
+                                            className="inline-flex items-center gap-1.5 rounded-lg border border-cyan/40 bg-cyan/5 px-3 py-1.5 text-xs font-semibold text-cyan-dark transition hover:bg-cyan/15"
+                                        >
+                                            <LuCheck className="text-sm" /> Mark
+                                        </button>
+                                    </td>
                                 </tr>
                             );
                         })}
                         {loading && (
                             <tr>
-                                <td colSpan={effectiveSkillId ? 6 : 7} className="px-4 py-10 text-center text-sm text-slate-gray">
+                                <td colSpan={effectiveSkillId ? 7 : 8} className="px-4 py-10 text-center text-sm text-slate-gray">
                                     Loading skill progress…
                                 </td>
                             </tr>
                         )}
                         {!loading && view.length === 0 && (
                             <tr>
-                                <td colSpan={effectiveSkillId ? 6 : 7} className="px-4 py-10 text-center text-sm text-slate-gray">
+                                <td colSpan={effectiveSkillId ? 7 : 8} className="px-4 py-10 text-center text-sm text-slate-gray">
                                     {query ? `No members match "${query}".` : "No one has started this skill yet."}
                                 </td>
                             </tr>
@@ -287,9 +410,111 @@ function SkillsBody() {
                 </table>
             </div>
 
+            {signOff && (
+                <div className="mt-6 rounded-2xl border border-cyan/30 bg-alice-blue/40 p-5">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div>
+                            <p className="text-[11px] font-bold uppercase tracking-widest text-slate-gray">
+                                Instructor sign-off
+                            </p>
+                            <p className="mt-1 text-sm font-semibold text-navy">
+                                {signOff.name} · {signOffSkill?.name ?? signOff.skillId}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                                {skills.levelById[signOffSkill?.levelId ?? ""]?.name ?? "Level"} — tick each criterion you have seen proven.
+                            </p>
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => setSignOff(null)}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+                        >
+                            <LuX className="text-sm" /> Close
+                        </button>
+                    </div>
+
+                    {signOffError && (
+                        <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{signOffError}</p>
+                    )}
+
+                    {gridLoading ? (
+                        <p className="mt-4 flex items-center gap-2 text-sm text-slate-gray">
+                            <LuLoaderCircle className="animate-spin" /> Loading ticks…
+                        </p>
+                    ) : (
+                        <ol className="mt-4 space-y-3">
+                            {signOffRequirements.map((req, i) => {
+                                const row = grid[i] ?? req.criteria.map(() => false);
+                                const proven = req.criteria.length > 0 && row.every(Boolean);
+                                return (
+                                    <li
+                                        key={req.text}
+                                        className={`rounded-xl border px-3.5 py-3 ${
+                                            proven ? "border-green-200 bg-green-50/50" : "border-gray-200 bg-white"
+                                        }`}
+                                    >
+                                        <div className="flex items-start justify-between gap-3">
+                                            <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400">
+                                                Requirement {i + 1}
+                                            </span>
+                                            <span
+                                                className={`shrink-0 text-[11px] font-bold ${
+                                                    proven ? "text-green-700" : "text-gray-400"
+                                                }`}
+                                            >
+                                                {proven ? "Proven" : `${row.filter(Boolean).length} of ${req.criteria.length}`}
+                                            </span>
+                                        </div>
+                                        <p className="mt-1 text-sm leading-snug text-gray-700">{req.text}</p>
+                                        <ul className="mt-2.5 space-y-1">
+                                            {req.criteria.map((criterion, j) => (
+                                                <li key={criterion}>
+                                                    <label className="flex cursor-pointer items-start gap-2.5 rounded-lg px-2 py-1.5 -mx-0.5 hover:bg-alice-blue/60">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={row[j] === true}
+                                                            onChange={() => toggleCriterion(i, j)}
+                                                            className="mt-0.5 size-4 shrink-0 cursor-pointer accent-cyan focus:ring-cyan/40"
+                                                        />
+                                                        <span
+                                                            className={`text-[13px] leading-snug ${
+                                                                row[j] ? "text-gray-400 line-through" : "text-slate-gray"
+                                                            }`}
+                                                        >
+                                                            {criterion}
+                                                        </span>
+                                                    </label>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </li>
+                                );
+                            })}
+                        </ol>
+                    )}
+
+                    <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                        <p className="text-xs text-gray-400">
+                            {savedAt
+                                ? "Saved — the member sees this instantly."
+                                : "Tick every criterion, then save to update the member's record."}
+                        </p>
+                        <button
+                            type="button"
+                            onClick={() => void saveSignOff()}
+                            disabled={saving || gridLoading || signOffRequirements.length === 0}
+                            className="inline-flex items-center gap-2 rounded-xl bg-navy px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-navy/90 disabled:opacity-50"
+                        >
+                            {saving ? <LuLoaderCircle className="animate-spin" /> : <LuCheck />}
+                            {saving ? "Saving…" : "Save sign-off"}
+                        </button>
+                    </div>
+                </div>
+            )}
+
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                 <p className="text-xs text-gray-400">
-                    Read-only roll-up: 500 most recently updated records, newest first.
+                    Tick criteria to sign off — 500 most recently updated records, newest first.
                 </p>
                 <div className="flex flex-wrap gap-1.5">
                     {skills.skills.map((e) => (
