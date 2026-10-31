@@ -84,7 +84,7 @@ export default function AdminSportsPage() {
 
   return (
     <div className="space-y-5">
-      <AdminHeader icon={LuCalendarPlus} eyebrow="Sports" title="Fixtures" description="Create and manage the match calendar published to the web and mobile apps." />
+      <AdminHeader eyebrow="Sports" title="Fixtures" sub="Create and manage the match calendar published to the web and mobile apps." />
       {error && <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
       {notice && <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">{notice}</div>}
 
