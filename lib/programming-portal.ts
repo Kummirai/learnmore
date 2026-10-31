@@ -7,9 +7,9 @@
  *   Year 3 (age 11)  — JavaScript DOM & logic ("The Interactive Profile")
  *   Year 4 (age 12)  — Multi-page architecture ("The Master Showcase Hub")
  *
- * Nothing is ever discarded — each year's starter code carries the previous
- * year's work forward. Milestones are validated against live sandbox code by
- * declarative regex rules; quizzes are 3-question concept checks.
+ * Nothing is ever discarded — each year's capstone carries the previous year's
+ * work forward. Blueprint §4: the platform hosts no code playground; students
+ * follow curated external resources and instructors approve each milestone.
  */
 
 export type SandboxPane = "html" | "css" | "js";
@@ -30,7 +30,7 @@ export type PortalMilestone = {
   id: string;
   title: string;
   brief: string;
-  /** Present = tested in the sandbox. Absent = manual reflective checkbox. */
+  /** Legacy sandbox rule shape — retained so old imports still typecheck. */
   rules?: SandboxRule[];
 };
 
@@ -66,6 +66,8 @@ export type PortalStarter = {
   /** Year 4 multi-page set. When present the sandbox shows page tabs. */
   pages?: SandboxPage[];
 };
+
+import { savingsForAge } from "@/lib/savings";
 
 export type PortalYear = {
   year: 1 | 2 | 3 | 4;
@@ -552,7 +554,7 @@ export const PORTAL_YEARS: PortalYear[] = [
     age: 9,
     title: "The Digital Identity",
     subtitle: "HTML Foundations & CSS Basics",
-    savingsTarget: { weekly: 16, annual: 800, cumulative: 2050 },
+    savingsTarget: savingsForAge(9)!,
     resources: [
       { label: "MDN — HTML basics", url: "https://developer.mozilla.org/en-US/docs/Learn/HTML" },
       { label: "W3Schools — HTML tutorial", url: "https://www.w3schools.com/html/" },
@@ -739,7 +741,7 @@ header {
     age: 10,
     title: "The Showcase & Hobby Hub",
     subtitle: "Layouts, Grids & Forms",
-    savingsTarget: { weekly: 20, annual: 1000, cumulative: 3050 },
+    savingsTarget: savingsForAge(10)!,
     resources: [
       { label: "MDN — CSS layout", url: "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout" },
       { label: "CSS-Tricks — Complete Guide to Grid", url: "https://css-tricks.com/snippets/css/complete-guide-grid/" },
@@ -921,7 +923,7 @@ header {
     age: 11,
     title: "The Interactive Profile",
     subtitle: "JavaScript DOM & Logic",
-    savingsTarget: { weekly: 25, annual: 1250, cumulative: 4300 },
+    savingsTarget: savingsForAge(11)!,
     resources: [
       { label: "MDN — JavaScript first steps", url: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps" },
       { label: "javascript.info", url: "https://javascript.info/" },
@@ -1100,7 +1102,7 @@ toDays(10); // "3650 days old"`,
     age: 12,
     title: "The Master Showcase Hub",
     subtitle: "Multi-Page Architecture & Publishing",
-    savingsTarget: { weekly: 30, annual: 1500, cumulative: 5800 },
+    savingsTarget: savingsForAge(12)!,
     resources: [
       { label: "MDN — Learn web development", url: "https://developer.mozilla.org/en-US/docs/Learn" },
       { label: "web.dev — Learn Design", url: "https://web.dev/learn/design" },
