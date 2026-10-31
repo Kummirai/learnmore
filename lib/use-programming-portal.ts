@@ -1,27 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuth } from "@/components/AuthProvider";
-import {
-  type PortalProgress,
-  milestoneKey,
-} from "@/lib/programming-portal";
-
-export type XpCelebration = {
-  /** Monotonic id so repeat awards re-trigger animations. */
-  nonce: number;
-  xp: number;
-  label: string;
-};
-
-type PostResult = { progress: PortalProgress; gainedXp: number };
+import { type PortalProgress, milestoneKey } from "@/lib/programming-portal";
 
 /**
  * Client state for the Sprout Tweens Programming Portal.
  *
- * Loads GET /api/programming-portal on sign-in and exposes optimistic
- * mutations for milestones, quizzes and the Master badge. Each successful
- * save emits an XP celebration the header can animate.
+ * Loads GET /api/programming-portal on sign-in. Progression is read-only here:
+ * milestones are approved by an instructor from the admin panel, so this hook
+ * exposes only the approved record.
  */
 export function useProgrammingPortal() {
   const { user } = useAuth();
@@ -29,11 +17,7 @@ export function useProgrammingPortal() {
   const sessionKey = user?.email ?? null;
   const [progress, setProgress] = useState<PortalProgress | null>(null);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [actionError, setActionError] = useState<string | null>(null);
   const [loadedFor, setLoadedFor] = useState<string | null>(sessionKey);
-  const [busy, setBusy] = useState(false);
-  const [celebration, setCelebration] = useState<XpCelebration | null>(null);
-  const nonceRef = useRef(0);
 
   useEffect(() => {
     if (!sessionKey) return;
@@ -45,7 +29,7 @@ export function useProgrammingPortal() {
         if (cancelled) return;
         if (res.status === 401) {
           setProgress(null);
-          setLoadError(json?.error ?? "Sign in to save your progress.");
+          setLoadError(json?.error ?? "Sign in to see your progress.");
           setLoadedFor(key);
           return;
         }
@@ -75,45 +59,7 @@ export function useProgrammingPortal() {
   const signedIn = !!sessionKey;
   const current = signedIn && loadedFor === sessionKey ? progress : null;
   const loading = signedIn && loadedFor !== sessionKey;
-  const error = actionError ?? (signedIn ? loadError : null);
-
-  const celebrate = useCallback((xp: number, label: string) => {
-    if (xp <= 0) return;
-    nonceRef.current += 1;
-    setCelebration({ nonce: nonceRef.current, xp, label });
-  }, []);
-
-  const clearCelebration = useCallback(() => setCelebration(null), []);
-
-  const post = useCallback(
-    async (
-      body: Record<string, unknown>,
-      label: string,
-    ): Promise<PostResult> => {
-      const res = await fetch("/api/programming-portal", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (res.status === 401) {
-        throw new Error(json?.error ?? "Sign in to save your progress.");
-      }
-      if (!res.ok) {
-        throw new Error(json?.error ?? "Could not save — try again.");
-      }
-      const data = json?.data as PortalProgress & { gainedXp?: number };
-      const gainedXp = data?.gainedXp ?? 0;
-      const { gainedXp: _drop, ...next } = data;
-      void _drop;
-      setProgress(next);
-      setLoadError(null);
-      if (sessionKey) setLoadedFor(sessionKey);
-      celebrate(gainedXp, label);
-      return { progress: next, gainedXp };
-    },
-    [celebrate, sessionKey],
-  );
+  const error = signedIn ? loadError : null;
 
   const isMilestoneDone = useCallback(
     (year: number, id: string) =>
@@ -121,74 +67,11 @@ export function useProgrammingPortal() {
     [current],
   );
 
-  const setMilestone = useCallback(
-    async (year: number, id: string, completed: boolean, label: string) => {
-      setBusy(true);
-      setActionError(null);
-      try {
-        return await post(
-          { milestone: { year, id, completed } },
-          completed ? label : "",
-        );
-      } catch (e) {
-        const message =
-          e instanceof Error ? e.message : "Could not save — try again.";
-        setActionError(message);
-        throw e;
-      } finally {
-        setBusy(false);
-      }
-    },
-    [post],
-  );
-
-  const submitQuiz = useCallback(
-    async (year: number, id: string, score: number) => {
-      setBusy(true);
-      setActionError(null);
-      try {
-        return await post(
-          { quiz: { year, id, score } },
-          `Quiz +${score * 25} XP`,
-        );
-      } catch (e) {
-        const message =
-          e instanceof Error ? e.message : "Could not save — try again.";
-        setActionError(message);
-        throw e;
-      } finally {
-        setBusy(false);
-      }
-    },
-    [post],
-  );
-
-  const claimMasterBadge = useCallback(async () => {
-    setBusy(true);
-    setActionError(null);
-    try {
-      return await post({ claimMasterBadge: true }, "Master Badge +200 XP");
-    } catch (e) {
-      const message =
-        e instanceof Error ? e.message : "Could not save — try again.";
-      setActionError(message);
-      throw e;
-    } finally {
-      setBusy(false);
-    }
-  }, [post]);
-
   return {
     user,
     progress: current,
     loading,
     error,
-    busy,
-    celebration,
-    clearCelebration,
     isMilestoneDone,
-    setMilestone,
-    submitQuiz,
-    claimMasterBadge,
   };
 }

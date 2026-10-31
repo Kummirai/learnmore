@@ -588,7 +588,7 @@ const FALLBACK_SUB_CLUBS: RelateClub[] = [
     slug: "sprout-teens",
     name: "Sprout Teens",
     group: "Children",
-    ageRange: "12 – 15 yrs",
+    ageRange: "13 – 15 yrs",
     parentSlug: "sprout",
     tagline: "Reaching high, ready for more.",
     description:

@@ -52,7 +52,7 @@ const CLUB_AGE_RANGES: Record<string, { min: number; max: number; label: string 
   prime: { min: 33, max: 99, label: "33+ yrs" },
   "sprout-kids": { min: 6, max: 8, label: "6–8 yrs" },
   "sprout-tweens": { min: 9, max: 12, label: "9–12 yrs" },
-  "sprout-teens": { min: 12, max: 15, label: "12–15 yrs" },
+  "sprout-teens": { min: 13, max: 15, label: "13–15 yrs" },
   surge: { min: 16, max: 21, label: "16–21 yrs" },
   pulse: { min: 21, max: 33, label: "21–33 yrs" },
 };

@@ -270,9 +270,8 @@ export default async function SkillDetailPage({
                   >
                     Build one personal website that grows with you — HTML &amp;
                     CSS at 9, grids &amp; forms at 10, JavaScript at 11, a
-                    published multi-page hub at 12. Code in the live sandbox,
-                    tick milestones, pass quizzes and earn XP without ever
-                    starting over.
+                    published multi-page hub at 12. Follow curated free
+                    resources, then your instructor signs off each milestone.
                   </p>
                   <Link
                     href={`/${club}/skills/${skill}/learn`}

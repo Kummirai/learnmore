@@ -71,6 +71,14 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
+    link: "Members",
+    short: "Members",
+    items: [
+      { link: "My Savings", path: "/savings" },
+      { link: "My Profile", path: "/profile" },
+    ],
+  },
+  {
     link: "Serve",
     short: "Serve",
     items: [

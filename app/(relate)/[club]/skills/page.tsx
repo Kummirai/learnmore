@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 
 import PageHero from "@/components/PageHero";
 import JoinCta from "@/components/join/JoinCta";
+import GrowSkillsSection from "@/components/skills/GrowSkillsSection";
 import { getClub, getClubAccent } from "@/lib/clubs";
 import { getSkills } from "@/lib/skills";
 import { clipText, siteMetadata, SITE_NAME, SITE_URL } from "@/lib/seo";
@@ -139,14 +140,14 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
                       "inline-block border border-teal/50 bg-teal/15 px-3 py-1 text-[11px] font-bold uppercase tracking-widest text-teal-glow"
                     }
                   >
-                    Ages 9–12 · Live sandbox
+                    Ages 9–12 · Instructor-approved
                   </span>
                   <h2 className={"mt-3 text-xl font-black md:text-2xl"}>
                     Programming Learning Portal
                   </h2>
                   <p className={"mt-1.5 max-w-2xl text-sm leading-relaxed text-white/75"}>
-                    Your 4-year evolving profile website — study the lessons,
-                    write code in the browser, pass quizzes and earn XP.
+                    Your 4-year evolving profile website — follow curated free
+                    resources, build each capstone, and get instructor sign-off.
                   </p>
                 </div>
                 <span
@@ -302,6 +303,7 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
               </div>
             );
           })}
+          <GrowSkillsSection />
         </div>
       </section>
     </div>

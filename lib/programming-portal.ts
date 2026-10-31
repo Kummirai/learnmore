@@ -7,9 +7,9 @@
  *   Year 3 (age 11)  — JavaScript DOM & logic ("The Interactive Profile")
  *   Year 4 (age 12)  — Multi-page architecture ("The Master Showcase Hub")
  *
- * Nothing is ever discarded — each year's starter code carries the previous
- * year's work forward. Milestones are validated against live sandbox code by
- * declarative regex rules; quizzes are 3-question concept checks.
+ * Nothing is ever discarded — each year's capstone carries the previous year's
+ * work forward. Blueprint §4: the platform hosts no code playground; students
+ * follow curated external resources and instructors approve each milestone.
  */
 
 export type SandboxPane = "html" | "css" | "js";
@@ -30,7 +30,7 @@ export type PortalMilestone = {
   id: string;
   title: string;
   brief: string;
-  /** Present = tested in the sandbox. Absent = manual reflective checkbox. */
+  /** Legacy sandbox rule shape — retained so old imports still typecheck. */
   rules?: SandboxRule[];
 };
 
@@ -67,6 +67,8 @@ export type PortalStarter = {
   pages?: SandboxPage[];
 };
 
+import { savingsForAge } from "@/lib/savings";
+
 export type PortalYear = {
   year: 1 | 2 | 3 | 4;
   age: number;
@@ -75,6 +77,10 @@ export type PortalYear = {
   focus: string;
   profileAddition: string;
   concepts: string[];
+  /** Blueprint §5 Smart Saver targets for this age (rand). */
+  savingsTarget: { weekly: number; annual: number; cumulative: number };
+  /** Curated external resources — the platform hosts no code playground. */
+  resources: { label: string; url: string }[];
   lessons: PortalLesson[];
   starter: PortalStarter;
   milestones: PortalMilestone[];
@@ -548,6 +554,13 @@ export const PORTAL_YEARS: PortalYear[] = [
     age: 9,
     title: "The Digital Identity",
     subtitle: "HTML Foundations & CSS Basics",
+    savingsTarget: savingsForAge(9)!,
+    resources: [
+      { label: "MDN — HTML basics", url: "https://developer.mozilla.org/en-US/docs/Learn/HTML" },
+      { label: "W3Schools — HTML tutorial", url: "https://www.w3schools.com/html/" },
+      { label: "freeCodeCamp — Responsive Web Design", url: "https://www.freecodecamp.org/learn/2022/responsive-web-design/" },
+      { label: "Canva Design School", url: "https://www.canva.com/designschool/" },
+    ],
     focus:
       "Write your first real web page — structure it with HTML tags and paint it with CSS colours, fonts and spacing.",
     profileAddition:
@@ -728,6 +741,13 @@ header {
     age: 10,
     title: "The Showcase & Hobby Hub",
     subtitle: "Layouts, Grids & Forms",
+    savingsTarget: savingsForAge(10)!,
+    resources: [
+      { label: "MDN — CSS layout", url: "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout" },
+      { label: "CSS-Tricks — Complete Guide to Grid", url: "https://css-tricks.com/snippets/css/complete-guide-grid/" },
+      { label: "W3Schools — CSS tutorial", url: "https://www.w3schools.com/css/" },
+      { label: "Google Sheets — formulas", url: "https://support.google.com/docs/answer/46973" },
+    ],
     focus:
       "Level up your profile with side-by-side grids, hover effects and a real feedback form your visitors can fill in.",
     profileAddition:
@@ -903,6 +923,14 @@ header {
     age: 11,
     title: "The Interactive Profile",
     subtitle: "JavaScript DOM & Logic",
+    savingsTarget: savingsForAge(11)!,
+    resources: [
+      { label: "MDN — JavaScript first steps", url: "https://developer.mozilla.org/en-US/docs/Learn/JavaScript/First_steps" },
+      { label: "javascript.info", url: "https://javascript.info/" },
+      { label: "freeCodeCamp — JavaScript Algorithms", url: "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/" },
+      { label: "Kevin Stratvert — Sheets tutorials", url: "https://www.youtube.com/@KevinStratvert" },
+      { label: "Saylor University — Computer Science", url: "https://learn.saylor.org/course/index.php?categoryid=9" },
+    ],
     focus:
       "Make your profile react — a theme toggle, a click counter, a mini calculator and a personalised welcome popup, all written in JavaScript.",
     profileAddition:
@@ -1075,6 +1103,14 @@ toDays(10); // "3650 days old"`,
     age: 12,
     title: "The Master Showcase Hub",
     subtitle: "Multi-Page Architecture & Publishing",
+    savingsTarget: savingsForAge(12)!,
+    resources: [
+      { label: "MDN — Learn web development", url: "https://developer.mozilla.org/en-US/docs/Learn" },
+      { label: "web.dev — Learn Design", url: "https://web.dev/learn/design" },
+      { label: "GitHub Pages — publishing", url: "https://docs.github.com/en/pages" },
+      { label: "Affinity — beginner tutorials", url: "https://affinity.serif.com/en-us/learn/" },
+      { label: "Saylor University — free courses", url: "https://www.saylor.org/CourseCatalog" },
+    ],
     focus:
       "Grow your profile into a real 4-page website, make it work on phones with media queries, then officially publish it for your Master badge.",
     profileAddition:
