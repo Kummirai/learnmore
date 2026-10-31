@@ -26,8 +26,8 @@ create table if not exists public.clubs (
 insert into public.clubs (slug, name, group_key, age_min, age_max, sort) values
   ('sprout-kids',   'Sprout Kids',   'kids',   6,   8,  10),
   ('sprout-tweens', 'Sprout Tweens', 'tweens', 9,  11,  20),
-  ('sprout-teens',  'Sprout Teens',  'teens', 12,  16,  30),
-  ('surge',         'Surge',         'surge', 16,  21,  40),
+  ('sprout-teens',  'Sprout Teens',  'teens', 13,  16,  30),
+  ('surge',         'Surge',         'surge', 17,  21,  40),
   ('pulse',         'Pulse',         'pulse', 21,  33,  50),
   ('prime',         'Prime',         'adults',33,  99,  60),
   ('anchor',        'Anchor',        'adults',33,  99,  70),

@@ -122,7 +122,7 @@ export const MAGAZINES: RelateMagazine[] = [
     editions: [
       {
         label: "Footsteps",
-        ageRange: "16–21 yrs",
+        ageRange: "17–21 yrs",
         clubSlug: "surge",
         summary:
           "The Surge study guide — a daily read for every day of the Spring 2026 season.",
@@ -206,7 +206,7 @@ export const MAGAZINES: RelateMagazine[] = [
       },
       {
         label: "Rooted — Teens",
-        ageRange: "12–15 yrs",
+        ageRange: "13–16 yrs",
         clubSlug: "sprout",
         summary:
           "Belonging, doubt, identity, storms and fruit — growing up with a verse and a try-it for every day.",
