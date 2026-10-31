@@ -19,6 +19,7 @@ import {
     LuTicket,
     LuBriefcase,
     LuBuilding2,
+    LuTrophy,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -148,6 +149,13 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Events",
                 icon: LuTicket,
                 description: "Create and manage every community event — dates, fees, agendas and RSVPs.",
+            },
+            {
+                href: "/admin/sports",
+                label: "Sports Fixtures",
+                short: "Fixtures",
+                icon: LuTrophy,
+                description: "Create and publish match fixtures for every sports team.",
             },
         ],
     },

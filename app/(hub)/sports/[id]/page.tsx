@@ -240,7 +240,7 @@ export default async function TeamPage({
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3.5 py-1.5 rounded-full text-xs font-semibold text-white">
-                      <LuCalendar /> Season starts March 2027
+                      <LuCalendar /> No fixtures scheduled
                     </span>
                   )}
                 </div>
@@ -470,8 +470,8 @@ export default async function TeamPage({
               </h2>
               <p className="text-gray-500 mt-1 text-sm max-w-2xl mb-6">
                 {squad.fixtures.length > 0
-                  ? `The next five fixtures for ${team.name} — home games at the Relate Grounds.`
-                  : "Match days are being set — the calendar lands here once the league confirms it."}
+                  ? `Upcoming fixtures for ${team.name}.`
+                  : "No fixtures have been published for this team yet. Check back for upcoming matches."}
               </p>
 
               {squad.fixtures.length > 0 ? (
