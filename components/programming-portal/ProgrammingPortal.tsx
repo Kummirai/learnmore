@@ -1,53 +1,33 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { LuX } from "react-icons/lu";
-import GamificationHeader from "@/components/programming-portal/GamificationHeader";
+import { useMemo, useState } from "react";
+import { LuArrowUpRight, LuWallet } from "react-icons/lu";
 import LessonNotes from "@/components/programming-portal/LessonNotes";
-import MasterBadgeCard from "@/components/programming-portal/MasterBadgeCard";
 import MilestoneChecklist from "@/components/programming-portal/MilestoneChecklist";
-import CodeSandbox from "@/components/programming-portal/CodeSandbox";
-import QuizPanel from "@/components/programming-portal/QuizPanel";
+import PortalHeader from "@/components/programming-portal/PortalHeader";
 import {
   PORTAL_YEARS,
-  type PortalMilestone,
   milestoneKey,
-  nextTestableMilestone,
 } from "@/lib/programming-portal";
 import { useProgrammingPortal } from "@/lib/use-programming-portal";
+
+const zar = (value: number) =>
+  `R${value.toLocaleString("en-ZA", { minimumFractionDigits: 0 })}`;
 
 /**
  * The Sprout Tweens 4-Year Evolving Profile learning portal.
  *
- * Year tabs switch the active curriculum slice; milestones, sandbox and the
- * concept quiz all read/write progress through useProgrammingPortal so the
- * mobile companion sees the same XP, streak and completion state.
+ * Blueprint §4: this is a curated-resource directory, not a code playground.
+ * Students review the external links, build their capstone, and an instructor
+ * approves each milestone from the admin panel.
  */
 export default function ProgrammingPortal() {
-  const {
-    user,
-    progress,
-    loading,
-    error,
-    busy,
-    celebration,
-    clearCelebration,
-    isMilestoneDone,
-    setMilestone,
-    submitQuiz,
-    claimMasterBadge,
-  } = useProgrammingPortal();
+  const { user, progress, loading, error } = useProgrammingPortal();
 
   const [activeYear, setActiveYear] = useState(1);
-  const [selectedMilestoneId, setSelectedMilestoneId] = useState<
-    string | null
-  >(() => {
-    const first = PORTAL_YEARS[0];
-    return nextTestableMilestone(first, new Set())?.id ?? first.milestones[0]?.id ?? null;
-  });
-  const [authNudge, setAuthNudge] = useState<string | null>(null);
 
-  const year = PORTAL_YEARS.find((y) => y.year === activeYear) ?? PORTAL_YEARS[0];
+  const year =
+    PORTAL_YEARS.find((y) => y.year === activeYear) ?? PORTAL_YEARS[0];
 
   const doneKeys = useMemo(() => {
     const set = new Set<string>();
@@ -55,76 +35,14 @@ export default function ProgrammingPortal() {
     return set;
   }, [progress]);
 
-  const signedIn = !!user;
-
-  const selectYear = useCallback(
-    (yearNum: number) => {
-      const next = PORTAL_YEARS.find((y) => y.year === yearNum);
-      setActiveYear(yearNum);
-      setAuthNudge(null);
-      if (next) {
-        setSelectedMilestoneId(
-          nextTestableMilestone(next, doneKeys)?.id ??
-            next.milestones[0]?.id ??
-            null,
-        );
-      }
-    },
-    [doneKeys],
-  );
-
-  const handleToggleManual = useCallback(
-    async (milestone: PortalMilestone, completed: boolean) => {
-      if (!signedIn) {
-        setAuthNudge("milestone");
-        return;
-      }
-      try {
-        await setMilestone(year.year, milestone.id, completed, milestone.title);
-      } catch {
-        /* error surfaced through hook */
-      }
-    },
-    [signedIn, setMilestone, year],
-  );
-
-  const handleTestPass = useCallback(
-    async (milestone: PortalMilestone) => {
-      if (isMilestoneDone(year.year, milestone.id)) return;
-      if (!signedIn) {
-        setAuthNudge("pass");
-        return;
-      }
-      try {
-        await setMilestone(year.year, milestone.id, true, milestone.title);
-      } catch {
-        /* error surfaced through hook */
-      }
-    },
-    [signedIn, isMilestoneDone, setMilestone, year],
-  );
-
-  const handleQuizSubmit = useCallback(
-    async (score: number) => {
-      await submitQuiz(year.year, year.quiz.id, score);
-    },
-    [submitQuiz, year],
-  );
-
   const yearDone = year.milestones.filter((m) =>
     doneKeys.has(milestoneKey(year.year, m.id)),
   ).length;
 
   return (
     <div className={"min-h-screen bg-portal-ink text-white"}>
-      <GamificationHeader
-        xp={progress?.xp ?? 0}
-        streak={{
-          current: progress?.streak?.current ?? 0,
-          longest: progress?.streak?.longest ?? 0,
-        }}
-        celebration={celebration}
-        onCelebrationDone={clearCelebration}
+      <PortalHeader
+        approved={doneKeys.size}
         studentName={user?.name ?? null}
       />
 
@@ -156,43 +74,11 @@ export default function ProgrammingPortal() {
           </p>
         ) : null}
 
-        {authNudge ? (
-          <div
-            className={
-              "mb-4 flex flex-wrap items-center gap-3 border border-gold-400/50 bg-gold-400/10 px-4 py-3 text-sm text-white/85"
-            }
-            role={"status"}
-          >
-            <span>
-              {authNudge === "pass"
-                ? "Your code passed every rule — sign in and we'll save the milestone + XP."
-                : "Sign in to tick milestones, earn XP and track your streak."}
-            </span>
-            <a
-              href={
-                "/signin?next=/sprout-tweens/skills/sprout_03_programming/learn"
-              }
-              className={
-                "portal-btn portal-btn-primary !px-4 !py-1.5 text-xs"
-              }
-            >
-              Sign in now
-            </a>
-            <button
-              type={"button"}
-              onClick={() => setAuthNudge(null)}
-              className={"ml-auto text-white/50 hover:text-white"}
-              aria-label={"Dismiss"}
-            >
-              <LuX className={"size-4"} />
-            </button>
-          </div>
-        ) : null}
-
         {/* Year selector */}
         <div
+          id={"portal-curriculum"}
           className={
-            "flex flex-wrap gap-1 border border-portal-line bg-portal-slate p-1.5"
+            "flex flex-wrap gap-1 border border-portal-line bg-portal-slate p-1.5 scroll-mt-24"
           }
           role={"tablist"}
           aria-label={"Curriculum year"}
@@ -205,10 +91,8 @@ export default function ProgrammingPortal() {
                 type={"button"}
                 role={"tab"}
                 aria-selected={active}
-                onClick={() => selectYear(item.year)}
-                className={
-                  "portal-tab flex-1 !border-b-2 text-left"
-                }
+                onClick={() => setActiveYear(item.year)}
+                className={"portal-tab flex-1 !border-b-2 text-left"}
                 style={
                   active
                     ? {
@@ -244,7 +128,9 @@ export default function ProgrammingPortal() {
               <h1 className={"mt-1 text-2xl font-black text-white"}>
                 {year.title}
               </h1>
-              <p className={"mt-2 max-w-2xl text-sm leading-relaxed text-white/65"}>
+              <p
+                className={"mt-2 max-w-2xl text-sm leading-relaxed text-white/65"}
+              >
                 {year.focus}
               </p>
               <p className={"mt-3 text-sm leading-relaxed text-white/80"}>
@@ -253,7 +139,7 @@ export default function ProgrammingPortal() {
                     "font-bold uppercase tracking-wider text-teal-glow"
                   }
                 >
-                  Adds to your profile:{" "}
+                  Capstone:{" "}
                 </span>
                 {year.profileAddition}
               </p>
@@ -263,29 +149,54 @@ export default function ProgrammingPortal() {
                 "border border-teal/40 bg-teal/10 px-4 py-2 text-sm font-black text-teal-glow"
               }
             >
-              {yearDone}/{year.milestones.length} milestones
+              {yearDone}/{year.milestones.length} approved
             </p>
           </div>
 
-          <div className={"mt-4 border-t border-portal-line pt-4"}>
-            <p
+          <div className={"mt-4 grid gap-4 border-t border-portal-line pt-4 md:grid-cols-2"}>
+            <div>
+              <p
+                className={
+                  "text-[11px] font-bold uppercase tracking-widest text-white/40"
+                }
+              >
+                Concepts you&apos;ll learn
+              </p>
+              <div className={"mt-2 flex flex-wrap gap-2"}>
+                {year.concepts.map((concept) => (
+                  <span
+                    key={concept}
+                    className={
+                      "font-code border border-portal-line bg-portal-ink px-2.5 py-1 text-[11px] font-semibold text-white/75"
+                    }
+                  >
+                    {concept}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div
               className={
-                "text-[11px] font-bold uppercase tracking-widest text-white/40"
+                "border border-teal/30 bg-teal/5 px-4 py-3"
               }
             >
-              Concepts you&apos;ll learn
-            </p>
-            <div className={"mt-2 flex flex-wrap gap-2"}>
-              {year.concepts.map((concept) => (
-                <span
-                  key={concept}
-                  className={
-                    "font-code border border-portal-line bg-portal-ink px-2.5 py-1 text-[11px] font-semibold text-white/75"
-                  }
-                >
-                  {concept}
-                </span>
-              ))}
+              <p
+                className={
+                  "flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-teal-glow"
+                }
+              >
+                <LuWallet className={"size-3.5"} /> Smart Saver target · age{" "}
+                {year.age}
+              </p>
+              <p className={"mt-1.5 text-sm font-bold text-white"}>
+                {zar(year.savingsTarget.weekly)} / week →{" "}
+                {zar(year.savingsTarget.annual)} this year
+              </p>
+              <p className={"mt-0.5 text-xs text-white/55"}>
+                {zar(year.savingsTarget.cumulative)} cumulative in your
+                University Freedom Fund by the end of this year.
+              </p>
             </div>
           </div>
         </section>
@@ -293,55 +204,49 @@ export default function ProgrammingPortal() {
         <div className={"mt-4 space-y-4"}>
           <LessonNotes year={year} />
 
-          <MilestoneChecklist
-            year={year}
-            doneKeys={doneKeys}
-            busy={busy}
-            signedIn={signedIn}
-            selectedMilestoneId={selectedMilestoneId}
-            onSelectMilestone={(id) => {
-              setSelectedMilestoneId(id);
-              document
-                .getElementById("portal-sandbox")
-                ?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            onToggleManual={(milestone, completed) =>
-              void handleToggleManual(milestone, completed)
-            }
-          />
+          {/* Curated external resources — blueprint §4 */}
+          <section className={"portal-card p-5 md:p-6"} aria-label={"Resources"}>
+            <div className={"flex flex-wrap items-end justify-between gap-3 pb-4"}>
+              <div>
+                <span
+                  className={
+                    "text-[11px] font-bold uppercase tracking-widest text-teal"
+                  }
+                >
+                  Curated resources
+                </span>
+                <h2 className={"mt-1 text-xl font-black text-white"}>
+                  Learn from the experts
+                </h2>
+              </div>
+              <p className={"text-xs text-white/50"}>
+                Free, verified sites — everything opens in a new tab.
+              </p>
+            </div>
+            <ul
+              className={
+                "grid grid-cols-1 gap-px border border-portal-line bg-portal-line sm:grid-cols-2"
+              }
+            >
+              {year.resources.map((resource) => (
+                <li key={resource.url} className={"bg-portal-slate"}>
+                  <a
+                    href={resource.url}
+                    target={"_blank"}
+                    rel={"noreferrer"}
+                    className={
+                      "flex items-center justify-between gap-3 px-4 py-3 text-sm font-semibold text-white/85 transition-colors hover:bg-teal/10 hover:text-white"
+                    }
+                  >
+                    {resource.label}
+                    <LuArrowUpRight className={"size-4 shrink-0 text-teal"} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-          <div id={"portal-sandbox"} className={"scroll-mt-24"}>
-            <CodeSandbox
-              key={year.year}
-              year={year}
-              selectedMilestoneId={selectedMilestoneId}
-              doneKeys={doneKeys}
-              onTestPass={(milestone) => void handleTestPass(milestone)}
-            />
-          </div>
-
-          <QuizPanel
-            year={year}
-            best={progress?.quizzes?.[year.quiz.id]}
-            busy={busy}
-            signedIn={signedIn}
-            onSubmit={handleQuizSubmit}
-          />
-
-          {year.year === 4 ? (
-            <MasterBadgeCard
-              progress={progress}
-              busy={busy}
-              signedIn={signedIn}
-              onClaim={async () => {
-                try {
-                  await claimMasterBadge();
-                } catch {
-                  /* error surfaced through hook */
-                }
-              }}
-            />
-          ) : null}
+          <MilestoneChecklist year={year} doneKeys={doneKeys} />
         </div>
       </div>
     </div>

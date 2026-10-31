@@ -145,8 +145,8 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
                     Programming Learning Portal
                   </h2>
                   <p className={"mt-1.5 max-w-2xl text-sm leading-relaxed text-white/75"}>
-                    Your 4-year evolving profile website — study the lessons,
-                    write code in the browser, pass quizzes and earn XP.
+                    Your 4-year evolving profile website — follow curated free
+                    resources, build each capstone, and get instructor sign-off.
                   </p>
                 </div>
                 <span

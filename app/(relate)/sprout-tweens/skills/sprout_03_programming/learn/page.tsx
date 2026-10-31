@@ -11,7 +11,7 @@ export const metadata: Metadata = siteMetadata(
   {
     title: "Programming Learning Portal · Sprout Tweens",
     description: clipText(
-      "The Sprout Tweens 4-year evolving profile website curriculum — build your personal site from first HTML tag to a published multi-page hub with a live code sandbox, milestones, quizzes and XP.",
+      "The Sprout Tweens 4-year evolving profile website curriculum — follow curated free resources, build your personal site from first HTML tag to a published multi-page hub, and earn instructor-approved milestones.",
     ),
     openGraph: {
       type: "website",
@@ -19,16 +19,16 @@ export const metadata: Metadata = siteMetadata(
       siteName: SITE_NAME,
       title: "Programming Learning Portal · Sprout Tweens",
       description:
-        "Four years, one growing website. HTML to JavaScript, with a live sandbox and XP.",
+        "Four years, one growing website. HTML to JavaScript, with curated resources and instructor sign-off.",
     },
   },
   CANONICAL,
 );
 
 /**
- * Sprout Tweens Programming Learning Portal — the embedded, self-contained
- * home of the 4-Year Evolving Profile curriculum (ages 9–12). Coding happens
- * here on the web app; the Expo companion mirrors XP, badges and streaks.
+ * Sprout Tweens Programming Learning Portal — the home of the 4-Year
+ * Evolving Profile curriculum (ages 9–12). Blueprint §4: a curated directory
+ * of external resources with instructor-approved progression, no playground.
  */
 export default async function ProgrammingPortalPage() {
   return (
@@ -104,19 +104,20 @@ export default async function ProgrammingPortalPage() {
             }
           >
             One personal website that grows with you — from your first HTML tag
-            at age 9 to a published multi-page hub at 12. Write real code in the
-            live sandbox, tick off milestones, pass quizzes and earn XP. Your
-            work is never restarted; it&apos;s only layered.
+            at age 9 to a published multi-page hub at 12. Follow the curated
+            free resources, build each year&apos;s capstone, and your instructor
+            signs off every milestone. Your work is never restarted; it&apos;s
+            only layered.
           </p>
 
           <div className={"mt-7 flex flex-wrap gap-3"}>
             <a
-              href={"#portal-sandbox"}
+              href={"#portal-curriculum"}
               className={
                 "portal-btn portal-btn-primary portal-glow !px-6 !py-3"
               }
             >
-              Start coding
+              Explore the curriculum
             </a>
             <Link
               href={"/sprout-tweens/skills/sprout_03_programming"}
