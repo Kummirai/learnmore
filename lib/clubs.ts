@@ -81,7 +81,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
     slug: "sprout",
     name: "Sprout",
     group: "Children",
-    ageRange: "6 – 15 yrs",
+    ageRange: "6 – 16 yrs",
     tagline: "Growing strong, reaching high.",
     description:
       "Children in their formative years — needing nurturing, guidance, education support and a safe environment to grow.",
@@ -116,7 +116,7 @@ const FALLBACK_CLUBS: RelateClub[] = [
     slug: "surge",
     name: "Surge",
     group: "Young Youth",
-    ageRange: "16 – 21 yrs",
+    ageRange: "17 – 21 yrs",
     tagline: "Rise. Build. Become.",
     description:
       "Young people stepping into adulthood — needing guidance, skills and purpose.",
@@ -588,7 +588,7 @@ const FALLBACK_SUB_CLUBS: RelateClub[] = [
     slug: "sprout-teens",
     name: "Sprout Teens",
     group: "Children",
-    ageRange: "13 – 15 yrs",
+    ageRange: "13 – 16 yrs",
     parentSlug: "sprout",
     tagline: "Reaching high, ready for more.",
     description:

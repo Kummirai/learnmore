@@ -175,7 +175,7 @@ export default function VolunteerApplyForm() {
                 <Field label="Age group">
                     <Select value={ageGroup} onChange={(e) => setAgeGroup(e.target.value)}>
                         <option value="">Prefer not to say</option>
-                        <option value="16–21">16–21</option>
+                        <option value="17–21">17–21</option>
                         <option value="22–33">22–33</option>
                         <option value="34–45">34–45</option>
                         <option value="46+">46+</option>

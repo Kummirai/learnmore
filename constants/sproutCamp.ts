@@ -62,7 +62,7 @@ export const SPROUT_CAMP: SproutCamp = {
   startDate: "2026-12-10",
   endDate: "2026-12-13",
   registrationDeadline: "2026-11-28",
-  ageRange: "6 – 15 yrs",
+  ageRange: "6 – 16 yrs",
   fee: "R750",
   feeNote:
     "Covers accommodation, all meals, camp t-shirt and activities. Subsidised — no child misses camp for money, and sibling discounts apply.",
@@ -154,7 +154,7 @@ export const SPROUT_CAMP: SproutCamp = {
   faq: [
     {
       q: "Who can come to camp?",
-      a: "Any Sprout member aged 6 to 15. Kids, tweens and teens run as separate squads with their own leaders, and campers are grouped by age for sleeping and activities.",
+      a: "Any Sprout member aged 6 to 16. Kids, tweens and teens run as separate squads with their own leaders, and campers are grouped by age for sleeping and activities.",
     },
     {
       q: "Does my child need to be a member already?",

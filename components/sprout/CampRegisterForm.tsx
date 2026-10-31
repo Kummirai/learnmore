@@ -111,8 +111,8 @@ export default function CampRegisterForm({
     if (form.camperName.trim().length < 2)
       return setError("Please enter the camper's full name.");
     const age = ageFromDob(form.dob);
-    if (age === null || age < 6 || age > 15)
-      return setError("Campers are aged 6 to 15 — check the date of birth.");
+    if (age === null || age < 6 || age > 16)
+      return setError("Campers are aged 6 to 16 — check the date of birth.");
     if (form.guardianName.trim().length < 2)
       return setError("Please enter a parent or guardian's name.");
     if (form.guardianPhone.replace(/\D/g, "").length < 9)
@@ -298,7 +298,7 @@ export default function CampRegisterForm({
               value={form.dob}
               onChange={(e) => set("dob", e.target.value)}
             />
-            <p className="mt-1 text-[11px] text-gray-400">Ages 6 – 15</p>
+            <p className="mt-1 text-[11px] text-gray-400">Ages 6 – 16</p>
           </div>
         </div>
 

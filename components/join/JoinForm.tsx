@@ -48,12 +48,12 @@ const INTEREST_OPTIONS = [
 const YOUTH_CLUBS = ["surge", "pulse"];
 
 const CLUB_AGE_RANGES: Record<string, { min: number; max: number; label: string }> = {
-  sprout: { min: 6, max: 15, label: "6–15 yrs" },
+  sprout: { min: 6, max: 16, label: "6–16 yrs" },
   prime: { min: 33, max: 99, label: "33+ yrs" },
   "sprout-kids": { min: 6, max: 8, label: "6–8 yrs" },
   "sprout-tweens": { min: 9, max: 12, label: "9–12 yrs" },
-  "sprout-teens": { min: 13, max: 15, label: "13–15 yrs" },
-  surge: { min: 16, max: 21, label: "16–21 yrs" },
+  "sprout-teens": { min: 13, max: 16, label: "13–16 yrs" },
+  surge: { min: 17, max: 21, label: "17–21 yrs" },
   pulse: { min: 21, max: 33, label: "21–33 yrs" },
 };
 

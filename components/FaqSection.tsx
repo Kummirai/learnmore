@@ -11,7 +11,7 @@ const faqs = [
     },
     {
         q: "Which club is right for me or my family?",
-        a: "There's a club for every season of life: Sprout (children 6–15), Surge (16–21), Pulse (21–33), Prime (singles 33+), Anchor (single parents), Spark (0–5 years married) and Synergy (6+ years married). Message us on WhatsApp and we'll help you find your crew."
+        a: "There's a club for every season of life: Sprout (children 6–16), Surge (17–21), Pulse (21–33), Prime (singles 33+), Anchor (single parents), Spark (0–5 years married) and Synergy (6+ years married). Message us on WhatsApp and we'll help you find your crew."
     },
     {
         q: "What happens at a typical club gathering?",
