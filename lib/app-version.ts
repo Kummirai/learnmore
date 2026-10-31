@@ -24,7 +24,7 @@ export type AppVersionInfo = {
     forceUpdate: boolean;
 };
 
-const LATEST_VERSION = "1.0.3";
+const LATEST_VERSION = "1.0.4";
 
 /** Release-asset URL for a given version — GitHub serves it as an attachment. */
 export const LATEST_APK_URL =
@@ -35,6 +35,6 @@ export const APP_VERSION: AppVersionInfo = {
     minSupportedVersion: "1.0.0",
     apkUrl: LATEST_APK_URL,
     releaseNotes:
-        "• Prayer notifications restored to stable behaviour\n• Profile shows your real app version\n• General stability fixes",
+        "• Upgraded to Expo SDK 57\n• Delete your account from Profile\n• Updated app icons\n• Store now shows live products\n• General stability fixes",
     forceUpdate: false,
 };
