@@ -44,3 +44,21 @@ export function splitContribution(amount: number) {
 
 /** Saturday batch settlement day (0 = Sunday). */
 export const SETTLEMENT_DAY = 6;
+
+/** Target range for a club's age band, e.g. "9 – 12 yrs". */
+export function savingsForRange(range: string) {
+  const nums = (range.match(/[0-9]+/g) ?? []).map(Number);
+  if (!nums.length) return null;
+  const min = nums[0];
+  const max = nums[1] ?? nums[0];
+  const rows = SAVINGS_TARGETS.filter((t) => t.age >= min && t.age <= max);
+  if (!rows.length) return null;
+  const last = rows[rows.length - 1];
+  return {
+    weeklyMin: rows[0].weekly,
+    weeklyMax: last.weekly,
+    annualMin: rows[0].annual,
+    annualMax: last.annual,
+    cumulative: last.cumulative,
+  };
+}

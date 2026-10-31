@@ -12,6 +12,7 @@ import { getProgramCalendar } from "@/lib/program-calendar";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
 import ProgramCalendar from "@/components/ProgramCalendar";
 import { getSkills } from "@/lib/skills";
+import { savingsForRange } from "@/lib/savings";
 import DataError from "@/components/DataError";
 
 export default async function ClubPage({ slug }: { slug: string }) {
@@ -41,6 +42,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
   }
 
   const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
+  const savingsTarget = isSprout ? savingsForRange(club.ageRange) : null;
   const publications = await getPublications(club.slug);
   const events = await getClubEvents(club.slug);
   const calendar = await getProgramCalendar(club.slug).catch(() => null);
@@ -332,6 +334,82 @@ export default async function ClubPage({ slug }: { slug: string }) {
             </div>
   ) : null;
 
+  const savingsBlock =
+    isSprout && savingsTarget ? (
+      <div className={"mb-10 overflow-hidden rounded-2xl border border-cyan/25 bg-ice-blue/60"}>
+        <div
+          className={
+            "flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-8"
+          }
+        >
+          <div className={"max-w-2xl"}>
+            <span
+              className={
+                "text-[11px] font-bold uppercase tracking-[0.18em] text-cyan"
+              }
+            >
+              Smart Saver target
+            </span>
+            <h2 className={"mt-1 text-xl font-bold text-navy md:text-2xl"}>
+              Save R{savingsTarget.weeklyMin}–R{savingsTarget.weeklyMax} every
+              week
+            </h2>
+            <p className={"mt-2 text-sm leading-relaxed text-gray-600"}>
+              Every rand is split 60/40 — 60% locked in the University Freedom
+              Fund, 40% into the spendable wallet. Reach R
+              {savingsTarget.cumulative.toLocaleString("en-ZA")} in the Freedom
+              Fund by the end of the {club.name} band.
+            </p>
+          </div>
+          <dl className={"grid shrink-0 grid-cols-3 gap-3 text-center"}>
+            <div className={"rounded-xl bg-white px-4 py-3 shadow-sm"}>
+              <dt className={"text-[10px] uppercase tracking-wider text-gray-500"}>
+                Weekly
+              </dt>
+              <dd className={"mt-1 text-sm font-black text-navy"}>
+                R{savingsTarget.weeklyMin}–R{savingsTarget.weeklyMax}
+              </dd>
+            </div>
+            <div className={"rounded-xl bg-white px-4 py-3 shadow-sm"}>
+              <dt className={"text-[10px] uppercase tracking-wider text-gray-500"}>
+                This year
+              </dt>
+              <dd className={"mt-1 text-sm font-black text-navy"}>
+                R{savingsTarget.annualMin.toLocaleString("en-ZA")}–R
+                {savingsTarget.annualMax.toLocaleString("en-ZA")}
+              </dd>
+            </div>
+            <div className={"rounded-xl bg-white px-4 py-3 shadow-sm"}>
+              <dt className={"text-[10px] uppercase tracking-wider text-gray-500"}>
+                By band end
+              </dt>
+              <dd className={"mt-1 text-sm font-black text-navy"}>
+                R{savingsTarget.cumulative.toLocaleString("en-ZA")}
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <div
+          className={
+            "flex flex-wrap items-center justify-between gap-2 border-t border-cyan/15 bg-white/60 px-6 py-3 text-xs text-gray-600"
+          }
+        >
+          <span>
+            Ages {club.ageRange.replace(" yrs", "")} · 60% University Freedom
+            Fund · 40% wallet
+          </span>
+          <Link
+            href={"/savings"}
+            className={
+              "font-semibold text-cyan transition-colors hover:text-cyan-dark"
+            }
+          >
+            Track my savings →
+          </Link>
+        </div>
+      </div>
+    ) : null;
+
   const bannerBlock = banner ? (
             <div
               className={
@@ -493,6 +571,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
         <section className={"px-4 pt-12 pb-6"}>
           <div className={"max-w-6xl mx-auto"}>
             {ageGroupsBlock}
+            {savingsBlock}
             {bannerBlock}
           </div>
         </section>
