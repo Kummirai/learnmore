@@ -929,6 +929,7 @@ header {
       { label: "javascript.info", url: "https://javascript.info/" },
       { label: "freeCodeCamp — JavaScript Algorithms", url: "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/" },
       { label: "Kevin Stratvert — Sheets tutorials", url: "https://www.youtube.com/@KevinStratvert" },
+      { label: "Saylor University — Computer Science", url: "https://learn.saylor.org/course/index.php?categoryid=9" },
     ],
     focus:
       "Make your profile react — a theme toggle, a click counter, a mini calculator and a personalised welcome popup, all written in JavaScript.",
@@ -1108,6 +1109,7 @@ toDays(10); // "3650 days old"`,
       { label: "web.dev — Learn Design", url: "https://web.dev/learn/design" },
       { label: "GitHub Pages — publishing", url: "https://docs.github.com/en/pages" },
       { label: "Affinity — beginner tutorials", url: "https://affinity.serif.com/en-us/learn/" },
+      { label: "Saylor University — free courses", url: "https://www.saylor.org/CourseCatalog" },
     ],
     focus:
       "Grow your profile into a real 4-page website, make it work on phones with media queries, then officially publish it for your Master badge.",

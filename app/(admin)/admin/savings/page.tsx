@@ -20,6 +20,8 @@ type Account = {
     updatedAt: string | null;
 };
 
+type Member = { userId: string; name: string; email: string; age: number | null };
+
 type Withdrawal = {
     id: string;
     userId: string;
@@ -50,6 +52,8 @@ function SavingsAdminBody() {
     const [accounts, setAccounts] = useState<Account[]>([]);
     const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
     const [queue, setQueue] = useState({ count: 0, amount: 0 });
+    const [members, setMembers] = useState<Member[]>([]);
+    const [memberId, setMemberId] = useState("");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [busy, setBusy] = useState<string | null>(null);
@@ -83,6 +87,7 @@ function SavingsAdminBody() {
                 setAccounts(json.data.accounts ?? []);
                 setWithdrawals(json.data.pendingWithdrawals ?? []);
                 setQueue(json.data.pendingQueue ?? { count: 0, amount: 0 });
+                setMembers(json.data.members ?? []);
             } catch (e) {
                 if (!cancelled) setError(e instanceof Error ? e.message : "Failed to load savings");
             } finally {
@@ -122,6 +127,18 @@ function SavingsAdminBody() {
         );
         if (ok) {
             setCreditFor(null);
+            setCreditAmount("");
+            setCreditNote("");
+        }
+    }
+
+    async function creditSelected() {
+        const ok = await post(
+            { action: "credit", userId: memberId, amount: Number(creditAmount), note: creditNote },
+            `credit:${memberId}`,
+        );
+        if (ok) {
+            setMemberId("");
             setCreditAmount("");
             setCreditNote("");
         }
@@ -168,6 +185,51 @@ function SavingsAdminBody() {
                     <p className="text-xs text-slate-gray">Waiting for your review</p>
                 </Card>
             </div>
+
+            <Card className="mb-4">
+                <h2 className="mb-3 text-sm font-bold text-navy">Credit a member</h2>
+                <div className="grid gap-2 sm:grid-cols-[1fr_140px_1fr_auto]">
+                    <select
+                        value={memberId}
+                        onChange={(e) => setMemberId(e.target.value)}
+                        className="rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-cyan"
+                    >
+                        <option value="">Select a member…</option>
+                        {members.map((m) => (
+                            <option key={m.userId} value={m.userId}>
+                                {m.name} {m.email ? `— ${m.email}` : ""}
+                            </option>
+                        ))}
+                    </select>
+                    <input
+                        value={creditAmount}
+                        onChange={(e) => setCreditAmount(e.target.value)}
+                        inputMode="decimal"
+                        placeholder="Amount (R)"
+                        className="rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-cyan"
+                    />
+                    <input
+                        value={creditNote}
+                        onChange={(e) => setCreditNote(e.target.value)}
+                        placeholder="Note (e.g. weekly savings)"
+                        className="rounded-xl border border-gray-200 px-3 py-2 text-sm outline-none focus:border-cyan"
+                    />
+                    <Button
+                        onClick={creditSelected}
+                        disabled={!memberId || !creditAmount || busy === `credit:${memberId}`}
+                        className="!min-h-10 !px-4 !py-2 text-xs"
+                    >
+                        {busy === `credit:${memberId}` ? (
+                            <LuLoaderCircle className="size-3.5 animate-spin" />
+                        ) : (
+                            "Add credit"
+                        )}
+                    </Button>
+                </div>
+                <p className="mt-2 text-xs text-slate-gray">
+                    The 60/40 split happens immediately; funds settle from the pending queue on Saturday.
+                </p>
+            </Card>
 
             {withdrawals.length > 0 ? (
                 <Card className="mb-4">
