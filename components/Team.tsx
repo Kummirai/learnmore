@@ -43,8 +43,8 @@ const staticGroups: TeamGroup[] = [
     title: "Directors",
     subtitle: "Leading each club and its weekly programs",
     members: [
-      { name: "Sprout Director", role: "Children 6–15 · weekly clubs" },
-      { name: "Surge Director", role: "Young youth 16–21 · meetups" },
+      { name: "Sprout Director", role: "Children 6–16 · weekly clubs" },
+      { name: "Surge Director", role: "Young youth 17–21 · meetups" },
       { name: "Pulse Director", role: "Youth 21–33 · networking" },
       { name: "Prime Director", role: "Singles 33+ · peer circles" },
       { name: "Anchor Director", role: "Single parents · support groups" },

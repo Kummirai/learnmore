@@ -22,8 +22,8 @@ import PageHero from "@/components/PageHero";
 const CLUBS = [
   { key: "kids", label: "Sprout Kids", ages: "6–8 yrs", group: "Sprout", accent: "#f97316", icon: FaBaby },
   { key: "tweens", label: "Sprout Tweens", ages: "9–12 yrs", group: "Sprout", accent: "#f59e0b", icon: FaBaby },
-  { key: "teens", label: "Sprout Teens", ages: "12–16 yrs", group: "Sprout", accent: "#f59e0b", icon: FaBaby },
-  { key: "surge", label: "Surge", ages: "16–21 yrs", group: "Surge", accent: "#06b6d4", icon: FaCrown },
+  { key: "teens", label: "Sprout Teens", ages: "13–16 yrs", group: "Sprout", accent: "#f59e0b", icon: FaBaby },
+  { key: "surge", label: "Surge", ages: "17–21 yrs", group: "Surge", accent: "#06b6d4", icon: FaCrown },
   { key: "pulse", label: "Pulse", ages: "21–33 yrs", group: "Pulse", accent: "#8b5cf6", icon: FaCrown },
   { key: "adults", label: "Adults", ages: "33+ yrs", group: "Adults", accent: "#1e3a8a", icon: FaUsers },
 ];
