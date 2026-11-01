@@ -312,13 +312,13 @@ export default function JoinForm({
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/membership"
-              className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy/90 transition-colors"
+              className="inline-flex self-center items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-navy/90 transition-colors sm:self-auto"
             >
               View my membership <LuArrowRight className="text-xs" />
             </Link>
             <Link
               href={`/${clubSlug}`}
-              className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
+              className="inline-flex self-center items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors sm:self-auto"
             >
               Go to my club page
             </Link>
@@ -405,14 +405,14 @@ export default function JoinForm({
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/membership"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+              className="inline-flex min-h-11 self-center items-center justify-center gap-2 rounded-full bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft sm:self-auto"
             >
               View my membership <LuArrowRight className="text-xs" />
             </Link>
             {remoteMember.clubSlug ? (
               <Link
                 href={`/${remoteMember.clubSlug}`}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-line px-6 text-sm font-semibold text-navy transition-colors hover:bg-alice-blue"
+                className="inline-flex min-h-11 self-center items-center justify-center gap-2 rounded-full border border-line px-6 text-sm font-semibold text-navy transition-colors hover:bg-alice-blue sm:self-auto"
               >
                 Go to my club page
               </Link>

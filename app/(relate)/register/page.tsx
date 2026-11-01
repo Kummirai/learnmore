@@ -118,13 +118,13 @@ export default function RegisterPage() {
               <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
                 <Link
                   href={`/join?club=${JOIN_SLUG[club!.key]}`}
-                  className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-xl font-semibold text-sm hover:bg-navy/90 transition-colors"
+                  className="inline-flex self-center items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-navy/90 transition-colors sm:self-auto"
                 >
                   Complete your registration <FaArrowRight className="text-xs" />
                 </Link>
                 <Link
                   href="/membership"
-                  className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
+                  className="inline-flex self-center items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-full font-semibold text-sm hover:bg-gray-50 transition-colors sm:self-auto"
                 >
                   View my membership
                 </Link>

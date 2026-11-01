@@ -95,12 +95,12 @@ function brandSlide(): Slide {
     },
     actions: (
       <>
-        <JoinCta href={"/join"} className={btnPrimary}>
+        <a href={LATEST_APK_URL} download className={btnPrimary}>
+          <FaAndroid /> Download Apk
+        </a>
+        <JoinCta href={"/join"} className={btnGhost}>
           Join a club
         </JoinCta>
-        <Link href={"/store"} className={btnGhost}>
-          Explore the store
-        </Link>
       </>
     ),
   };
