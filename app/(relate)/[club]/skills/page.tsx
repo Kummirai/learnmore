@@ -83,7 +83,7 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
             <JoinCta
               href={`/join?club=${targetClub.slug}`}
               className={
-                "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
+                "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-full font-semibold text-sm hover:bg-white/90 transition-colors"
               }
             >
               Join {targetClub.name}
@@ -91,7 +91,7 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
             <Link
               href={`/${targetClub.slug}`}
               className={
-                "inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/60 transition-colors"
+                "inline-flex items-center gap-2 border border-white/25 text-white px-6 py-3 rounded-full font-semibold text-sm hover:border-white/60 transition-colors"
               }
             >
               Back to {targetClub.name} →

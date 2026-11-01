@@ -216,7 +216,7 @@ export default async function SkillDetailPage({
             <JoinCta
               href={`/join?club=${club}`}
               className={
-                "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors"
+                "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-full font-semibold text-sm hover:bg-white/90 transition-colors"
               }
             >
               Join {capitalize(club)}
@@ -224,7 +224,7 @@ export default async function SkillDetailPage({
             <Link
               href={`/${club}/skills`}
               className={
-                "inline-flex items-center gap-2 border border-white/30 px-6 py-3 rounded-lg font-semibold text-sm hover:border-white/70 transition-colors"
+                "inline-flex items-center gap-2 border border-white/30 px-6 py-3 rounded-full font-semibold text-sm hover:border-white/70 transition-colors"
               }
             >
               All skills →
