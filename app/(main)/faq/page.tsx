@@ -71,9 +71,13 @@ export default function FAQPage() {
               className={"bg-white rounded-xl shadow-sm overflow-hidden"}
             >
               <button
+                type="button"
+                id={`faq-page-trigger-${i}`}
+                aria-expanded={openIndex === i}
+                aria-controls={`faq-page-panel-${i}`}
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className={
-                  "w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors"
+                  "w-full flex items-center justify-between min-h-11 p-5 text-left hover:bg-gray-50 transition-colors"
                 }
               >
                 <span
@@ -84,11 +88,15 @@ export default function FAQPage() {
                   {faq.q}
                 </span>
                 <LuChevronDown
+                  aria-hidden
                   className={`text-lg text-gray-400 shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}
                 />
               </button>
               <div
-                className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-none" : "max-h-0"}`}
+                id={`faq-page-panel-${i}`}
+                role="region"
+                aria-labelledby={`faq-page-trigger-${i}`}
+                hidden={openIndex !== i}
               >
                 <div
                   className={

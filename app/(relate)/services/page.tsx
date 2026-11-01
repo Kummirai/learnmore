@@ -250,7 +250,7 @@ export default function ServicesPage() {
                 </div>
             </header>
 
-            <main className="bg-ghost-white min-h-[50vh] px-4 py-10">
+            <div className="bg-ghost-white min-h-[50vh] px-4 py-10">
                 <div className="mx-auto max-w-6xl">
                     {error ? (
                         <p className="mb-4 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">{error}</p>
@@ -517,7 +517,7 @@ export default function ServicesPage() {
                         </div>
                     )}
                 </div>
-            </main>
+            </div>
         </>
     );
 }

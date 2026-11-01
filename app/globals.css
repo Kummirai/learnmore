@@ -11,7 +11,9 @@
   --color-cyan-dark: #0fa3c4;
   /* Text-safe cyan — AA-contrast cyan for links and accents on light stages. */
   --color-cyan-ink: #0a7e99;
-  --color-blue: #0284c7;
+  --color-blue: #0369a1;
+  /* Muted text needs AA contrast on the light stages used across the site. */
+  --color-gray-400: #6b7280;
   --color-sky: #38bdf8;
   --color-blue-soft: #e0f2fe;
   --color-alice-blue: #f8fafc;
@@ -57,12 +59,30 @@
 }
 
 @layer base {
-  /* Apple-like reading rhythm: 17px body, tightened display tracking. */
+  /* Typographic scale: compact on phones, comfortable on tablets and
+     desktop. Rem-based Tailwind sizes follow this root so the whole app
+     moves together instead of mixing 17px body copy with 14px labels. */
+  html {
+    font-size: 15.5px;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-synthesis-weight: none;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 16px;
+    }
+  }
+
   body {
     font-family: var(--font-sans);
-    font-size: 17px;
-    line-height: 1.47;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.006em;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
@@ -71,7 +91,19 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.022em;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  strong,
+  b {
+    font-weight: 700;
   }
 
   a:focus-visible,
@@ -80,8 +112,18 @@
   textarea:focus-visible,
   select:focus-visible,
   [role="button"]:focus-visible {
-    outline: 2px solid var(--color-cyan-dark);
+    outline: 2px solid var(--color-cyan-ink);
     outline-offset: 3px;
+  }
+
+  :target {
+    scroll-margin-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 }
 
@@ -147,7 +189,7 @@
     display: inline-flex;
     align-items: baseline;
     gap: 0.25em;
-    color: var(--color-cyan);
+    color: var(--color-cyan-ink);
     font-weight: 500;
     font-size: 1.0625rem;
   }
@@ -515,5 +557,24 @@ html.reveal-ready
     .stagger-item {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Text-safe brand accents. Backgrounds keep the brighter cyan, but cyan text
+   on white stages uses the darker ink token so it meets WCAG AA. */
+@layer utilities {
+  .text-cyan,
+  .text-cyan-dark {
+    color: var(--color-cyan-ink);
+  }
+
+  .hover\:text-cyan:hover,
+  .hover\:text-cyan-dark:hover {
+    color: var(--color-cyan-ink);
+  }
+
+  .group:hover .group-hover\:text-cyan,
+  .group:hover .group-hover\:text-cyan-dark {
+    color: var(--color-cyan-ink);
   }
 }

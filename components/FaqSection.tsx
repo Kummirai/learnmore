@@ -38,13 +38,25 @@ export default function FaqSection() {
                 <div className={"space-y-3 mb-8"}>
                     {faqs.map((faq, i) => (
                         <div key={i} className={"bg-white rounded-2xl overflow-hidden border border-black/5"}>
-                            <button onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                                    className={"w-full flex items-center justify-between p-5 text-left hover:bg-tile transition-colors"}>
+                            <button
+                                type="button"
+                                id={`faq-section-trigger-${i}`}
+                                aria-expanded={openIndex === i}
+                                aria-controls={`faq-section-panel-${i}`}
+                                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                                className={"w-full flex items-center justify-between min-h-11 p-5 text-left hover:bg-tile transition-colors"}
+                            >
                                 <span className={"font-medium text-navy text-sm md:text-base pr-4"}>{faq.q}</span>
                                 <LuChevronDown
+                                    aria-hidden
                                     className={`text-lg text-cyan shrink-0 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`}/>
                             </button>
-                            <div className={`overflow-hidden transition-all duration-300 ${openIndex === i ? "max-h-none" : "max-h-0"}`}>
+                            <div
+                                id={`faq-section-panel-${i}`}
+                                role="region"
+                                aria-labelledby={`faq-section-trigger-${i}`}
+                                hidden={openIndex !== i}
+                            >
                                 <div className={"px-5 pb-5 text-sm text-navy/75 leading-relaxed border-t border-black/5 pt-4"}>
                                     {faq.a}
                                 </div>

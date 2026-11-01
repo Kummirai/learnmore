@@ -76,7 +76,7 @@ export default function PrayerPage() {
     const dateLine = now.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
     return (
-        <main className="min-h-screen bg-ghost-white">
+        <div className="min-h-screen bg-ghost-white">
             {/* Hero header */}
             <section className="relative overflow-hidden bg-navy-dark">
                 <div
@@ -167,6 +167,6 @@ export default function PrayerPage() {
                     lookup is unavailable, the app falls back to 06:15 / 12:00 / 18:30.
                 </p>
             </section>
-        </main>
+        </div>
     );
 }

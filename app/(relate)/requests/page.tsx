@@ -91,7 +91,7 @@ const STEPS = [
 
 export default function RequestsPage() {
   return (
-    <main className="min-h-screen bg-ghost-white">
+    <div className="min-h-screen bg-ghost-white">
       <PageHero
         title={"Requests"}
         tagline={"share it — we can help"}
@@ -274,6 +274,6 @@ export default function RequestsPage() {
         title="Make your request in the app"
         note="Download the free app, open Requests and tell us what is happening. A team member will review it and refer you to the right help or support you directly."
       />
-    </main>
+    </div>
   );
 }

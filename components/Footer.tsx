@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FaFacebook, FaInstagramSquare, FaTwitter } from "react-icons/fa";
 import {
   LuMapPin,
   LuPhone,
@@ -48,38 +47,9 @@ export default function Footer() {
               Skills, social and spiritual growth — all in one community. Free
               clubs for every age and season of life.
             </p>
-            <div className={"flex items-center gap-1"}>
-              <Link
-                href={"#"}
-                aria-label={"Facebook"}
-                className={
-                  "grid size-11 place-items-center hover:text-[color:var(--club-accent)] transition-colors"
-                }
-              >
-                <FaFacebook />
-              </Link>
-              <Link
-                href={"#"}
-                aria-label={"Twitter"}
-                className={
-                  "grid size-11 place-items-center hover:text-[color:var(--club-accent)] transition-colors"
-                }
-              >
-                <FaTwitter />
-              </Link>
-              <Link
-                href={"#"}
-                aria-label={"Instagram"}
-                className={
-                  "grid size-11 place-items-center hover:text-[color:var(--club-accent)] transition-colors"
-                }
-              >
-                <FaInstagramSquare />
-              </Link>
-            </div>
           </div>
           <div>
-            <h4 className={"text-white font-semibold mb-4"}>Quick Links</h4>
+            <h3 className={"text-white font-semibold mb-4"}>Quick Links</h3>
             <ul className={"space-y-2 text-sm"}>
               {[
                 { label: "About Us", path: "/about" },
@@ -106,7 +76,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className={"text-white font-semibold mb-4"}>Contact Info</h4>
+            <h3 className={"text-white font-semibold mb-4"}>Contact Info</h3>
             <ul className={"space-y-3 text-sm"}>
               <li className={"flex items-start gap-2"}>
                 <LuMapPin
@@ -118,13 +88,17 @@ export default function Footer() {
                 <LuPhone
                   className={"shrink-0 text-[color:var(--club-accent)]"}
                 />
-                <span>+27 78 267 7436</span>
+                <a href="tel:+27782677436" className="hover:underline">
+                  +27 78 267 7436
+                </a>
               </li>
               <li className={"flex items-center gap-2"}>
                 <LuMail
                   className={"shrink-0 text-[color:var(--club-accent)]"}
                 />
-                <span>info@relateworld.org</span>
+                <a href="mailto:info@relateworld.org" className="hover:underline">
+                  info@relateworld.org
+                </a>
               </li>
               <li className={"flex items-start gap-2"}>
                 <LuClock
@@ -135,13 +109,14 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className={"text-white font-semibold mb-4"}>Newsletter</h4>
+            <h3 className={"text-white font-semibold mb-4"}>Newsletter</h3>
             <p className={"text-sm leading-relaxed mb-4"}>
               Season updates, new season guides and community news — straight
               to your inbox.
             </p>
             {state?.success ? (
               <div
+                role="status"
                 aria-live={"polite"}
                 className={"flex items-start gap-2 text-sm text-cyan-light"}
               >
@@ -150,7 +125,11 @@ export default function Footer() {
               </div>
             ) : (
               <form action={formAction} className={"flex"}>
+                <label htmlFor="footer-newsletter-email" className="sr-only">
+                  Email address
+                </label>
                 <input
+                  id="footer-newsletter-email"
                   type="email"
                   name={"email"}
                   placeholder="Your Email"
@@ -169,12 +148,24 @@ export default function Footer() {
                     "bg-[color:var(--club-accent)] text-[color:var(--club-on-accent)] px-4 py-3 text-sm font-medium hover:bg-[color:var(--club-accent-dark)] disabled:opacity-60 transition-colors shrink-0"
                   }
                 >
-                  {pending ? "..." : "Subscribe"}
+                  {pending ? "Subscribing…" : "Subscribe"}
                 </button>
               </form>
             )}
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(
+                  new CustomEvent("relate:open-cookie-preferences"),
+                )
+              }
+              className="mt-4 inline-flex min-h-11 items-center text-sm underline decoration-white/40 underline-offset-4 hover:decoration-white"
+            >
+              Cookie preferences
+            </button>
             {state?.message && !state.success && (
               <div
+                role="alert"
                 aria-live={"polite"}
                 className={"flex items-start gap-2 text-sm text-red-400 mt-2"}
               >

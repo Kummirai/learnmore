@@ -4,7 +4,9 @@ export default function MainLayout({children}: Readonly<{ children: React.ReactN
     return (
         <>
             <Navbar/>
-            {children}
+            <main id="main-content" className="flex-1">
+                {children}
+            </main>
         </>
     )
 }

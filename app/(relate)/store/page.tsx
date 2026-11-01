@@ -208,7 +208,7 @@ export default function StorePage() {
                                 <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                                     <a
                                         href="#stock"
-                                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-soft px-6 py-3 text-sm font-bold text-navy transition hover:bg-white"
+                                        className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-soft px-6 py-3 text-sm font-bold text-navy transition hover:bg-white"
                                     >
                                         Explore products <LuArrowRight />
                                     </a>
@@ -216,7 +216,7 @@ export default function StorePage() {
                                         href={orderLink()}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10"
+                                        className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10"
                                     >
                                         <FaWhatsapp className="text-base text-sky" /> Order on WhatsApp
                                     </a>

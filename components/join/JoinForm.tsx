@@ -527,7 +527,7 @@ export default function JoinForm({
                   page ·
                   ages {ageRange?.label ?? "—"}.
                   {isYouthClub
-                    ? " 18–21s in Surge and 21–33s in Pulse join as young adults with their own conduct standards below."
+                    ? " 17–21s in Surge and 21–33s in Pulse join with their own conduct standards below."
                     : " All members follow Relate's community standards."}
                 </span>
               </div>

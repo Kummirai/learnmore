@@ -14,7 +14,7 @@ function PlayInner() {
 
 export default function PlayPage() {
     return (
-        <main className="min-h-screen bg-alice-blue">
+        <div className="min-h-screen bg-alice-blue">
             <Suspense
                 fallback={
                     <section className="flex-1 px-4 py-24 flex items-center justify-center bg-alice-blue">
@@ -27,6 +27,6 @@ export default function PlayPage() {
             >
                 <PlayInner />
             </Suspense>
-        </main>
+        </div>
     );
 }

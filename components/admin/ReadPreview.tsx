@@ -285,13 +285,23 @@ export function DayPreviewModal({
   if (!open || !day) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-navy/60 p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-50 overflow-y-auto p-4">
+      <button
+        type="button"
+        aria-label="Close day preview"
+        onClick={onClose}
+        className="fixed inset-0 bg-navy/60"
+      />
       <div
-        className="mx-auto my-8 w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Day preview"
+        className="relative mx-auto my-8 w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-2xl"
       >
         <DayPreview day={day} accent={accent} />
         <button
+          type="button"
+          autoFocus
           onClick={onClose}
           className="w-full border-t border-gray-100 py-3 text-sm font-semibold text-slate-gray hover:bg-alice-blue"
         >

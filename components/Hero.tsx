@@ -4,6 +4,7 @@ import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
 import { useEffect, useRef, useState } from "react";
 import { FaAndroid } from "react-icons/fa";
+import { LuPause, LuPlay } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import {
   MAGAZINES,
@@ -13,6 +14,7 @@ import {
 import { useClubs } from "@/lib/useClubs";
 import { useNextPrayer } from "@/lib/useNextPrayer";
 import { LATEST_APK_URL } from "@/lib/app-version";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 /* ── Slide model ────────────────────────────────────────────────────────────── */
 
@@ -34,9 +36,9 @@ type Slide = {
 };
 
 const btnPrimary =
-  "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/90 transition-colors";
+  "inline-flex items-center gap-2 bg-white text-navy px-6 py-3 rounded-full font-semibold text-sm hover:bg-white/90 transition-colors";
 const btnGhost =
-  "inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors";
+  "inline-flex items-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-white/20 hover:border-white/60 transition-colors";
 
 const firstWord = (s: string) =>
   s
@@ -204,10 +206,12 @@ export default function Hero() {
 
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
+  const autoplay = !paused && !reducedMotion;
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    if (paused) return;
+    if (!autoplay) return;
     timer.current = setInterval(
       () => setIndex((i) => (i + 1) % slides.length),
       AUTOPLAY_MS,
@@ -215,15 +219,15 @@ export default function Hero() {
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [paused, slides.length]);
+  }, [autoplay, slides.length]);
 
   const slide = slides[index];
 
   return (
     <section
+      aria-roledescription="carousel"
+      aria-label="Relate World highlights"
       className={"relative min-h-screen w-full overflow-hidden"}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
     >
       {/* ── Crossfading backgrounds ── */}
       {slides.map((s, i) => (
@@ -256,8 +260,18 @@ export default function Hero() {
 
       <Navbar overlay />
 
+      <p
+        aria-live={autoplay ? "off" : "polite"}
+        className="sr-only"
+      >
+        Slide {index + 1} of {slides.length}: {slide.tagline}
+      </p>
+
       {/* ── Content ── */}
       <div
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`${index + 1} of ${slides.length}`}
         className={
           "relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-16 mt-15"
         }
@@ -403,10 +417,22 @@ export default function Hero() {
               "flex flex-wrap items-center justify-center gap-1.5 mt-4 md:justify-start"
             }
           >
+            {!reducedMotion && (
+              <button
+                type="button"
+                aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+                onClick={() => setPaused((value) => !value)}
+                className="grid size-11 place-items-center rounded-full text-white hover:bg-white/10 transition-colors"
+              >
+                {paused ? <LuPlay aria-hidden /> : <LuPause aria-hidden />}
+              </button>
+            )}
             {slides.map((s, i) => (
               <button
                 key={s.key}
+                type="button"
                 aria-label={`Go to slide ${i + 1}`}
+                aria-current={i === index ? "true" : undefined}
                 onClick={() => setIndex(i)}
                 className="h-11 px-2 inline-flex items-center justify-center rounded-full"
               >

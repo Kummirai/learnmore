@@ -39,7 +39,7 @@ const STEPS = [
 
 export default function PrayerRequestsPage() {
   return (
-    <main className="min-h-screen bg-ghost-white">
+    <div className="min-h-screen bg-ghost-white">
       <PageHero
         title={"Prayer Requests"}
         mobileTitle={"Prayers"}
@@ -184,6 +184,6 @@ export default function PrayerRequestsPage() {
         title="Share a prayer request in the app"
         note="Download the free app, open Prayer &amp; Requests and send us your request. Our prayer team will pray for it through every daily prayer moment."
       />
-    </main>
+    </div>
   );
 }

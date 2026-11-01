@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { FaFacebook, FaTwitter, FaInstagramSquare } from "react-icons/fa";
 import { LuLoaderCircle, LuShield, LuUsers } from "react-icons/lu";
 import { useState } from "react";
 import { useSports } from "@/lib/useSports";
@@ -101,35 +99,6 @@ function MemberCard({
       <p className={"text-blue text-xs sm:text-sm mb-0 sm:mb-3 flex-1"}>
         {member.role}
       </p>
-      <div className={"hidden sm:flex items-center justify-center gap-1 text-slate-gray"}>
-        <Link
-          href={"#"}
-          aria-label={"Facebook"}
-          className={
-            "grid size-11 place-items-center hover:text-blue transition-colors"
-          }
-        >
-          <FaFacebook />
-        </Link>
-        <Link
-          href={"#"}
-          aria-label={"Twitter"}
-          className={
-            "grid size-11 place-items-center hover:text-blue transition-colors"
-          }
-        >
-          <FaTwitter />
-        </Link>
-        <Link
-          href={"#"}
-          aria-label={"Instagram"}
-          className={
-            "grid size-11 place-items-center hover:text-blue transition-colors"
-          }
-        >
-          <FaInstagramSquare />
-        </Link>
-      </div>
     </div>
   );
 }

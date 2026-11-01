@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { LuCookie } from "react-icons/lu";
 
 export const COOKIE_CONSENT_KEY = "relate:cookie-consent";
+export const OPEN_COOKIE_PREFERENCES_EVENT = "relate:open-cookie-preferences";
 
 type Choice = {
   essential: true;
@@ -14,6 +15,7 @@ type Choice = {
 
 export default function CookieConsent() {
   const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -25,6 +27,25 @@ export default function CookieConsent() {
     }, 700);
     return () => window.clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const openPreferences = () => {
+      setOpen(true);
+      window.setTimeout(() => dialogRef.current?.focus(), 0);
+    };
+    window.addEventListener(OPEN_COOKIE_PREFERENCES_EVENT, openPreferences);
+    return () =>
+      window.removeEventListener(OPEN_COOKIE_PREFERENCES_EVENT, openPreferences);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   const choose = (analytics: boolean) => {
     const choice: Choice = {
@@ -44,6 +65,8 @@ export default function CookieConsent() {
 
   return (
     <div
+      ref={dialogRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="false"
       aria-labelledby="cookie-consent-title"

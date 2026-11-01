@@ -4,8 +4,15 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
 import { FaWhatsapp } from "react-icons/fa";
-import { LuArrowRight, LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import {
+  LuArrowRight,
+  LuChevronLeft,
+  LuChevronRight,
+  LuPause,
+  LuPlay,
+} from "react-icons/lu";
 import Navbar from "@/components/Navbar";
+import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 export type HeroSlide = {
   title: string;
@@ -22,6 +29,9 @@ const AUTOPLAY_MS = 5000;
 
 export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const reducedMotion = usePrefersReducedMotion();
+  const autoplay = !paused && !reducedMotion;
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const go = useCallback(
@@ -29,28 +39,24 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
     [slides.length],
   );
 
-  const restart = useCallback(() => {
-    if (timer.current) clearInterval(timer.current);
+  useEffect(() => {
+    if (!autoplay) return;
     timer.current = setInterval(
       () => setIndex((i) => (i + 1) % slides.length),
       AUTOPLAY_MS,
     );
-  }, [slides.length]);
-
-  useEffect(() => {
-    restart();
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [restart]);
+  }, [autoplay, slides.length]);
 
   const slide = slides[index];
 
   return (
     <section
+      aria-roledescription="carousel"
+      aria-label="Featured Relate World events"
       className="relative min-h-screen w-full overflow-hidden bg-navy"
-      onMouseEnter={() => timer.current && clearInterval(timer.current)}
-      onMouseLeave={restart}
     >
       <div
         className="absolute inset-0"
@@ -72,7 +78,16 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
 
       <Navbar overlay />
 
-      <div className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center pt-20 pb-44 sm:pb-16">
+      <p aria-live={autoplay ? "off" : "polite"} className="sr-only">
+        Slide {index + 1} of {slides.length}: {slide.title}
+      </p>
+
+      <div
+        role="group"
+        aria-roledescription="slide"
+        aria-label={`${index + 1} of ${slides.length}`}
+        className="relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center pt-20 pb-44 sm:pb-16"
+      >
         <div className="max-w-2xl mx-auto sm:mx-0 text-center sm:text-left flex flex-col gap-3">
           <h1
             className="font-black tracking-tight leading-none text-white break-words"
@@ -95,7 +110,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
           <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-start mt-3">
             <Link
               href={slide.cta.href}
-              className="inline-flex items-center justify-center gap-2 bg-white text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-white/90 transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-white text-navy px-6 py-3.5 rounded-full font-bold text-sm hover:bg-white/90 transition-colors"
             >
               {slide.cta.label} <LuArrowRight />
             </Link>
@@ -104,7 +119,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                 <JoinCta
                   href={slide.secondary.href}
                   memberLabel={null}
-                  className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
                 >
                   {slide.secondary.label}
                 </JoinCta>
@@ -114,7 +129,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
                   {...(slide.secondary.href.startsWith("http")
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
-                  className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 border border-white/30 bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold text-sm hover:border-white/60 hover:bg-white/20 transition-colors"
                 >
                   {slide.secondary.href.startsWith("https://wa.me") && (
                     <FaWhatsapp />
@@ -130,24 +145,29 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <button
           type="button"
           aria-label="Previous slide"
-          onClick={() => {
-            go(index - 1);
-            restart();
-          }}
+          onClick={() => go(index - 1)}
           className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
         >
           <LuChevronLeft />
         </button>
         <div className="flex items-center gap-2">
+          {!reducedMotion && (
+            <button
+              type="button"
+              aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+              onClick={() => setPaused((value) => !value)}
+              className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
+            >
+              {paused ? <LuPlay aria-hidden /> : <LuPause aria-hidden />}
+            </button>
+          )}
           {slides.map((_, i) => (
             <button
               key={i}
               type="button"
               aria-label={`Go to slide ${i + 1}`}
-              onClick={() => {
-                go(i);
-                restart();
-              }}
+              aria-current={i === index ? "true" : undefined}
+              onClick={() => go(i)}
               className="h-11 px-4 inline-flex items-center justify-center rounded-full"
             >
               <span
@@ -165,10 +185,7 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         <button
           type="button"
           aria-label="Next slide"
-          onClick={() => {
-            go(index + 1);
-            restart();
-          }}
+          onClick={() => go(index + 1)}
           className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
         >
           <LuChevronRight />

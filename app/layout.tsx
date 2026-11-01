@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
@@ -12,14 +12,14 @@ const SITE_URL = "https://relateworld.org";
 const jakarta = Plus_Jakarta_Sans({
   variable: "--font-jakarta",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
 });
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   },
   description:
     "Relate World brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, season guides and practical support for families. 100% free to join.",
+  applicationName: "Relate World",
+  authors: [{ name: "Relate World", url: SITE_URL }],
   keywords: [
     "RelateWorld",
     "Relate World",
@@ -43,28 +45,41 @@ export const metadata: Metadata = {
     "youth groups",
     "Christian community",
   ],
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
-    url: "https://relateworld.org",
+    url: SITE_URL,
     siteName: "Relate World",
     title: "Relate World | Free Community Clubs, Skills & Support for Every Age",
     description:
       "Relate World — free clubs for every age with weekly meetups, mentoring, season guides and practical support for families.",
     locale: "en_ZA",
+    images: [
+      {
+        url: "/images/relate-world-logo.png",
+        width: 500,
+        height: 500,
+        alt: "Relate World",
+      },
+    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Relate World | Free Community Clubs, Skills & Support for Every Age",
     description:
       "Relate World — free clubs for every age with weekly meetups, mentoring, season guides and practical support for families.",
+    images: ["/images/relate-world-logo.png"],
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0b192c",
+  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -75,12 +90,16 @@ export default function RootLayout({
       lang="en"
       className={`${jakarta.variable} ${poppins.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-dvh flex flex-col">
         <ThemeSync />
         <RevealObserver />
-        <AuthProvider>
-          <main className={"flex-1"}>{children}</main>
-        </AuthProvider>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-white focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-navy focus:shadow-xl"
+        >
+          Skip to main content
+        </a>
+        <AuthProvider>{children}</AuthProvider>
         <Footer />
         <CookieConsent />
         <script

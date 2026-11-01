@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { LuChevronRight } from "react-icons/lu";
 
 const articles = [
   {
@@ -106,7 +104,7 @@ export default function NewsPage() {
             <span
               key={t}
               className={
-                "text-xs px-3 py-1 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer transition"
+                "text-xs px-3 py-1 rounded bg-gray-100 text-gray-600"
               }
             >
               {t}
@@ -138,19 +136,9 @@ export default function NewsPage() {
                   <p className={"text-sm text-gray-600 leading-relaxed mb-3"}>
                     {a.excerpt}
                   </p>
-                  <div className={"flex items-center justify-between"}>
-                    <span className={"text-xs text-gray-400"}>
-                      By {a.author}
-                    </span>
-                    <Link
-                      href={"#"}
-                      className={
-                        "inline-flex min-h-11 items-center text-xs text-cyan font-medium gap-1 hover:gap-2 transition-all"
-                      }
-                    >
-                      Read More <LuChevronRight />
-                    </Link>
-                  </div>
+                  <span className={"text-xs text-gray-400"}>
+                    By {a.author}
+                  </span>
                 </div>
               </div>
             </article>
