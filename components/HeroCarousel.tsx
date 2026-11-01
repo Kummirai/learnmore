@@ -150,38 +150,16 @@ export default function HeroCarousel({ slides }: { slides: HeroSlide[] }) {
         >
           <LuChevronLeft />
         </button>
-        <div className="flex items-center gap-2">
-          {!reducedMotion && (
-            <button
-              type="button"
-              aria-label={paused ? "Play slideshow" : "Pause slideshow"}
-              onClick={() => setPaused((value) => !value)}
-              className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
-            >
-              {paused ? <LuPlay aria-hidden /> : <LuPause aria-hidden />}
-            </button>
-          )}
-          {slides.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`Go to slide ${i + 1}`}
-              aria-current={i === index ? "true" : undefined}
-              onClick={() => go(i)}
-              className="h-11 px-4 inline-flex items-center justify-center rounded-full"
-            >
-              <span
-                className={`h-2 rounded-full transition-all ${
-                  i === index ? "w-6" : "w-2"
-                }`}
-                style={{
-                  backgroundColor:
-                    i === index ? slide.accent : "rgba(255,255,255,0.4)",
-                }}
-              />
-            </button>
-          ))}
-        </div>
+        {!reducedMotion && (
+          <button
+            type="button"
+            aria-label={paused ? "Play slideshow" : "Pause slideshow"}
+            onClick={() => setPaused((value) => !value)}
+            className="size-11 inline-flex items-center justify-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
+          >
+            {paused ? <LuPlay aria-hidden /> : <LuPause aria-hidden />}
+          </button>
+        )}
         <button
           type="button"
           aria-label="Next slide"

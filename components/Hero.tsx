@@ -4,7 +4,7 @@ import Link from "next/link";
 import JoinCta from "@/components/join/JoinCta";
 import { useEffect, useRef, useState } from "react";
 import { FaAndroid } from "react-icons/fa";
-import { LuPause, LuPlay } from "react-icons/lu";
+import { LuChevronLeft, LuChevronRight, LuPause, LuPlay } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
 import {
   MAGAZINES,
@@ -411,36 +411,38 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ── Carousel progress dots ── */}
+          {/* ── Carousel controls ── */}
           <div
             className={
-              "flex flex-wrap items-center justify-center gap-1.5 mt-4 md:justify-start"
+              "flex flex-wrap items-center justify-center gap-2 mt-4 md:justify-start"
             }
           >
+            <button
+              type="button"
+              aria-label="Previous slide"
+              onClick={() => setIndex((index - 1 + slides.length) % slides.length)}
+              className="grid size-11 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
+            >
+              <LuChevronLeft aria-hidden />
+            </button>
             {!reducedMotion && (
               <button
                 type="button"
                 aria-label={paused ? "Play slideshow" : "Pause slideshow"}
                 onClick={() => setPaused((value) => !value)}
-                className="grid size-11 place-items-center rounded-full text-white hover:bg-white/10 transition-colors"
+                className="grid size-11 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
               >
                 {paused ? <LuPlay aria-hidden /> : <LuPause aria-hidden />}
               </button>
             )}
-            {slides.map((s, i) => (
-              <button
-                key={s.key}
-                type="button"
-                aria-label={`Go to slide ${i + 1}`}
-                aria-current={i === index ? "true" : undefined}
-                onClick={() => setIndex(i)}
-                className="h-11 px-2 inline-flex items-center justify-center rounded-full"
-              >
-                <span
-                  className={`h-1.5 rounded-full transition-all ${i === index ? "w-6 bg-cyan" : "w-1.5 bg-white/40 hover:bg-white/70"}`}
-                />
-              </button>
-            ))}
+            <button
+              type="button"
+              aria-label="Next slide"
+              onClick={() => setIndex((index + 1) % slides.length)}
+              className="grid size-11 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
+            >
+              <LuChevronRight aria-hidden />
+            </button>
             <span
               className={
                 "ml-2 hidden sm:inline text-[11px] uppercase tracking-widest text-white/50"
