@@ -4,7 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaCheck, FaCamera, FaExclamationTriangle } from "react-icons/fa";
-import { LuArrowRight, LuLoaderCircle, LuShieldCheck } from "react-icons/lu";
+import {
+  LuArrowRight,
+  LuLoaderCircle,
+  LuRefreshCw,
+  LuShieldAlert,
+  LuShieldCheck,
+} from "react-icons/lu";
 import { useSports } from "@/lib/useSports";
 import { useClubs } from "@/lib/useClubs";
 import { type RelateTeam } from "@/constants/relate";
@@ -86,6 +92,9 @@ export default function PlayerRegistrationForm({
   const [done, setDone] = useState<Done | null>(null);
   const [hasMembership, setHasMembership] = useState(false);
   const [existing, setExisting] = useState<MyRegistration | null>(null);
+  const [checking, setChecking] = useState(true);
+  const [checkError, setCheckError] = useState<string | null>(null);
+  const [checkAttempt, setCheckAttempt] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Places left per position, so nobody picks a full slot blind.
@@ -102,39 +111,45 @@ export default function PlayerRegistrationForm({
     };
   }, [team.id]);
 
-  // Fill the basics from the member's club membership (async — safe for effects).
+  // Check club membership and any existing team registration before painting
+  // the form, so members never get a join form that turns into a gate. Club
+  // membership only prefills the basics; one team per member is the real gate.
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/club-join/me", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
-        const m = json?.data;
-        if (cancelled || !m) return;
-        setHasMembership(true);
-        setName((v) => v || m.name || "");
-        setAge((v) => v || (m.age != null ? String(m.age) : ""));
-        setGender((v) => v || m.gender || "");
-        setPhone((v) => v || m.phone || "");
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
-  // One team per member — the server owns the rule, this is the friendly gate.
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/sports/registrations/mine", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
-        if (!cancelled) setExisting(json?.data ?? null);
+    const load = async (url: string) => {
+      const res = await fetch(url, { cache: "no-store" });
+      if (res.status === 401 || res.status === 404) return null;
+      if (!res.ok) throw new Error(`request failed (${res.status})`);
+      const json = await res.json().catch(() => null);
+      return json?.data ?? null;
+    };
+
+    Promise.all([load("/api/club-join/me"), load("/api/sports/registrations/mine")])
+      .then(([membership, registration]) => {
+        if (cancelled) return;
+        if (membership) {
+          setHasMembership(true);
+          setName((v) => v || membership.name || "");
+          setAge((v) => v || (membership.age != null ? String(membership.age) : ""));
+          setGender((v) => v || membership.gender || "");
+          setPhone((v) => v || membership.phone || "");
+        }
+        setExisting((registration as MyRegistration | null) ?? null);
+        setChecking(false);
       })
-      .catch(() => {});
+      .catch(() => {
+        if (cancelled) return;
+        setCheckError(
+          "We couldn't check your membership and team status just now. Check your connection and try again.",
+        );
+        setChecking(false);
+      });
+
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [checkAttempt]);
 
   useEffect(() => {
     return () => {
@@ -142,7 +157,7 @@ export default function PlayerRegistrationForm({
     };
   }, [preview]);
 
-  if (loading) {
+  if (loading || checking) {
     return (
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-xl mx-auto text-center">
@@ -152,10 +167,42 @@ export default function PlayerRegistrationForm({
           <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
             Register for {team.name}
           </h1>
-          <div className="inline-flex items-center gap-2 text-sm text-gray-400">
-            <LuLoaderCircle className="animate-spin" /> Loading the squad
-            catalogue…
+          <div className="inline-flex items-center gap-2 text-sm text-slate-gray">
+            <LuLoaderCircle className="animate-spin" />
+            {checking
+              ? "Checking your membership and team status…"
+              : "Loading the squad catalogue…"}
           </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (checkError) {
+    return (
+      <section className="flex-1 px-4 py-12 bg-white">
+        <div className="max-w-xl mx-auto text-center">
+          <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-5">
+            <LuShieldAlert className="text-2xl text-red-600" />
+          </div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-2">
+            Relate · {team.sport} registration
+          </p>
+          <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
+            We couldn&rsquo;t check your membership
+          </h1>
+          <p className="text-sm text-slate-gray mb-6">{checkError}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setCheckError(null);
+              setChecking(true);
+              setCheckAttempt((n) => n + 1);
+            }}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+          >
+            <LuRefreshCw /> Try again
+          </button>
         </div>
       </section>
     );

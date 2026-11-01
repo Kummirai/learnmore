@@ -13,6 +13,8 @@ import {
   LuArrowRight,
   LuBellRing,
   LuLoaderCircle,
+  LuRefreshCw,
+  LuShieldAlert,
   LuShieldCheck,
   LuUsers,
 } from "react-icons/lu";
@@ -177,13 +179,20 @@ export default function JoinForm({
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<Done | null>(null);
   const [remoteMember, setRemoteMember] = useState<Membership | null>(null);
+  const [checking, setChecking] = useState(true);
+  const [checkError, setCheckError] = useState("");
+  const [checkAttempt, setCheckAttempt] = useState(0);
 
-  // No saved membership cookie? Load what we already know about the signed-in
-  // member from the server and fill only the blanks (async — safe for effects).
+  // Check the signed-in account's membership before painting anything, so a
+  // member who already belongs to a club never sees the join form flash up.
   useEffect(() => {
     let cancelled = false;
     fetch("/api/club-join/me", { cache: "no-store" })
-      .then((res) => (res.ok ? res.json() : null))
+      .then(async (res) => {
+        if (res.status === 401 || res.status === 404) return null;
+        if (!res.ok) throw new Error(`membership check failed (${res.status})`);
+        return res.json();
+      })
       .then((json) => {
         if (cancelled) return;
         const m = json?.data;
@@ -213,15 +222,20 @@ export default function JoinForm({
         } else if (!name && user?.name) {
           setName(user.name);
         }
+        setChecking(false);
       })
       .catch(() => {
-        if (!cancelled && !name && user?.name) setName(user.name);
+        if (cancelled) return;
+        setCheckError(
+          "We couldn't check your membership just now. Check your connection and try again.",
+        );
+        setChecking(false);
       });
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- run once per mount; name is only read as a blank-check
-  }, [member]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- name/user are only read as blank-checks
+  }, [member, checkAttempt]);
 
   const prefilled = Boolean(member?.name || remoteMember?.name || name);
 
@@ -309,6 +323,51 @@ export default function JoinForm({
               Go to my club page
             </Link>
           </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (checking) {
+    return (
+      <section className="flex-1 bg-white px-4 py-16">
+        <div className="mx-auto max-w-xl text-center">
+          <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-alice-blue">
+            <LuLoaderCircle className="animate-spin text-3xl text-cyan" />
+          </div>
+          <h2 className="mb-2 text-3xl font-black tracking-tight text-navy">
+            Checking your membership
+          </h2>
+          <p className="text-sm text-slate-gray">
+            One moment while we look up your club membership…
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  if (checkError) {
+    return (
+      <section className="flex-1 bg-white px-4 py-16">
+        <div className="mx-auto max-w-xl text-center">
+          <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-red-50">
+            <LuShieldAlert className="text-3xl text-red-500" />
+          </div>
+          <h2 className="mb-2 text-3xl font-black tracking-tight text-navy">
+            We couldn&rsquo;t check your membership
+          </h2>
+          <p className="mb-6 text-sm text-slate-gray">{checkError}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setCheckError("");
+              setChecking(true);
+              setCheckAttempt((n) => n + 1);
+            }}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+          >
+            <LuRefreshCw className="text-xs" /> Try again
+          </button>
         </div>
       </section>
     );
