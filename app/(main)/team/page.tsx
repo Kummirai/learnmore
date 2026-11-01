@@ -25,12 +25,12 @@ export default function TeamPage() {
             Presidency, each club and every sports squad.
           </p>
           <Link
-            href={"/volunteer"}
+            href={"/offices"}
             className={
               "btn-pill btn-brand mt-6"
             }
           >
-            <LuHandHeart /> Volunteer with us
+            <LuHandHeart /> Volunteer offices
           </Link>
         </div>
       </section>

@@ -115,42 +115,49 @@ export default async function ProductPage({
                 You may also like
               </h3>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {(related.length > 0 ? related : others).map((r) => (
-                  <Link key={r.id} href={`/store/${r.id}`}>
-                    <div className="max-w-64">
-                      <div className="group rounded-lg overflow-hidden bg-alice-blue">
-                        {r.image ? (
-                            <>
-                                <Image
-                                  className="group-hover:hidden rounded-lg aspect-square object-cover bg-alice-blue"
-                                  src={r.image}
-                                  alt={r.name}
-                                  width={640}
-                                  height={640}
-                                />
-                                <Image
-                                  className="hidden group-hover:block rounded-lg aspect-square object-cover bg-alice-blue"
-                                  src={r.image}
-                                  alt=""
-                                  width={640}
-                                  height={640}
-                                />
-                            </>
-                        ) : (
-                          <div className="aspect-square flex items-center justify-center text-slate-gray">
-                            <LuShoppingBag />
+                {(related.length > 0 ? related : others).map((r) => {
+                  const onSale =
+                    typeof r.offerPrice === "number" && r.offerPrice < r.price;
+                  return (
+                    <Link key={r.id} href={`/store/${r.id}`} className="group block">
+                      <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-sm hover-lift">
+                        <div className="relative aspect-square overflow-hidden bg-alice-blue">
+                          {r.image ? (
+                            <Image
+                              className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                              src={r.image}
+                              alt={r.name}
+                              width={640}
+                              height={640}
+                            />
+                          ) : (
+                            <div className="grid size-full place-items-center text-slate-gray">
+                              <LuShoppingBag />
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-3.5">
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-blue">
+                            {r.category}
+                          </p>
+                          <p className="mt-1 line-clamp-2 text-sm font-bold text-navy">
+                            {r.name}
+                          </p>
+                          <div className="mt-2 flex items-baseline gap-2">
+                            <p className="text-lg font-extrabold text-navy">
+                              R{(r.offerPrice ?? r.price).toLocaleString("en-ZA")}
+                            </p>
+                            {onSale ? (
+                              <p className="text-xs font-medium text-slate-gray line-through">
+                                R{r.price.toLocaleString("en-ZA")}
+                              </p>
+                            ) : null}
                           </div>
-                        )}
+                        </div>
                       </div>
-                      <p className="text-sm mt-2 font-semibold text-navy">
-                        {r.name}
-                      </p>
-                      <p className="text-lg font-bold text-cyan">
-                        R{(r.offerPrice ?? r.price).toLocaleString("en-ZA")}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

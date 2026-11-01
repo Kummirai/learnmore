@@ -9,7 +9,7 @@
  * `_QUIZ_LOGS_FROM_SUPABASE`) is trivial.
  */
 
-import type { QuizBoardRow, QuizLogRow } from "@/lib/reading-plans";
+import type { QuizBoardRow, QuizLogRow } from "@/lib/quiz-types";
 
 export type BibleQuizQuestion = {
   id: string;

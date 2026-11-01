@@ -9,7 +9,13 @@ import {
   FaShieldAlt,
   FaUserLock,
 } from "react-icons/fa";
-import { LuArrowRight, LuBellRing, LuLoaderCircle, LuUsers } from "react-icons/lu";
+import {
+  LuArrowRight,
+  LuBellRing,
+  LuLoaderCircle,
+  LuShieldCheck,
+  LuUsers,
+} from "react-icons/lu";
 import {
   MEMBER_STORAGE_KEY,
   membershipCookieString,
@@ -175,7 +181,6 @@ export default function JoinForm({
   // No saved membership cookie? Load what we already know about the signed-in
   // member from the server and fill only the blanks (async — safe for effects).
   useEffect(() => {
-    if (member) return;
     let cancelled = false;
     fetch("/api/club-join/me", { cache: "no-store" })
       .then((res) => (res.ok ? res.json() : null))
@@ -303,6 +308,56 @@ export default function JoinForm({
             >
               Go to my club page
             </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (remoteMember?.clubSlug) {
+    return (
+      <section className="flex-1 bg-white px-4 py-16">
+        <div className="mx-auto max-w-xl text-center">
+          <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-blue-soft">
+            <LuShieldCheck className="text-3xl text-blue" />
+          </div>
+          <h2 className="mb-2 text-3xl font-black tracking-tight text-navy">
+            You&rsquo;re already part of {remoteMember.clubName ?? selectedClub?.name ?? "your club"}
+          </h2>
+          <p className="mb-6 text-sm text-slate-gray">
+            Each member can belong to one club at a time. Your membership
+            {remoteMember.reference ? (
+              <>
+                {" "}
+                <span className="font-mono font-semibold text-navy">
+                  #{remoteMember.reference}
+                </span>
+              </>
+            ) : null}{" "}
+            is active.
+          </p>
+          <div className="mx-auto max-w-md rounded-2xl border border-line bg-canvas p-5 text-left">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-gray">Current membership</p>
+            <p className="mt-1 text-lg font-bold text-navy">{remoteMember.clubName ?? selectedClub?.name ?? "Relate club"}</p>
+            {remoteMember.teamName ? (
+              <p className="mt-1 text-sm text-slate-gray">{remoteMember.teamName}</p>
+            ) : null}
+          </div>
+          <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href="/membership"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+            >
+              View my membership <LuArrowRight className="text-xs" />
+            </Link>
+            {remoteMember.clubSlug ? (
+              <Link
+                href={`/${remoteMember.clubSlug}`}
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-line px-6 text-sm font-semibold text-navy transition-colors hover:bg-alice-blue"
+              >
+                Go to my club page
+              </Link>
+            ) : null}
           </div>
         </div>
       </section>

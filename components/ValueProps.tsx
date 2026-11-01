@@ -9,7 +9,7 @@ const points = [
   },
   {
     title: "A daily spiritual rhythm",
-    body: "Six prayer times from dawn to evening, a verse for every day, and Bible reading guides for every age.",
+    body: "Six prayer times from dawn to evening, a verse for every day, and season guides for every age.",
   },
   {
     title: "Real community",

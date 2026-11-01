@@ -284,8 +284,8 @@ export default function MembershipJoinPrompt() {
           </h2>
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/70">
             Register for a club, keep your membership ID, and show up.
-            Everything else — gatherings, squads, reading plans, the season
-            ahead — is already waiting.
+            Everything else — gatherings, squads and the season ahead — is
+            already waiting.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Link

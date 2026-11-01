@@ -14,7 +14,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { FaArrowRight, FaCheck, FaLock, FaUsers, FaBaby, FaCrown } from "react-icons/fa6";
 import Link from "next/link";
 import PageHero from "@/components/PageHero";
@@ -39,7 +38,6 @@ const JOIN_SLUG: Record<string, string> = {
 };
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [step, setStep] = useState<"choose" | "locked">("choose");
   const [selected, setSelected] = useState<string | null>(null);
 
@@ -124,12 +122,12 @@ export default function RegisterPage() {
                 >
                   Complete your registration <FaArrowRight className="text-xs" />
                 </Link>
-                <button
-                  onClick={() => router.push("/plans/getting-started-in-the-bible")}
+                <Link
+                  href="/membership"
                   className="inline-flex items-center justify-center gap-2 border border-gray-200 text-navy px-6 py-3 rounded-xl font-semibold text-sm hover:bg-gray-50 transition-colors"
                 >
-                  Start reading the Bible
-                </button>
+                  View my membership
+                </Link>
               </div>
               <button
                 onClick={() => setStep("choose")}

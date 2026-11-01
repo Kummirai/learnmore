@@ -422,7 +422,7 @@ export default function Hero() {
             >
               {slide.key === "prayer" && "Prayer rhythm"}
               {slide.key === "charity" && "Charity & care"}
-              {MAGAZINES.some((m) => m.slug === slide.key) && "Reading guides"}
+              {MAGAZINES.some((m) => m.slug === slide.key) && "Season guides"}
               {clubs.some((c) => c.slug === slide.key) && "Clubs"}
             </span>
           </div>

@@ -186,7 +186,7 @@ export default async function TeamPage({
         <header
           className="relative overflow-hidden"
           style={{
-            background: `linear-gradient(115deg, #151f3a 0%, ${hexA(club?.colorDark ?? "#1d2a4d", 0.95)} 48%, ${hexA(club?.color ?? "#13c5dd", 0.8)} 100%)`,
+            background: `linear-gradient(115deg, #07101D 0%, ${hexA(club?.colorDark ?? "#0B192C", 0.95)} 48%, ${hexA(club?.color ?? "#13c5dd", 0.8)} 100%)`,
           }}
         >
           <Navbar overlay />

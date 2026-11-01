@@ -14,7 +14,7 @@ import {
   type BibleQuizQuestion,
   type BibleQuizSectionBoard,
 } from "@/lib/bible-quiz";
-import type { QuizBoardRow, QuizLogRow } from "@/lib/reading-plans";
+import type { QuizBoardRow, QuizLogRow } from "@/lib/quiz-types";
 import { SEASON_QUIZ } from "@/lib/season";
 
 export type HubQuestion = {

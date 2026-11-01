@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { getMagazine } from "@/constants/relate";
 import { getClub } from "@/lib/clubs";
-import { getReadingPlan } from "@/lib/reading-plans";
 
 /**
- * SEO helpers — per-page titles/descriptions for clubs, magazines and reading
- * plans so brand-name queries ("RelateWorld Pulse", "Footsteps magazine",
- * "Bible in a year plan") resolve to the right page instead of the default
- * site title.
+ * SEO helpers — per-page titles/descriptions for clubs and magazines so
+ * brand-name queries ("RelateWorld Pulse", "Footsteps magazine") resolve to
+ * the right page instead of the default site title.
  */
 
 export const SITE_URL = "https://relateworld.org";
@@ -70,26 +68,5 @@ export function magazineMetadataFromSlug(slug: string): Metadata {
             },
         },
         `/${mag.slug}`,
-    );
-}
-
-/** Metadata for one reading plan (e.g. /plans/bible-in-a-year). */
-export function readingPlanMetadataFromSlug(slug: string): Metadata {
-    const plan = getReadingPlan(slug);
-    if (!plan) return {};
-    const title = `${plan.title}`;
-    return siteMetadata(
-        {
-            title,
-            description: clipText(plan.tagline),
-            openGraph: {
-                type: "website",
-                url: `${SITE_URL}/plans/${plan.slug}`,
-                siteName: SITE_NAME,
-                title,
-                description: clipText(plan.tagline),
-            },
-        },
-        `/plans/${plan.slug}`,
     );
 }

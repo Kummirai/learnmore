@@ -173,13 +173,13 @@ export default function SeasonQuizHub() {
                     className="flex items-center gap-3 px-4 py-3.5 md:px-5"
                     style={row.rank <= 3 ? { background: "linear-gradient(90deg, rgba(240,180,41,0.12), transparent 55%)" } : undefined}
                   >
-                    <RankMedal rank={row.rank as 1 | 2 | 3 | 4 | 5} accent="#1d2a4d" />
+                    <RankMedal rank={row.rank as 1 | 2 | 3 | 4 | 5} accent="#0B192C" />
                     <span className="shrink-0 rounded-full px-2.5 py-1 text-xs font-bold" style={{ backgroundColor: `${row.club.accent}1a`, color: row.club.accent }}>
                       {row.club.name}
                     </span>
                     <span className="min-w-0 flex-1 truncate text-sm font-medium text-gray-800">{row.name}</span>
                     <span className="hidden text-xs tabular-nums text-gray-400 sm:block">{row.correct}/{row.total} correct</span>
-                    <ScoreChip score={row.score} accent="#1d2a4d" />
+                    <ScoreChip score={row.score} accent="#0B192C" />
                   </li>
                 ))}
               </ul>

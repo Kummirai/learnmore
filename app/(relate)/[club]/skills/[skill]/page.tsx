@@ -98,7 +98,7 @@ export default async function SkillDetailPage({
         style={{
           background: entry.image
             ? "linear-gradient(115deg, #0b0c0f 0%, #101114 60%, #08090b 100%)"
-            : `linear-gradient(115deg, ${level?.colorDark ?? targetClub?.colorDark ?? "#1d2a4d"} 0%, #1d2a4d 62%, #151f3a 100%)`,
+            : `linear-gradient(115deg, ${level?.colorDark ?? targetClub?.colorDark ?? "#0B192C"} 0%, #0B192C 62%, #07101D 100%)`,
         }}
       >
         <Navbar overlay />

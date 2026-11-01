@@ -185,7 +185,7 @@ export default function AboutPage() {
           </Link>
 
           <Link
-            href={"/volunteer"}
+            href={"/offices"}
             className={
               "group flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
             }
@@ -193,10 +193,10 @@ export default function AboutPage() {
             <LuHandHeart className={"text-2xl text-cyan shrink-0"}/>
             <span>
               <span className={"block font-semibold text-gray-800 group-hover:text-cyan transition-colors"}>
-                Volunteer
+                Volunteer Offices
               </span>
               <span className={"block text-gray-500 text-sm leading-snug mt-1"}>
-                Ways to serve across our clubs, teams and programmes.
+                Take up a real role serving our clubs, teams and programmes.
               </span>
             </span>
           </Link>

@@ -33,10 +33,10 @@ const staticGroups: TeamGroup[] = [
       src: "/images/milton_kumirai.png",
     },
     members: [
-      { name: "Moses Fusi", role: "2nd President" },
-      { name: "Constance Lowani", role: "3rd President" },
+      { name: "Constance Lowani", role: "2nd President" },
+      { name: "Moses Fusi", role: "Chief Finance Officer" },
       { name: "Talayiwa Ngwenya", role: "Secretary" },
-      { name: "Anacleta Ncube", role: "Chief Finance Officer" },
+      { name: "Anacleta Ncube", role: "Finance Officer" },
     ],
   },
   {
@@ -69,8 +69,8 @@ function MemberCard({
     .join("");
   return (
     <div
-      className={`text-center group bg-white rounded-xl border p-4 sm:p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full
-            ${featured ? "border-cyan shadow-md" : "border-gray-200"}`}
+      className={`stagger-item hover-lift group flex h-full flex-col rounded-xl border bg-white p-4 text-center shadow-sm sm:p-8
+            ${featured ? "border-blue shadow-md" : "border-line"}`}
     >
       <div
         className={
@@ -88,25 +88,25 @@ function MemberCard({
         ) : (
           <div
             className={
-              "size-full flex items-center justify-center bg-gradient-to-br from-navy to-cyan text-white text-2xl sm:text-4xl font-black"
+              "size-full flex items-center justify-center bg-gradient-to-br from-navy to-blue text-white text-2xl sm:text-4xl font-black"
             }
           >
             {initials}
           </div>
         )}
       </div>
-      <h4 className={"text-sm sm:text-xl font-semibold text-gray-800 leading-snug"}>
+      <h4 className={"text-sm sm:text-xl font-semibold text-navy leading-snug"}>
         {member.name}
       </h4>
-      <p className={"text-cyan text-xs sm:text-sm mb-0 sm:mb-3 flex-1"}>
+      <p className={"text-blue text-xs sm:text-sm mb-0 sm:mb-3 flex-1"}>
         {member.role}
       </p>
-      <div className={"hidden sm:flex items-center justify-center gap-1 text-gray-400"}>
+      <div className={"hidden sm:flex items-center justify-center gap-1 text-slate-gray"}>
         <Link
           href={"#"}
           aria-label={"Facebook"}
           className={
-            "grid size-11 place-items-center hover:text-cyan transition-colors"
+            "grid size-11 place-items-center hover:text-blue transition-colors"
           }
         >
           <FaFacebook />
@@ -115,7 +115,7 @@ function MemberCard({
           href={"#"}
           aria-label={"Twitter"}
           className={
-            "grid size-11 place-items-center hover:text-cyan transition-colors"
+            "grid size-11 place-items-center hover:text-blue transition-colors"
           }
         >
           <FaTwitter />
@@ -124,7 +124,7 @@ function MemberCard({
           href={"#"}
           aria-label={"Instagram"}
           className={
-            "grid size-11 place-items-center hover:text-cyan transition-colors"
+            "grid size-11 place-items-center hover:text-blue transition-colors"
           }
         >
           <FaInstagramSquare />
@@ -165,11 +165,11 @@ export default function Team() {
   const groups = [...staticGroups, sportsGroup];
 
   return (
-    <section className={"py-16 md:py-24 bg-white px-4"}>
-      <div className={"max-w-5xl mx-auto"}>
-        <div className={"text-center mb-12 md:mb-16"}>
-          <h4 className={"text-cyan font-medium mb-3"}>OUR TEAM</h4>
-          <h2 className={"text-3xl md:text-4xl font-semibold text-gray-800"}>
+    <section className={"reveal bg-white px-4 py-16 md:py-24"}>
+      <div className={"mx-auto max-w-5xl"}>
+        <div className={"mb-12 text-center md:mb-16"}>
+          <h4 className={"text-blue font-medium mb-3"}>OUR TEAM</h4>
+          <h2 className={"text-3xl md:text-4xl font-semibold text-navy"}>
             Meet the Relate <br className={"hidden sm:block"} />
             Family
           </h2>
@@ -177,9 +177,9 @@ export default function Team() {
         {groups.map((group) => {
           const icon =
             group.title === "Presidency" ? (
-              <LuShield className={"text-cyan text-3xl"} />
+              <LuShield className={"text-blue text-3xl"} />
             ) : (
-              <LuUsers className={"text-cyan text-3xl"} />
+              <LuUsers className={"text-blue text-3xl"} />
             );
           const hasShowMore = group.members.length > 6;
           const visible =
@@ -194,18 +194,18 @@ export default function Team() {
               <div className={"text-center mb-10"}>
                 <h3
                   className={
-                    "text-2xl md:text-3xl font-bold text-gray-800 flex items-center justify-center gap-3"
+                    "text-2xl md:text-3xl font-bold text-navy flex items-center justify-center gap-3"
                   }
                 >
                   {icon} {group.title}
                 </h3>
-                <p className={"text-gray-500 mt-2"}>{group.subtitle}</p>
+                <p className={"text-slate-gray mt-2"}>{group.subtitle}</p>
               </div>
 
               {group.title === SPORTS_GROUP && sportsStatus !== "ready" ? (
                 <div
                   className={
-                    "rounded-2xl border border-dashed border-gray-200 bg-gray-50 p-6 text-center text-sm text-slate-gray"
+                    "rounded-2xl border border-dashed border-line bg-canvas p-6 text-center text-sm text-slate-gray"
                   }
                 >
                   {sportsStatus === "loading" ? (
@@ -233,7 +233,7 @@ export default function Team() {
                   {/* Two cards per row on mobile, three from md up */}
                   <div
                     className={
-                      "grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 items-stretch"
+                      "reveal reveal-stagger grid grid-cols-2 items-stretch gap-3 md:grid-cols-3 md:gap-4"
                     }
                   >
                     {visible.map((member, i) => (

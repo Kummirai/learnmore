@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LuShieldCheck } from "react-icons/lu";
 import { PRIVACY_DOC } from "@/lib/legal";
 
@@ -60,6 +61,14 @@ export default function PrivacyPage() {
             </div>
           ))}
         </div>
+
+        <p className={"mt-8 text-center text-sm text-navy/60"}>
+          For the cookies we set and how to change your choice, read our{" "}
+          <Link href="/cookies" className={"font-semibold text-[color:var(--club-accent)] underline underline-offset-4"}>
+            Cookie Policy
+          </Link>
+          .
+        </p>
       </div>
     </section>
   );

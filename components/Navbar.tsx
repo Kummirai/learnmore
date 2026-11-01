@@ -19,7 +19,6 @@ const navGroups: NavGroup[] = [
     items: [
       { link: "About Relate", path: "/about" },
       { link: "Our Team", path: "/team" },
-      { link: "Volunteer", path: "/volunteer" },
     ],
   },
   {
@@ -45,21 +44,6 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    link: "Reading Plans",
-    short: "Plans",
-    items: [
-      { link: "All Reading Plans", path: "/plans" },
-      { link: "Bible Reading", path: "/plans#bible-reading" },
-      {
-        link: "Marriage & Relationships",
-        path: "/plans#marriage-relationships",
-      },
-      { link: "Emotional Wellness", path: "/plans#emotional-wellness" },
-      { link: "Finance & Stewardship", path: "/plans#finance-stewardship" },
-      { link: "Academic", path: "/plans#academic" },
-    ],
-  },
-  {
     link: "Prayer & Requests",
     short: "Prayer",
     items: [
@@ -67,7 +51,6 @@ const navGroups: NavGroup[] = [
       { link: "Requests", path: "/requests" },
       { link: "Today's Prayer Times", path: "/prayer" },
       { link: "My Prayer Streak", path: "/profile#streaks" },
-      { link: "Read & Pray Plans", path: "/plans" },
     ],
   },
   {
@@ -84,15 +67,8 @@ const navGroups: NavGroup[] = [
     items: [
       { link: "Services", path: "/services" },
       { link: "Volunteer Offices", path: "/offices" },
-      { link: "Volunteer with us", path: "/volunteer" },
     ],
   },
-];
-
-const flatLinks = [
-  { link: "Home", path: "/" },
-  { link: "Store", path: "/store" },
-  ...navGroups.flatMap((g) => g.items),
 ];
 
 export default function Navbar({ overlay = false }: { overlay?: boolean }) {

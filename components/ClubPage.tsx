@@ -420,7 +420,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
               <div
                 className={"absolute inset-0"}
                 style={{
-                  background: `linear-gradient(120deg, ${club.colorDark} 20%, #1d2a4d 100%)`,
+                  background: `linear-gradient(120deg, ${club.colorDark} 20%, #0B192C 100%)`,
                 }}
               />
               <div
@@ -767,7 +767,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                           event.imageUrl
                             ? undefined
                             : {
-                                background: `linear-gradient(135deg, ${club.colorDark} 0%, #1d2a4d 100%)`,
+                                background: `linear-gradient(135deg, ${club.colorDark} 0%, #0B192C 100%)`,
                               }
                         }
                       >

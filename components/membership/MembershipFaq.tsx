@@ -6,7 +6,7 @@ import { LuChevronDown } from "react-icons/lu";
 const FAQS = [
   {
     q: "Is a Relate membership free?",
-    a: "Yes — clubs, squads, reading plans, events and prayer times are all free, with no fee and no renewal. Sponsorship covers school fees, uniforms and meals for families who need a hand.",
+    a: "Yes — clubs, squads, events and prayer times are all free, with no fee and no renewal. Sponsorship covers school fees, uniforms and meals for families who need a hand.",
   },
   {
     q: "What is my membership ID for?",

@@ -1,22 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
+import CookieConsent from "@/components/CookieConsent";
 import ThemeSync from "@/components/ThemeSync";
 import RevealObserver from "@/components/RevealObserver";
 import { AuthProvider } from "@/components/AuthProvider";
 
 const SITE_URL = "https://relateworld.org";
-const SITE_NAME = "RelateWorld";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Relate World",
   },
   description:
-    "Relate World brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, Bible reading guides and practical support for families. 100% free to join.",
+    "Relate World brings community, skills and spiritual growth together. Join free clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, season guides and practical support for families. 100% free to join.",
   keywords: [
     "RelateWorld",
     "Relate World",
@@ -34,7 +38,7 @@ export const metadata: Metadata = {
     "free clubs",
     "Bible study",
     "Bible quiz",
-    "reading plans",
+    "season guides",
     "prayer times",
     "youth groups",
     "Christian community",
@@ -48,14 +52,14 @@ export const metadata: Metadata = {
     siteName: "Relate World",
     title: "Relate World | Free Community Clubs, Skills & Support for Every Age",
     description:
-      "Relate World — free clubs for every age with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+      "Relate World — free clubs for every age with weekly meetups, mentoring, season guides and practical support for families.",
     locale: "en_ZA",
   },
   twitter: {
     card: "summary_large_image",
     title: "Relate World | Free Community Clubs, Skills & Support for Every Age",
     description:
-      "Relate World — free clubs for every age with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+      "Relate World — free clubs for every age with weekly meetups, mentoring, season guides and practical support for families.",
   },
   robots: {
     index: true,
@@ -69,7 +73,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${poppins.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ThemeSync />
@@ -78,6 +82,7 @@ export default function RootLayout({
           <main className={"flex-1"}>{children}</main>
         </AuthProvider>
         <Footer />
+        <CookieConsent />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -92,7 +97,7 @@ export default function RootLayout({
                   url: SITE_URL,
                   logo: `${SITE_URL}/images/relate-world-logo.png`,
                   description:
-                    "Relate World — free community clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, Bible reading guides and practical support for families.",
+                    "Relate World — free community clubs for every age — Sprout, Surge, Pulse, Prime, Anchor, Spark and Synergy — with weekly meetups, mentoring, season guides and practical support for families.",
                   areaServed: "ZA",
                 },
                 {

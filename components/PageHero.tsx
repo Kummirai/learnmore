@@ -61,7 +61,7 @@ export default function PageHero({
               }
             : {
                 background:
-                  "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #1d2a4d 80%, #151f3a 100%)",
+                  "linear-gradient(115deg, var(--club-accent) 0%, var(--club-accent-dark) 38%, #0B192C 80%, #07101D 100%)",
               }),
         }
       }

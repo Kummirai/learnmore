@@ -230,7 +230,7 @@ export default function EventsSports() {
                 <div
                   className="absolute inset-0"
                   style={{
-                    background: `linear-gradient(135deg, ${featuredClub?.color ?? "#13c5dd"}, ${featuredClub?.colorDark ?? "#1d2a4d"})`,
+                    background: `linear-gradient(135deg, ${featuredClub?.color ?? "#13c5dd"}, ${featuredClub?.colorDark ?? "#0B192C"})`,
                   }}
                 />
               )}
@@ -287,7 +287,7 @@ export default function EventsSports() {
                         <div
                           className="absolute inset-0"
                           style={{
-                            background: `linear-gradient(135deg, ${club?.color ?? "#13c5dd"}, ${club?.colorDark ?? "#1d2a4d"})`,
+                            background: `linear-gradient(135deg, ${club?.color ?? "#13c5dd"}, ${club?.colorDark ?? "#0B192C"})`,
                           }}
                         />
                       )}

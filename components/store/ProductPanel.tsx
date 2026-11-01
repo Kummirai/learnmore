@@ -37,7 +37,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
               onClick={() => setActive(src)}
               aria-label={`View image ${i + 1} of ${item.name}`}
               className={`w-20 h-11 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
-                active === src ? "border-cyan" : "border-gray-200 hover:border-cyan/60"
+                active === src ? "border-blue" : "border-gray-200 hover:border-blue/60"
               } bg-alice-blue`}
             >
               <Image src={src} alt={`${item.name} — view ${i + 1}`} width={160} height={88} className="w-full h-full object-cover" />
@@ -51,11 +51,11 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
 
       {/* Info */}
       <div className="flex flex-col text-sm">
-        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">{item.category}</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-blue mb-2">{item.category}</p>
         <h2 className="text-3xl font-black tracking-tight text-navy mb-1">{item.name}</h2>
 
         {typeof item.rating === "number" && (
-          <div className="flex items-center gap-0.5 mt-2 text-cyan">
+          <div className="flex items-center gap-0.5 mt-2 text-blue">
             {Array.from({ length: 5 }, (_, i) => (
               <Star key={i} filled={item.rating! > i} />
             ))}
@@ -79,7 +79,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
             <ul className="space-y-2 list-none">
               {item.details.map((d) => (
                 <li key={d} className="flex gap-2 items-start text-gray-600">
-                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-cyan" />
+                  <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-blue" />
                   {d}
                 </li>
               ))}
@@ -146,7 +146,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
             href={waLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 bg-cyan text-navy px-6 py-3.5 rounded-lg font-bold hover:bg-cyan-dark transition-colors"
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3.5 font-bold text-white transition-colors hover:bg-navy-soft"
           >
             <FaWhatsapp className="text-lg" /> Order on WhatsApp
           </a>

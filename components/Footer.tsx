@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Roboto } from "next/font/google";
 import { FaFacebook, FaInstagramSquare, FaTwitter } from "react-icons/fa";
 import {
   LuMapPin,
@@ -14,11 +13,6 @@ import {
 } from "react-icons/lu";
 import { useActionState } from "react";
 import { subscribeNewsletter } from "@/app/(main)/newsletter/actions";
-
-const roboto = Roboto({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export default function Footer() {
   const [state, formAction, pending] = useActionState(
@@ -96,6 +90,7 @@ export default function Footer() {
                 { label: "Contact", path: "/contact" },
                 { label: "Privacy Policy", path: "/privacy" },
                 { label: "Terms of Service", path: "/terms" },
+                { label: "Cookie Policy", path: "/cookies" },
               ].map((link, i) => (
                 <li key={i}>
                   <Link
@@ -142,7 +137,7 @@ export default function Footer() {
           <div>
             <h4 className={"text-white font-semibold mb-4"}>Newsletter</h4>
             <p className={"text-sm leading-relaxed mb-4"}>
-              Season updates, new reading guides and community news — straight
+              Season updates, new season guides and community news — straight
               to your inbox.
             </p>
             {state?.success ? (

@@ -1,10 +1,17 @@
 "use client"
 
-import {useEffect, useState} from "react"
+import {useEffect, useMemo, useState} from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {FaWhatsapp} from "react-icons/fa"
-import {LuArrowRight, LuBadgeCheck, LuCircleAlert, LuLoaderCircle, LuShoppingBag} from "react-icons/lu"
+import {
+    LuArrowRight,
+    LuBadgeCheck,
+    LuCircleAlert,
+    LuSearch,
+    LuShoppingBag,
+    LuX,
+} from "react-icons/lu"
 import Navbar from "@/components/Navbar"
 import {useStoreItems} from "@/components/store/useStoreItems"
 import {STORE_CATEGORIES, type StoreCategory, type StoreItem} from "@/constants/relate"
@@ -16,55 +23,76 @@ const orderLink = (item?: {name: string; price: number}) =>
 
 export function StoreCard({item}: {item: StoreItem}) {
     const onSale = item.offerPrice != null && item.offerPrice < item.price
+    const price = onSale ? item.offerPrice! : item.price
     const ratingLabel = item.rating ? `Rated ${item.rating} out of 5` : undefined
+
     return (
-        <div className={"flex flex-col group"}>
-            <Link href={`/store/${item.id}`} className={"block overflow-hidden rounded-xl bg-alice-blue"}>
+        <div className={"group flex flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-sm hover-lift"}>
+            <Link
+                href={`/store/${item.id}`}
+                className={"relative block aspect-square overflow-hidden bg-alice-blue"}
+            >
                 {item.image ? (
                     <Image
                         src={item.image}
                         alt={item.name}
-                        width={800}
-                        height={384}
-                        className={"w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"}
+                        width={720}
+                        height={720}
+                        className={"size-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"}
                     />
                 ) : (
-                    <div className={"w-full h-48 flex items-center justify-center text-slate-gray"}>
-                        <LuShoppingBag className={"text-2xl"}/>
+                    <div className={"grid size-full place-items-center text-slate-gray"}>
+                        <LuShoppingBag className={"text-3xl"}/>
                     </div>
                 )}
+                {onSale ? (
+                    <span className={"absolute left-3 top-3 rounded-full bg-blue px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white shadow-sm"}>
+                        Sale
+                    </span>
+                ) : null}
             </Link>
-            <div className={"p-4 text-sm"}>
+
+            <div className={"flex flex-1 flex-col p-3.5 sm:p-4"}>
                 <div className={"flex items-start justify-between gap-2"}>
-                    <Link href={`/store/${item.id}`} className={"inline-flex min-h-11 items-center text-slate-800 font-semibold text-base hover:text-cyan transition-colors"}>
-                        {item.name}
-                    </Link>
+                    <p className={"text-[10px] font-bold uppercase tracking-[0.16em] text-blue"}>{item.category}</p>
+                    {item.rating ? (
+                        <div className={"flex items-center gap-0.5 text-amber-500"} aria-label={ratingLabel}>
+                            {Array.from({length: 5}, (_, i) => (
+                                <Star key={i} filled={item.rating! > i} />
+                            ))}
+                            <span className={"text-[10px] font-semibold text-slate-gray"}>{item.rating}</span>
+                        </div>
+                    ) : null}
+                </div>
+
+                <Link
+                    href={`/store/${item.id}`}
+                    className={"mt-1 line-clamp-2 text-[15px] font-bold leading-snug text-ink transition-colors hover:text-blue sm:text-base"}
+                >
+                    {item.name}
+                </Link>
+                {item.blurb ? (
+                    <p className={"mt-1 line-clamp-2 text-xs leading-relaxed text-slate-gray"}>{item.blurb}</p>
+                ) : null}
+
+                <div className={"mt-auto flex items-end justify-between gap-2 pt-4"}>
+                    <div>
+                        <p className={"text-lg font-extrabold tracking-tight text-navy sm:text-xl"}>{formatPrice(price)}</p>
+                        {onSale ? (
+                            <p className={"text-[11px] font-medium text-slate-gray line-through"}>{formatPrice(item.price)}</p>
+                        ) : null}
+                    </div>
                     <Link
-                        href={orderLink({name: item.name, price: onSale ? item.offerPrice! : item.price})}
+                        href={orderLink({name: item.name, price})}
                         target={"_blank"}
                         rel={"noopener noreferrer"}
                         aria-label={`Order ${item.name} on WhatsApp`}
-                        title="Buy now"
-                        className={"grid size-11 place-items-center text-cyan hover:text-cyan-dark transition-colors shrink-0"}>
-                        <LuShoppingBag className="text-lg" />
+                        title="Order on WhatsApp"
+                        className={"grid size-10 shrink-0 place-items-center rounded-xl bg-navy text-white transition-colors hover:bg-blue"}
+                    >
+                        <LuShoppingBag className={"text-base"}/>
                     </Link>
                 </div>
-                {onSale ? (
-                    <p className={"font-bold text-cyan text-lg mt-1 flex items-baseline gap-1.5"}>
-                        {formatPrice(item.offerPrice!)}
-                        <span className={"text-xs font-medium text-slate-gray line-through"}>{formatPrice(item.price)}</span>
-                    </p>
-                ) : (
-                    <p className={"font-bold text-cyan text-lg mt-1"}>{formatPrice(item.price)}</p>
-                )}
-                {item.rating ? (
-                    <div className={"flex items-center gap-0.5 mt-1.5 text-amber-500"} aria-label={ratingLabel}>
-                        {Array.from({length: 5 }, (_, i) => (
-                            <Star key={i} filled={item.rating! > i} />
-                        ))}
-                    </div>
-                ) : null}
-                <p className={"text-slate-500 mt-1.5"}>{item.blurb}</p>
             </div>
         </div>
     )
@@ -91,7 +119,7 @@ function HeroShowcase({items}: {items: StoreItem[]}) {
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
         >
-            <div className="relative aspect-square overflow-hidden rounded-3xl [mask-image:linear-gradient(to_bottom,black_65%,transparent)]">
+            <div className="relative aspect-square overflow-hidden rounded-2xl bg-white/5 [mask-image:linear-gradient(to_bottom,black_72%,transparent)]">
                 {slides.map((src, i) => (
                     <Image
                         key={src}
@@ -99,24 +127,24 @@ function HeroShowcase({items}: {items: StoreItem[]}) {
                         alt={`${tee.name} — shot ${i + 1}`}
                         width={800}
                         height={800}
-                        className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+                        className={`absolute inset-0 size-full object-cover transition-all duration-1000 ease-in-out ${
                             i === idx ? "opacity-100 scale-100" : "opacity-0 scale-105"
                         }`}
                     />
                 ))}
             </div>
 
-            <div className="absolute top-4 right-4 text-right">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-navy/60">
+            <div className="absolute right-4 top-4 text-right">
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sky/80">
                     {tee.name}
                 </p>
-                <p className="text-3xl font-black tracking-tight text-navy [text-shadow:0_1px_3px_rgba(255,255,255,0.9)]">
+                <p className="text-3xl font-black tracking-tight text-white [text-shadow:0_2px_12px_rgba(7,16,29,0.65)]">
                     {formatPrice(tee.price)}
                 </p>
             </div>
 
             {slides.length > 1 && (
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2">
+                <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2">
                     {slides.map((_, i) => (
                         <button
                             key={i}
@@ -142,110 +170,198 @@ function HeroShowcase({items}: {items: StoreItem[]}) {
 
 export default function StorePage() {
     const [category, setCategory] = useState<StoreCategory>("All")
+    const [search, setSearch] = useState("")
     const {items: allItems, loading, error} = useStoreItems()
 
-    const items = category === "All" ? allItems : allItems.filter((i) => i.category === category)
+    const items = useMemo(() => {
+        const query = search.trim().toLowerCase()
+        return allItems.filter((item) => {
+            const matchesCategory = category === "All" || item.category === category
+            const matchesSearch =
+                !query ||
+                item.name.toLowerCase().includes(query) ||
+                item.category.toLowerCase().includes(query) ||
+                item.blurb.toLowerCase().includes(query)
+            return matchesCategory && matchesSearch
+        })
+    }, [allItems, category, search])
 
     return (
         <>
             <Navbar />
-            <header className="relative overflow-hidden bg-white border-b border-gray-100">
-                <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{background: "linear-gradient(120deg, rgba(19,197,221,0.08) 0%, rgba(255,255,255,0) 55%)"}}
-                />
-                <div className={"relative max-w-6xl mx-auto px-4 lg:px-0 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 gap-10 items-center"}>
-                    <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-3">Relate Store</p>
-                        <h1 className="tracking-tight leading-[1.05] text-navy">
-                            <span className="block text-3xl md:text-5xl font-black">Wear the emblem.</span>
-                            <span className="block mt-1.5 text-xl md:text-3xl font-light italic text-cyan">Fund the mission.</span>
-                        </h1>
-                        <p className="mt-4 text-slate-gray leading-relaxed max-w-md">
-                            Every purchase raises funds for Relate clubs and community programs. Order on WhatsApp and we&rsquo;ll sort out the rest.
-                        </p>
+            <header className="border-b border-line bg-alice-blue px-4 pb-10 pt-8">
+                <div className="mx-auto max-w-6xl">
+                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy via-navy to-navy-soft p-6 shadow-[0_24px_60px_rgba(7,16,29,0.28)] md:p-10">
+                        <div className="pointer-events-none absolute -bottom-24 -right-16 size-72 rounded-full bg-sky/20 blur-2xl drift" />
+                        <div className="pointer-events-none absolute -top-20 right-24 size-44 rounded-full bg-blue/25 blur-2xl soft-pulse" />
 
-                        <div className="flex flex-col sm:flex-row gap-3 mt-7">
-                            <Link
-                                href="/store/relate-tee"
-                                className="inline-flex items-center justify-center gap-2 bg-cyan text-white px-7 py-3.5 rounded-lg font-bold text-sm shadow-md shadow-cyan/25 hover:shadow-lg hover:shadow-cyan/30 hover:bg-cyan-dark transition-all">
-                                Shop the black tee <LuArrowRight />
-                            </Link>
-                            <a
-                                href={orderLink()}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 text-navy font-bold text-sm px-6 py-3 rounded-lg border border-transparent hover:bg-ghost-white hover:border-cyan/40 transition-colors">
-                                <FaWhatsapp className="text-cyan text-base" /> Order on WhatsApp
-                            </a>
+                        <div className="relative grid items-center gap-8 md:grid-cols-2">
+                            <div>
+                                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sky">Official Relate World Store</p>
+                                <h1 className="mt-2 text-3xl font-extrabold leading-[1.08] tracking-tight text-white md:text-5xl">
+                                    Connecting Hearts <span className="text-sky">Across Generations</span>
+                                </h1>
+                                <p className="mt-4 max-w-md text-sm leading-relaxed text-white/65">
+                                    Every purchase supports clubs, fellowships and community programmes. Order on WhatsApp and we&rsquo;ll sort out the rest.
+                                </p>
+
+                                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                                    <a
+                                        href="#stock"
+                                        className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-soft px-6 py-3 text-sm font-bold text-navy transition hover:bg-white"
+                                    >
+                                        Explore products <LuArrowRight />
+                                    </a>
+                                    <a
+                                        href={orderLink()}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10"
+                                    >
+                                        <FaWhatsapp className="text-base text-sky" /> Order on WhatsApp
+                                    </a>
+                                </div>
+
+                                <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/70">
+                                    {["Funds Relate clubs", "Order via WhatsApp", "Pay on delivery or EFT"].map((t) => (
+                                        <li key={t} className="inline-flex items-center gap-1.5">
+                                            <LuBadgeCheck className="text-sky" /> {t}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            <div className="mx-auto w-full max-w-sm md:ml-auto">
+                                <div className="rounded-3xl bg-white/5 p-3 ring-1 ring-white/10 backdrop-blur-sm">
+                                    <HeroShowcase items={allItems} />
+                                </div>
+                            </div>
                         </div>
-
-                        <ul className="flex flex-wrap gap-x-5 gap-y-2 mt-8 text-sm text-slate-gray">
-                            {["Funds Relate clubs", "Order via WhatsApp", "Pay on delivery or EFT"].map((t) => (
-                                <li key={t} className="inline-flex items-center gap-1.5">
-                                    <LuBadgeCheck className="text-cyan" /> {t}
-                                </li>
-                            ))}
-                        </ul>
                     </div>
 
-                    <div className="relative">
-                        <HeroShowcase items={allItems} />
+                    <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-2xl border border-line bg-white py-4 shadow-sm">
+                        {[
+                            {label: "Products", value: loading ? "…" : allItems.length},
+                            {label: "Categories", value: STORE_CATEGORIES.length - 1},
+                            {label: "Community funded", value: "100%"},
+                        ].map((stat) => (
+                            <div key={stat.label} className="text-center">
+                                <p className="text-xl font-extrabold tracking-tight text-navy md:text-2xl">{stat.value}</p>
+                                <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-gray">{stat.label}</p>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-center">
+                        <label className="relative flex-1">
+                            <span className="sr-only">Search the store</span>
+                            <LuSearch className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-gray" />
+                            <input
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Search the store"
+                                type="search"
+                                className="h-12 w-full rounded-2xl border border-line bg-white pl-11 pr-11 text-sm text-ink outline-none transition focus:border-blue focus:ring-2 focus:ring-blue/15"
+                            />
+                            {search ? (
+                                <button
+                                    type="button"
+                                    onClick={() => setSearch("")}
+                                    aria-label="Clear product search"
+                                    className="absolute right-2 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full text-slate-gray transition hover:bg-alice-blue hover:text-navy"
+                                >
+                                    <LuX />
+                                </button>
+                            ) : null}
+                        </label>
+
+                        <div id="stock" className="flex flex-wrap gap-2 scroll-mt-24">
+                            {STORE_CATEGORIES.map((c) => (
+                                <button
+                                    key={c}
+                                    onClick={() => setCategory(c)}
+                                    className={`min-h-11 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
+                                        category === c
+                                            ? "bg-blue text-white shadow-sm"
+                                            : "border border-line bg-white text-slate-gray hover:border-blue/40 hover:text-navy"
+                                    }`}
+                                >
+                                    {c}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </header>
 
-            <section className={"flex-1 px-4 py-12"}>
-                <div className={"max-w-6xl mx-auto"}>
-                    <div id={"stock"} className={"flex flex-wrap justify-center gap-2 mb-10 scroll-mt-8"}>
-                        {STORE_CATEGORIES.map((c) => (
-                            <button
-                                key={c}
-                                onClick={() => setCategory(c)}
-                                className={`px-5 py-2.5 min-h-11 rounded-lg text-sm font-medium transition-colors ${
-                                    category === c
-                                        ? "bg-cyan text-white shadow-md"
-                                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                                }`}
-                            >
-                                {c}
-                            </button>
-                        ))}
+            <section className={"flex-1 px-4 py-10"}>
+                <div className={"mx-auto max-w-6xl"}>
+                    <div className={"mb-5 flex items-baseline justify-between gap-4"}>
+                        <h2 className={"text-lg font-extrabold tracking-tight text-navy md:text-xl"}>
+                            {search.trim() ? `Results for “${search.trim()}”` : category === "All" ? "All products" : category}
+                        </h2>
+                        <span className={"rounded-full border border-line bg-white px-3 py-1 text-xs font-semibold text-slate-gray"}>
+                            {loading ? "…" : items.length}
+                        </span>
                     </div>
 
                     {loading ? (
-                        <div className={"flex items-center justify-center gap-3 py-16 text-slate-gray"} role={"status"}>
-                            <LuLoaderCircle className={"animate-spin text-2xl"} />
-                            <span className={"text-sm"}>Loading the store…</span>
+                        <div className={"grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4"} role={"status"} aria-label={"Loading the store"}>
+                            {Array.from({length: 8}).map((_, i) => (
+                                <div key={i} className={"overflow-hidden rounded-2xl border border-line bg-white"}>
+                                    <div className={"aspect-square animate-pulse bg-alice-blue"} />
+                                    <div className={"space-y-2 p-4"}>
+                                        <div className={"h-2.5 w-16 animate-pulse rounded bg-alice-blue"} />
+                                        <div className={"h-4 w-4/5 animate-pulse rounded bg-alice-blue"} />
+                                        <div className={"h-3 w-3/5 animate-pulse rounded bg-alice-blue"} />
+                                        <div className={"h-5 w-20 animate-pulse rounded bg-alice-blue"} />
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     ) : error ? (
                         <div className={"rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center"} role={"alert"}>
-                            <LuCircleAlert className={"text-red-500 text-2xl mx-auto mb-3"} />
-                            <p className={"text-sm font-semibold text-red-700 mb-1"}>We couldn&rsquo;t load the store.</p>
-                            <p className={"text-sm text-red-600 mb-5"}>{error}</p>
+                            <LuCircleAlert className={"mx-auto mb-3 text-2xl text-red-500"} />
+                            <p className={"mb-1 text-sm font-semibold text-red-700"}>We couldn&rsquo;t load the store.</p>
+                            <p className={"mb-5 text-sm text-red-600"}>{error}</p>
                             <button
                                 onClick={() => window.location.reload()}
-                                className={"min-h-11 px-6 rounded-lg bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors"}>
+                                className={"min-h-11 rounded-lg bg-red-600 px-6 text-sm font-semibold text-white transition-colors hover:bg-red-700"}>
                                 Try again
                             </button>
                         </div>
                     ) : allItems.length === 0 ? (
-                        <div className={"rounded-2xl border border-dashed border-gray-300 bg-alice-blue/50 py-16 text-center"}>
-                            <LuShoppingBag className={"text-3xl text-slate-gray mx-auto mb-3"} />
-                            <p className={"text-base font-semibold text-navy mb-1"}>Nothing in stock right now</p>
+                        <div className={"rounded-2xl border border-dashed border-line bg-white py-16 text-center"}>
+                            <LuShoppingBag className={"mx-auto mb-3 text-3xl text-slate-gray"} />
+                            <p className={"mb-1 text-base font-semibold text-navy"}>Nothing in stock right now</p>
                             <p className={"text-sm text-slate-gray"}>New Relate gear lands here soon — check back shortly.</p>
                         </div>
                     ) : items.length === 0 ? (
-                        <div className={"rounded-2xl border border-dashed border-gray-300 bg-alice-blue/50 py-12 text-center"}>
-                            <p className={"text-sm text-slate-gray"}>No products in {category} yet — check the other categories.</p>
+                        <div className={"rounded-2xl border border-dashed border-line bg-white py-12 text-center"}>
+                            <p className={"text-sm text-slate-gray"}>
+                                {search.trim() ? `No products match “${search.trim()}”.` : `No products in ${category} yet.`}
+                            </p>
+                            <button
+                                onClick={() => { setCategory("All"); setSearch("") }}
+                                className={"mt-4 min-h-11 rounded-lg bg-navy px-5 text-sm font-semibold text-white transition hover:bg-navy-soft"}
+                            >
+                                Show all products
+                            </button>
                         </div>
                     ) : (
-                        <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"}>
+                        <div key={`${category}-${search}`} className={"reveal reveal-stagger grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4"}>
                             {items.map((item) => (
-                                <StoreCard key={item.id} item={item}/>
+                                <div key={item.id} className={"stagger-item"}>
+                                    <StoreCard item={item}/>
+                                </div>
                             ))}
                         </div>
                     )}
+
+                    <p className={"mt-8 flex items-start gap-2 rounded-2xl border border-line bg-white px-4 py-3 text-xs leading-relaxed text-slate-gray"}>
+                        <LuBadgeCheck className={"mt-0.5 shrink-0 text-blue"} />
+                        Pay by EFT after checkout — your order number and our banking details appear on the receipt, and every purchase funds Relate clubs and community programmes.
+                    </p>
                 </div>
             </section>
         </>

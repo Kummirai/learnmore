@@ -1,21 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy: #1d2a4d;
-  --color-navy-dark: #151f3a;
-  --color-navy-soft: #2a4070;
-  --color-forest: #1d2a4d;
-  --color-forest-dark: #151f3a;
+  --color-navy: #0b192c;
+  --color-navy-dark: #07101d;
+  --color-navy-soft: #1e293b;
+  --color-forest: #0b192c;
+  --color-forest-dark: #07101d;
   --color-cyan: #13c5dd;
   --color-cyan-light: #67e3f5;
   --color-cyan-dark: #0fa3c4;
   /* Text-safe cyan — AA-contrast cyan for links and accents on light stages. */
   --color-cyan-ink: #0a7e99;
-  --color-alice-blue: #eff5f9;
-  --color-ghost-white: #f5f8fb;
-  --color-ice-blue: #d4eef5;
-  --color-ink: #1d2a4d;
-  --color-slate-gray: #6b7a8d;
+  --color-blue: #0284c7;
+  --color-sky: #38bdf8;
+  --color-blue-soft: #e0f2fe;
+  --color-alice-blue: #f8fafc;
+  --color-ghost-white: #f8fafc;
+  --color-ice-blue: #e0f2fe;
+  --color-ink: #0f172a;
+  --color-slate-gray: #64748b;
+  --color-line: #e2e8f0;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-display: var(--font-jakarta), var(--font-poppins), ui-sans-serif,
+    system-ui, sans-serif;
   /* Apple-inspired stage neutrals — page and tile backgrounds. */
   --color-stage: #fbfbfd;
   --color-tile: #f5f5f7;
@@ -45,12 +53,13 @@
 :root {
   --club-accent: #13c5dd;
   --club-accent-dark: #0fa3c4;
-  --club-on-accent: #1d2a4d;
+  --club-on-accent: #0b192c;
 }
 
 @layer base {
   /* Apple-like reading rhythm: 17px body, tightened display tracking. */
   body {
+    font-family: var(--font-sans);
     font-size: 17px;
     line-height: 1.47;
     -webkit-font-smoothing: antialiased;
@@ -59,7 +68,9 @@
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
+    font-family: var(--font-display);
     letter-spacing: -0.022em;
   }
 
@@ -341,4 +352,168 @@ html.reveal-ready .reveal:not([data-visible="true"]) {
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(2.3px);
     -webkit-backdrop-filter: blur(2.3px);
+}
+
+/* ── Interface motion ────────────────────────────────────────────────────────
+   Small, purposeful movement: page entrances, staggered grids, lift-on-hover
+   cards and soft ambient drift. Everything is disabled for reduced motion. */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0) scale(1.03);
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.page-enter {
+  animation: page-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.menu-enter {
+  animation: menu-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.rise-in {
+  animation: rise-in 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.drift {
+  animation: drift 9s ease-in-out infinite;
+}
+
+.soft-pulse {
+  animation: soft-pulse 4s ease-in-out infinite;
+}
+
+/* Lift cards — used by store products, team cards and event tiles. */
+.hover-lift {
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.35s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(7, 16, 29, 0.12);
+}
+
+/* Staggered children inside a revealed section. */
+.reveal-stagger .stagger-item {
+  transition:
+    opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.reveal-ready
+  .reveal-stagger:not([data-visible="true"])
+  .stagger-item {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.reveal-stagger .stagger-item:nth-child(1) {
+  transition-delay: 0ms;
+}
+.reveal-stagger .stagger-item:nth-child(2) {
+  transition-delay: 60ms;
+}
+.reveal-stagger .stagger-item:nth-child(3) {
+  transition-delay: 120ms;
+}
+.reveal-stagger .stagger-item:nth-child(4) {
+  transition-delay: 180ms;
+}
+.reveal-stagger .stagger-item:nth-child(5) {
+  transition-delay: 240ms;
+}
+.reveal-stagger .stagger-item:nth-child(6) {
+  transition-delay: 300ms;
+}
+.reveal-stagger .stagger-item:nth-child(7) {
+  transition-delay: 360ms;
+}
+.reveal-stagger .stagger-item:nth-child(8) {
+  transition-delay: 420ms;
+}
+.reveal-stagger .stagger-item:nth-child(9) {
+  transition-delay: 480ms;
+}
+.reveal-stagger .stagger-item:nth-child(10) {
+  transition-delay: 540ms;
+}
+.reveal-stagger .stagger-item:nth-child(11) {
+  transition-delay: 600ms;
+}
+.reveal-stagger .stagger-item:nth-child(12) {
+  transition-delay: 660ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  .menu-enter,
+  .rise-in,
+  .drift,
+  .soft-pulse {
+    animation: none !important;
+  }
+
+  .hover-lift,
+  .reveal-stagger .stagger-item {
+    transition: none !important;
+  }
+
+  .hover-lift:hover {
+    transform: none;
+  }
+
+  html.reveal-ready
+    .reveal-stagger:not([data-visible="true"])
+    .stagger-item {
+    opacity: 1;
+    transform: none;
+  }
 }

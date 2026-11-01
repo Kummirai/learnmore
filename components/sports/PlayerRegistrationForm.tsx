@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FaCheck, FaCamera, FaExclamationTriangle } from "react-icons/fa";
-import { LuArrowRight, LuLoaderCircle } from "react-icons/lu";
+import { LuArrowRight, LuLoaderCircle, LuShieldCheck } from "react-icons/lu";
 import { useSports } from "@/lib/useSports";
 import { useClubs } from "@/lib/useClubs";
 import { type RelateTeam } from "@/constants/relate";
@@ -18,6 +18,17 @@ type Done = {
   status: "active" | "waitlist";
   order: number;
   photoUrl: string;
+};
+
+type MyRegistration = {
+  id: string;
+  teamId: string;
+  teamName: string;
+  clubSlug: string;
+  clubName: string;
+  position: string;
+  positionCode: string;
+  status: "active" | "waitlist";
 };
 
 const RELIGIONS = [
@@ -74,6 +85,7 @@ export default function PlayerRegistrationForm({
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<Done | null>(null);
   const [hasMembership, setHasMembership] = useState(false);
+  const [existing, setExisting] = useState<MyRegistration | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   // Places left per position, so nobody picks a full slot blind.
@@ -110,6 +122,20 @@ export default function PlayerRegistrationForm({
     };
   }, []);
 
+  // One team per member — the server owns the rule, this is the friendly gate.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/sports/registrations/mine", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        if (!cancelled) setExisting(json?.data ?? null);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   useEffect(() => {
     return () => {
       if (preview) URL.revokeObjectURL(preview);
@@ -120,7 +146,7 @@ export default function PlayerRegistrationForm({
     return (
       <section className="flex-1 px-4 py-12 bg-white">
         <div className="max-w-xl mx-auto text-center">
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-2">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-2">
             Relate · {team.sport} registration
           </p>
           <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
@@ -142,7 +168,7 @@ export default function PlayerRegistrationForm({
           <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-5">
             <FaExclamationTriangle className="text-2xl text-red-600" />
           </div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-2">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-2">
             Relate · {team.sport} registration
           </p>
           <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
@@ -241,11 +267,11 @@ export default function PlayerRegistrationForm({
   };
 
   const input =
-    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-3 md:py-2.5 text-base md:text-sm focus:outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/40";
+    "w-full rounded-lg border border-gray-200 bg-white px-3.5 py-3 md:py-2.5 text-base md:text-sm focus:outline-none focus:border-blue focus:ring-2 focus:ring-blue/20";
   const label =
     "block text-xs font-bold uppercase tracking-wider text-slate-gray mb-1.5";
   const sectionBadge =
-    "text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1";
+    "text-[11px] font-bold uppercase tracking-[0.2em] text-blue mb-1";
   const choice =
     "flex-1 min-h-11 rounded-lg border px-3 py-3 text-[13px] sm:text-sm font-semibold text-center cursor-pointer transition";
 
@@ -257,7 +283,7 @@ export default function PlayerRegistrationForm({
           <div className="size-16 rounded-full bg-gold-100 flex items-center justify-center mx-auto mb-5">
             <FaCheck className="text-2xl text-gold-700" />
           </div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-2">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-2">
             Relate · {team.name}
           </p>
           <h1 className="text-3xl font-black tracking-tight text-navy mb-3">
@@ -304,11 +330,65 @@ export default function PlayerRegistrationForm({
     );
   }
 
+  if (existing) {
+    const sameTeam = existing.teamId === team.id;
+    return (
+      <section className="flex-1 bg-white px-4 py-12">
+        <div className="mx-auto max-w-xl text-center">
+          <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-blue-soft">
+            <LuShieldCheck className="text-3xl text-blue" />
+          </div>
+          <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-blue">
+            Relate · {team.sport} registration
+          </p>
+          <h1 className="mb-3 text-3xl font-black tracking-tight text-navy">
+            {sameTeam
+              ? `You’re already on ${team.name}`
+              : `You’re already with ${existing.teamName || "a team"}`}
+          </h1>
+          <p className="mb-6 text-sm text-slate-gray">
+            Each member can play for one team at a time. You&rsquo;re registered as{" "}
+            <strong className="text-navy">
+              {existing.position} ({existing.positionCode})
+            </strong>
+            {sameTeam ? " on this squad" : ` for ${existing.teamName}`}
+            {existing.status === "waitlist" ? " on the waiting list" : ""}.
+          </p>
+          <div className="mx-auto mb-6 max-w-md rounded-2xl border border-line bg-canvas p-5 text-left">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-gray">
+              Current team
+            </p>
+            <p className="mt-1 text-lg font-bold text-navy">
+              {existing.teamName || team.name}
+            </p>
+            <p className="mt-1 text-sm text-slate-gray">
+              {existing.clubName || club?.name || team.clubSlug}
+            </p>
+          </div>
+          <div className="flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href={`/sports/${existing.teamId}`}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+            >
+              View my squad <LuArrowRight />
+            </Link>
+            <Link
+              href="/sports"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-line px-6 text-sm font-bold text-navy transition-colors hover:bg-alice-blue"
+            >
+              All teams
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="flex-1 px-4 py-12 bg-white">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
-          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-1">
+          <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-1">
             Relate · {team.sport} registration
           </p>
           <h2 className="text-3xl md:text-4xl font-black tracking-tight text-navy mb-2">
@@ -380,7 +460,7 @@ export default function PlayerRegistrationForm({
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}
-                  className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-navy underline decoration-gold-400 decoration-2 underline-offset-4 hover:text-cyan-dark"
+                  className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-navy underline decoration-gold-400 decoration-2 underline-offset-4 hover:text-blue-dark"
                 >
                   {photo ? "Choose a different photo" : "Choose a photo"}
                 </button>

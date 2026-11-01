@@ -1,5 +1,5 @@
 import type { BibleQuizSectionBoard } from "@/lib/bible-quiz";
-import type { QuizLogRow } from "@/lib/reading-plans";
+import type { QuizLogRow } from "@/lib/quiz-types";
 
 /**
  * Shared Bible Quiz table pieces — a "podium board" language instead of plain

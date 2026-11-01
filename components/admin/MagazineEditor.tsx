@@ -198,7 +198,7 @@ export default function MagazineEditor({
     const [activePreviewOpen, setActivePreviewOpen] = useState(false);
 
     const { allClubs: editorClubs } = useClubs();
-    const previewAccent = editorClubs.find((c) => c.slug === draft.clubSlug)?.color || "#151f3a";
+    const previewAccent = editorClubs.find((c) => c.slug === draft.clubSlug)?.color || "#0b192c";
 
     const activePreview = useMemo<DayPreviewData | null>(() => {
         if (!activeSeat || !draft.season || !Array.isArray(draft.weeks)) return null;

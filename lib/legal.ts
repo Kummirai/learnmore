@@ -52,8 +52,47 @@ export const PRIVACY_DOC: LegalDoc = {
       ],
     },
     {
+      heading: "Cookies",
+      body: "We use a small number of cookies and similar storage to keep you signed in, remember your club membership, and remember your cookie choice. We only use analytics cookies if you accept them. See our Cookie Policy for the full list and how to change your choice.",
+    },
+    {
       heading: "Contact",
       body: "Questions about this policy? Reach the RelateWorld team through the app's Settings → Report App Issue, via info@relateworld.org, or through your club leadership.",
+    },
+  ],
+};
+
+export const COOKIE_DOC: LegalDoc = {
+  title: "Cookie Policy",
+  updated: "Last updated: November 2026",
+  intro:
+    "This policy explains the cookies and similar storage RelateWorld uses, why we use them, and how you can control them. Cookies are small files saved by your browser that help the site work and remember your choices.",
+  sections: [
+    {
+      heading: "Essential cookies",
+      body: "These are needed for the site to work and cannot be switched off through our banner. They include:",
+      bullets: [
+        "Authentication cookies that keep you signed in to your RelateWorld account.",
+        "The relate_member cookie, which remembers your club membership so pages can show your club and membership ID.",
+        "A cookie-consent entry in browser storage that remembers whether you accepted all cookies or essential cookies only.",
+        "Security and load-balancing cookies used to protect the service and keep requests reliable.",
+      ],
+    },
+    {
+      heading: "Analytics cookies",
+      body: "If you choose “Accept all”, we may use privacy-respecting analytics to understand which pages are useful and where people get stuck. These cookies are optional — choosing “Essential only” means we do not set them.",
+    },
+    {
+      heading: "What we do not use",
+      body: "We do not use advertising cookies, sell cookie data, or track you across other websites. Links to third-party services (for example WhatsApp ordering or payment providers) have their own policies once you leave RelateWorld.",
+    },
+    {
+      heading: "Managing your choice",
+      body: "Use the cookie banner to accept all or essential-only cookies. You can change your choice at any time by clearing this site's data in your browser, which makes the banner appear again. You can also block or delete cookies in your browser settings; essential cookies may stop parts of RelateWorld, such as signing in or viewing your membership, from working.",
+    },
+    {
+      heading: "Contact",
+      body: "Questions about cookies? Contact the RelateWorld team through the app's Settings → Report App Issue, via info@relateworld.org, or through your club leadership.",
     },
   ],
 };

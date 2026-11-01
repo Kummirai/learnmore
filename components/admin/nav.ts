@@ -7,7 +7,6 @@ import {
     LuMessageSquare,
     LuUserPlus,
     LuNewspaper,
-    LuBookMarked,
     LuFolderOpen,
     LuShoppingBag,
     LuClipboardList,
@@ -128,13 +127,6 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Guides",
                 icon: LuNewspaper,
                 description: "Create, edit and publish season guides and bulletins.",
-            },
-            {
-                href: "/admin/reading-plans",
-                label: "Reading Plans",
-                short: "Plans",
-                icon: LuBookMarked,
-                description: "Author reading plans across every category.",
             },
             {
                 href: "/admin/program-calendar",

@@ -103,7 +103,7 @@ function ProfileBody() {
         <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8">
             <div className="flex items-center gap-4 mb-6">
                 <Image
-                    src={user.image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=13c5dd&color=1d2a4d`}
+                    src={user.image ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=13c5dd&color=0B192C`}
                     alt={user.name}
                     width={64}
                     height={64}

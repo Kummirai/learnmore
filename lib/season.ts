@@ -1,7 +1,7 @@
 /**
  * Bible Quiz season — the single source of truth for the current competition
  * season. A season is ONE book with a chapter window, run across the clubs
- * that host the quiz. Deliberately decoupled from reading plans.
+ * that host the quiz.
  */
 
 export type SeasonName = "Summer" | "Autumn" | "Winter" | "Spring";

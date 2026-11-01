@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { IconType } from "react-icons";
 import {
-  LuBookOpen,
   LuCalendarDays,
   LuDumbbell,
   LuHeartHandshake,
@@ -42,13 +41,6 @@ export default function MembershipBenefits({
       body: "Football, netball and volleyball squads with coaching, training and fixtures — join one when you register.",
       href: "/sports",
       cta: "Browse squads",
-    },
-    {
-      icon: LuBookOpen,
-      title: "Reading plans",
-      body: "A verse, a read and a prayer for every day — from a month in the Psalms to the whole Bible in a year.",
-      href: "/plans",
-      cta: "Pick a plan",
     },
     {
       icon: LuHeartHandshake,

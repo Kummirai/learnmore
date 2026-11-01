@@ -1,30 +1,36 @@
 export const colors = {
-  // Primary palette — Deep Navy family
-  navy: "#1d2a4d", // Deep Navy Blue
-  navyDark: "#151f3a", // Oxford Blue
-  navySoft: "#2a4070", // Royal Blue (dark)
+  // Primary palette — matches the mobile design
+  navy: "#0B192C", // Deep Navy Blue
+  navyDark: "#07101D", // Deeper Navy
+  navySoft: "#1E293B", // Slate Navy
 
   // Accent colors — Cyan family
   cyan: "#13c5dd", // Bright Cyan / Turquoise
   cyanLight: "#67e3f5", // Light Cyan
   cyanDark: "#0fa3c4", // Dark Cyan / Teal
 
+  // Mobile store accents
+  blue: "#0284C7",
+  sky: "#38BDF8",
+  blueSoft: "#E0F2FE",
+
   // Neutral tones
-  aliceBlue: "#eff5f9", // Alice Blue (off-white)
-  ink: "#1d2a4d", // Deep Navy Blue
-  slateGray: "#6b7a8d", // Slate Gray
+  aliceBlue: "#F8FAFC", // Off-white canvas
+  ink: "#0F172A", // Ink
+  slateGray: "#64748B", // Slate Gray
+  border: "#E2E8F0",
   white: "#FFFFFF",
 
   // Backgrounds
-  bg: "#eff5f9", // Alice Blue
-  bgSoft: "#f5f8fb", // Ghost White
+  bg: "#F8FAFC",
+  bgSoft: "#F8FAFC",
   card: "#FFFFFF", // White
 
   // Brand aliases (semantic)
-  green: "#1d2a4d", // Deep Navy Blue
-  darkGreen: "#151f3a", // Oxford Blue
-  lime: "#2a4070", // Royal Blue (dark)
-  lightGreen: "#d4eef5", // Pale Cyan / Ice Blue
+  green: "#0B192C", // Deep Navy Blue
+  darkGreen: "#07101D", // Deeper Navy
+  lime: "#1E293B", // Slate Navy
+  lightGreen: "#67e3f5", // Light Cyan
 
   // Support-section accents
   emerald: "#10b981", // Emerald Green
@@ -36,7 +42,7 @@ export const colors = {
   success: "#10b981", // Emerald Green
   warning: "#f59e0b", // Amber
   error: "#ef4444", // Coral Red
-  info: "#3b82f6", // Royal Blue
+  info: "#0284C7", // Sky Blue
 
   // Grays
   gray: {
@@ -54,17 +60,17 @@ export const colors = {
 
   // Status (semantic)
   status: {
-    approved: "#13c5dd", // Bright Cyan
+    approved: "#0284C7", // Sky Blue
     pending: "#d97706", // Dark Amber / Ochre
     rejected: "#dc2626", // Crimson Red
-    notSubmitted: "#1d2a4d", // Deep Navy Blue
+    notSubmitted: "#0B192C", // Deep Navy Blue
   },
 
   statusBg: {
-    approved: "#13c5dd10", // Cyan @ ~6% opacity
+    approved: "#0284C710", // Sky Blue @ ~6% opacity
     pending: "#fef3c7", // Lemon Chiffon
     rejected: "#fef2f2", // Snow / Misty Rose
-    notSubmitted: "#eff5f9", // Alice Blue
+    notSubmitted: "#F8FAFC", // Off-white canvas
   },
 
   // Shadows (unchanged — no hex color names needed)
@@ -74,8 +80,8 @@ export const colors = {
 
   // Gradients
   gradients: {
-    primary: ["#1d2a4d", "#151f3a"], // Deep Navy → Oxford Blue
-    accent: ["#13c5dd", "#1d2a4d"], // Cyan → Deep Navy
+    primary: ["#0B192C", "#07101D"], // Deep Navy → Deeper Navy
+    accent: ["#13c5dd", "#0B192C"], // Cyan → Deep Navy
     success: ["#10b981", "#059669"], // Emerald → Dark Emerald
     warning: ["#f59e0b", "#d97706"], // Amber → Ochre
     error: ["#ef4444", "#dc2626"], // Coral Red → Crimson

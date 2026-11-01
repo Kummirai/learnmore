@@ -196,7 +196,7 @@ export default async function PlayerPage({
       <header
         className="relative overflow-hidden"
         style={{
-          background: `linear-gradient(115deg, #151f3a 0%, ${hexA(club?.colorDark ?? "#1d2a4d", 0.95)} 48%, ${hexA(club?.color ?? "#13c5dd", 0.8)} 100%)`,
+          background: `linear-gradient(115deg, #07101D 0%, ${hexA(club?.colorDark ?? "#0B192C", 0.95)} 48%, ${hexA(club?.color ?? "#13c5dd", 0.8)} 100%)`,
         }}
       >
         <Navbar overlay />
@@ -227,7 +227,7 @@ export default async function PlayerPage({
               ) : (
                 <div
                   className="size-44 sm:size-52 md:size-60 rounded-2xl shadow-2xl ring-4 ring-white/20 flex items-center justify-center text-6xl md:text-7xl font-black text-white uppercase"
-                  style={{ background: "linear-gradient(135deg, #1d2a4d, #13c5dd)" }}
+                  style={{ background: "linear-gradient(135deg, #0B192C, #13c5dd)" }}
                 >
                   {open!.badge}
                 </div>

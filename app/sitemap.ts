@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { MAGAZINES, programSlug } from "@/constants/relate";
 import { getClubsCatalog } from "@/lib/clubs";
-import { listPublicReadingPlans } from "@/lib/reading-plans";
 import { getSports } from "@/lib/sports";
 import { getStoreItems } from "@/lib/store";
 
@@ -11,11 +10,12 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/about", changeFrequency: "monthly", priority: 0.8 },
   { path: "/team", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/volunteer", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/offices", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },
   { path: "/faq", changeFrequency: "monthly", priority: 0.6 },
   { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/cookies", changeFrequency: "yearly", priority: 0.3 },
   { path: "/enroll", changeFrequency: "monthly", priority: 0.8 },
   { path: "/fees", changeFrequency: "monthly", priority: 0.7 },
   { path: "/prayer", changeFrequency: "daily", priority: 0.7 },
@@ -31,13 +31,12 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/gallery", changeFrequency: "monthly", priority: 0.5 },
   { path: "/resources", changeFrequency: "monthly", priority: 0.6 },
   { path: "/store", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/plans", changeFrequency: "monthly", priority: 0.7 },
 ];
 
 /**
- * The sitemap reads clubs, store, squads and reading plans from the API at
- * request time (the backend is the source of truth). A failed section is
- * omitted rather than served from stale bundled data.
+ * The sitemap reads clubs, store and squads from the API at request time (the
+ * backend is the source of truth). A failed section is omitted rather than
+ * served from stale bundled data.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
@@ -49,11 +48,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority,
   }));
 
-  const [catalog, storeItems, sports, plans] = await Promise.all([
+  const [catalog, storeItems, sports] = await Promise.all([
     getClubsCatalog().catch(() => null),
     getStoreItems().catch(() => []),
     getSports().catch(() => null),
-    listPublicReadingPlans().catch(() => []),
   ]);
 
   const allClubs = catalog ? [...catalog.clubs, ...catalog.subClubs] : [];
@@ -85,13 +83,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/${mag.slug}`, lastModified, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${SITE_URL}/library/${mag.slug}`, lastModified, changeFrequency: "monthly" as const, priority: 0.7 },
   ]);
-
-  const planEntries = plans.map((plan) => ({
-    url: `${SITE_URL}/plans/${plan.slug}`,
-    lastModified,
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
 
   const storeEntries = storeItems.map((item) => ({
     url: `${SITE_URL}/store/${item.id}`,
@@ -131,7 +122,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...clubPrograms,
     ...clubMagazines,
     ...magazines,
-    ...planEntries,
     ...storeEntries,
     ...sportsTeams,
     ...sportsPlayers,

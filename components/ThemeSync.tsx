@@ -7,9 +7,9 @@ import {colors} from "@/constants/colors"
 
 const DEFAULT_ACCENT = "#13c5dd"
 const DEFAULT_ACCENT_DARK = "#0fa3c4"
-const DEFAULT_ON_ACCENT = "#1d2a4d"
-const DEFAULT_CHROME = "#151f3a"
-const DEFAULT_CHROME_DARK = "#0f1830"
+const DEFAULT_ON_ACCENT = colors.navy
+const DEFAULT_CHROME = colors.navyDark
+const DEFAULT_CHROME_DARK = "#050b14"
 
 function luminance(hex: string): number {
     const n = hex.replace("#", "")
@@ -20,7 +20,7 @@ function luminance(hex: string): number {
 }
 
 function onAccentFor(hex: string): string {
-    return luminance(hex) > 0.4 ? "#1d2a4d" : "#ffffff"
+    return luminance(hex) > 0.4 ? colors.navy : "#ffffff"
 }
 
 function mix(hexA: string, hexB: string, t: number): string {
