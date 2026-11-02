@@ -3,7 +3,7 @@
  *
  * Every child has a weekly saving target that scales with age. The annual
  * figure is the weekly target × 50 saving weeks; the cumulative figure is the
- * total in the University Freedom Fund by the end of that age year.
+ * total in Smart Saver by the end of that age year.
  */
 export type SavingsTarget = {
   age: number;
@@ -31,7 +31,7 @@ export function savingsForAge(age: number): SavingsTarget | null {
   return SAVINGS_TARGETS.find((t) => t.age === n) ?? null;
 }
 
-/** Immutable split — 60% University Freedom Fund vault, 40% spendable wallet. */
+/** Immutable split — 60% Smart Saver vault, 40% spendable wallet. */
 export const SMART_SAVER_SPLIT = { vault: 0.6, wallet: 0.4 } as const;
 
 export function splitContribution(amount: number) {

@@ -195,7 +195,7 @@ export default function ProgrammingPortal() {
               </p>
               <p className={"mt-0.5 text-xs text-white/55"}>
                 {zar(year.savingsTarget.cumulative)} cumulative in your
-                University Freedom Fund by the end of this year.
+                Smart Saver by the end of this year.
               </p>
             </div>
           </div>

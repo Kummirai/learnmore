@@ -355,8 +355,8 @@ export default async function ClubPage({ slug }: { slug: string }) {
               week
             </h2>
             <p className={"mt-2 text-sm leading-relaxed text-gray-600"}>
-              Every rand is split 60/40 — 60% locked in the University Freedom
-              Fund, 40% into the spendable wallet. Reach R
+              Every rand is split 60/40 — 60% locked in Smart Saver,
+              40% into the spendable wallet. Reach R
               {savingsTarget.cumulative.toLocaleString("en-ZA")} in the Freedom
               Fund by the end of the {club.name} band.
             </p>
@@ -395,8 +395,8 @@ export default async function ClubPage({ slug }: { slug: string }) {
           }
         >
           <span>
-            Ages {club.ageRange.replace(" yrs", "")} · 60% University Freedom
-            Fund · 40% wallet
+            Ages {club.ageRange.replace(" yrs", "")} · 60% Smart Saver · 40%
+            wallet
           </span>
           <Link
             href={"/savings"}

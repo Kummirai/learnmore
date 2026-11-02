@@ -156,7 +156,7 @@ function SavingsBody() {
             <div className="mb-4 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-2xl border border-gray-100 bg-navy p-5 text-white shadow-sm">
                     <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-cyan">
-                        <LuLandmark className="size-3.5" /> Freedom Fund
+                        <LuLandmark className="size-3.5" /> Smart Saver
                     </p>
                     <p className="mt-2 text-2xl font-black">{zar(account?.vault ?? 0)}</p>
                     <p className="mt-1 text-xs text-white/60">Locked until university</p>
@@ -184,7 +184,7 @@ function SavingsBody() {
                         {zar(account.target.weekly)} every week · {zar(account.target.annual)} this year
                     </p>
                     <p className="mt-1 text-sm text-slate-gray">
-                        Reach {zar(account.target.cumulative)} in your Freedom Fund by the end of age{" "}
+                        Reach {zar(account.target.cumulative)} in Smart Saver by the end of age{" "}
                         {account.target.age}.
                     </p>
                     <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
@@ -233,7 +233,7 @@ function SavingsBody() {
                     </button>
                 </form>
                 <p className="mt-2 text-xs text-slate-gray">
-                    Only your spendable wallet can be withdrawn. The Freedom Fund stays locked.
+                    Only your spendable wallet can be withdrawn. Smart Saver stays locked.
                 </p>
             </div>
 
