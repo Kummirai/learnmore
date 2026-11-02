@@ -26,8 +26,6 @@ const QUEUE_HREFS = new Set<string>(QUEUES.map((q) => q.href));
 
 /** Admin-only endpoints with no dashboard screen yet — found during the audit. */
 const PENDING_ADMIN_AREAS = [
-    "School grant applications",
-    "Sponsorships & banking details",
     "Broadcast notifications",
 ];
 
