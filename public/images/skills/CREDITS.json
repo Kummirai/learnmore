@@ -522,13 +522,22 @@
     "page": "https://www.rawpixel.com/image/6035153/photo-image-background-public-domain-water"
   },
   "smart-saver": {
-    "title": "Piggy Bank",
-    "creator": "Images_of_Money",
-    "license": "by",
-    "licenseVersion": "2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0/",
-    "source": "flickr",
-    "page": "https://www.flickr.com/photos/59937401@N07/5929478505"
+    "title": "Savings jar with coins and South African banknotes",
+    "creator": "",
+    "license": "cc0",
+    "licenseVersion": "1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "source": "rawpixel",
+    "page": "https://www.rawpixel.com/image/5942877/free-public-domain-cc0-photo"
+  },
+  "video-editing": {
+    "title": "OpenShot Video Editor v2.6.1",
+    "creator": "USATechDude",
+    "license": "GPL",
+    "licenseVersion": "3.0",
+    "licenseUrl": "https://www.gnu.org/licenses/gpl-3.0.html",
+    "source": "wikimedia commons",
+    "page": "https://commons.wikimedia.org/wiki/File:OpenShot_Video_Editor_v2.6.1.png"
   },
   "digital-explorer": {
     "title": "Alexander Frick, Jr. uses smart",
