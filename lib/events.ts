@@ -10,6 +10,7 @@ export type ClubEvent = {
   fee?: string;
   description?: string;
   imageUrl?: string;
+  clubSlug?: string;
 };
 
 /**
@@ -19,6 +20,7 @@ export type ClubEvent = {
  */
 export async function getClubEvents(clubSlug: string): Promise<ClubEvent[]> {
   if (!clubSlug) return [];
+  const requestedSlug = clubSlug.trim().toLowerCase();
   try {
     const res = await fetch(
       `${API_BASE}/api/community/events?club=${encodeURIComponent(clubSlug)}`,
@@ -39,6 +41,11 @@ export async function getClubEvents(clubSlug: string): Promise<ClubEvent[]> {
           typeof e.date === "string" ? e.date.slice(0, 10) : undefined;
         const id = String(e._id ?? e.id ?? "");
         const title = typeof e.title === "string" ? e.title : "";
+        const eventClubSlug =
+          typeof e.clubSlug === "string"
+            ? e.clubSlug.trim().toLowerCase()
+            : "";
+        if (eventClubSlug !== requestedSlug) return [];
         if (!id || !title || !date) return [];
         return [
           {
@@ -55,6 +62,7 @@ export async function getClubEvents(clubSlug: string): Promise<ClubEvent[]> {
               typeof e.imageUrl === "string" && e.imageUrl
                 ? e.imageUrl
                 : undefined,
+            clubSlug: eventClubSlug,
           } satisfies ClubEvent,
         ];
       })
