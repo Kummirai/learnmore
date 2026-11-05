@@ -9,7 +9,7 @@ import {
     LuWallet,
 } from "react-icons/lu";
 
-const SMART_SAVER_URL = "uidesignsrelate://home";
+const SMART_SAVER_URL = "uidesignsrelate://switch-account";
 
 const STEPS = [
     {
@@ -76,7 +76,8 @@ export default function SavingsPage() {
                             <LuArrowUpRight className="size-4" />
                         </a>
                         <p className="mt-3 text-xs text-white/45">
-                            If the app doesn&apos;t open, install Smart Saver on your device first.
+                            Smart Saver will ask you to sign in, so you never land in someone
+                            else&apos;s account. If the app doesn&apos;t open, install it first.
                         </p>
                     </div>
                 </div>
