@@ -404,7 +404,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
               "font-semibold text-cyan transition-colors hover:text-cyan-dark"
             }
           >
-            Track my savings →
+            Open Smart Saver →
           </Link>
         </div>
       </div>
