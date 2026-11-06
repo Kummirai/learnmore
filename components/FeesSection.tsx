@@ -70,7 +70,7 @@ export default function FeesSection() {
                                     </h3>
                                     <p className={"-mt-1 text-sm leading-relaxed text-navy/70 flex-1"}>{item.blurb}</p>
                                     <p className={"mt-3 text-2xl font-semibold tracking-tight text-navy"}>{formatPrice(item.price)}</p>
-                                    <a href={`/store/checkout?item=${item.id}`}
+                                    <a href={`/store/${item.id}`}
                                        className={"btn-pill btn-brand mt-4 w-full"}>
                                         Order now
                                     </a>

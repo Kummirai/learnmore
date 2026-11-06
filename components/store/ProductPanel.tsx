@@ -3,27 +3,29 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { FaWhatsapp } from "react-icons/fa";
-import { LuMinus, LuPlus } from "react-icons/lu";
+import { LuArrowRight, LuCheck, LuMinus, LuPlus, LuShoppingBag } from "react-icons/lu";
+import { useCart } from "@/lib/cart";
 import type { StoreItem } from "@/constants/relate";
 
 const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`;
-const WHATSAPP_NUMBER = "27782677436";
 
 export default function ProductPanel({ item }: { item: StoreItem }) {
   const images = (item.images?.length ? item.images : [item.image]).slice(0, 4);
   const [active, setActive] = useState(images[0]);
   const [size, setSize] = useState<string | null>(item.sizes?.[0] ?? null);
   const [qty, setQty] = useState(1);
+  const [added, setAdded] = useState(false);
+  const { add, count } = useCart();
 
   const hasOffer = typeof item.offerPrice === "number" && item.offerPrice < item.price;
   const showPrice: number = hasOffer ? item.offerPrice! : item.price;
   const total = showPrice * qty;
 
-  const sizeNote = size ? ` (size ${size})` : "";
-  const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `Hi RelateWorld! I'd like to order the ${item.name} × ${qty}${sizeNote} — ${formatPrice(total)}.`,
-  )}`;
+  const addToCart = () => {
+    add(item, { qty, size });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1600);
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 mb-16">
@@ -87,7 +89,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
           </>
         )}
 
-        {item.sizes?.length && (
+        {item.sizes?.length ? (
           <div className="mt-6">
             <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-2">
               Select size
@@ -110,7 +112,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
               ))}
             </div>
           </div>
-        )}
+        ) : null}
 
         <div className="mt-6">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-2">Quantity</p>
@@ -127,7 +129,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
             <span className="w-10 text-center font-bold text-navy">{qty}</span>
             <button
               type="button"
-              onClick={() => setQty((q) => Math.min(99, q + 1))}
+              onClick={() => setQty((q) => Math.min(20, q + 1))}
               aria-label="Increase quantity"
               className="px-3.5 py-3 min-h-11 text-navy hover:bg-alice-blue transition"
             >
@@ -142,22 +144,31 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3 mt-6">
-          <a
-            href={waLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3.5 font-bold text-white transition-colors hover:bg-navy-soft"
+          <button
+            type="button"
+            onClick={addToCart}
+            className={`flex-1 inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3.5 font-bold text-white transition-colors ${
+              added ? "bg-emerald-600" : "bg-navy hover:bg-navy-soft"
+            }`}
           >
-            <FaWhatsapp className="text-lg" /> Order on WhatsApp
-          </a>
+            {added ? (
+              <>
+                <LuCheck className="text-lg" /> Added to cart
+              </>
+            ) : (
+              <>
+                <LuShoppingBag className="text-lg" /> Add to cart
+              </>
+            )}
+          </button>
           <Link
-            href={`/store/checkout?item=${item.id}`}
-            className="flex-1 inline-flex items-center justify-center px-6 py-3.5 rounded-lg font-bold border-2 border-navy text-navy hover:bg-navy hover:text-white transition-colors"
+            href="/store/cart"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-bold border-2 border-navy text-navy hover:bg-navy hover:text-white transition-colors"
           >
-            Continue to basket
+            View cart{count > 0 ? ` (${count})` : ""} <LuArrowRight className="text-base" />
           </Link>
         </div>
-        <p className="text-xs text-slate-gray mt-3">Pay on delivery or EFT — we confirm your order in the chat.</p>
+        <p className="text-xs text-slate-gray mt-3">Pay by EFT after checkout — your receipt carries the order number and our banking details.</p>
       </div>
     </div>
   );

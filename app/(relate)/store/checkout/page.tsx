@@ -1,231 +1,298 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import {useEffect, useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { FaWhatsapp } from "react-icons/fa";
-import { LuMinus, LuPlus, LuTrash2, LuArrowLeft, LuLoaderCircle } from "react-icons/lu";
-import { useStoreItems } from "@/components/store/useStoreItems";
-import { type StoreItem } from "@/constants/relate";
+import {useRouter} from "next/navigation";
+import {LuArrowLeft, LuArrowRight, LuCheck, LuLoaderCircle, LuShoppingBag} from "react-icons/lu";
+import Navbar from "@/components/Navbar";
+import {useAuth} from "@/components/AuthProvider";
+import {useCart, useCartHydrated} from "@/lib/cart";
+import {ordersApi, rememberBanking} from "@/lib/orders";
 
 const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`;
-/** What the shopper actually pays — an offer price wins over the list price. */
-const payable = (item: StoreItem) => item.offerPrice ?? item.price;
-const WHATSAPP_NUMBER = "27782677436";
 
-type Line = { item: StoreItem; qty: number };
-
-function CheckoutInner({ catalog, error }: { catalog: StoreItem[]; error: string | null }) {
-    const searchParams = useSearchParams();
-    const initialId = searchParams.get("item");
-
-    const [lines, setLines] = useState<Line[]>(() =>
-        initialId ? catalog.filter((i) => i.id === initialId).map((item) => ({ item, qty: 1 })) : [],
-    );
-
-    const [name, setName] = useState("");
-    const [area, setArea] = useState("");
-    const [notes, setNotes] = useState("");
-    const [added, setAdded] = useState(false);
-
-    const total = useMemo(() => lines.reduce((sum, l) => sum + payable(l.item) * l.qty, 0), [lines]);
-
-    const addItem = (id: string) => {
-        const item = catalog.find((i) => i.id === id);
-        if (!item) return;
-        setLines((prev) => {
-            const existing = prev.find((l) => l.item.id === id);
-            if (existing) return prev.map((l) => (l.item.id === id ? { ...l, qty: l.qty + 1 } : l));
-            return [...prev, { item, qty: 1 }];
-        });
-        setAdded(true);
-        setTimeout(() => setAdded(false), 1500);
-    };
-
-    const setQty = (id: string, qty: number) =>
-        setLines((prev) => prev.map((l) => (l.item.id === id ? { ...l, qty: Math.max(1, Math.min(99, qty)) } : l)));
-
-    const removeLine = (id: string) => setLines((prev) => prev.filter((l) => l.item.id !== id));
-
-    const orderText = useMemo(() => {
-        const items = lines.map((l) => `• ${l.item.name} × ${l.qty} — ${formatPrice(payable(l.item) * l.qty)}`).join("\n");
-        return [
-            "Hi RelateWorld! I'd like to place a store order:",
-            items || "(no items selected)",
-            "",
-            `Total: ${formatPrice(total)}`,
-            name ? `Name: ${name}` : "",
-            area ? `Delivery area: ${area}` : "",
-            notes ? `Notes: ${notes}` : "",
-        ]
-            .filter(Boolean)
-            .join("\n");
-    }, [lines, total, name, area, notes]);
-
-    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(orderText)}`;
-
-    return (
-        <section className="flex-1 px-4 py-12 bg-white">
-            <div className="max-w-5xl mx-auto">
-                <Link href="/store" className="inline-flex min-h-11 items-center gap-1.5 text-sm text-slate-gray hover:text-navy mb-6 transition-colors">
-                    <LuArrowLeft /> Back to store
-                </Link>
-
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">Relate Store</p>
-                <h1 className="text-3xl md:text-4xl font-black tracking-tight text-navy mb-2">Your order</h1>
-                <p className="text-slate-gray text-sm mb-8">
-                    Review your items, add your details, and send the order through WhatsApp — we confirm payment and delivery in the chat.
-                </p>
-
-                {error && (
-                    <div role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                        {error}
-                    </div>
-                )}
-
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                    {/* Items + add more */}
-                    <div className="lg:col-span-3">
-                        {lines.length === 0 ? (
-                            <div className="rounded-2xl border border-dashed border-gray-300 bg-alice-blue/50 py-12 text-center">
-                                <p className="text-sm text-slate-gray mb-4">Your order is empty — add something from the store.</p>
-                                <Link href="/store" className="text-sm font-semibold text-cyan hover:text-cyan-dark transition-colors">
-                                    Browse the store →
-                                </Link>
-                            </div>
-                        ) : (
-                            <div className="space-y-3 mb-6">
-                                {lines.map(({ item, qty }) => (
-                                    <div key={item.id} className="flex flex-wrap items-center gap-2 p-3 rounded-xl border border-gray-100 sm:gap-4">
-                                        <div className="size-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                                            <Image src={item.image} alt={item.name} width={64} height={64} className="size-full object-cover" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <p className="font-semibold text-navy text-sm truncate">{item.name}</p>
-                                            <p className="text-xs text-slate-gray">{formatPrice(item.price)} each</p>
-                                        </div>
-                                        <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden shrink-0">
-                                            <button onClick={() => setQty(item.id, qty - 1)} disabled={qty <= 1} aria-label="Decrease quantity" className="size-11 text-navy hover:bg-alice-blue transition disabled:opacity-30">
-                                                <LuMinus className="text-sm" />
-                                            </button>
-                                            <span className="w-8 text-center text-sm font-bold text-navy">{qty}</span>
-                                            <button onClick={() => setQty(item.id, qty + 1)} aria-label="Increase quantity" className="size-11 text-navy hover:bg-alice-blue transition">
-                                                <LuPlus className="text-sm" />
-                                            </button>
-                                        </div>
-                                        <span className="text-right ml-auto font-bold text-navy text-sm sm:w-20 shrink-0">{formatPrice(payable(item) * qty)}</span>
-                                        <button onClick={() => removeLine(item.id)} aria-label="Remove item" className="size-11 grid place-items-center text-slate-gray hover:text-red-600 transition-colors shrink-0">
-                                            <LuTrash2 className="text-sm" />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Add products */}
-                        <div className="rounded-2xl border border-gray-100 p-4">
-                            <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-3">Add more items</p>
-                            {catalog.length === 0 ? (
-                                <p className="text-sm text-slate-gray">No products are available right now.</p>
-                            ) : (
-                                <div className="flex flex-wrap gap-2">
-                                    {catalog.filter((i) => !lines.some((l) => l.item.id === i.id)).map((i) => (
-                                        <button
-                                            key={i.id}
-                                            onClick={() => addItem(i.id)}
-                                            className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-3 py-2.5 min-h-11 text-xs font-medium text-navy hover:border-cyan hover:bg-alice-blue/60 transition-colors"
-                                        >
-                                            <LuPlus className="text-cyan" /> {i.name}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
-                            {added && <p className="text-xs text-cyan mt-2" aria-live="polite">Added to your order ✓</p>}
-                        </div>
-                    </div>
-
-                    {/* Details + summary */}
-                    <div className="lg:col-span-2">
-                        <div className="bg-alice-blue rounded-2xl p-5">
-                            <div className="grid gap-3 mb-4">
-                                <label className="block">
-                                    <span className="mb-1 block text-[11px] font-semibold uppercase tracking-widest text-slate-gray">Your name</span>
-                                    <input
-                                        value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        autoComplete="name"
-                                        placeholder="e.g. Thandi Mokoena"
-                                        className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition"
-                                    />
-                                </label>
-                                <label className="block">
-                                    <span className="mb-1 block text-[11px] font-semibold uppercase tracking-widest text-slate-gray">Delivery area</span>
-                                    <input
-                                        value={area}
-                                        onChange={(e) => setArea(e.target.value)}
-                                        autoComplete="off"
-                                        placeholder="e.g. Randburg / club pickup"
-                                        className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition"
-                                    />
-                                </label>
-                                <label className="block">
-                                    <span className="mb-1 block text-[11px] font-semibold uppercase tracking-widest text-slate-gray">Notes (optional)</span>
-                                    <textarea
-                                        value={notes}
-                                        onChange={(e) => setNotes(e.target.value)}
-                                        placeholder="Size, colour, club name…"
-                                        rows={4}
-                                        className="w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-base md:text-sm text-gray-800 outline-none focus:border-cyan focus:ring-2 focus:ring-cyan/20 transition"
-                                    />
-                                </label>
-                            </div>
-
-                            <div className="flex items-baseline justify-between border-t border-gray-200 pt-4 mb-4">
-                                <span className="text-sm text-slate-gray">Total</span>
-                                <span className="text-2xl font-black text-navy">{formatPrice(total)}</span>
-                            </div>
-
-                            <a
-                                href={waLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full inline-flex items-center justify-center gap-2 bg-cyan text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-cyan-dark transition-colors"
-                            >
-                                <FaWhatsapp className="text-lg" /> Send order on WhatsApp
-                            </a>
-                            <p className="text-xs text-slate-gray mt-3 text-center leading-relaxed">
-                                Your order opens pre-filled in WhatsApp. Every purchase funds Relate clubs and community programs.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    );
-}
-
-function CheckoutLoading() {
-    return (
-        <section className="flex-1 px-4 py-20 flex items-center justify-center bg-white">
-            <div className="flex items-center gap-3 text-slate-gray" role="status">
-                <LuLoaderCircle className="animate-spin text-2xl" />
-                <span className="text-sm">Loading your order…</span>
-            </div>
-        </section>
-    );
-}
+type FieldErrors = {name?: string; phone?: string; email?: string};
 
 export default function CheckoutPage() {
-    const { items: catalog, loading, error } = useStoreItems();
+    const router = useRouter();
+    const {user, loading: authLoading} = useAuth();
+    const {lines, subtotal, count, clear} = useCart();
+    const hydrated = useCartHydrated();
+
+    const [errors, setErrors] = useState<FieldErrors>({});
+    const [submitting, setSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (authLoading) return;
+        if (!user) {
+            router.replace(`/signin?next=${encodeURIComponent("/store/checkout")}`);
+        }
+    }, [authLoading, router, user]);
+
+    const validate = (values: {name: string; phone: string; email: string}) => {
+        const next: FieldErrors = {};
+        if (!values.name) next.name = "Your name is required.";
+        if (!values.phone) next.phone = "A contact number is required.";
+        else if (values.phone.replace(/\D/g, "").length < 7) next.phone = "That number looks too short.";
+        if (values.email && !/^\S+@\S+\.\S+$/.test(values.email)) next.email = "Check the email address.";
+        setErrors(next);
+        return Object.keys(next).length === 0;
+    };
+
+    const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (submitting || lines.length === 0) return;
+
+        const form = new FormData(event.currentTarget);
+        const name = String(form.get("name") ?? "").trim();
+        const phone = String(form.get("phone") ?? "").trim();
+        const email = String(form.get("email") ?? "").trim();
+        const note = String(form.get("note") ?? "").trim();
+
+        if (!validate({name, phone, email})) return;
+
+        setSubmitting(true);
+        setSubmitError(null);
+        try {
+            const placed = await ordersApi.place(lines, {
+                name,
+                phone,
+                email: email || undefined,
+                note: note || undefined,
+            });
+            rememberBanking(placed.order._id, placed.banking);
+            clear();
+            router.push(`/store/orders/${placed.order._id}?new=1`);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : "We couldn't place your order.";
+            if (message.toLowerCase().includes("sign in")) {
+                router.replace(`/signin?next=${encodeURIComponent("/store/checkout")}`);
+                return;
+            }
+            setSubmitError(message);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const loading = !hydrated || authLoading || !user;
 
     return (
-        <Suspense fallback={<CheckoutLoading />}>
-            {loading ? (
-                <CheckoutLoading />
-            ) : (
-                <CheckoutInner catalog={catalog} error={error} />
-            )}
-        </Suspense>
+        <>
+            <Navbar />
+            <section className="flex-1 bg-white px-4 py-10 md:py-14">
+                <div className="mx-auto max-w-5xl">
+                    <Link
+                        href="/store/cart"
+                        className="mb-6 inline-flex min-h-11 items-center gap-1.5 text-sm text-slate-gray transition-colors hover:text-navy"
+                    >
+                        <LuArrowLeft /> Back to cart
+                    </Link>
+
+                    <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.2em] text-cyan">Relate Store</p>
+                    <h1 className="text-3xl font-black tracking-tight text-navy md:text-4xl">Checkout</h1>
+                    <p className="mt-2 text-sm text-slate-gray">
+                        {loading
+                            ? "Loading your order…"
+                            : count === 0
+                              ? "Your cart is empty."
+                              : `${count} item${count === 1 ? "" : "s"} · where should we send it?`}
+                    </p>
+
+                    {loading ? (
+                        <div className="flex items-center gap-3 py-20 text-slate-gray" role="status">
+                            <LuLoaderCircle className="animate-spin text-2xl" />
+                            <span className="text-sm">Preparing checkout…</span>
+                        </div>
+                    ) : lines.length === 0 ? (
+                        <div className="mt-8 rounded-3xl border border-dashed border-line bg-alice-blue/40 px-6 py-16 text-center">
+                            <span className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-white text-navy shadow-sm">
+                                <LuShoppingBag className="text-2xl" />
+                            </span>
+                            <h2 className="text-lg font-bold text-navy">Nothing to check out yet</h2>
+                            <p className="mx-auto mt-2 max-w-sm text-sm text-slate-gray">
+                                Add something from the store and it will appear here.
+                            </p>
+                            <Link
+                                href="/store"
+                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-navy-soft"
+                            >
+                                Browse the store <LuArrowRight />
+                            </Link>
+                        </div>
+                    ) : (
+                        <form onSubmit={submit} className="mt-8 grid gap-8 lg:grid-cols-5">
+                            <div className="space-y-5 lg:col-span-3">
+                                <div className="rounded-2xl border border-line p-4 md:p-5">
+                                    <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-gray">
+                                        Your order
+                                    </h2>
+                                    <div className="space-y-3">
+                                        {lines.map((line) => (
+                                            <div key={`${line.itemId}:${line.size ?? ""}`} className="flex items-center gap-3">
+                                                <div className="size-14 shrink-0 overflow-hidden rounded-lg bg-alice-blue">
+                                                    {line.image ? (
+                                                        <Image
+                                                            src={line.image}
+                                                            alt={line.name}
+                                                            width={112}
+                                                            height={112}
+                                                            className="size-full object-cover"
+                                                        />
+                                                    ) : null}
+                                                </div>
+                                                <div className="min-w-0 flex-1">
+                                                    <p className="truncate text-sm font-semibold text-navy">{line.name}</p>
+                                                    <p className="text-xs text-slate-gray">
+                                                        {line.size ? `Size ${line.size} · ` : ""}
+                                                        {line.qty} × {formatPrice(line.price)}
+                                                    </p>
+                                                </div>
+                                                <span className="text-sm font-bold text-navy">
+                                                    {formatPrice(line.price * line.qty)}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="rounded-2xl border border-line p-4 md:p-5">
+                                    <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-gray">
+                                        Contact details
+                                    </h2>
+                                    <div className="grid gap-4">
+                                        <label className="block">
+                                            <span className="mb-1.5 block text-xs font-semibold text-navy">Full name</span>
+                                            <input
+                                                name="name"
+                                                defaultValue={user?.name ?? ""}
+                                                onChange={() => {
+                                                    if (errors.name) setErrors((current) => ({...current, name: undefined}));
+                                                }}
+                                                autoComplete="name"
+                                                placeholder="Your name"
+                                                aria-invalid={Boolean(errors.name)}
+                                                className={`h-12 w-full rounded-xl border bg-white px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
+                                                    errors.name
+                                                        ? "border-red-400 focus:border-red-500 focus:ring-red-200"
+                                                        : "border-line focus:border-blue focus:ring-blue/15"
+                                                }`}
+                                            />
+                                            {errors.name ? <span className="mt-1 block text-xs text-red-600">{errors.name}</span> : null}
+                                        </label>
+
+                                        <label className="block">
+                                            <span className="mb-1.5 block text-xs font-semibold text-navy">Contact number</span>
+                                            <input
+                                                name="phone"
+                                                onChange={() => {
+                                                    if (errors.phone) setErrors((current) => ({...current, phone: undefined}));
+                                                }}
+                                                type="tel"
+                                                inputMode="tel"
+                                                autoComplete="tel"
+                                                placeholder="e.g. 082 123 4567"
+                                                aria-invalid={Boolean(errors.phone)}
+                                                className={`h-12 w-full rounded-xl border bg-white px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
+                                                    errors.phone
+                                                        ? "border-red-400 focus:border-red-500 focus:ring-red-200"
+                                                        : "border-line focus:border-blue focus:ring-blue/15"
+                                                }`}
+                                            />
+                                            {errors.phone ? <span className="mt-1 block text-xs text-red-600">{errors.phone}</span> : null}
+                                        </label>
+
+                                        <label className="block">
+                                            <span className="mb-1.5 block text-xs font-semibold text-navy">
+                                                Email <span className="font-normal text-slate-gray">(optional)</span>
+                                            </span>
+                                            <input
+                                                name="email"
+                                                defaultValue={user?.email ?? ""}
+                                                onChange={() => {
+                                                    if (errors.email) setErrors((current) => ({...current, email: undefined}));
+                                                }}
+                                                type="email"
+                                                autoComplete="email"
+                                                placeholder="you@example.com"
+                                                aria-invalid={Boolean(errors.email)}
+                                                className={`h-12 w-full rounded-xl border bg-white px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
+                                                    errors.email
+                                                        ? "border-red-400 focus:border-red-500 focus:ring-red-200"
+                                                        : "border-line focus:border-blue focus:ring-blue/15"
+                                                }`}
+                                            />
+                                            {errors.email ? <span className="mt-1 block text-xs text-red-600">{errors.email}</span> : null}
+                                        </label>
+
+                                        <label className="block">
+                                            <span className="mb-1.5 block text-xs font-semibold text-navy">
+                                                Notes <span className="font-normal text-slate-gray">(optional)</span>
+                                            </span>
+                                            <textarea
+                                                name="note"
+                                                rows={3}
+                                                placeholder="Delivery area, club name, preferred collection point…"
+                                                className="w-full rounded-xl border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition focus:border-blue focus:ring-2 focus:ring-blue/15 md:text-sm"
+                                            />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <aside className="lg:col-span-2">
+                                <div className="rounded-2xl bg-alice-blue p-5 md:p-6">
+                                    <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-gray">
+                                        Order summary
+                                    </h2>
+                                    <div className="space-y-2.5 text-sm">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-slate-gray">Subtotal</span>
+                                            <span className="font-semibold text-navy">{formatPrice(subtotal)}</span>
+                                        </div>
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-slate-gray">Delivery</span>
+                                            <span className="font-semibold text-cyan-dark">Arranged on payment</span>
+                                        </div>
+                                    </div>
+                                    <div className="my-4 h-px bg-navy/10" />
+                                    <div className="flex items-baseline justify-between">
+                                        <span className="text-sm font-bold text-navy">Total due</span>
+                                        <span className="text-2xl font-black tracking-tight text-navy">{formatPrice(subtotal)}</span>
+                                    </div>
+
+                                    {submitError ? (
+                                        <p role="alert" className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+                                            {submitError}
+                                        </p>
+                                    ) : null}
+
+                                    <button
+                                        type="submit"
+                                        disabled={submitting}
+                                        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-soft disabled:cursor-not-allowed disabled:opacity-60"
+                                    >
+                                        {submitting ? (
+                                            <>
+                                                <LuLoaderCircle className="animate-spin text-lg" /> Placing order…
+                                            </>
+                                        ) : (
+                                            <>
+                                                <LuCheck className="text-lg" /> Place order
+                                            </>
+                                        )}
+                                    </button>
+                                    <p className="mt-3 text-center text-xs leading-relaxed text-slate-gray">
+                                        Pay by EFT after checkout — your receipt shows the order number and our banking details.
+                                    </p>
+                                </div>
+                            </aside>
+                        </form>
+                    )}
+                </div>
+            </section>
+        </>
     );
 }

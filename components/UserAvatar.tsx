@@ -9,6 +9,7 @@ import {
     LuShield,
     LuUser,
     LuLogIn,
+    LuReceiptText,
 } from "react-icons/lu";
 import { useAuth } from "./AuthProvider";
 
@@ -89,6 +90,12 @@ export default function UserAvatar() {
                                 className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
                             >
                                 <LuUser className="text-base" /> Profile
+                            </Link>
+                            <Link
+                                href="/store/orders"
+                                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
+                            >
+                                <LuReceiptText className="text-base" /> My orders
                             </Link>
                             <Link
                                 href="/settings"

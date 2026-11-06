@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import JoinCta from "@/components/join/JoinCta";
+import CartLink from "@/components/store/CartLink";
 import UserAvatar from "./UserAvatar";
 import { useClubs } from "@/lib/useClubs";
 
@@ -299,6 +300,7 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           </ul>
         </nav>
         <div className={"flex items-center gap-3"}>
+          <CartLink overlay={overlay} />
           <UserAvatar />
           <button
             ref={menuButtonRef}
@@ -431,6 +433,26 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                 }
               >
                 Store
+              </Link>
+              <Link
+                href={"/store/cart"}
+                aria-current={pathname === "/store/cart" ? "page" : undefined}
+                onClick={() => setMenuOpen(false)}
+                className={
+                  "flex min-h-11 items-center py-2 text-[13px] font-normal text-white/95 hover:text-cyan-light transition-colors"
+                }
+              >
+                Cart
+              </Link>
+              <Link
+                href={"/store/orders"}
+                aria-current={pathname.startsWith("/store/orders") ? "page" : undefined}
+                onClick={() => setMenuOpen(false)}
+                className={
+                  "flex min-h-11 items-center py-2 text-[13px] font-normal text-white/95 hover:text-cyan-light transition-colors"
+                }
+              >
+                My orders
               </Link>
             </div>
           </nav>

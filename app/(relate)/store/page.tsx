@@ -3,28 +3,39 @@
 import {useEffect, useMemo, useState} from "react"
 import Link from "next/link"
 import Image from "next/image"
-import {FaWhatsapp} from "react-icons/fa"
 import {
     LuArrowRight,
     LuBadgeCheck,
+    LuCheck,
+    LuChevronLeft,
+    LuChevronRight,
     LuCircleAlert,
+    LuReceiptText,
     LuSearch,
     LuShoppingBag,
     LuX,
 } from "react-icons/lu"
 import Navbar from "@/components/Navbar"
 import {useStoreItems} from "@/components/store/useStoreItems"
+import {useCart} from "@/lib/cart"
 import {STORE_CATEGORIES, type StoreCategory, type StoreItem} from "@/constants/relate"
 
 const formatPrice = (n: number) => `R${n.toLocaleString("en-ZA")}`
 
-const orderLink = (item?: {name: string; price: number}) =>
-    `https://wa.me/27782677436${item ? `?text=${encodeURIComponent(`Hi RelateWorld! I'd like to order the ${item.name} (${formatPrice(item.price)}).`)}` : ""}`
-
 export function StoreCard({item}: {item: StoreItem}) {
+    const {add} = useCart()
+    const [added, setAdded] = useState(false)
     const onSale = item.offerPrice != null && item.offerPrice < item.price
     const price = onSale ? item.offerPrice! : item.price
     const ratingLabel = item.rating ? `Rated ${item.rating} out of 5` : undefined
+    const needsSize = (item.sizes?.length ?? 0) > 0
+
+    const addToCart = () => {
+        if (needsSize) return
+        add(item)
+        setAdded(true)
+        setTimeout(() => setAdded(false), 1500)
+    }
 
     return (
         <div className={"group flex flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-sm hover-lift"}>
@@ -82,88 +93,212 @@ export function StoreCard({item}: {item: StoreItem}) {
                             <p className={"text-[11px] font-medium text-slate-gray line-through"}>{formatPrice(item.price)}</p>
                         ) : null}
                     </div>
-                    <Link
-                        href={orderLink({name: item.name, price})}
-                        target={"_blank"}
-                        rel={"noopener noreferrer"}
-                        aria-label={`Order ${item.name} on WhatsApp`}
-                        title="Order on WhatsApp"
-                        className={"grid size-10 shrink-0 place-items-center rounded-xl bg-navy text-white transition-colors hover:bg-blue"}
-                    >
-                        <LuShoppingBag className={"text-base"}/>
-                    </Link>
+                    {needsSize ? (
+                        <Link
+                            href={`/store/${item.id}`}
+                            aria-label={`Choose a size for ${item.name}`}
+                            title="Choose a size"
+                            className={"grid size-10 shrink-0 place-items-center rounded-xl bg-navy text-white transition-colors hover:bg-blue"}
+                        >
+                            <LuShoppingBag className={"text-base"}/>
+                        </Link>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={addToCart}
+                            aria-label={added ? `${item.name} added to cart` : `Add ${item.name} to cart`}
+                            title="Add to cart"
+                            className={`grid size-10 shrink-0 place-items-center rounded-xl text-white transition-colors ${
+                                added ? "bg-emerald-600" : "bg-navy hover:bg-blue"
+                            }`}
+                        >
+                            {added ? <LuCheck className={"text-base"}/> : <LuShoppingBag className={"text-base"}/>}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
     )
 }
 
-function HeroShowcase({items}: {items: StoreItem[]}) {
-    const tee = items.find((i) => i.id === "relate-tee")
-    const allSlides = tee?.images?.length ? tee.images : tee ? [tee.image] : []
-    const slides = allSlides.filter(Boolean)
+function HeroSpotlight({item, loading}: {item: StoreItem | null; loading: boolean}) {
+    const slides = item ? (item.images?.length ? item.images : [item.image]).filter(Boolean) : []
     const [idx, setIdx] = useState(0)
     const [paused, setPaused] = useState(false)
+    const many = slides.length > 1
 
     useEffect(() => {
-        if (paused || slides.length < 2) return
-        const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 4000)
+        if (paused || !many) return
+        const t = setInterval(() => setIdx((i) => (i + 1) % slides.length), 5000)
         return () => clearInterval(t)
-    }, [paused, slides.length])
+    }, [paused, many, slides.length])
 
-    if (!tee || slides.length === 0) return null
+    const onSale = Boolean(item && item.offerPrice != null && item.offerPrice < item.price)
+    const price = item ? (onSale ? item.offerPrice! : item.price) : 0
+    const discount = item && onSale ? Math.round((1 - item.offerPrice! / item.price) * 100) : 0
+    const href = item ? `/store/${item.id}` : "#stock"
+    const go = (delta: number) => {
+        if (!many) return
+        setIdx((i) => (i + delta + slides.length) % slides.length)
+    }
 
     return (
         <div
-            className="relative"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
         >
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-white/5 [mask-image:linear-gradient(to_bottom,black_72%,transparent)]">
-                {slides.map((src, i) => (
-                    <Image
-                        key={src}
-                        src={src}
-                        alt={`${tee.name} — shot ${i + 1}`}
-                        width={800}
-                        height={800}
-                        className={`absolute inset-0 size-full object-cover transition-all duration-1000 ease-in-out ${
-                            i === idx ? "opacity-100 scale-100" : "opacity-0 scale-105"
-                        }`}
+            <div className="relative">
+                {loading ? (
+                    <div
+                        className="aspect-[4/3] animate-pulse rounded-[1.75rem] bg-alice-blue ring-1 ring-line md:aspect-[4/5]"
+                        aria-hidden
                     />
-                ))}
-            </div>
-
-            <div className="absolute right-4 top-4 text-right">
-                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sky/80">
-                    {tee.name}
-                </p>
-                <p className="text-3xl font-black tracking-tight text-white [text-shadow:0_2px_12px_rgba(7,16,29,0.65)]">
-                    {formatPrice(tee.price)}
-                </p>
-            </div>
-
-            {slides.length > 1 && (
-                <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-2">
-                    {slides.map((_, i) => (
-                        <button
-                            key={i}
-                            type="button"
-                            onClick={() => setIdx(i)}
-                            aria-label={`Show shot ${i + 1} of ${tee.name}`}
-                            className="grid size-11 -m-2.5 place-items-center rounded-full"
-                        >
-                            <span
-                                className={`h-1.5 rounded-full transition-all duration-300 shadow-sm ${
-                                    i === idx
-                                        ? "w-6 bg-white"
-                                        : "w-1.5 bg-white/50 hover:bg-white/80"
+                ) : item && slides.length > 0 ? (
+                    <div className="group relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_70px_rgba(11,25,44,0.18)] ring-1 ring-line md:aspect-[4/5]">
+                        {slides.map((src, i) => (
+                            <Image
+                                key={src}
+                                src={src}
+                                alt={`${item.name} — shot ${i + 1}`}
+                                width={800}
+                                height={1000}
+                                priority={i === 0}
+                                className={`absolute inset-0 size-full object-cover transition-all duration-1000 ease-in-out ${
+                                    i === idx ? "scale-100 opacity-100" : "scale-105 opacity-0"
                                 }`}
                             />
-                        </button>
-                    ))}
+                        ))}
+
+                        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-3.5">
+                            <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy shadow-sm backdrop-blur">
+                                Featured drop
+                            </span>
+                            {discount > 0 ? (
+                                <span className="rounded-full bg-navy px-2.5 py-1 text-[10px] font-extrabold text-white shadow-sm">
+                                    −{discount}%
+                                </span>
+                            ) : null}
+                        </div>
+
+                        {many ? (
+                            <>
+                                <button
+                                    type="button"
+                                    onClick={() => go(-1)}
+                                    aria-label="Previous product image"
+                                    className="absolute left-3 top-1/2 hidden size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-navy opacity-0 shadow-md backdrop-blur transition hover:bg-white group-hover:opacity-100 md:grid"
+                                >
+                                    <LuChevronLeft aria-hidden />
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => go(1)}
+                                    aria-label="Next product image"
+                                    className="absolute right-3 top-1/2 hidden size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-navy opacity-0 shadow-md backdrop-blur transition hover:bg-white group-hover:opacity-100 md:grid"
+                                >
+                                    <LuChevronRight aria-hidden />
+                                </button>
+                            </>
+                        ) : null}
+                    </div>
+                ) : (
+                    <div className="grid aspect-[4/3] place-items-center rounded-[1.75rem] bg-gradient-to-br from-alice-blue to-blue-soft/70 p-8 text-center ring-1 ring-line md:aspect-[4/5]">
+                        <div>
+                            <LuShoppingBag className="mx-auto text-5xl text-blue/40" />
+                            <p className="mt-4 text-sm font-semibold text-navy">New gear landing soon</p>
+                            <p className="mt-1 text-xs text-slate-gray">Check back for the next Relate World drop.</p>
+                        </div>
+                    </div>
+                )}
+
+                <div className="relative z-10 mx-3 -mt-12 rounded-2xl border border-line bg-white/95 p-3.5 shadow-[0_18px_40px_rgba(11,25,44,0.16)] backdrop-blur sm:mx-5">
+                    <div className="flex items-center gap-3">
+                        <div className="min-w-0 flex-1">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-blue">
+                                {item?.category ?? "Official gear"}
+                            </p>
+                            <p className="mt-0.5 truncate text-sm font-extrabold text-navy">
+                                {loading ? "Loading featured product…" : item ? item.name : "Relate World Store"}
+                            </p>
+                            {item && !loading ? (
+                                <div className="mt-0.5 flex items-baseline gap-1.5">
+                                    <span className="text-sm font-extrabold text-navy">{formatPrice(price)}</span>
+                                    {onSale ? (
+                                        <span className="text-[11px] font-medium text-slate-gray line-through">
+                                            {formatPrice(item.price)}
+                                        </span>
+                                    ) : null}
+                                    {item.rating ? (
+                                        <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-semibold text-slate-gray">
+                                            <Star filled /> {item.rating}
+                                        </span>
+                                    ) : null}
+                                </div>
+                            ) : (
+                                <p className="mt-0.5 text-xs text-slate-gray">
+                                    {loading ? "Fetching the latest drop" : "Browse the collection"}
+                                </p>
+                            )}
+                        </div>
+                        <Link
+                            href={href}
+                            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-navy px-5 text-sm font-bold text-white transition-colors hover:bg-blue"
+                        >
+                            Shop now <LuArrowRight className="text-sm" />
+                        </Link>
+                    </div>
                 </div>
-            )}
+            </div>
+
+            <div className="mt-3 flex items-center justify-between gap-3 px-2">
+                {many ? (
+                    <div className="flex items-center gap-1">
+                        {slides.map((_, i) => (
+                            <button
+                                key={i}
+                                type="button"
+                                onClick={() => setIdx(i)}
+                                aria-label={`Show shot ${i + 1} of ${item!.name}`}
+                                className="grid size-8 place-items-center rounded-full"
+                            >
+                                <span
+                                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                                        i === idx ? "w-5 bg-navy" : "w-1.5 bg-navy/20 hover:bg-navy/40"
+                                    }`}
+                                />
+                            </button>
+                        ))}
+                    </div>
+                ) : (
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-gray">
+                        Official merchandise
+                    </span>
+                )}
+
+                {many ? (
+                    <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-semibold tracking-[0.18em] text-slate-gray">
+                            {String(idx + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+                        </span>
+                        <button
+                            type="button"
+                            onClick={() => go(-1)}
+                            aria-label="Previous product image"
+                            className="grid size-9 place-items-center rounded-full border border-line bg-white text-navy transition hover:border-navy"
+                        >
+                            <LuChevronLeft aria-hidden />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => go(1)}
+                            aria-label="Next product image"
+                            className="grid size-9 place-items-center rounded-full border border-line bg-white text-navy transition hover:border-navy"
+                        >
+                            <LuChevronRight aria-hidden />
+                        </button>
+                    </div>
+                ) : null}
+            </div>
         </div>
     )
 }
@@ -186,70 +321,155 @@ export default function StorePage() {
         })
     }, [allItems, category, search])
 
+    const featured = useMemo(() => {
+        const withImage = allItems.filter((item) => item.image)
+        return withImage.find((item) => item.id === "relate-tee") ?? withImage.find((item) => item.sizes?.length) ?? withImage[0] ?? null
+    }, [allItems])
+
+    const topSale = useMemo(
+        () =>
+            allItems.reduce((best, item) => {
+                if (item.offerPrice == null || item.offerPrice >= item.price) return best
+                return Math.max(best, Math.round((1 - item.offerPrice / item.price) * 100))
+            }, 0),
+        [allItems]
+    )
+
+    const counts = useMemo(() => {
+        const map = Object.fromEntries(STORE_CATEGORIES.map((c) => [c, 0])) as Record<StoreCategory, number>
+        map.All = allItems.length
+        for (const item of allItems) map[item.category] += 1
+        return map
+    }, [allItems])
+
+    const categoryImages = useMemo(() => {
+        const map = new Map<string, string>()
+        for (const item of allItems) {
+            if (item.image && !map.has(item.category)) map.set(item.category, item.image)
+        }
+        return map
+    }, [allItems])
+
+    const shopCategory = (next: StoreCategory) => {
+        setCategory(next)
+        document.getElementById("stock")?.scrollIntoView({behavior: "smooth", block: "start"})
+    }
+
     return (
         <>
             <Navbar />
-            <header className="border-b border-line bg-alice-blue px-4 pb-10 pt-8">
+            <header className="bg-white px-4 pb-7 pt-5 md:pt-7">
                 <div className="mx-auto max-w-6xl">
-                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy via-navy to-navy-soft p-6 shadow-[0_24px_60px_rgba(7,16,29,0.28)] md:p-10">
-                        <div className="pointer-events-none absolute -bottom-24 -right-16 size-72 rounded-full bg-sky/20 blur-2xl drift" />
-                        <div className="pointer-events-none absolute -top-20 right-24 size-44 rounded-full bg-blue/25 blur-2xl soft-pulse" />
+                    <section className="relative overflow-hidden rounded-[2rem] border border-line bg-gradient-to-br from-alice-blue via-white to-blue-soft/60">
+                        <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-sky/15 blur-3xl" />
+                        <div className="pointer-events-none absolute -bottom-28 left-1/4 size-72 rounded-full bg-blue/10 blur-3xl" />
 
-                        <div className="relative grid items-center gap-8 md:grid-cols-2">
+                        <div className="relative grid items-center gap-8 p-5 sm:p-8 md:grid-cols-[1.02fr_0.98fr] md:gap-10 md:p-10 lg:p-12">
                             <div>
-                                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-sky">Official Relate World Store</p>
-                                <h1 className="mt-2 text-3xl font-extrabold leading-[1.08] tracking-tight text-white md:text-5xl">
-                                    Connecting Hearts <span className="text-sky">Across Generations</span>
-                                </h1>
-                                <p className="mt-4 max-w-md text-sm leading-relaxed text-white/65">
-                                    Every purchase supports clubs, fellowships and community programmes. Order on WhatsApp and we&rsquo;ll sort out the rest.
-                                </p>
-
-                                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                                    <a
-                                        href="#stock"
-                                        className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-soft px-6 py-3 text-sm font-bold text-navy transition hover:bg-white"
-                                    >
-                                        Explore products <LuArrowRight />
-                                    </a>
-                                    <a
-                                        href={orderLink()}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10"
-                                    >
-                                        <FaWhatsapp className="text-base text-sky" /> Order on WhatsApp
-                                    </a>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-navy shadow-sm">
+                                        <span className="size-1.5 rounded-full bg-blue" />
+                                        Official Relate World Store
+                                    </span>
+                                    {topSale > 0 ? (
+                                        <a
+                                            href="#stock"
+                                            className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy transition hover:bg-amber-300"
+                                        >
+                                            Sale up to {topSale}% off <LuArrowRight className="text-xs" />
+                                        </a>
+                                    ) : null}
                                 </div>
 
-                                <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-xs text-white/70">
-                                    {["Funds Relate clubs", "Order via WhatsApp", "Pay on delivery or EFT"].map((t) => (
+                                <h1 className="mt-5 text-[2.4rem] font-extrabold leading-[0.95] tracking-[-0.035em] text-navy sm:text-5xl lg:text-[3.4rem]">
+                                    Connecting Hearts <span className="text-blue">Across Generations</span>
+                                </h1>
+                                <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-gray md:text-[15px]">
+                                    Apparel, accessories and home &amp; study pieces made to carry the Relate story. Add to cart, pay by EFT and track every order — purchases fund Relate clubs.
+                                </p>
+
+                                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                                    <a
+                                        href="#stock"
+                                        className="inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_rgba(11,25,44,0.25)] transition hover:bg-blue"
+                                    >
+                                        Shop the collection <LuArrowRight />
+                                    </a>
+                                    <Link
+                                        href="/store/orders"
+                                        className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-6 py-3.5 text-sm font-bold text-navy transition hover:border-navy/30 hover:bg-alice-blue"
+                                    >
+                                        <LuReceiptText className="text-base text-blue" /> My orders
+                                    </Link>
+                                </div>
+
+                                <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line/80 pt-5 text-[11px] font-semibold text-slate-gray">
+                                    {["Secure EFT checkout", "Order tracking", "Funds Relate clubs"].map((t) => (
                                         <li key={t} className="inline-flex items-center gap-1.5">
-                                            <LuBadgeCheck className="text-sky" /> {t}
+                                            <LuBadgeCheck className="text-blue" /> {t}
                                         </li>
                                     ))}
                                 </ul>
                             </div>
 
-                            <div className="mx-auto w-full max-w-sm md:ml-auto">
-                                <div className="rounded-3xl bg-white/5 p-3 ring-1 ring-white/10 backdrop-blur-sm">
-                                    <HeroShowcase items={allItems} />
-                                </div>
+                            <div className="mx-auto w-full max-w-md md:ml-auto">
+                                <HeroSpotlight item={featured} loading={loading} />
                             </div>
                         </div>
+                    </section>
+
+                    <div className="mb-3 mt-6 flex items-end justify-between">
+                        <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-gray">
+                            Shop by category
+                        </h2>
+                        <a href="#stock" className="text-xs font-semibold text-blue transition hover:text-navy">
+                            View all products
+                        </a>
                     </div>
 
-                    <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-2xl border border-line bg-white py-4 shadow-sm">
-                        {[
-                            {label: "Products", value: loading ? "…" : allItems.length},
-                            {label: "Categories", value: STORE_CATEGORIES.length - 1},
-                            {label: "Community funded", value: "100%"},
-                        ].map((stat) => (
-                            <div key={stat.label} className="text-center">
-                                <p className="text-xl font-extrabold tracking-tight text-navy md:text-2xl">{stat.value}</p>
-                                <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-gray">{stat.label}</p>
-                            </div>
-                        ))}
+                    <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
+                        {STORE_CATEGORIES.map((c) => {
+                            const active = category === c
+                            const count = counts[c] ?? 0
+                            const image = c === "All" ? null : categoryImages.get(c)
+                            return (
+                                <button
+                                    key={c}
+                                    type="button"
+                                    onClick={() => shopCategory(c)}
+                                    aria-pressed={active}
+                                    className={`group relative h-32 overflow-hidden rounded-2xl text-left shadow-sm transition sm:h-36 ${
+                                        active ? "ring-2 ring-blue" : "ring-1 ring-line hover:shadow-md"
+                                    }`}
+                                >
+                                    {image ? (
+                                        <Image
+                                            src={image}
+                                            alt=""
+                                            fill
+                                            sizes="(min-width: 1024px) 25vw, 50vw"
+                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                        />
+                                    ) : (
+                                        <span className="absolute inset-0 bg-gradient-to-br from-navy via-navy-soft to-blue" />
+                                    )}
+                                    <span className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
+                                    <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3.5">
+                                        <span>
+                                            <span className="block text-sm font-extrabold text-white">
+                                                {c === "All" ? "All products" : c}
+                                            </span>
+                                            <span className="mt-0.5 block text-[11px] font-medium text-white/70">
+                                                {loading ? "Loading…" : `${count} item${count === 1 ? "" : "s"}`}
+                                            </span>
+                                        </span>
+                                        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-white/15 text-white ring-1 ring-white/30 backdrop-blur transition group-hover:bg-white group-hover:text-navy">
+                                            <LuArrowRight className="text-sm" />
+                                        </span>
+                                    </span>
+                                </button>
+                            )
+                        })}
                     </div>
 
                     <div className="mt-6 flex flex-col gap-4 lg:flex-row lg:items-center">
