@@ -51,11 +51,11 @@ export default function OrderDetailPage() {
         let cancelled = false;
         (async () => {
             try {
-                const data = await ordersApi.get(id);
+                const receipt = await ordersApi.get(id);
                 if (!cancelled) {
-                    setOrder(data);
+                    setOrder(receipt.order);
                     setError(null);
-                    const saved = readBanking(data._id);
+                    const saved = receipt.banking ?? readBanking(receipt.order._id);
                     if (saved) setBanking(saved);
                 }
             } catch (loadError) {
@@ -70,27 +70,6 @@ export default function OrderDetailPage() {
             cancelled = true;
         };
     }, [authLoading, id, router, user]);
-
-    useEffect(() => {
-        if (!order || banking) return;
-        let cancelled = false;
-        (async () => {
-            try {
-                const res = await fetch("/api/sponsorships/banking", {cache: "no-store"});
-                if (!res.ok) return;
-                const json = await res.json().catch(() => null);
-                const value = json?.data?.banking;
-                if (!cancelled && value && typeof value === "object") {
-                    setBanking(value as BankingDetails);
-                }
-            } catch {
-                // Banking details are optional; the receipt still stands.
-            }
-        })();
-        return () => {
-            cancelled = true;
-        };
-    }, [banking, order]);
 
     if (loading) {
         return (

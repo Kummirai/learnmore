@@ -90,8 +90,11 @@ export type BankingDetails = {
 };
 
 export type PlacedOrder = {order: Order; banking: BankingDetails | null};
+export type OrderReceipt = {order: Order; banking: BankingDetails | null};
 
-async function orderFetch<T>(path: string, init?: RequestInit): Promise<T> {
+type OrderEnvelope = {data?: unknown; error?: unknown; banking?: unknown};
+
+async function orderFetchJson(path: string, init?: RequestInit): Promise<OrderEnvelope | null> {
     const res = await fetch(path, {
         cache: "no-store",
         credentials: "same-origin",
@@ -109,7 +112,11 @@ async function orderFetch<T>(path: string, init?: RequestInit): Promise<T> {
                 : "We couldn't complete that request.",
         );
     }
-    return json?.data as T;
+    return json;
+}
+
+function orderFetch<T>(path: string, init?: RequestInit): Promise<T> {
+    return orderFetchJson(path, init).then((json) => json?.data as T);
 }
 
 export const ordersApi = {
@@ -125,8 +132,14 @@ export const ordersApi = {
 
     mine: () => orderFetch<Order[]>("/api/orders"),
 
-    get: (id: string) =>
-        orderFetch<Order>(`/api/orders/${encodeURIComponent(id)}`),
+    /** One order plus the current banking details, for the receipt. */
+    get: async (id: string): Promise<OrderReceipt> => {
+        const json = await orderFetchJson(`/api/orders/${encodeURIComponent(id)}`);
+        return {
+            order: json?.data as Order,
+            banking: (json?.banking ?? null) as BankingDetails | null,
+        };
+    },
 };
 
 /** Index of the furthest step reached, for the progress bar. */
