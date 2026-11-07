@@ -311,11 +311,11 @@ export default function StorePage() {
             <Navbar />
 
             <a href="#stock" className="block bg-navy text-white transition hover:bg-navy-soft">
-                <span className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-[11px] font-medium tracking-wide">
-                    {topSale > 0
-                        ? `Season sale — up to ${topSale}% off official gear`
-                        : "Official Relate World store — every purchase funds Relate clubs"}
-                    <LuArrowRight className="text-sm" aria-hidden />
+                <span className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 px-4 py-2 text-[10.5px] font-medium tracking-wide sm:text-[11px]">
+                    <span className="truncate">
+                        Every purchase funds our charity work
+                    </span>
+                    <LuArrowRight className="shrink-0 text-sm" aria-hidden />
                 </span>
             </a>
 
@@ -340,7 +340,7 @@ export default function StorePage() {
                                     Connecting hearts <span className="text-blue">across generations.</span>
                                 </h1>
                                 <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-gray">
-                                    Apparel, accessories and home &amp; study pieces made to carry the Relate story. Checkout by EFT, track every order, and know your purchase funds Relate clubs.
+                                    Apparel, accessories and home &amp; study pieces made to carry the Relate story. Checkout by EFT, track every order, and know every purchase funds our charity work.
                                 </p>
 
                                 <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
@@ -369,7 +369,7 @@ export default function StorePage() {
                         {[
                             {icon: LuShieldCheck, title: "Secure EFT checkout", sub: "Pay directly to Relate World"},
                             {icon: LuTruck, title: "Track every order", sub: "From payment to delivery"},
-                            {icon: LuBadgeCheck, title: "Funds Relate clubs", sub: "Every purchase gives back"},
+                            {icon: LuBadgeCheck, title: "Funds charity work", sub: "Every purchase gives back"},
                         ].map(({icon: Icon, title, sub}) => (
                             <div key={title} className="flex items-center gap-3 rounded-lg bg-white px-4 py-3 shadow-[0_6px_22px_rgba(11,25,44,0.08)]">
                                 <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-alice-blue text-blue">
@@ -548,7 +548,7 @@ export default function StorePage() {
 
                     <p className={"mt-8 flex items-start gap-2 rounded-2xl bg-white px-4 py-3 text-xs leading-relaxed text-slate-gray shadow-sm"}>
                         <LuBadgeCheck className={"mt-0.5 shrink-0 text-blue"} />
-                        Pay by EFT after checkout — your order number and our banking details appear on the receipt, and every purchase funds Relate clubs and community programmes.
+                        Pay by EFT after checkout — your order number and our banking details appear on the receipt, and every purchase funds our charity work.
                     </p>
                 </div>
             </section>

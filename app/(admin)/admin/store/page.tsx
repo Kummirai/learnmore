@@ -217,7 +217,7 @@ export default function AdminStorePage() {
             ) : null}
 
             {editing ? (
-                <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm md:p-6">
+                <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5 md:p-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
                         <h2 className="text-lg font-black text-navy">{editing.label}</h2>
                         <Button variant="ghost" onClick={() => setEditing(null)}>
@@ -344,7 +344,7 @@ export default function AdminStorePage() {
             ) : (
                 <div className="grid gap-3">
                     {items.map((i) => (
-                        <div key={i._id} className="flex flex-wrap items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+                        <div key={i._id} className="flex flex-wrap items-center gap-3 rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:gap-4 sm:p-4">
                             <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-alice-blue">
                                 {i.image ? (
                                     <Image src={i.image} alt="" width={64} height={64} className="h-full w-full object-cover"/>
@@ -352,14 +352,14 @@ export default function AdminStorePage() {
                                     <LuImage className="text-slate-gray"/>
                                 )}
                             </div>
-                            <div className="min-w-[12rem] flex-1">
+                            <div className="min-w-0 flex-1">
                                 <p className="font-semibold text-navy">{i.name}</p>
                                 <p className="mt-0.5 text-xs text-slate-gray">
                                     {i.category} · {i.offerPrice != null ? `R${i.offerPrice} (was R${i.price})` : `R${i.price}`}
                                     {i.sizes.length > 0 ? ` · ${i.sizes.join(", ")}` : ""}
                                 </p>
                             </div>
-                            <div className="flex flex-wrap items-center gap-2">
+                            <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
                                 <Badge tone={i.active ? "gold" : "slate"}>{i.active ? "Live" : "Hidden"}</Badge>
                                 {!i.inStock ? <Badge tone="amber">Out of stock</Badge> : null}
                                 <Button variant="ghost" onClick={() => toggleFlag(i, "active")} disabled={busy}>
