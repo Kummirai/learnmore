@@ -117,7 +117,7 @@ export default function VolunteerApplyForm() {
     }
 
     return (
-        <form onSubmit={submit} noValidate className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm md:p-8">
+        <form onSubmit={submit} noValidate className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6 md:p-8">
             <h2 className="text-xl font-black tracking-tight text-navy">Apply to volunteer</h2>
             <p className="mt-1 text-sm text-slate-gray">
                 Fill this in and a director will get in touch. No account needed.

@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import JoinCta from "@/components/join/JoinCta";
-import CartLink from "@/components/store/CartLink";
 import UserAvatar from "./UserAvatar";
 import { useClubs } from "@/lib/useClubs";
 
@@ -52,14 +51,6 @@ const navGroups: NavGroup[] = [
       { link: "Requests", path: "/requests" },
       { link: "Today's Prayer Times", path: "/prayer" },
       { link: "My Prayer Streak", path: "/profile#streaks" },
-    ],
-  },
-  {
-    link: "Members",
-    short: "Members",
-    items: [
-      { link: "Smart Saver", path: "/savings" },
-      { link: "My Profile", path: "/profile" },
     ],
   },
   {
@@ -300,7 +291,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           </ul>
         </nav>
         <div className={"flex items-center gap-3"}>
-          <CartLink overlay={overlay} />
           <UserAvatar />
           <button
             ref={menuButtonRef}

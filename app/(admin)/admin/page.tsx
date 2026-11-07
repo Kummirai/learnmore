@@ -129,9 +129,9 @@ export default function AdminDashboardPage() {
         <div>
             <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                 <div>
-                    <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-blue">Relate World</p>
-                    <h1 className="mt-1 text-2xl font-semibold tracking-tight text-navy">Dashboard</h1>
-                    <p className="mt-1 text-sm text-slate-gray">
+                    <p className="text-[10.5px] font-medium uppercase tracking-[0.18em] text-blue sm:text-[11px]">Relate World</p>
+                    <h1 className="mt-1 text-xl font-semibold tracking-tight text-navy sm:text-2xl">Dashboard</h1>
+                    <p className="mt-1 text-[13px] text-slate-gray sm:text-sm">
                         {pendingTotal > 0
                             ? `${pendingTotal} item${pendingTotal === 1 ? "" : "s"} waiting on you.`
                             : hasCounts
@@ -141,31 +141,31 @@ export default function AdminDashboardPage() {
                 </div>
                 <Link
                     href="/admin/orders"
-                    className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-medium text-navy transition hover:border-blue/40 hover:text-blue"
+                    className="inline-flex h-9 items-center gap-2 rounded-lg border border-line bg-white px-3.5 text-[13px] font-medium text-navy transition hover:border-blue/40 hover:text-blue sm:h-10 sm:px-4 sm:text-sm"
                 >
                     <LuShoppingBag className="text-base"/> Store orders
                 </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
                 {metrics.map((metric) => (
                     <div
                         key={metric.label}
-                        className={`rounded-xl border bg-white p-4 ${
+                        className={`rounded-xl border bg-white p-3.5 sm:p-4 ${
                             metric.accent ? "border-blue/40" : "border-line"
                         }`}
                     >
-                        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-gray">
+                        <p className="text-[10.5px] font-medium uppercase tracking-[0.14em] text-slate-gray sm:text-[11px]">
                             {metric.label}
                         </p>
                         <p
-                            className={`mt-2 text-2xl font-semibold leading-none ${
+                            className={`mt-2 text-xl font-semibold leading-none sm:text-2xl ${
                                 metric.accent ? "text-blue" : "text-navy"
                             }`}
                         >
                             {metric.value === null ? "—" : metric.value}
                         </p>
-                        <p className="mt-1.5 text-[11px] text-slate-gray">{metric.hint}</p>
+                        <p className="mt-1.5 text-[10.5px] text-slate-gray sm:text-[11px]">{metric.hint}</p>
                     </div>
                 ))}
             </div>
@@ -186,14 +186,14 @@ export default function AdminDashboardPage() {
                             <Link
                                 key={q.href}
                                 href={q.href}
-                                className={`group flex items-center gap-3 px-4 py-3.5 transition hover:bg-alice-blue/70 ${
+                                className={`group flex items-center gap-2.5 px-3.5 py-3 transition hover:bg-alice-blue/70 sm:gap-3 sm:px-4 sm:py-3.5 ${
                                     index > 0 ? "border-t border-line" : ""
                                 }`}
                             >
-                                <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-alice-blue text-navy">
+                                <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-alice-blue text-navy sm:size-9">
                                     <Icon className="text-base"/>
                                 </span>
-                                <span className="flex-1 text-sm font-medium text-navy">{q.label}</span>
+                                <span className="flex-1 text-[13.5px] font-medium text-navy sm:text-sm">{q.label}</span>
                                 {count === null ? (
                                     <span className="text-xs text-slate-gray">—</span>
                                 ) : count > 0 ? (
@@ -218,7 +218,7 @@ export default function AdminDashboardPage() {
                             <h2 className="text-sm font-semibold text-navy">{group.heading}</h2>
                             <span className="text-xs text-slate-gray">{group.items.length} tools</span>
                         </div>
-                        <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-3">
                             {group.items.map((item) => {
                                 const Icon = item.icon;
                                 const count = QUEUE_HREFS.has(item.href) ? queueFor(item.href) : null;
@@ -226,14 +226,14 @@ export default function AdminDashboardPage() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
-                                        className="group flex items-start gap-3 rounded-xl border border-line bg-white p-4 transition hover:border-blue/40 hover:shadow-sm"
+                                        className="group flex items-start gap-2.5 rounded-xl border border-line bg-white p-3.5 transition hover:border-blue/40 hover:shadow-sm sm:gap-3 sm:p-4"
                                     >
-                                        <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-alice-blue text-navy">
+                                        <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-alice-blue text-navy sm:size-9">
                                             <Icon className="text-base"/>
                                         </span>
                                         <span className="min-w-0 flex-1">
                                             <span className="flex items-center gap-2">
-                                                <span className="text-sm font-medium text-navy">{item.label}</span>
+                                                <span className="text-[13.5px] font-medium text-navy sm:text-sm">{item.label}</span>
                                                 {typeof count === "number" && count > 0 ? (
                                                     <span className="rounded-full bg-blue px-1.5 py-0.5 text-[10px] font-semibold text-white">
                                                         {count}
@@ -255,7 +255,7 @@ export default function AdminDashboardPage() {
 
             {/* Admin APIs that exist but have no dashboard page yet. Kept visible
                 so the gap is tracked rather than silently forgotten. */}
-            <section className="mt-8 rounded-xl border border-dashed border-line bg-alice-blue/40 p-5">
+            <section className="mt-8 rounded-xl border border-dashed border-line bg-alice-blue/40 p-4 sm:p-5">
                 <h2 className="text-sm font-semibold text-navy">Not in the dashboard yet</h2>
                 <p className="mt-1 text-xs text-slate-gray">
                     These backends are live and admin-only, but still have no screen here.

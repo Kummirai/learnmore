@@ -117,7 +117,7 @@ export default function AdminMembersPage() {
             {members ? (
                 <div className="mb-5 flex flex-wrap gap-3">
                     {ROLES.map((r) => (
-                        <div key={r} className="rounded-xl border border-gray-100 bg-white px-4 py-2.5 shadow-sm">
+                        <div key={r} className="rounded-xl border border-gray-100 bg-white px-3.5 py-2 shadow-sm sm:px-4 sm:py-2.5">
                             <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
                                 {r}
                             </p>
@@ -166,9 +166,9 @@ export default function AdminMembersPage() {
                         return (
                             <div
                                 key={m.id}
-                                className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"
+                                className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:gap-4 sm:p-4"
                             >
-                                <div className="min-w-[12rem] flex-1">
+                                <div className="min-w-0 flex-1">
                                     <p className="font-semibold text-navy">
                                         {m.name}
                                         {isSelf ? <span className="ml-2 text-xs font-medium text-cyan">(you)</span> : null}
@@ -183,7 +183,7 @@ export default function AdminMembersPage() {
                                             : ""}
                                     </p>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-end">
                                     <Badge tone={ROLE_TONE[m.role] ?? "slate"}>{m.role}</Badge>
                                     <Select
                                         aria-label={`Role for ${m.name}`}
@@ -191,7 +191,7 @@ export default function AdminMembersPage() {
                                         disabled={busyId === m.id || isSelf}
                                         title={isSelf ? "You can't change your own role" : ROLE_HINT[m.role]}
                                         onChange={(e) => changeRole(m, e.target.value)}
-                                        className="w-40"
+                                        className="w-32 sm:w-40"
                                     >
                                         {options.map((r) => (
                                             <option key={r} value={r}>

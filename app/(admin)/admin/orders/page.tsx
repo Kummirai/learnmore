@@ -246,7 +246,7 @@ export default function AdminOrdersPage() {
                             .join(", ");
 
                         return (
-                            <div key={o._id} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-5">
+                            <div key={o._id} className="rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:p-4 md:p-5">
                                 <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div className="min-w-0">
                                         <p className="font-semibold text-navy">{o.orderNumber}</p>
@@ -276,7 +276,7 @@ export default function AdminOrdersPage() {
                                 ) : null}
 
                                 <div className="mt-4 flex flex-wrap items-end gap-3 border-t border-gray-50 pt-4">
-                                    <div className="w-44">
+                                    <div className="w-full sm:w-44">
                                         <Field label="Estimated delivery">
                                             <Input
                                                 type="date"
@@ -292,7 +292,7 @@ export default function AdminOrdersPage() {
                                     >
                                         <LuClock3/> Save ETA
                                     </Button>
-                                    <div className="ml-auto flex flex-wrap gap-2">
+                                    <div className="flex w-full flex-wrap gap-2 sm:ml-auto sm:w-auto">
                                         <Button
                                             disabled={busy || !step}
                                             onClick={() => advance(o)}

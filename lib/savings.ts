@@ -31,6 +31,40 @@ export function savingsForAge(age: number): SavingsTarget | null {
   return SAVINGS_TARGETS.find((t) => t.age === n) ?? null;
 }
 
+/** Yearly Smart Saver target for each Sprout tier — mirrored in the mobile app. */
+export type ClubSavingsTarget = {
+  slug: string;
+  name: string;
+  ageRange: string;
+  annual: number;
+};
+
+export const CLUB_SAVINGS_TARGETS: ClubSavingsTarget[] = [
+  { slug: "sprout-kids", name: "Sprout Kids", ageRange: "6 – 8 yrs", annual: 250 },
+  { slug: "sprout-tweens", name: "Sprout Tweens", ageRange: "9 – 12 yrs", annual: 450 },
+  { slug: "sprout-teens", name: "Sprout Teens", ageRange: "13 – 16 yrs", annual: 1000 },
+];
+
+/**
+ * Target for a Sprout club page. The parent "sprout" page shows the range
+ * across all three tiers; each age-class page shows its own yearly target.
+ */
+export function sproutTargetForClub(slug: string) {
+  if (slug === "sprout") {
+    const amounts = CLUB_SAVINGS_TARGETS.map((t) => t.annual);
+    return {
+      name: "Sprout",
+      ageRange: "6 – 16 yrs",
+      annualMin: Math.min(...amounts),
+      annualMax: Math.max(...amounts),
+    };
+  }
+  const target = CLUB_SAVINGS_TARGETS.find((t) => t.slug === slug);
+  return target
+    ? { ...target, annualMin: target.annual, annualMax: target.annual }
+    : null;
+}
+
 /** Immutable split — 60% Smart Saver vault, 40% spendable wallet. */
 export const SMART_SAVER_SPLIT = { vault: 0.6, wallet: 0.4 } as const;
 

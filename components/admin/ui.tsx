@@ -58,7 +58,7 @@ export function Button({
     return (
         <button
             {...props}
-            className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 min-h-11 text-sm font-semibold transition disabled:opacity-50 ${styles[variant]} ${className}`}
+            className={`inline-flex items-center justify-center gap-2 rounded-xl px-3.5 py-2.5 min-h-10 text-[13px] font-semibold transition disabled:opacity-50 sm:px-4 sm:py-3 sm:min-h-11 sm:text-sm ${styles[variant]} ${className}`}
         />
     );
 }
@@ -79,7 +79,7 @@ export function Badge({
         sky: "bg-ice-blue text-navy",
     };
     return (
-        <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold ${colors[tone]}`}>
+        <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold sm:text-xs ${colors[tone]}`}>
             {children}
         </span>
     );
@@ -87,7 +87,7 @@ export function Badge({
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
     return (
-        <div className={`rounded-2xl border border-gray-100 bg-white p-5 shadow-sm ${className}`}>
+        <div className={`rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5 ${className}`}>
             {children}
         </div>
     );
@@ -108,9 +108,9 @@ export function AdminHeader({
     return (
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
-                <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-cyan">{eyebrow}</p>
-                <h1 className="text-2xl md:text-3xl font-black leading-none tracking-tight text-navy">{title}</h1>
-                {sub ? <p className="mt-1 text-sm text-slate-gray">{sub}</p> : null}
+                <p className="mb-1 text-[10.5px] font-medium uppercase tracking-[0.2em] text-cyan sm:text-[11px]">{eyebrow}</p>
+                <h1 className="text-xl font-black leading-tight tracking-tight text-navy sm:text-2xl md:text-3xl">{title}</h1>
+                {sub ? <p className="mt-1 text-[13px] text-slate-gray sm:text-sm">{sub}</p> : null}
             </div>
             {actions ? <div className="flex flex-wrap items-center gap-3">{actions}</div> : null}
         </div>

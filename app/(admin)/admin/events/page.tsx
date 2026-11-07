@@ -327,7 +327,7 @@ function EventsBody() {
             ) : null}
 
             {editing ? (
-                <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm md:p-6">
+                <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5 md:p-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
                         <h2 className="text-lg font-black text-navy">{editing.label}</h2>
                         <Button variant="ghost" onClick={() => setEditing(null)}>
@@ -573,7 +573,7 @@ function EventsBody() {
                         return (
                             <div
                                 key={e._id}
-                                className="flex flex-wrap items-center gap-4 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm"
+                                className="flex flex-wrap items-center gap-3 rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:gap-4 sm:p-4"
                             >
                                 <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center overflow-hidden rounded-xl bg-navy text-white">
                                     <span className="text-[10px] font-semibold uppercase tracking-widest text-cyan">
@@ -583,7 +583,7 @@ function EventsBody() {
                                         {key.slice(8, 10) || "–"}
                                     </span>
                                 </div>
-                                <div className="min-w-[12rem] flex-1">
+                                <div className="min-w-0 flex-1">
                                     <p className="font-semibold text-navy">{e.title}</p>
                                     <p className="mt-0.5 text-xs text-slate-gray">
                                         {shortDate(e.date ?? "")}
@@ -592,7 +592,7 @@ function EventsBody() {
                                         {e.location ? ` · ${e.location}` : ""}
                                     </p>
                                 </div>
-                                <div className="flex flex-wrap items-center gap-2">
+                                <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
                                     {club ? <Badge tone="sky">{club}</Badge> : null}
                                     {e.category ? <Badge tone="slate">{e.category}</Badge> : null}
                                     <Badge tone={e.fee && e.fee !== "Free" ? "gold" : "slate"}>

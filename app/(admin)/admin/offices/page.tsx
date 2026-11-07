@@ -308,7 +308,7 @@ export default function AdminOfficesPage() {
             ) : null}
 
             {showForm ? (
-                <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+                <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5">
                     <p className="mb-4 text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
                         New volunteer office
                     </p>
@@ -408,7 +408,7 @@ export default function AdminOfficesPage() {
                 ) : (
                     <div className="grid gap-3">
                         {visibleApps.map((a) => (
-                            <div key={a._id} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-5">
+                            <div key={a._id} className="rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:p-4 md:p-5">
                                 <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div className="min-w-0">
                                         <p className="font-semibold text-navy">
@@ -487,7 +487,7 @@ export default function AdminOfficesPage() {
                     {visibleOffices.map((o) => {
                         const club = o.clubSlug ? allClubs.find((c) => c.slug === o.clubSlug) : null;
                         return (
-                            <div key={o._id} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-5">
+                            <div key={o._id} className="rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:p-4 md:p-5">
                                 <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div className="min-w-0">
                                         <div className="flex flex-wrap items-center gap-2">

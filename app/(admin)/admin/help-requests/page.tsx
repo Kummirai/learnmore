@@ -270,7 +270,7 @@ export default function AdminHelpRequestsPage() {
                     {visible.map((r) => {
                         const isOpen = openId === r._id;
                         return (
-                            <div key={r._id} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-5">
+                            <div key={r._id} className="rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:p-4 md:p-5">
                                 <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div className="min-w-0">
                                         <p className="font-semibold text-navy">{r.name}</p>

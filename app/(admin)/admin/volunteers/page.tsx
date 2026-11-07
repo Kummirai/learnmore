@@ -232,7 +232,7 @@ export default function AdminVolunteersPage() {
                         return (
                             <div
                                 key={v._id}
-                                className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm md:p-5"
+                                className="rounded-2xl border border-gray-100 bg-white p-3.5 shadow-sm sm:p-4 md:p-5"
                             >
                                 <div className="flex flex-wrap items-start justify-between gap-3">
                                     <div className="flex min-w-0 items-start gap-3">

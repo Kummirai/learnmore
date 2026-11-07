@@ -217,7 +217,7 @@ function SkillsBody() {
 
     if (skillsError || skillsLoading || !skills) {
         return (
-            <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
                 <AdminHeader
                     eyebrow={capitalize(clubSlug)}
                     title="Skills Progress"
@@ -236,7 +236,7 @@ function SkillsBody() {
     }
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
             <AdminHeader
                 eyebrow={capitalize(clubSlug)}
                 title="Skills Progress"
@@ -411,7 +411,7 @@ function SkillsBody() {
             </div>
 
             {signOff && (
-                <div className="mt-6 rounded-2xl border border-cyan/30 bg-alice-blue/40 p-5">
+                <div className="mt-6 rounded-2xl border border-cyan/30 bg-alice-blue/40 p-4 sm:p-5">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
                             <p className="text-[11px] font-bold uppercase tracking-widest text-slate-gray">

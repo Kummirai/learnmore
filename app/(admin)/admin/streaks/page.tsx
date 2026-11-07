@@ -184,7 +184,7 @@ function StreaksBody() {
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
             <AdminHeader
                 eyebrow="Members"
                 title="Restore Streaks"

@@ -157,7 +157,7 @@ function MagazinesBody() {
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
             <AdminHeader
                 eyebrow="Library"
                 title="Season Guides"
@@ -323,7 +323,7 @@ function NewMagazineModal({onDone}: {onDone: (created: boolean) => void}) {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/40 p-4">
-            <div className="w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="w-full max-w-lg bg-white rounded-2xl p-5 shadow-2xl max-h-[90vh] overflow-y-auto sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="font-bold text-navy">New season guide</h3>
                     <button onClick={() => onDone(false)} aria-label="Close" className="text-gray-400 hover:text-gray-600">

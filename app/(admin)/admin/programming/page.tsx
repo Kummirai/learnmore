@@ -159,7 +159,7 @@ function ProgrammingBody() {
                                     type="button"
                                     onClick={() => setOpenId(open ? null : row.userId)}
                                     aria-expanded={open}
-                                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                                    className="flex w-full items-center justify-between gap-2 px-4 py-3.5 text-left sm:gap-4 sm:px-5 sm:py-4"
                                 >
                                     <div className="min-w-0">
                                         <p className="truncate font-bold text-navy">{row.name}</p>
@@ -176,7 +176,7 @@ function ProgrammingBody() {
                                 </button>
 
                                 {open ? (
-                                    <div className="grid gap-4 border-t border-gray-100 bg-alice-blue/40 p-5 md:grid-cols-2">
+                                    <div className="grid gap-4 border-t border-gray-100 bg-alice-blue/40 p-4 sm:p-5 md:grid-cols-2">
                                         {PORTAL_YEARS.map((year) => (
                                             <div key={year.year}>
                                                 <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.15em] text-cyan">

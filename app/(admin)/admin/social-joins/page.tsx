@@ -123,7 +123,7 @@ function SocialJoinsBody() {
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
             <AdminHeader
                 eyebrow="Community"
                 title="Social Joins"
@@ -150,7 +150,7 @@ function SocialJoinsBody() {
             ) : (
                 <div className="grid gap-3">
                     {(requests ?? []).map((r) => (
-                        <div key={r._id} className="rounded-2xl border border-gray-100 p-4 md:p-5 hover:shadow-sm transition-shadow">
+                        <div key={r._id} className="rounded-2xl border border-gray-100 p-3.5 sm:p-4 md:p-5 hover:shadow-sm transition-shadow">
                             <div className="flex flex-wrap items-start justify-between gap-3">
                                 <div className="flex items-start gap-3">
                                     <div className="flex size-10 items-center justify-center rounded-full bg-alice-blue text-navy font-bold text-sm">

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import JoinCta from "@/components/join/JoinCta";
 import type { CSSProperties } from "react";
+import { LuSmartphone } from "react-icons/lu";
 
 import PageHero from "@/components/PageHero";
 import { WHITE_TAGLINE_SLUGS, programSlug, programsByPillar } from "@/constants/relate";
@@ -12,7 +13,7 @@ import { getProgramCalendar } from "@/lib/program-calendar";
 import PublicationLibrary from "@/components/publications/PublicationLibrary";
 import ProgramCalendar from "@/components/ProgramCalendar";
 import { getSkills } from "@/lib/skills";
-import { savingsForRange } from "@/lib/savings";
+import { sproutTargetForClub } from "@/lib/savings";
 import DataError from "@/components/DataError";
 
 export default async function ClubPage({ slug }: { slug: string }) {
@@ -42,7 +43,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
   }
 
   const isSprout = club.slug === "sprout" || club.slug.startsWith("sprout-");
-  const savingsTarget = isSprout ? savingsForRange(club.ageRange) : null;
+  const savingsTarget = isSprout ? sproutTargetForClub(club.slug) : null;
   const publications = await getPublications(club.slug);
   const events = await getClubEvents(club.slug);
   const calendar = await getProgramCalendar(club.slug).catch(() => null);
@@ -276,57 +277,65 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 Pick the band that fits your child — each has its own leaders,
                 rhythm and weekly program.
               </p>
-              <div className={"border-t border-gray-200"}>
+              <div className={"grid gap-3 sm:grid-cols-3"}>
                 {classes.map((c) => (
                   <Link
                     key={c.slug}
                     href={`/${c.slug}`}
                     className={
-                      "group flex items-center gap-5 md:gap-8 py-6 border-b border-gray-200 hover:bg-alice-blue/70 transition-colors"
+                      "group flex flex-col rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:p-5"
                     }
                   >
-                    <div className={"w-20 md:w-48 shrink-0"}>
+                    <div className={"flex items-center justify-between gap-2"}>
                       <span
                         className={
-                          "block font-black tracking-tight leading-none"
+                          "inline-flex items-baseline gap-1.5 rounded-full px-3 py-1.5"
                         }
                         style={{
+                          backgroundColor: `${c.color}14`,
                           color: c.color,
-                          fontSize: "clamp(2.25rem, 5vw, 3.25rem)",
                         }}
                       >
-                        {c.ageRange.split(" yrs")[0]}
+                        <span className={"text-lg font-black leading-none"}>
+                          {c.ageRange.split(" yrs")[0]}
+                        </span>
+                        <span
+                          className={
+                            "text-[10px] font-bold tracking-widest"
+                          }
+                        >
+                          YRS
+                        </span>
                       </span>
-                    </div>
-                    <div className={"flex-1 min-w-0"}>
-                      <h3
-                        className={
-                          "font-bold text-gray-800 text-lg leading-snug"
-                        }
-                      >
-                        {c.name}
-                      </h3>
-                      <p
-                        className={
-                          "text-sm text-gray-500 leading-snug line-clamp-2"
-                        }
-                      >
-                        {c.tagline}
-                      </p>
-                    </div>
-                    <span
-                      className={
-                        "shrink-0 text-sm font-semibold text-cyan group-hover:text-cyan-dark transition-colors"
-                      }
-                    >
-                      View programs
                       <span
+                        aria-hidden={"true"}
                         className={
-                          "inline-block ml-1 group-hover:translate-x-1 transition-transform"
+                          "text-lg font-semibold text-gray-300 transition group-hover:translate-x-0.5 group-hover:text-cyan"
                         }
                       >
                         →
                       </span>
+                    </div>
+                    <h3
+                      className={
+                        "mt-3 text-lg font-bold leading-snug text-gray-800"
+                      }
+                    >
+                      {c.name}
+                    </h3>
+                    <p
+                      className={
+                        "mt-1 text-sm leading-relaxed text-gray-500"
+                      }
+                    >
+                      {c.tagline}
+                    </p>
+                    <span
+                      className={
+                        "mt-auto pt-4 text-sm font-semibold text-cyan transition-colors group-hover:text-cyan-dark"
+                      }
+                    >
+                      View programs →
                     </span>
                   </Link>
                 ))}
@@ -336,76 +345,94 @@ export default async function ClubPage({ slug }: { slug: string }) {
 
   const savingsBlock =
     isSprout && savingsTarget ? (
-      <div className={"mb-10 overflow-hidden rounded-2xl border border-cyan/25 bg-ice-blue/60"}>
-        <div
+      <div
+        className={
+          "relative mb-10 overflow-hidden rounded-2xl border border-white/10 text-white shadow-sm"
+        }
+        style={{
+          background:
+            "linear-gradient(120deg, #101218 0%, #24262e 55%, #0b0d11 100%)",
+        }}
+      >
+        <span
+          aria-hidden={"true"}
           className={
-            "flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between md:p-8"
+            "pointer-events-none absolute -right-14 -top-16 size-44 rounded-full bg-white/5"
           }
-        >
-          <div className={"max-w-2xl"}>
+        />
+        <div className={"relative p-5 sm:p-6"}>
+          <div className={"flex items-center justify-between gap-3"}>
             <span
               className={
-                "text-[11px] font-bold uppercase tracking-[0.18em] text-cyan"
+                "text-[10px] font-bold uppercase tracking-[0.18em] text-white/70"
               }
             >
-              Smart Saver target
+              Smart Saver fund
             </span>
-            <h2 className={"mt-1 text-xl font-bold text-navy md:text-2xl"}>
-              Save R{savingsTarget.weeklyMin}–R{savingsTarget.weeklyMax} every
-              week
-            </h2>
-            <p className={"mt-2 text-sm leading-relaxed text-gray-600"}>
-              Every rand is split 60/40 — 60% locked in Smart Saver,
-              40% into the spendable wallet. Reach R
-              {savingsTarget.cumulative.toLocaleString("en-ZA")} in the Freedom
-              Fund by the end of the {club.name} band.
-            </p>
+            <span className={"flex items-center"} aria-hidden={"true"}>
+              <span className={"size-5 rounded-full bg-[#EB001B]"} />
+              <span className={"-ml-2 size-5 rounded-full bg-[#F79E1B]/90"} />
+            </span>
           </div>
-          <dl className={"grid shrink-0 grid-cols-3 gap-3 text-center"}>
-            <div className={"rounded-xl bg-white px-4 py-3 shadow-sm"}>
-              <dt className={"text-[10px] uppercase tracking-wider text-gray-500"}>
-                Weekly
-              </dt>
-              <dd className={"mt-1 text-sm font-black text-navy"}>
-                R{savingsTarget.weeklyMin}–R{savingsTarget.weeklyMax}
-              </dd>
-            </div>
-            <div className={"rounded-xl bg-white px-4 py-3 shadow-sm"}>
-              <dt className={"text-[10px] uppercase tracking-wider text-gray-500"}>
-                This year
-              </dt>
-              <dd className={"mt-1 text-sm font-black text-navy"}>
-                R{savingsTarget.annualMin.toLocaleString("en-ZA")}–R
-                {savingsTarget.annualMax.toLocaleString("en-ZA")}
-              </dd>
-            </div>
-            <div className={"rounded-xl bg-white px-4 py-3 shadow-sm"}>
-              <dt className={"text-[10px] uppercase tracking-wider text-gray-500"}>
-                By band end
-              </dt>
-              <dd className={"mt-1 text-sm font-black text-navy"}>
-                R{savingsTarget.cumulative.toLocaleString("en-ZA")}
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <div
-          className={
-            "flex flex-wrap items-center justify-between gap-2 border-t border-cyan/15 bg-white/60 px-6 py-3 text-xs text-gray-600"
-          }
-        >
-          <span>
-            Ages {club.ageRange.replace(" yrs", "")} · 60% Smart Saver · 40%
-            wallet
-          </span>
-          <Link
-            href={"/savings"}
+
+          <div className={"mt-3 flex items-center justify-between gap-3"}>
+            <span
+              className={
+                "block h-6 w-8 overflow-hidden rounded-[5px] bg-gradient-to-br from-[#efd27f] to-[#b98f2f]"
+              }
+              aria-hidden={"true"}
+            >
+              <span className={"mt-3 block h-px bg-[#5a3c0a]/45"} />
+            </span>
+            <span
+              className={
+                "rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-bold tracking-widest text-[#efd27f]"
+              }
+            >
+              60 / 40
+            </span>
+          </div>
+
+          <p
             className={
-              "font-semibold text-cyan transition-colors hover:text-cyan-dark"
+              "mt-3 text-2xl font-black leading-tight tracking-tight sm:text-3xl"
             }
           >
-            Open Smart Saver →
-          </Link>
+            R{savingsTarget.annualMin.toLocaleString("en-ZA")}
+            {savingsTarget.annualMin !== savingsTarget.annualMax
+              ? `–R${savingsTarget.annualMax.toLocaleString("en-ZA")}`
+              : ""}
+            <span className={"text-sm font-semibold text-white/60"}>
+              {" "}
+              / year
+            </span>
+          </p>
+          <p className={"mt-1 text-xs leading-5 text-white/60 sm:text-[13px]"}>
+            The {savingsTarget.name} savings target — 60% locked in Smart Saver,
+            40% in your spendable wallet.
+          </p>
+
+          <div
+            className={
+              "mt-4 flex flex-wrap items-center justify-between gap-3"
+            }
+          >
+            <Link
+              href={"/savings#install-smart-saver"}
+              className={
+                "inline-flex min-h-10 items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-[13px] font-bold text-navy transition hover:bg-white/90"
+              }
+            >
+              <LuSmartphone className={"size-4"} /> Download Smart Saver
+            </Link>
+            <span
+              className={
+                "text-[13px] font-bold italic tracking-tight text-white/85"
+              }
+            >
+              mastercard
+            </span>
+          </div>
         </div>
       </div>
     ) : null;

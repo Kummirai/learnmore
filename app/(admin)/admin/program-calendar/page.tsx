@@ -207,7 +207,7 @@ function CalendarBody() {
 
     if (clubsError) {
         return (
-            <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+            <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
                 <AdminHeader
                     eyebrow="Clubs"
                     title="Program Calendar"
@@ -221,7 +221,7 @@ function CalendarBody() {
     const currentNotice = notice && notice.key === key ? notice : null;
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-5 md:p-7">
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-5 md:p-7">
             <AdminHeader
                 eyebrow={club ? club.name : capitalize(clubSlug)}
                 title="Program Calendar"
@@ -337,7 +337,7 @@ function CalendarBody() {
                                 {group.rows.map(({ entry, index }) => (
                                     <div
                                         key={entry.id}
-                                        className="rounded-xl border border-gray-100 bg-white p-4 shadow-sm"
+                                        className="rounded-xl border border-gray-100 bg-white p-3.5 shadow-sm sm:p-4"
                                     >
                                         <div className="grid gap-3 md:grid-cols-12">
                                             <div className="md:col-span-2">
