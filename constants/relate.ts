@@ -238,7 +238,12 @@ export function getMagazinesForClub(clubSlug: string): RelateMagazine[] {
   return MAGAZINES.filter((m) => m.clubSlug === clubSlug);
 }
 
-export type StoreCategory = "All" | "Apparel" | "Accessories" | "Home & Study";
+export type StoreCategory =
+  | "All"
+  | "Apparel"
+  | "Sportswear"
+  | "Accessories"
+  | "Home & Study";
 
 export type StoreItem = {
   id: string;
@@ -257,6 +262,7 @@ export type StoreItem = {
 export const STORE_CATEGORIES: StoreCategory[] = [
   "All",
   "Apparel",
+  "Sportswear",
   "Accessories",
   "Home & Study",
 ];
