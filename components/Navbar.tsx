@@ -26,7 +26,7 @@ const navGroups: NavGroup[] = [
     short: "Sports",
     items: [
       { link: "Sports", path: "/sports" },
-      { link: "Join a Team", path: "/join" },
+      { link: "Join a Team", path: "/join-team" },
       { link: "My Membership", path: "/membership" },
     ],
   },
@@ -34,6 +34,7 @@ const navGroups: NavGroup[] = [
     link: "Clubs",
     short: "Clubs",
     items: [
+      { link: "Join a Club", path: "/join" },
       { link: "Sprout", path: "/sprout" },
       { link: "Surge", path: "/surge" },
       { link: "Pulse", path: "/pulse" },

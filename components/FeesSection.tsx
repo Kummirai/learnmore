@@ -46,12 +46,12 @@ export default function FeesSection() {
                         <p className={"text-sm text-gray-500"}>The store is empty right now — check back soon for new gear.</p>
                     </div>
                 ) : (
-                    <div className={"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"}>
+                    <div className={"grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8"}>
                         {featuredItems.map(({item, featured}) => (
                             <div key={item.id}
-                                 className={`group relative flex flex-col overflow-hidden rounded-3xl bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${featured ? "ring-2 ring-cyan" : "ring-1 ring-black/5"}`}>
+                                 className={`group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-3xl bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${featured ? "ring-2 ring-cyan" : "ring-1 ring-black/5"}`}>
                                 {featured && (
-                                    <span className={"absolute left-4 top-4 z-10 rounded-full bg-cyan px-3 py-1 text-[11px] font-semibold text-navy shadow-sm"}>
+                                    <span className={"absolute left-3 top-3 z-10 rounded-full bg-cyan px-2.5 py-0.5 text-[10px] font-semibold text-navy shadow-sm"}>
                                         Most Popular
                                     </span>
                                 )}
@@ -64,19 +64,15 @@ export default function FeesSection() {
                                         className={"size-full object-cover transition-transform duration-500 group-hover:scale-105"}
                                     />
                                 </a>
-                                <div className={"flex flex-1 flex-col p-5"}>
-                                    <h3 className={"text-base font-semibold leading-snug text-navy"}>
+                                <div className={"flex flex-1 flex-col p-3 sm:p-4"}>
+                                    <h3 className={"text-sm font-semibold leading-snug text-navy line-clamp-2"}>
                                         <a href={`/store/${item.id}`} className="inline-flex min-h-11 items-center transition-colors hover:text-cyan">{item.name}</a>
                                     </h3>
-                                    <p className={"-mt-1 text-sm leading-relaxed text-navy/70 flex-1"}>{item.blurb}</p>
-                                    <p className={"mt-3 text-2xl font-semibold tracking-tight text-navy"}>{formatPrice(item.price)}</p>
+                                    <p className={"-mt-1 text-xs sm:text-sm leading-relaxed text-navy/70 line-clamp-2 flex-1"}>{item.blurb}</p>
+                                    <p className={"mt-2 text-lg font-semibold tracking-tight text-navy"}>{formatPrice(item.price)}</p>
                                     <a href={`/store/${item.id}`}
-                                       className={"btn-pill btn-brand mt-4 w-full"}>
+                                       className={"btn-pill btn-brand mt-3 w-full px-4 py-2.5 text-sm"}>
                                         Order now
-                                    </a>
-                                    <a href={`/store/${item.id}`}
-                                       className="link-chevron mt-3 self-start text-sm">
-                                        View details
                                     </a>
                                 </div>
                             </div>

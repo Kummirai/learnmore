@@ -25,6 +25,7 @@ import {
 } from "@/lib/membership";
 import { useAuth } from "@/components/AuthProvider";
 import { useClubs } from "@/lib/useClubs";
+import { useSports } from "@/lib/useSports";
 
 type YesNo = "" | "yes" | "no";
 
@@ -158,6 +159,7 @@ export default function JoinForm({
     loading: clubsLoading,
     error: clubsError,
   } = useClubs();
+  const { sports } = useSports();
   const initialClub = defaultClub || member?.clubSlug || "";
   const [clubSlug, setClubSlug] = useState(initialClub);
   const [name, setName] = useState(member?.name ?? "");
@@ -255,6 +257,9 @@ export default function JoinForm({
   );
 
   const selectedClub = clubs.find((c) => c.slug === clubSlug);
+  const clubHasTeams = Boolean(
+    sports && clubSlug && sports.teamsForClub(clubSlug).length > 0,
+  );
 
   if (done) {
     return (
@@ -310,6 +315,14 @@ export default function JoinForm({
           </div>
 
           <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+            {clubHasTeams ? (
+              <Link
+                href="/join-team"
+                className="inline-flex self-center items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-navy/90 transition-colors sm:self-auto"
+              >
+                Join a team <LuArrowRight className="text-xs" />
+              </Link>
+            ) : null}
             <Link
               href="/membership"
               className="inline-flex self-center items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-navy/90 transition-colors sm:self-auto"
