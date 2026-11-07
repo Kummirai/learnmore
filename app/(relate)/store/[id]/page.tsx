@@ -44,7 +44,7 @@ export default async function ProductPage({
       <>
         <Navbar />
         <section className="flex-1 px-4 py-12 bg-white">
-          <div className="max-w-xl mx-auto text-center rounded-2xl border border-red-200 bg-red-50 px-6 py-14">
+          <div className="max-w-xl mx-auto text-center rounded-2xl bg-red-50 px-6 py-14 shadow-sm">
             <p className="text-base font-semibold text-red-700 mb-1">
               We couldn&rsquo;t load the store.
             </p>
@@ -120,7 +120,7 @@ export default async function ProductPage({
                     typeof r.offerPrice === "number" && r.offerPrice < r.price;
                   return (
                     <Link key={r.id} href={`/store/${r.id}`} className="group block">
-                      <div className="overflow-hidden rounded-2xl border border-line bg-white shadow-sm hover-lift">
+                      <div className="overflow-hidden rounded-2xl bg-white shadow-[0_6px_22px_rgba(11,25,44,0.10)] hover-lift">
                         <div className="relative aspect-square overflow-hidden bg-alice-blue">
                           {r.image ? (
                             <Image

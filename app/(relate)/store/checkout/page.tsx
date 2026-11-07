@@ -107,7 +107,7 @@ export default function CheckoutPage() {
                             <span className="text-sm">Preparing checkout…</span>
                         </div>
                     ) : lines.length === 0 ? (
-                        <div className="mt-8 rounded-3xl border border-dashed border-line bg-alice-blue/40 px-6 py-16 text-center">
+                        <div className="mt-8 rounded-3xl bg-alice-blue/40 px-6 py-16 text-center">
                             <span className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-white text-navy shadow-sm">
                                 <LuShoppingBag className="text-2xl" />
                             </span>
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
                     ) : (
                         <form onSubmit={submit} className="mt-8 grid gap-8 lg:grid-cols-5">
                             <div className="space-y-5 lg:col-span-3">
-                                <div className="rounded-2xl border border-line p-4 md:p-5">
+                                <div className="rounded-2xl bg-white p-4 shadow-[0_6px_22px_rgba(11,25,44,0.10)] md:p-5">
                                     <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-gray">
                                         Your order
                                     </h2>
@@ -158,7 +158,7 @@ export default function CheckoutPage() {
                                     </div>
                                 </div>
 
-                                <div className="rounded-2xl border border-line p-4 md:p-5">
+                                <div className="rounded-2xl bg-white p-4 shadow-[0_6px_22px_rgba(11,25,44,0.10)] md:p-5">
                                     <h2 className="mb-4 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-gray">
                                         Contact details
                                     </h2>
@@ -174,10 +174,10 @@ export default function CheckoutPage() {
                                                 autoComplete="name"
                                                 placeholder="Your name"
                                                 aria-invalid={Boolean(errors.name)}
-                                                className={`h-12 w-full rounded-xl border bg-white px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
+                                                className={`h-12 w-full rounded-xl px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
                                                     errors.name
-                                                        ? "border-red-400 focus:border-red-500 focus:ring-red-200"
-                                                        : "border-line focus:border-blue focus:ring-blue/15"
+                                                        ? "bg-red-50 focus:ring-red-200"
+                                                        : "bg-alice-blue focus:bg-white focus:ring-blue/20"
                                                 }`}
                                             />
                                             {errors.name ? <span className="mt-1 block text-xs text-red-600">{errors.name}</span> : null}
@@ -195,10 +195,10 @@ export default function CheckoutPage() {
                                                 autoComplete="tel"
                                                 placeholder="e.g. 082 123 4567"
                                                 aria-invalid={Boolean(errors.phone)}
-                                                className={`h-12 w-full rounded-xl border bg-white px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
+                                                className={`h-12 w-full rounded-xl px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
                                                     errors.phone
-                                                        ? "border-red-400 focus:border-red-500 focus:ring-red-200"
-                                                        : "border-line focus:border-blue focus:ring-blue/15"
+                                                        ? "bg-red-50 focus:ring-red-200"
+                                                        : "bg-alice-blue focus:bg-white focus:ring-blue/20"
                                                 }`}
                                             />
                                             {errors.phone ? <span className="mt-1 block text-xs text-red-600">{errors.phone}</span> : null}
@@ -218,10 +218,10 @@ export default function CheckoutPage() {
                                                 autoComplete="email"
                                                 placeholder="you@example.com"
                                                 aria-invalid={Boolean(errors.email)}
-                                                className={`h-12 w-full rounded-xl border bg-white px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
+                                                className={`h-12 w-full rounded-xl px-3.5 text-base text-ink outline-none transition focus:ring-2 md:text-sm ${
                                                     errors.email
-                                                        ? "border-red-400 focus:border-red-500 focus:ring-red-200"
-                                                        : "border-line focus:border-blue focus:ring-blue/15"
+                                                        ? "bg-red-50 focus:ring-red-200"
+                                                        : "bg-alice-blue focus:bg-white focus:ring-blue/20"
                                                 }`}
                                             />
                                             {errors.email ? <span className="mt-1 block text-xs text-red-600">{errors.email}</span> : null}
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
                                                 name="note"
                                                 rows={3}
                                                 placeholder="Delivery area, club name, preferred collection point…"
-                                                className="w-full rounded-xl border border-line bg-white px-3.5 py-3 text-base text-ink outline-none transition focus:border-blue focus:ring-2 focus:ring-blue/15 md:text-sm"
+                                                className="w-full rounded-xl bg-alice-blue px-3.5 py-3 text-base text-ink outline-none transition focus:bg-white focus:ring-2 focus:ring-blue/20 md:text-sm"
                                             />
                                         </label>
                                     </div>
@@ -264,7 +264,7 @@ export default function CheckoutPage() {
                                     </div>
 
                                     {submitError ? (
-                                        <p role="alert" className="mt-4 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
+                                        <p role="alert" className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-xs text-red-700">
                                             {submitError}
                                         </p>
                                     ) : null}

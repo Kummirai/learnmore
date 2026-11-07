@@ -9,6 +9,7 @@ import {
     LuHandHeart,
     LuLifeBuoy,
     LuMessageSquare,
+    LuShoppingBag,
 } from "react-icons/lu";
 import {ADMIN_NAV} from "@/components/admin/nav";
 
@@ -106,86 +107,117 @@ export default function AdminDashboardPage() {
         return null;
     };
 
+    const hasCounts = QUEUES.some((q) => queueFor(q.href) !== null);
     const pendingTotal = QUEUES.reduce<number>(
         (sum, q) => sum + (queueFor(q.href) ?? 0),
         0,
     );
 
+    const metrics = [
+        {
+            label: "Waiting on you",
+            value: hasCounts ? pendingTotal : null,
+            hint: "Across open queues",
+            accent: pendingTotal > 0,
+        },
+        {label: "Members", value: totals.members, hint: "Registered accounts", accent: false},
+        {label: "Publications", value: totals.publications, hint: "All magazines", accent: false},
+        {label: "Drafts", value: totals.drafts, hint: "Unpublished", accent: false},
+    ];
+
     return (
         <div>
-            <div className="mb-7">
-                <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-cyan">
-                    Relate World
-                </p>
-                <h1 className="text-2xl md:text-3xl font-black tracking-tight text-navy">Dashboard</h1>
-                <p className="mt-1 text-sm text-slate-gray">
-                    {pendingTotal > 0
-                        ? `${pendingTotal} item${pendingTotal === 1 ? "" : "s"} waiting on you.`
-                        : "Nothing is waiting on you right now."}
-                </p>
+            <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                    <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-blue">Relate World</p>
+                    <h1 className="mt-1 text-2xl font-semibold tracking-tight text-navy">Dashboard</h1>
+                    <p className="mt-1 text-sm text-slate-gray">
+                        {pendingTotal > 0
+                            ? `${pendingTotal} item${pendingTotal === 1 ? "" : "s"} waiting on you.`
+                            : hasCounts
+                                ? "Nothing is waiting on you right now."
+                                : "Checking the queues…"}
+                    </p>
+                </div>
+                <Link
+                    href="/admin/orders"
+                    className="inline-flex h-10 items-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-medium text-navy transition hover:border-blue/40 hover:text-blue"
+                >
+                    <LuShoppingBag className="text-base"/> Store orders
+                </Link>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+                {metrics.map((metric) => (
+                    <div
+                        key={metric.label}
+                        className={`rounded-xl border bg-white p-4 ${
+                            metric.accent ? "border-blue/40" : "border-line"
+                        }`}
+                    >
+                        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-gray">
+                            {metric.label}
+                        </p>
+                        <p
+                            className={`mt-2 text-2xl font-semibold leading-none ${
+                                metric.accent ? "text-blue" : "text-navy"
+                            }`}
+                        >
+                            {metric.value === null ? "—" : metric.value}
+                        </p>
+                        <p className="mt-1.5 text-[11px] text-slate-gray">{metric.hint}</p>
+                    </div>
+                ))}
             </div>
 
             {/* Queue summary — the thing an admin checks first */}
-            <div className="mb-8 grid grid-cols-2 gap-3 lg:grid-cols-3">
-                {QUEUES.map((q) => {
-                    const count = queueFor(q.href);
-                    const Icon = q.icon;
-                    return (
-                        <Link
-                            key={q.href}
-                            href={q.href}
-                            className="group rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                        >
-                            <div className="mb-2 flex items-center justify-between">
-                                <Icon className="text-xl text-cyan"/>
-                                {typeof count === "number" && count > 0 ? (
-                                    <span className="rounded-full bg-cyan px-2 py-0.5 text-[10px] font-black text-navy">
+            <section className="mt-8">
+                <div className="mb-2.5 flex items-end justify-between">
+                    <h2 className="text-sm font-semibold text-navy">Needs your attention</h2>
+                    <span className="text-xs text-slate-gray">
+                        {pendingTotal > 0 ? `${pendingTotal} pending` : hasCounts ? "All clear" : ""}
+                    </span>
+                </div>
+                <div className="overflow-hidden rounded-xl border border-line bg-white">
+                    {QUEUES.map((q, index) => {
+                        const count = queueFor(q.href);
+                        const Icon = q.icon;
+                        return (
+                            <Link
+                                key={q.href}
+                                href={q.href}
+                                className={`group flex items-center gap-3 px-4 py-3.5 transition hover:bg-alice-blue/70 ${
+                                    index > 0 ? "border-t border-line" : ""
+                                }`}
+                            >
+                                <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-alice-blue text-navy">
+                                    <Icon className="text-base"/>
+                                </span>
+                                <span className="flex-1 text-sm font-medium text-navy">{q.label}</span>
+                                {count === null ? (
+                                    <span className="text-xs text-slate-gray">—</span>
+                                ) : count > 0 ? (
+                                    <span className="rounded-full bg-blue px-2 py-0.5 text-[11px] font-semibold text-white">
                                         {count}
                                     </span>
-                                ) : null}
-                            </div>
-                            <p className="text-xl font-black text-navy">
-                                {count === null ? "—" : count}
-                            </p>
-                            <p className="text-xs text-slate-gray">{q.label}</p>
-                        </Link>
-                    );
-                })}
-            </div>
-
-            {/* Content snapshot */}
-            <div className="mb-8 grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
-                    <p className="text-[11px] uppercase tracking-widest text-slate-gray">
-                        Members
-                    </p>
-                    <p className="mt-1 text-2xl font-black text-navy">
-                        {totals.members === null ? "—" : totals.members}
-                    </p>
+                                ) : (
+                                    <span className="text-xs text-slate-gray">Clear</span>
+                                )}
+                                <LuArrowRight className="text-slate-gray transition group-hover:translate-x-0.5 group-hover:text-navy"/>
+                            </Link>
+                        );
+                    })}
                 </div>
-                <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
-                    <p className="text-[11px] uppercase tracking-widest text-slate-gray">
-                        Publications
-                    </p>
-                    <p className="mt-1 text-2xl font-black text-navy">
-                        {totals.publications === null ? "—" : totals.publications}
-                    </p>
-                </div>
-                <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
-                    <p className="text-[11px] uppercase tracking-widest text-slate-gray">Drafts</p>
-                    <p className="mt-1 text-2xl font-black text-navy">
-                        {totals.drafts === null ? "—" : totals.drafts}
-                    </p>
-                </div>
-            </div>
+            </section>
 
             {/* Full tool list, straight from the nav config */}
-            <div className="space-y-6">
+            <div className="mt-8 space-y-6">
                 {ADMIN_NAV.filter((g) => g.heading !== "Overview").map((group) => (
                     <section key={group.heading}>
-                        <h2 className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-gray-400">
-                            {group.heading}
-                        </h2>
+                        <div className="mb-2.5 flex items-end justify-between">
+                            <h2 className="text-sm font-semibold text-navy">{group.heading}</h2>
+                            <span className="text-xs text-slate-gray">{group.items.length} tools</span>
+                        </div>
                         <div className="grid gap-3 sm:grid-cols-2">
                             {group.items.map((item) => {
                                 const Icon = item.icon;
@@ -194,16 +226,16 @@ export default function AdminDashboardPage() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
-                                        className="group flex items-start gap-3 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+                                        className="group flex items-start gap-3 rounded-xl border border-line bg-white p-4 transition hover:border-blue/40 hover:shadow-sm"
                                     >
-                                        <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-alice-blue text-navy ring-1 ring-navy/10">
-                                            <Icon className="text-lg"/>
+                                        <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-alice-blue text-navy">
+                                            <Icon className="text-base"/>
                                         </span>
                                         <span className="min-w-0 flex-1">
                                             <span className="flex items-center gap-2">
-                                                <span className="font-bold text-navy">{item.label}</span>
+                                                <span className="text-sm font-medium text-navy">{item.label}</span>
                                                 {typeof count === "number" && count > 0 ? (
-                                                    <span className="rounded-full bg-cyan px-1.5 py-0.5 text-[10px] font-black text-navy">
+                                                    <span className="rounded-full bg-blue px-1.5 py-0.5 text-[10px] font-semibold text-white">
                                                         {count}
                                                     </span>
                                                 ) : null}
@@ -212,7 +244,7 @@ export default function AdminDashboardPage() {
                                                 {item.description}
                                             </span>
                                         </span>
-                                        <LuArrowRight className="mt-1 shrink-0 text-slate-gray opacity-0 transition group-hover:opacity-100"/>
+                                        <LuArrowRight className="mt-1 shrink-0 text-sm text-slate-gray opacity-0 transition group-hover:opacity-100"/>
                                     </Link>
                                 );
                             })}
@@ -223,10 +255,8 @@ export default function AdminDashboardPage() {
 
             {/* Admin APIs that exist but have no dashboard page yet. Kept visible
                 so the gap is tracked rather than silently forgotten. */}
-            <section className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-alice-blue/40 p-5">
-                <h2 className="text-[11px] font-medium uppercase tracking-[0.2em] text-gray-400">
-                    Not in the dashboard yet
-                </h2>
+            <section className="mt-8 rounded-xl border border-dashed border-line bg-alice-blue/40 p-5">
+                <h2 className="text-sm font-semibold text-navy">Not in the dashboard yet</h2>
                 <p className="mt-1 text-xs text-slate-gray">
                     These backends are live and admin-only, but still have no screen here.
                 </p>
@@ -234,7 +264,7 @@ export default function AdminDashboardPage() {
                     {PENDING_ADMIN_AREAS.map((a) => (
                         <li
                             key={a}
-                            className="rounded-xl border border-gray-100 bg-white px-3.5 py-2.5 text-sm text-slate-gray"
+                            className="rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-slate-gray"
                         >
                             {a}
                         </li>

@@ -88,7 +88,7 @@ export default function OrdersPage() {
                             <span className="text-sm">Loading your orders…</span>
                         </div>
                     ) : error ? (
-                        <div role="alert" className="rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center">
+                        <div role="alert" className="rounded-2xl bg-red-50 px-6 py-10 text-center shadow-sm">
                             <p className="text-sm font-semibold text-red-700">{error}</p>
                             <button
                                 type="button"
@@ -99,7 +99,7 @@ export default function OrdersPage() {
                             </button>
                         </div>
                     ) : orders.length === 0 ? (
-                        <div className="rounded-3xl border border-dashed border-line bg-alice-blue/40 px-6 py-16 text-center">
+                        <div className="rounded-3xl bg-alice-blue/40 px-6 py-16 text-center">
                             <span className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-white text-navy shadow-sm">
                                 <LuReceiptText className="text-2xl" />
                             </span>
@@ -122,7 +122,7 @@ export default function OrdersPage() {
                                     <Link
                                         key={order._id}
                                         href={`/store/orders/${order._id}`}
-                                        className="group flex flex-wrap items-center gap-4 rounded-2xl border border-line bg-white p-4 transition-colors hover:border-blue/40 sm:flex-nowrap sm:p-5"
+                                        className="group flex flex-wrap items-center gap-4 rounded-2xl bg-white p-4 shadow-[0_6px_22px_rgba(11,25,44,0.10)] transition-shadow hover:shadow-[0_10px_28px_rgba(11,25,44,0.12)] sm:flex-nowrap sm:p-5"
                                     >
                                         <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-alice-blue text-navy">
                                             <LuPackage className="text-xl" />

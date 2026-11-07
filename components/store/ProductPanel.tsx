@@ -38,9 +38,9 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
               type="button"
               onClick={() => setActive(src)}
               aria-label={`View image ${i + 1} of ${item.name}`}
-              className={`w-20 h-11 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden border-2 transition-colors ${
-                active === src ? "border-blue" : "border-gray-200 hover:border-blue/60"
-              } bg-alice-blue`}
+              className={`w-20 h-11 md:w-full md:size-auto md:flex-1 md:min-h-0 shrink-0 md:shrink rounded-lg overflow-hidden bg-alice-blue transition-shadow ${
+                active === src ? "ring-2 ring-blue" : "hover:ring-2 hover:ring-blue/30"
+              }`}
             >
               <Image src={src} alt={`${item.name} — view ${i + 1}`} width={160} height={88} className="w-full h-full object-cover" />
             </button>
@@ -101,10 +101,10 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
                   type="button"
                   onClick={() => setSize(s)}
                   aria-pressed={size === s}
-                  className={`min-w-12 px-3 py-2.5 rounded-lg border font-semibold text-sm transition-colors ${
+                  className={`min-w-12 px-3 py-2.5 rounded-lg font-semibold text-sm transition-colors ${
                     size === s
-                      ? "bg-navy text-white border-navy"
-                      : "border-gray-300 text-navy hover:border-navy hover:bg-alice-blue"
+                      ? "bg-navy text-white"
+                      : "bg-alice-blue text-navy hover:bg-blue-soft"
                   }`}
                 >
                   {s}
@@ -116,7 +116,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
 
         <div className="mt-6">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-slate-gray mb-2">Quantity</p>
-          <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden w-fit">
+          <div className="flex items-center rounded-lg bg-alice-blue overflow-hidden w-fit">
             <button
               type="button"
               onClick={() => setQty((q) => Math.max(1, q - 1))}
@@ -163,7 +163,7 @@ export default function ProductPanel({ item }: { item: StoreItem }) {
           </button>
           <Link
             href="/store/cart"
-            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-bold border-2 border-navy text-navy hover:bg-navy hover:text-white transition-colors"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg font-bold bg-blue-soft text-navy hover:bg-navy hover:text-white transition-colors"
           >
             View cart{count > 0 ? ` (${count})` : ""} <LuArrowRight className="text-base" />
           </Link>

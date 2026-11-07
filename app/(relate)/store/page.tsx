@@ -12,7 +12,9 @@ import {
     LuCircleAlert,
     LuReceiptText,
     LuSearch,
+    LuShieldCheck,
     LuShoppingBag,
+    LuTruck,
     LuX,
 } from "react-icons/lu"
 import Navbar from "@/components/Navbar"
@@ -38,7 +40,7 @@ export function StoreCard({item}: {item: StoreItem}) {
     }
 
     return (
-        <div className={"group flex flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-sm hover-lift"}>
+        <div className={"group flex flex-col overflow-hidden rounded-2xl bg-white shadow-[0_6px_22px_rgba(11,25,44,0.10)] hover-lift"}>
             <Link
                 href={`/store/${item.id}`}
                 className={"relative block aspect-square overflow-hidden bg-alice-blue"}
@@ -57,7 +59,7 @@ export function StoreCard({item}: {item: StoreItem}) {
                     </div>
                 )}
                 {onSale ? (
-                    <span className={"absolute left-3 top-3 rounded-full bg-blue px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-white shadow-sm"}>
+                    <span className={"absolute left-3 top-3 rounded bg-blue px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-white shadow-sm"}>
                         Sale
                     </span>
                 ) : null}
@@ -65,7 +67,7 @@ export function StoreCard({item}: {item: StoreItem}) {
 
             <div className={"flex flex-1 flex-col p-3.5 sm:p-4"}>
                 <div className={"flex items-start justify-between gap-2"}>
-                    <p className={"text-[10px] font-bold uppercase tracking-[0.16em] text-blue"}>{item.category}</p>
+                    <p className={"text-[10px] font-medium uppercase tracking-[0.14em] text-blue"}>{item.category}</p>
                     {item.rating ? (
                         <div className={"flex items-center gap-0.5 text-amber-500"} aria-label={ratingLabel}>
                             {Array.from({length: 5}, (_, i) => (
@@ -78,7 +80,7 @@ export function StoreCard({item}: {item: StoreItem}) {
 
                 <Link
                     href={`/store/${item.id}`}
-                    className={"mt-1 line-clamp-2 text-[15px] font-bold leading-snug text-ink transition-colors hover:text-blue sm:text-base"}
+                    className={"mt-1 line-clamp-2 text-[15px] font-medium leading-snug text-ink transition-colors hover:text-blue sm:text-base"}
                 >
                     {item.name}
                 </Link>
@@ -88,7 +90,7 @@ export function StoreCard({item}: {item: StoreItem}) {
 
                 <div className={"mt-auto flex items-end justify-between gap-2 pt-4"}>
                     <div>
-                        <p className={"text-lg font-extrabold tracking-tight text-navy sm:text-xl"}>{formatPrice(price)}</p>
+                        <p className={"text-lg font-semibold tracking-tight text-navy sm:text-xl"}>{formatPrice(price)}</p>
                         {onSale ? (
                             <p className={"text-[11px] font-medium text-slate-gray line-through"}>{formatPrice(item.price)}</p>
                         ) : null}
@@ -144,160 +146,109 @@ function HeroSpotlight({item, loading}: {item: StoreItem | null; loading: boolea
 
     return (
         <div
+            className="flex h-full flex-col bg-white"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
         >
-            <div className="relative">
+            <div className="relative aspect-[4/3] w-full overflow-hidden bg-white lg:aspect-auto lg:min-h-[300px] lg:flex-1">
                 {loading ? (
-                    <div
-                        className="aspect-[4/3] animate-pulse rounded-[1.75rem] bg-alice-blue ring-1 ring-line md:aspect-[4/5]"
-                        aria-hidden
-                    />
+                    <div className="absolute inset-0 animate-pulse bg-alice-blue" aria-hidden />
                 ) : item && slides.length > 0 ? (
-                    <div className="group relative aspect-[4/3] overflow-hidden rounded-[1.75rem] bg-white shadow-[0_28px_70px_rgba(11,25,44,0.18)] ring-1 ring-line md:aspect-[4/5]">
+                    <>
                         {slides.map((src, i) => (
                             <Image
                                 key={src}
                                 src={src}
                                 alt={`${item.name} — shot ${i + 1}`}
-                                width={800}
-                                height={1000}
+                                width={900}
+                                height={760}
                                 priority={i === 0}
-                                className={`absolute inset-0 size-full object-cover transition-all duration-1000 ease-in-out ${
-                                    i === idx ? "scale-100 opacity-100" : "scale-105 opacity-0"
+                                className={`absolute inset-0 size-full object-contain transition-opacity duration-700 ${
+                                    i === idx ? "opacity-100" : "opacity-0"
                                 }`}
                             />
                         ))}
 
-                        <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-3.5">
-                            <span className="rounded-full bg-white/90 px-3 py-1 text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy shadow-sm backdrop-blur">
-                                Featured drop
+                        {discount > 0 ? (
+                            <span className="absolute left-3 top-3 rounded bg-blue px-2 py-1 text-[11px] font-semibold text-white shadow-sm">
+                                {discount}% off
                             </span>
-                            {discount > 0 ? (
-                                <span className="rounded-full bg-navy px-2.5 py-1 text-[10px] font-extrabold text-white shadow-sm">
-                                    −{discount}%
-                                </span>
-                            ) : null}
-                        </div>
+                        ) : null}
 
                         {many ? (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={() => go(-1)}
-                                    aria-label="Previous product image"
-                                    className="absolute left-3 top-1/2 hidden size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-navy opacity-0 shadow-md backdrop-blur transition hover:bg-white group-hover:opacity-100 md:grid"
-                                >
-                                    <LuChevronLeft aria-hidden />
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => go(1)}
-                                    aria-label="Next product image"
-                                    className="absolute right-3 top-1/2 hidden size-9 -translate-y-1/2 place-items-center rounded-full bg-white/85 text-navy opacity-0 shadow-md backdrop-blur transition hover:bg-white group-hover:opacity-100 md:grid"
-                                >
-                                    <LuChevronRight aria-hidden />
-                                </button>
-                            </>
+                            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3">
+                                <div className="flex items-center gap-1.5 rounded-full bg-navy/60 px-2.5 py-1.5 backdrop-blur">
+                                    {slides.map((_, i) => (
+                                        <button
+                                            key={i}
+                                            type="button"
+                                            onClick={() => setIdx(i)}
+                                            aria-label={`Show shot ${i + 1} of ${item.name}`}
+                                            className="grid place-items-center"
+                                        >
+                                            <span
+                                                className={`h-1.5 rounded-full transition-all duration-300 ${
+                                                    i === idx ? "w-4 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80"
+                                                }`}
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <button
+                                        type="button"
+                                        onClick={() => go(-1)}
+                                        aria-label="Previous product image"
+                                        className="grid size-8 place-items-center rounded-full bg-white/90 text-navy shadow-sm backdrop-blur transition hover:bg-white"
+                                    >
+                                        <LuChevronLeft aria-hidden />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => go(1)}
+                                        aria-label="Next product image"
+                                        className="grid size-8 place-items-center rounded-full bg-white/90 text-navy shadow-sm backdrop-blur transition hover:bg-white"
+                                    >
+                                        <LuChevronRight aria-hidden />
+                                    </button>
+                                </div>
+                            </div>
                         ) : null}
-                    </div>
+                    </>
                 ) : (
-                    <div className="grid aspect-[4/3] place-items-center rounded-[1.75rem] bg-gradient-to-br from-alice-blue to-blue-soft/70 p-8 text-center ring-1 ring-line md:aspect-[4/5]">
+                    <div className="grid h-full place-items-center bg-gradient-to-br from-alice-blue to-blue-soft/70 p-6 text-center">
                         <div>
-                            <LuShoppingBag className="mx-auto text-5xl text-blue/40" />
-                            <p className="mt-4 text-sm font-semibold text-navy">New gear landing soon</p>
+                            <LuShoppingBag className="mx-auto text-4xl text-blue/40" />
+                            <p className="mt-3 text-sm font-medium text-navy">New gear landing soon</p>
                             <p className="mt-1 text-xs text-slate-gray">Check back for the next Relate World drop.</p>
                         </div>
                     </div>
                 )}
-
-                <div className="relative z-10 mx-3 -mt-12 rounded-2xl border border-line bg-white/95 p-3.5 shadow-[0_18px_40px_rgba(11,25,44,0.16)] backdrop-blur sm:mx-5">
-                    <div className="flex items-center gap-3">
-                        <div className="min-w-0 flex-1">
-                            <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-blue">
-                                {item?.category ?? "Official gear"}
-                            </p>
-                            <p className="mt-0.5 truncate text-sm font-extrabold text-navy">
-                                {loading ? "Loading featured product…" : item ? item.name : "Relate World Store"}
-                            </p>
-                            {item && !loading ? (
-                                <div className="mt-0.5 flex items-baseline gap-1.5">
-                                    <span className="text-sm font-extrabold text-navy">{formatPrice(price)}</span>
-                                    {onSale ? (
-                                        <span className="text-[11px] font-medium text-slate-gray line-through">
-                                            {formatPrice(item.price)}
-                                        </span>
-                                    ) : null}
-                                    {item.rating ? (
-                                        <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-semibold text-slate-gray">
-                                            <Star filled /> {item.rating}
-                                        </span>
-                                    ) : null}
-                                </div>
-                            ) : (
-                                <p className="mt-0.5 text-xs text-slate-gray">
-                                    {loading ? "Fetching the latest drop" : "Browse the collection"}
-                                </p>
-                            )}
-                        </div>
-                        <Link
-                            href={href}
-                            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full bg-navy px-5 text-sm font-bold text-white transition-colors hover:bg-blue"
-                        >
-                            Shop now <LuArrowRight className="text-sm" />
-                        </Link>
-                    </div>
-                </div>
             </div>
 
-            <div className="mt-3 flex items-center justify-between gap-3 px-2">
-                {many ? (
-                    <div className="flex items-center gap-1">
-                        {slides.map((_, i) => (
-                            <button
-                                key={i}
-                                type="button"
-                                onClick={() => setIdx(i)}
-                                aria-label={`Show shot ${i + 1} of ${item!.name}`}
-                                className="grid size-8 place-items-center rounded-full"
-                            >
-                                <span
-                                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                                        i === idx ? "w-5 bg-navy" : "w-1.5 bg-navy/20 hover:bg-navy/40"
-                                    }`}
-                                />
-                            </button>
-                        ))}
-                    </div>
-                ) : (
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-gray">
-                        Official merchandise
-                    </span>
-                )}
-
-                {many ? (
-                    <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-semibold tracking-[0.18em] text-slate-gray">
-                            {String(idx + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
-                        </span>
-                        <button
-                            type="button"
-                            onClick={() => go(-1)}
-                            aria-label="Previous product image"
-                            className="grid size-9 place-items-center rounded-full border border-line bg-white text-navy transition hover:border-navy"
-                        >
-                            <LuChevronLeft aria-hidden />
-                        </button>
-                        <button
-                            type="button"
-                            onClick={() => go(1)}
-                            aria-label="Next product image"
-                            className="grid size-9 place-items-center rounded-full border border-line bg-white text-navy transition hover:border-navy"
-                        >
-                            <LuChevronRight aria-hidden />
-                        </button>
-                    </div>
-                ) : null}
+            <div className="flex items-center gap-3 px-4 py-3">
+                <div className="min-w-0 flex-1">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-blue">
+                        {item?.category ?? "Official gear"}
+                    </p>
+                    <p className="truncate text-sm font-semibold text-navy">
+                        {loading ? "Loading featured product…" : item ? item.name : "Relate World Store"}
+                    </p>
+                </div>
+                <div className="shrink-0 text-right">
+                    <p className="text-sm font-semibold text-navy">
+                        {loading || !item ? "—" : formatPrice(price)}
+                    </p>
+                    {item && onSale ? (
+                        <p className="text-[11px] text-slate-gray line-through">{formatPrice(item.price)}</p>
+                    ) : null}
+                </div>
+                <Link
+                    href={href}
+                    className="inline-flex h-9 shrink-0 items-center gap-1 rounded-lg bg-navy px-3.5 text-xs font-semibold text-white transition-colors hover:bg-blue"
+                >
+                    Shop <LuArrowRight className="text-sm" />
+                </Link>
             </div>
         </div>
     )
@@ -358,76 +309,88 @@ export default function StorePage() {
     return (
         <>
             <Navbar />
-            <header className="bg-white px-4 pb-7 pt-5 md:pt-7">
-                <div className="mx-auto max-w-6xl">
-                    <section className="relative overflow-hidden rounded-[2rem] border border-line bg-gradient-to-br from-alice-blue via-white to-blue-soft/60">
-                        <div className="pointer-events-none absolute -right-20 -top-24 size-72 rounded-full bg-sky/15 blur-3xl" />
-                        <div className="pointer-events-none absolute -bottom-28 left-1/4 size-72 rounded-full bg-blue/10 blur-3xl" />
 
-                        <div className="relative grid items-center gap-8 p-5 sm:p-8 md:grid-cols-[1.02fr_0.98fr] md:gap-10 md:p-10 lg:p-12">
-                            <div>
+            <a href="#stock" className="block bg-navy text-white transition hover:bg-navy-soft">
+                <span className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-4 py-2 text-center text-[11px] font-medium tracking-wide">
+                    {topSale > 0
+                        ? `Season sale — up to ${topSale}% off official gear`
+                        : "Official Relate World store — every purchase funds Relate clubs"}
+                    <LuArrowRight className="text-sm" aria-hidden />
+                </span>
+            </a>
+
+            <header className="bg-white px-4 pb-8 pt-4 sm:pt-5">
+                <div className="mx-auto max-w-6xl">
+                    <section className="overflow-hidden rounded-xl bg-white">
+                        <div className="grid lg:grid-cols-[1.04fr_0.96fr]">
+                            <div className="flex flex-col justify-center px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-12">
                                 <div className="flex flex-wrap items-center gap-2">
-                                    <span className="inline-flex items-center gap-2 rounded-full border border-navy/10 bg-white px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-navy shadow-sm">
+                                    <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue">
                                         <span className="size-1.5 rounded-full bg-blue" />
-                                        Official Relate World Store
+                                        Official store
                                     </span>
                                     {topSale > 0 ? (
-                                        <a
-                                            href="#stock"
-                                            className="inline-flex items-center gap-1 rounded-full bg-amber-400 px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.14em] text-navy transition hover:bg-amber-300"
-                                        >
-                                            Sale up to {topSale}% off <LuArrowRight className="text-xs" />
-                                        </a>
+                                        <span className="rounded bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-900">
+                                            Up to {topSale}% off
+                                        </span>
                                     ) : null}
                                 </div>
 
-                                <h1 className="mt-5 text-[2.4rem] font-extrabold leading-[0.95] tracking-[-0.035em] text-navy sm:text-5xl lg:text-[3.4rem]">
-                                    Connecting Hearts <span className="text-blue">Across Generations</span>
+                                <h1 className="mt-3 text-[1.85rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy sm:text-[2.25rem] lg:text-[2.5rem]">
+                                    Connecting hearts <span className="text-blue">across generations.</span>
                                 </h1>
-                                <p className="mt-4 max-w-md text-sm leading-relaxed text-slate-gray md:text-[15px]">
-                                    Apparel, accessories and home &amp; study pieces made to carry the Relate story. Add to cart, pay by EFT and track every order — purchases fund Relate clubs.
+                                <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-gray">
+                                    Apparel, accessories and home &amp; study pieces made to carry the Relate story. Checkout by EFT, track every order, and know your purchase funds Relate clubs.
                                 </p>
 
-                                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                                <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
                                     <a
                                         href="#stock"
-                                        className="inline-flex items-center justify-center gap-2 rounded-full bg-navy px-6 py-3.5 text-sm font-bold text-white shadow-[0_12px_28px_rgba(11,25,44,0.25)] transition hover:bg-blue"
+                                        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-navy px-5 text-sm font-semibold text-white transition hover:bg-blue"
                                     >
-                                        Shop the collection <LuArrowRight />
+                                        Shop the collection <LuArrowRight className="text-base" />
                                     </a>
                                     <Link
                                         href="/store/orders"
-                                        className="inline-flex items-center justify-center gap-2 rounded-full border border-line bg-white px-6 py-3.5 text-sm font-bold text-navy transition hover:border-navy/30 hover:bg-alice-blue"
+                                        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-alice-blue px-5 text-sm font-semibold text-navy transition hover:bg-blue-soft hover:text-blue"
                                     >
-                                        <LuReceiptText className="text-base text-blue" /> My orders
+                                        <LuReceiptText className="text-base" /> My orders
                                     </Link>
                                 </div>
-
-                                <ul className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-line/80 pt-5 text-[11px] font-semibold text-slate-gray">
-                                    {["Secure EFT checkout", "Order tracking", "Funds Relate clubs"].map((t) => (
-                                        <li key={t} className="inline-flex items-center gap-1.5">
-                                            <LuBadgeCheck className="text-blue" /> {t}
-                                        </li>
-                                    ))}
-                                </ul>
                             </div>
 
-                            <div className="mx-auto w-full max-w-md md:ml-auto">
+                            <div>
                                 <HeroSpotlight item={featured} loading={loading} />
                             </div>
                         </div>
                     </section>
 
-                    <div className="mb-3 mt-6 flex items-end justify-between">
-                        <h2 className="text-[11px] font-bold uppercase tracking-[0.18em] text-slate-gray">
-                            Shop by category
-                        </h2>
-                        <a href="#stock" className="text-xs font-semibold text-blue transition hover:text-navy">
+                    <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                        {[
+                            {icon: LuShieldCheck, title: "Secure EFT checkout", sub: "Pay directly to Relate World"},
+                            {icon: LuTruck, title: "Track every order", sub: "From payment to delivery"},
+                            {icon: LuBadgeCheck, title: "Funds Relate clubs", sub: "Every purchase gives back"},
+                        ].map(({icon: Icon, title, sub}) => (
+                            <div key={title} className="flex items-center gap-3 rounded-lg bg-white px-4 py-3 shadow-[0_6px_22px_rgba(11,25,44,0.08)]">
+                                <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-alice-blue text-blue">
+                                    <Icon className="text-lg" aria-hidden />
+                                </span>
+                                <span className="min-w-0">
+                                    <span className="block text-xs font-semibold text-navy">{title}</span>
+                                    <span className="block text-[11px] text-slate-gray">{sub}</span>
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="mb-3 mt-8 flex items-end justify-between">
+                        <h2 className="text-lg font-semibold tracking-tight text-navy">Shop by category</h2>
+                        <a href="#stock" className="text-xs font-medium text-blue transition hover:text-navy">
                             View all products
                         </a>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:grid-cols-4">
+                    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                         {STORE_CATEGORIES.map((c) => {
                             const active = category === c
                             const count = counts[c] ?? 0
@@ -438,34 +401,39 @@ export default function StorePage() {
                                     type="button"
                                     onClick={() => shopCategory(c)}
                                     aria-pressed={active}
-                                    className={`group relative h-32 overflow-hidden rounded-2xl text-left shadow-sm transition sm:h-36 ${
-                                        active ? "ring-2 ring-blue" : "ring-1 ring-line hover:shadow-md"
+                                    className={`group overflow-hidden rounded-xl text-left shadow-[0_6px_22px_rgba(11,25,44,0.08)] transition hover:shadow-[0_10px_28px_rgba(11,25,44,0.12)] ${
+                                        active ? "bg-blue-soft/50" : "bg-white"
                                     }`}
                                 >
-                                    {image ? (
-                                        <Image
-                                            src={image}
-                                            alt=""
-                                            fill
-                                            sizes="(min-width: 1024px) 25vw, 50vw"
-                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                    ) : (
-                                        <span className="absolute inset-0 bg-gradient-to-br from-navy via-navy-soft to-blue" />
-                                    )}
-                                    <span className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/30 to-transparent" />
-                                    <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3.5">
-                                        <span>
-                                            <span className="block text-sm font-extrabold text-white">
+                                    <span className="relative block aspect-[16/10] overflow-hidden bg-alice-blue">
+                                        {image ? (
+                                            <Image
+                                                src={image}
+                                                alt=""
+                                                fill
+                                                sizes="(min-width: 1024px) 25vw, 50vw"
+                                                className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                                            />
+                                        ) : (
+                                            <span className="grid size-full place-items-center bg-gradient-to-br from-alice-blue to-blue-soft">
+                                                <LuShoppingBag className="text-3xl text-blue/35" aria-hidden />
+                                            </span>
+                                        )}
+                                    </span>
+                                    <span className="flex items-center justify-between gap-2 px-3.5 py-2.5">
+                                        <span className="min-w-0">
+                                            <span className={`block truncate text-sm font-semibold ${active ? "text-blue" : "text-navy"}`}>
                                                 {c === "All" ? "All products" : c}
                                             </span>
-                                            <span className="mt-0.5 block text-[11px] font-medium text-white/70">
+                                            <span className="block text-[11px] text-slate-gray">
                                                 {loading ? "Loading…" : `${count} item${count === 1 ? "" : "s"}`}
                                             </span>
                                         </span>
-                                        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-white/15 text-white ring-1 ring-white/30 backdrop-blur transition group-hover:bg-white group-hover:text-navy">
-                                            <LuArrowRight className="text-sm" />
-                                        </span>
+                                        <LuArrowRight
+                                            className={`shrink-0 text-sm transition ${
+                                                active ? "text-blue" : "text-slate-gray group-hover:text-blue"
+                                            }`}
+                                        />
                                     </span>
                                 </button>
                             )
@@ -481,7 +449,7 @@ export default function StorePage() {
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search the store"
                                 type="search"
-                                className="h-12 w-full rounded-2xl border border-line bg-white pl-11 pr-11 text-sm text-ink outline-none transition focus:border-blue focus:ring-2 focus:ring-blue/15"
+                                className="h-12 w-full rounded-2xl bg-alice-blue pl-11 pr-11 text-sm text-ink shadow-[inset_0_1px_2px_rgba(11,25,44,0.04)] outline-none transition focus:bg-white focus:ring-2 focus:ring-blue/20"
                             />
                             {search ? (
                                 <button
@@ -503,7 +471,7 @@ export default function StorePage() {
                                     className={`min-h-11 rounded-full px-4 py-2.5 text-sm font-semibold transition ${
                                         category === c
                                             ? "bg-blue text-white shadow-sm"
-                                            : "border border-line bg-white text-slate-gray hover:border-blue/40 hover:text-navy"
+                                            : "bg-alice-blue text-slate-gray hover:bg-blue-soft hover:text-navy"
                                     }`}
                                 >
                                     {c}
@@ -517,10 +485,10 @@ export default function StorePage() {
             <section className={"flex-1 px-4 py-10"}>
                 <div className={"mx-auto max-w-6xl"}>
                     <div className={"mb-5 flex items-baseline justify-between gap-4"}>
-                        <h2 className={"text-lg font-extrabold tracking-tight text-navy md:text-xl"}>
+                        <h2 className={"text-lg font-semibold tracking-tight text-navy md:text-xl"}>
                             {search.trim() ? `Results for “${search.trim()}”` : category === "All" ? "All products" : category}
                         </h2>
-                        <span className={"rounded-full border border-line bg-white px-3 py-1 text-xs font-semibold text-slate-gray"}>
+                        <span className={"rounded-full bg-white px-3 py-1 text-xs font-semibold text-slate-gray shadow-[0_1px_4px_rgba(11,25,44,0.08)]"}>
                             {loading ? "…" : items.length}
                         </span>
                     </div>
@@ -528,7 +496,7 @@ export default function StorePage() {
                     {loading ? (
                         <div className={"grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4"} role={"status"} aria-label={"Loading the store"}>
                             {Array.from({length: 8}).map((_, i) => (
-                                <div key={i} className={"overflow-hidden rounded-2xl border border-line bg-white"}>
+                                <div key={i} className={"overflow-hidden rounded-2xl bg-white shadow-[0_6px_22px_rgba(11,25,44,0.10)]"}>
                                     <div className={"aspect-square animate-pulse bg-alice-blue"} />
                                     <div className={"space-y-2 p-4"}>
                                         <div className={"h-2.5 w-16 animate-pulse rounded bg-alice-blue"} />
@@ -540,7 +508,7 @@ export default function StorePage() {
                             ))}
                         </div>
                     ) : error ? (
-                        <div className={"rounded-2xl border border-red-200 bg-red-50 px-6 py-12 text-center"} role={"alert"}>
+                        <div className={"rounded-2xl bg-red-50 px-6 py-12 text-center shadow-sm"} role={"alert"}>
                             <LuCircleAlert className={"mx-auto mb-3 text-2xl text-red-500"} />
                             <p className={"mb-1 text-sm font-semibold text-red-700"}>We couldn&rsquo;t load the store.</p>
                             <p className={"mb-5 text-sm text-red-600"}>{error}</p>
@@ -551,13 +519,13 @@ export default function StorePage() {
                             </button>
                         </div>
                     ) : allItems.length === 0 ? (
-                        <div className={"rounded-2xl border border-dashed border-line bg-white py-16 text-center"}>
+                        <div className={"rounded-2xl bg-white py-16 text-center shadow-[0_6px_22px_rgba(11,25,44,0.10)]"}>
                             <LuShoppingBag className={"mx-auto mb-3 text-3xl text-slate-gray"} />
                             <p className={"mb-1 text-base font-semibold text-navy"}>Nothing in stock right now</p>
                             <p className={"text-sm text-slate-gray"}>New Relate gear lands here soon — check back shortly.</p>
                         </div>
                     ) : items.length === 0 ? (
-                        <div className={"rounded-2xl border border-dashed border-line bg-white py-12 text-center"}>
+                        <div className={"rounded-2xl bg-white py-12 text-center shadow-[0_6px_22px_rgba(11,25,44,0.10)]"}>
                             <p className={"text-sm text-slate-gray"}>
                                 {search.trim() ? `No products match “${search.trim()}”.` : `No products in ${category} yet.`}
                             </p>
@@ -578,7 +546,7 @@ export default function StorePage() {
                         </div>
                     )}
 
-                    <p className={"mt-8 flex items-start gap-2 rounded-2xl border border-line bg-white px-4 py-3 text-xs leading-relaxed text-slate-gray"}>
+                    <p className={"mt-8 flex items-start gap-2 rounded-2xl bg-white px-4 py-3 text-xs leading-relaxed text-slate-gray shadow-sm"}>
                         <LuBadgeCheck className={"mt-0.5 shrink-0 text-blue"} />
                         Pay by EFT after checkout — your order number and our banking details appear on the receipt, and every purchase funds Relate clubs and community programmes.
                     </p>

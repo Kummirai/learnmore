@@ -38,7 +38,7 @@ export default function CartPage() {
                     {!hydrated ? (
                         <div className="grid gap-3" role="status" aria-label="Loading your cart">
                             {Array.from({length: 2}).map((_, i) => (
-                                <div key={i} className="flex items-center gap-4 rounded-2xl border border-line p-4">
+                                <div key={i} className="flex items-center gap-4 rounded-2xl bg-white p-4 shadow-[0_6px_22px_rgba(11,25,44,0.10)]">
                                     <div className="size-20 animate-pulse rounded-xl bg-alice-blue" />
                                     <div className="flex-1 space-y-2">
                                         <div className="h-3.5 w-2/5 animate-pulse rounded bg-alice-blue" />
@@ -48,7 +48,7 @@ export default function CartPage() {
                             ))}
                         </div>
                     ) : lines.length === 0 ? (
-                        <div className="rounded-3xl border border-dashed border-line bg-alice-blue/40 px-6 py-16 text-center">
+                        <div className="rounded-3xl bg-alice-blue/40 px-6 py-16 text-center">
                             <span className="mx-auto mb-4 grid size-16 place-items-center rounded-full bg-white text-navy shadow-sm">
                                 <LuShoppingBag className="text-2xl" />
                             </span>
@@ -69,7 +69,7 @@ export default function CartPage() {
                                 {lines.map((line) => (
                                     <div
                                         key={`${line.itemId}:${line.size ?? ""}`}
-                                        className="flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-white p-3 sm:flex-nowrap sm:gap-4 sm:p-4"
+                                        className="flex flex-wrap items-center gap-3 rounded-2xl bg-white p-3 shadow-[0_6px_22px_rgba(11,25,44,0.10)] sm:flex-nowrap sm:gap-4 sm:p-4"
                                     >
                                         <Link
                                             href={`/store/${line.itemId}`}
@@ -104,7 +104,7 @@ export default function CartPage() {
                                             <p className="mt-1 text-sm font-bold text-navy">{formatPrice(line.price * line.qty)}</p>
                                         </div>
 
-                                        <div className="flex items-center overflow-hidden rounded-lg border border-line">
+                                        <div className="flex items-center overflow-hidden rounded-lg bg-alice-blue">
                                             <button
                                                 type="button"
                                                 onClick={() => setQty(line.itemId, line.size, line.qty - 1)}
