@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FaCheck, FaCamera, FaExclamationTriangle } from "react-icons/fa";
 import {
   LuArrowRight,
+  LuIdCard,
   LuLoaderCircle,
   LuRefreshCw,
   LuShieldAlert,
@@ -129,7 +130,11 @@ export default function PlayerRegistrationForm({
       .then(([membership, registration]) => {
         if (cancelled) return;
         if (membership) {
-          setHasMembership(true);
+          // Mirrors the API's rule: a membership without a reference (or one
+          // that graduated) cannot hold a team seat.
+          setHasMembership(
+            Boolean(membership.reference) && membership.status !== "graduated",
+          );
           setName((v) => v || membership.name || "");
           setAge((v) => v || (membership.age != null ? String(membership.age) : ""));
           setGender((v) => v || membership.gender || "");
@@ -431,6 +436,67 @@ export default function PlayerRegistrationForm({
     );
   }
 
+  if (!hasMembership) {
+    const clubName = club?.name ?? "a Relate club";
+    return (
+      <section className="flex-1 bg-white px-4 py-16">
+        <div className="mx-auto max-w-xl text-center">
+          <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-gold-100">
+            <LuIdCard className="text-3xl text-gold-700" />
+          </div>
+          <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-blue">
+            Relate · {team.sport} registration
+          </p>
+          <h1 className="mb-3 text-3xl font-black tracking-tight text-navy">
+            Join a club first
+          </h1>
+          <p className="mb-6 text-sm text-slate-gray">
+            Team registration is for Relate club members. Joining{" "}
+            <strong className="text-navy">{clubName}</strong> gives you a
+            Membership ID and your age-based club home — then come back and claim
+            your place on {team.name}.
+          </p>
+          <div className="mx-auto mb-6 max-w-md rounded-2xl bg-alice-blue p-5 text-left shadow-[0_6px_22px_rgba(11,25,44,0.08)]">
+            <ol className="space-y-3 text-sm text-slate-gray">
+              <li className="flex items-start gap-3">
+                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-navy text-[11px] font-bold text-white">
+                  1
+                </span>
+                <span>
+                  <strong className="text-navy">Join {clubName}</strong> — a few
+                  minutes gives you your Membership ID.
+                </span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-blue-soft text-[11px] font-bold text-blue">
+                  2
+                </span>
+                <span>
+                  <strong className="text-navy">Register for {team.name}</strong>{" "}
+                  — pick a position and add your photo.
+                </span>
+              </li>
+            </ol>
+          </div>
+          <div className="flex flex-col justify-center gap-3 sm:flex-row">
+            <Link
+              href={`/join?club=${encodeURIComponent(team.clubSlug)}`}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+            >
+              Join {clubName} <LuArrowRight />
+            </Link>
+            <Link
+              href={`/sports/${team.id}`}
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-alice-blue px-6 text-sm font-bold text-navy transition-colors hover:bg-blue-soft"
+            >
+              Back to {team.name}
+            </Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="flex-1 px-4 py-12 bg-white">
       <div className="max-w-3xl mx-auto">
@@ -448,22 +514,6 @@ export default function PlayerRegistrationForm({
             players (starter plus cover).
           </p>
         </div>
-
-        {!hasMembership && club && (
-          <div className="mb-6 flex flex-col sm:flex-row sm:items-center gap-3 rounded-xl border border-gold-200 bg-gold-50 px-4 py-3 text-sm text-gold-800">
-            <span className="flex-1">
-              Not a Relate member yet? Joining{" "}
-              <strong>{club.name}</strong> gives you a Membership ID and your
-              age-based club home — you can do both.
-            </span>
-            <Link
-              href={`/join?club=${encodeURIComponent(club.slug)}`}
-              className="shrink-0 inline-flex items-center justify-center gap-1.5 bg-navy text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-navy/90 transition-colors"
-            >
-              Join {club.name} <LuArrowRight className="text-[10px]" />
-            </Link>
-          </div>
-        )}
 
         <form onSubmit={submit} className="space-y-6">
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">

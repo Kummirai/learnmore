@@ -28,7 +28,7 @@ const SPORT_SLIDES: HeroSlide[] = [
       "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
     accent: "#13c5dd",
     cta: { href: "/sports#football", label: "Football teams" },
-    secondary: { href: "/join", label: "Join a team" },
+    secondary: { href: "/join-team", label: "Join a team" },
   },
   {
     title: "Netball teams",
@@ -39,7 +39,7 @@ const SPORT_SLIDES: HeroSlide[] = [
       "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=80&auto=format",
     accent: "#4caf50",
     cta: { href: "/sports#netball", label: "Netball teams" },
-    secondary: { href: "/join", label: "Join a team" },
+    secondary: { href: "/join-team", label: "Join a team" },
   },
   {
     title: "Volleyball teams",
@@ -50,7 +50,7 @@ const SPORT_SLIDES: HeroSlide[] = [
       "https://images.unsplash.com/photo-1552879674-8b1bb7e2c6c4?w=1600&q=80&auto=format",
     accent: "#f97316",
     cta: { href: "/sports#volleyball", label: "Volleyball teams" },
-    secondary: { href: "/join", label: "Join a team" },
+    secondary: { href: "/join-team", label: "Join a team" },
   },
 ];
 
@@ -192,7 +192,7 @@ export default async function SportsPage() {
               </p>
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <JoinCta
-                  href="/join"
+                  href="/join-team"
                   className="inline-flex items-center gap-2 bg-cyan text-navy px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-cyan-light transition-colors"
                 >
                   Register to join <LuArrowRight />
