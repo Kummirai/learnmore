@@ -24,8 +24,7 @@ const SPORT_SLIDES: HeroSlide[] = [
     shortTitle: "Football",
     description:
       "Five teams from Sprout Kids to Pulse — train midweek, play at the weekend.",
-    image:
-      "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?w=1600&q=80&auto=format",
+    image: "/images/sports/hero/football.jpg",
     accent: "#13c5dd",
     cta: { href: "/sports#football", label: "Football teams" },
     secondary: { href: "/join-team", label: "Join a team" },
@@ -35,8 +34,7 @@ const SPORT_SLIDES: HeroSlide[] = [
     shortTitle: "Netball",
     description:
       "Saturday league games and summer tournaments across every club.",
-    image:
-      "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=80&auto=format",
+    image: "/images/sports/hero/netball.jpg",
     accent: "#4caf50",
     cta: { href: "/sports#netball", label: "Netball teams" },
     secondary: { href: "/join-team", label: "Join a team" },
@@ -46,8 +44,7 @@ const SPORT_SLIDES: HeroSlide[] = [
     shortTitle: "Volleyball",
     description:
       "Friday court sessions and weekend tournaments — all levels welcome.",
-    image:
-      "https://images.unsplash.com/photo-1552879674-8b1bb7e2c6c4?w=1600&q=80&auto=format",
+    image: "/images/sports/hero/volleyball.jpg",
     accent: "#f97316",
     cta: { href: "/sports#volleyball", label: "Volleyball teams" },
     secondary: { href: "/join-team", label: "Join a team" },

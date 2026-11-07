@@ -82,6 +82,13 @@ const ROLE_NOTES: Record<string, string> = {
   Libero: "Defensive specialist — digs and passes, never leaves the back court.",
 };
 
+/** Sport-matched backdrop shared across the sports pages. */
+const SPORT_IMAGES: Record<string, string> = {
+  Football: "/images/sports/hero/football.jpg",
+  Netball: "/images/sports/hero/netball.jpg",
+  Volleyball: "/images/sports/hero/volleyball.jpg",
+};
+
 export async function generateMetadata({
   params,
 }: {
@@ -201,6 +208,21 @@ export default async function PlayerPage({
       >
         <Navbar overlay />
 
+        {SPORT_IMAGES[team.sport] && (
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-cover bg-center opacity-45"
+            style={{ backgroundImage: `url(${SPORT_IMAGES[team.sport]})` }}
+          />
+        )}
+        <div
+          aria-hidden
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(115deg, rgba(7,16,29,0.92) 0%, ${hexA(club?.colorDark ?? "#0B192C", 0.82)} 52%, ${hexA(club?.color ?? "#13c5dd", 0.45)} 100%)`,
+          }}
+        />
+
         <div
           className="absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"
           style={{ backgroundColor: club?.color ?? "#13c5dd" }}
@@ -225,11 +247,22 @@ export default async function PlayerPage({
                   className="size-44 sm:size-52 md:size-60 rounded-2xl object-cover shadow-2xl ring-4 ring-white/20"
                 />
               ) : (
-                <div
-                  className="size-44 sm:size-52 md:size-60 rounded-2xl shadow-2xl ring-4 ring-white/20 flex items-center justify-center text-6xl md:text-7xl font-black text-white uppercase"
-                  style={{ background: "linear-gradient(135deg, #0B192C, #13c5dd)" }}
-                >
-                  {open!.badge}
+                <div className="relative size-44 sm:size-52 md:size-60 overflow-hidden rounded-2xl shadow-2xl ring-4 ring-white/20 flex items-center justify-center">
+                  <span
+                    aria-hidden
+                    className="absolute inset-0"
+                    style={{
+                      background: `linear-gradient(140deg, #07101D 0%, ${hexA(club?.colorDark ?? "#0B192C", 0.9)} 55%, ${hexA(club?.color ?? "#13c5dd", 0.75)} 100%)`,
+                    }}
+                  />
+                  <span className="relative text-5xl sm:text-6xl font-black uppercase tracking-wide text-white/90">
+                    {open!.badge}
+                  </span>
+                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-navy/95 via-navy/60 to-transparent px-3 pb-2.5 pt-10 text-center">
+                    <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-cyan">
+                      Open position
+                    </span>
+                  </span>
                 </div>
               )}
               <span className="absolute -bottom-2 -right-2 size-14 rounded-2xl bg-navy text-white text-lg font-black flex items-center justify-center ring-4 ring-white/30">

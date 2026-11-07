@@ -95,6 +95,13 @@ const initialsOf = (name: string) =>
 
 const WHATSAPP = "27782677436";
 
+/** Sport-matched backdrop shared with the sports hub carousel. */
+const SPORT_IMAGES: Record<string, string> = {
+  Football: "/images/sports/hero/football.jpg",
+  Netball: "/images/sports/hero/netball.jpg",
+  Volleyball: "/images/sports/hero/volleyball.jpg",
+};
+
 /**
  * One slot on the team sheet. Filled slots show the registrant; open ones keep
  * the generated placeholder (position name + badge) and link straight to the
@@ -190,6 +197,21 @@ export default async function TeamPage({
           }}
         >
           <Navbar overlay />
+
+          {SPORT_IMAGES[team.sport] && (
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-cover bg-center opacity-45"
+              style={{ backgroundImage: `url(${SPORT_IMAGES[team.sport]})` }}
+            />
+          )}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background: `linear-gradient(115deg, rgba(7,16,29,0.92) 0%, ${hexA(club?.colorDark ?? "#0B192C", 0.82)} 52%, ${hexA(club?.color ?? "#13c5dd", 0.45)} 100%)`,
+            }}
+          />
 
           <div className="absolute -top-32 -right-24 size-96 rounded-full blur-3xl opacity-30"
                style={{ backgroundColor: club?.color ?? "#13c5dd" }} />
