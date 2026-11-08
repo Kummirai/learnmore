@@ -6,7 +6,7 @@ import { LuHandHeart } from "react-icons/lu";
 export const metadata: Metadata = {
   title: "Our Team",
   description:
-    "Meet the Relate Presidency, club directors, sports coaches and the founding Career & Economic Pathways committee.",
+    "Meet the Relate Presidency, club directors and sports coaches who lead our clubs and programmes.",
   alternates: { canonical: "/team" },
 };
 
@@ -22,27 +22,16 @@ export default function TeamPage() {
           </h1>
           <p className={"text-gray-500 max-w-xl mx-auto"}>
             Relate is run by volunteers. These are the people leading the
-            Presidency, each club and every sports squad — and the founding
-            roles shaping our new Career &amp; Economic Pathways Department.
+            Presidency, each club and every sports squad.
           </p>
-          <div className={"mt-6 flex flex-wrap justify-center gap-3"}>
-            <Link
-              href={"/offices"}
-              className={
-                "btn-pill btn-brand"
-              }
-            >
-              <LuHandHeart /> Volunteer offices
-            </Link>
-            <Link
-              href={"/team#career-pathways"}
-              className={
-                "btn-pill border border-line bg-white text-navy hover:bg-alice-blue"
-              }
-            >
-              Founding roles
-            </Link>
-          </div>
+          <Link
+            href={"/offices"}
+            className={
+              "btn-pill btn-brand mt-6"
+            }
+          >
+            <LuHandHeart /> Volunteer offices
+          </Link>
         </div>
       </section>
 
