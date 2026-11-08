@@ -18,6 +18,9 @@ import {
     LuBriefcase,
     LuBuilding2,
     LuTrophy,
+    LuChartLine,
+    LuClipboardCheck,
+    LuWallet,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -48,6 +51,32 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Home",
                 icon: LuLayoutDashboard,
                 description: "Everything happening across Relate, in one place.",
+            },
+        ],
+    },
+    {
+        heading: "Performance",
+        items: [
+            {
+                href: "/admin/performance",
+                label: "Performance",
+                short: "Performance",
+                icon: LuChartLine,
+                description: "Coffer progress, income mix and seasonal scores in one view.",
+            },
+            {
+                href: "/admin/appraisals",
+                label: "Appraisals",
+                short: "Appraisals",
+                icon: LuClipboardCheck,
+                description: "Allocate seasonal appraisals, review submissions and publish scores.",
+            },
+            {
+                href: "/admin/financials",
+                label: "Financials",
+                short: "Financials",
+                icon: LuWallet,
+                description: "Compile and publish the monthly financial reports.",
             },
         ],
     },

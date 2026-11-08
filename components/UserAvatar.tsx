@@ -10,6 +10,9 @@ import {
     LuUser,
     LuLogIn,
     LuReceiptText,
+    LuChartLine,
+    LuClipboardCheck,
+    LuWallet,
 } from "react-icons/lu";
 import { useAuth } from "./AuthProvider";
 
@@ -96,6 +99,24 @@ export default function UserAvatar() {
                                 className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
                             >
                                 <LuReceiptText className="text-base" /> My orders
+                            </Link>
+                            <Link
+                                href="/performance"
+                                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
+                            >
+                                <LuChartLine className="text-base" /> Performance
+                            </Link>
+                            <Link
+                                href="/appraisals"
+                                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
+                            >
+                                <LuClipboardCheck className="text-base" /> Appraisals
+                            </Link>
+                            <Link
+                                href="/financials"
+                                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-alice-blue hover:text-[color:var(--club-accent-dark)] transition-colors"
+                            >
+                                <LuWallet className="text-base" /> Financials
                             </Link>
                             <Link
                                 href="/settings"
