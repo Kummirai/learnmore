@@ -21,6 +21,7 @@ import {
     LuChartLine,
     LuClipboardCheck,
     LuWallet,
+    LuGavel,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -77,6 +78,18 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Financials",
                 icon: LuWallet,
                 description: "Compile and publish the monthly financial reports.",
+            },
+        ],
+    },
+    {
+        heading: "Governance",
+        items: [
+            {
+                href: "/admin/board-governance",
+                label: "Board & Meetings",
+                short: "Board",
+                icon: LuGavel,
+                description: "Schedule board sittings, log minutes and track action items.",
             },
         ],
     },

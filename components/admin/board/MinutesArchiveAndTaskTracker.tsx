@@ -1,0 +1,247 @@
+"use client";
+
+import {useCallback, useEffect, useState} from "react";
+import {LuCheck, LuCircleCheck, LuClock3, LuFileText, LuSearch} from "react-icons/lu";
+import {inputCls} from "@/components/admin/ui";
+import {
+    boardApi,
+    shortDateLabel,
+    type BoardMinutes,
+    type TaskStatus,
+} from "@/lib/board";
+
+const FILTERS: {key: string; label: string}[] = [
+    {key: "all", label: "All minutes"},
+    {key: "pending", label: "Open actions"},
+    {key: "on-time", label: "Within 48h"},
+    {key: "late", label: "Late logs"},
+];
+
+const TASK_TONE: Record<TaskStatus, {bg: string; text: string; label: string}> = {
+    PENDING: {bg: "bg-amber-50", text: "text-amber-700", label: "Pending"},
+    IN_PROGRESS: {bg: "bg-sky-50", text: "text-sky-700", label: "In progress"},
+    DONE: {bg: "bg-emerald-50", text: "text-emerald-700", label: "Done"},
+};
+
+function nextStatus(status: TaskStatus): TaskStatus {
+    if (status === "PENDING") return "IN_PROGRESS";
+    if (status === "IN_PROGRESS") return "DONE";
+    return "PENDING";
+}
+
+export default function MinutesArchiveAndTaskTracker({
+    onDataChanged,
+}: {
+    onDataChanged?: () => void;
+}) {
+    const [search, setSearch] = useState("");
+    const [filter, setFilter] = useState("all");
+    const [items, setItems] = useState<BoardMinutes[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+    const [busy, setBusy] = useState("");
+
+    const load = useCallback(async (term: string, key: string) => {
+        try {
+            setError("");
+            setLoading(true);
+            const res = await boardApi.listMinutes(term.trim(), key);
+            setItems(res.data || []);
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Failed to load minutes.");
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            void load(search, filter);
+        }, search.trim() ? 350 : 0);
+        return () => clearTimeout(timer);
+    }, [load, search, filter]);
+
+    const cycleTask = async (minutes: BoardMinutes, taskId: string, current: TaskStatus) => {
+        if (busy) return;
+        const status = nextStatus(current);
+        setBusy(taskId);
+        try {
+            const res = await boardApi.updateTask(minutes._id, taskId, status);
+            setItems((list) =>
+                list.map((entry) =>
+                    entry._id === minutes._id
+                        ? {
+                              ...entry,
+                              actionItems: entry.actionItems.map((item) =>
+                                  item.taskId === taskId ? {...item, status} : item,
+                              ),
+                              counts: res.data.counts,
+                          }
+                        : entry,
+                ),
+            );
+            onDataChanged?.();
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Could not update the task.");
+        } finally {
+            setBusy("");
+        }
+    };
+
+    return (
+        <div className="space-y-4">
+            <div className="flex flex-wrap items-center gap-3">
+                <div className="relative min-w-[220px] flex-1">
+                    <LuSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"/>
+                    <input
+                        className={`${inputCls} pl-9`}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder="Search decisions, tasks or meetings"
+                    />
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                    {FILTERS.map((option) => {
+                        const on = filter === option.key;
+                        return (
+                            <button
+                                key={option.key}
+                                type="button"
+                                onClick={() => setFilter(option.key)}
+                                className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
+                                    on
+                                        ? "border-navy bg-navy text-white"
+                                        : "border-gray-200 bg-white text-slate-gray hover:bg-alice-blue"
+                                }`}
+                            >
+                                {option.label}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            {error ? (
+                <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+            ) : null}
+
+            {loading ? (
+                <div className="space-y-3">
+                    {[0, 1, 2].map((index) => (
+                        <div key={index} className="h-36 animate-pulse rounded-2xl border border-gray-100 bg-white"/>
+                    ))}
+                </div>
+            ) : items.length === 0 ? (
+                <div className="rounded-2xl border border-gray-100 bg-white p-8 text-center">
+                    <p className="text-sm font-semibold text-navy">
+                        {search || filter !== "all" ? "No matching minutes" : "No minutes yet"}
+                    </p>
+                    <p className="mt-1 text-xs text-slate-gray">
+                        {search || filter !== "all"
+                            ? "Try a different search or filter."
+                            : "Published minutes and their action items will appear here."}
+                    </p>
+                </div>
+            ) : (
+                items.map((minutes) => (
+                    <article
+                        key={minutes._id}
+                        className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-5"
+                    >
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                            <div className="min-w-0">
+                                <h2 className="text-sm font-bold text-navy">{minutes.meetingTitle}</h2>
+                                <p className="mt-0.5 text-xs text-slate-gray">
+                                    Meeting {shortDateLabel(minutes.meetingDate)} · published{" "}
+                                    {shortDateLabel(minutes.publishedAt)}
+                                </p>
+                            </div>
+                            <span
+                                className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${
+                                    minutes.within48h
+                                        ? "bg-emerald-50 text-emerald-700"
+                                        : "bg-rose-50 text-rose-700"
+                                }`}
+                            >
+                                <LuClock3 className="text-xs"/>
+                                {minutes.within48h
+                                    ? "Within 48h"
+                                    : `Late · ${minutes.hoursAfterMeeting ?? "?"}h`}
+                            </span>
+                        </div>
+
+                        <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-gray-700">
+                            {minutes.summary}
+                        </p>
+
+                        {minutes.minutesDocumentUrl ? (
+                            <a
+                                href={minutes.minutesDocumentUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan hover:text-cyan-dark"
+                            >
+                                <LuFileText/> Open signed minutes
+                            </a>
+                        ) : null}
+
+                        <div className="mt-4 border-t border-gray-100 pt-3">
+                            <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-slate-gray">
+                                Action items · {minutes.counts.done}/{minutes.counts.total} done
+                            </p>
+                            {minutes.actionItems.length === 0 ? (
+                                <p className="text-xs text-gray-400">No action items were raised.</p>
+                            ) : (
+                                <ul className="space-y-1.5">
+                                    {minutes.actionItems.map((task) => {
+                                        const tone = TASK_TONE[task.status];
+                                        return (
+                                            <li key={task.taskId}>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => void cycleTask(minutes, task.taskId, task.status)}
+                                                    className="flex w-full items-start gap-2.5 rounded-xl bg-alice-blue/70 px-3 py-2 text-left transition hover:bg-alice-blue"
+                                                    title={`Move to ${nextStatus(task.status).toLowerCase().replace("_", " ")}`}
+                                                >
+                                                    {task.status === "DONE" ? (
+                                                        <LuCircleCheck className="mt-0.5 shrink-0 text-emerald-600"/>
+                                                    ) : task.status === "IN_PROGRESS" ? (
+                                                        <LuClock3 className="mt-0.5 shrink-0 text-sky-600"/>
+                                                    ) : (
+                                                        <LuCheck className="mt-0.5 shrink-0 text-gray-300"/>
+                                                    )}
+                                                    <span className="min-w-0 flex-1">
+                                                        <span
+                                                            className={`block text-sm ${
+                                                                task.status === "DONE"
+                                                                    ? "text-gray-400 line-through"
+                                                                    : "text-gray-700"
+                                                            }`}
+                                                        >
+                                                            {task.taskDescription}
+                                                        </span>
+                                                        <span className="mt-0.5 block text-[11px] text-slate-gray">
+                                                            {task.assigneeName}
+                                                            {task.dueDate
+                                                                ? ` · due ${shortDateLabel(task.dueDate)}`
+                                                                : ""}
+                                                        </span>
+                                                    </span>
+                                                    <span
+                                                        className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-semibold ${tone.bg} ${tone.text}`}
+                                                    >
+                                                        {busy === task.taskId ? "Saving…" : tone.label}
+                                                    </span>
+                                                </button>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            )}
+                        </div>
+                    </article>
+                ))
+            )}
+        </div>
+    );
+}
