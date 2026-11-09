@@ -170,6 +170,11 @@ export const boardApi = {
             body: JSON.stringify({ status }),
         }),
 
+    deleteMeeting: (id: string) =>
+        apiFetch<{ success: boolean }>(`/api/board/meetings/${id}`, {
+            method: "DELETE",
+        }),
+
     listMinutes: (search = "", filter = "all") =>
         apiFetch<MinutesListResponse>(
             `/api/board/minutes?filter=${encodeURIComponent(filter)}&search=${encodeURIComponent(search)}`,
@@ -187,6 +192,11 @@ export const boardApi = {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(input),
+        }),
+
+    deleteMinutes: (id: string) =>
+        apiFetch<{ success: boolean }>(`/api/board/minutes/${id}`, {
+            method: "DELETE",
         }),
 
     updateTask: (minutesId: string, taskId: string, status: TaskStatus) =>

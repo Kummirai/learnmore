@@ -1,7 +1,7 @@
 "use client";
 
 import {useCallback, useEffect, useState} from "react";
-import {LuCheck, LuCircleCheck, LuClock3, LuFileText, LuSearch} from "react-icons/lu";
+import {LuCheck, LuCircleCheck, LuClock3, LuFileText, LuSearch, LuTrash2} from "react-icons/lu";
 import {inputCls} from "@/components/admin/ui";
 import {
     boardApi,
@@ -83,6 +83,26 @@ export default function MinutesArchiveAndTaskTracker({
             onDataChanged?.();
         } catch (e) {
             setError(e instanceof Error ? e.message : "Could not update the task.");
+        } finally {
+            setBusy("");
+        }
+    };
+
+    const removeMinutes = async (minutes: BoardMinutes) => {
+        if (
+            !window.confirm(
+                `Delete the minutes for "${minutes.meetingTitle}"? Their action items go too and the board is told.`,
+            )
+        ) {
+            return;
+        }
+        setBusy(minutes._id);
+        try {
+            await boardApi.deleteMinutes(minutes._id);
+            setItems((list) => list.filter((entry) => entry._id !== minutes._id));
+            onDataChanged?.();
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Could not delete the minutes.");
         } finally {
             setBusy("");
         }
@@ -200,16 +220,27 @@ export default function MinutesArchiveAndTaskTracker({
                             </p>
                         )}
 
-                        {minutes.minutesDocumentUrl ? (
-                            <a
-                                href={minutes.minutesDocumentUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan hover:text-cyan-dark"
+                        <div className="mt-3 flex flex-wrap items-center gap-3">
+                            {minutes.minutesDocumentUrl ? (
+                                <a
+                                    href={minutes.minutesDocumentUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan hover:text-cyan-dark"
+                                >
+                                    <LuFileText/> Open signed minutes
+                                </a>
+                            ) : null}
+                            <button
+                                type="button"
+                                disabled={!!busy}
+                                onClick={() => void removeMinutes(minutes)}
+                                className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-rose-200 px-3 py-1 text-xs font-semibold text-rose-700 transition hover:bg-rose-50 disabled:opacity-60"
                             >
-                                <LuFileText/> Open signed minutes
-                            </a>
-                        ) : null}
+                                <LuTrash2 className="text-[12px]"/>
+                                {busy === minutes._id ? "Deleting…" : "Delete"}
+                            </button>
+                        </div>
 
                         <div className="mt-4 border-t border-gray-100 pt-3">
                             <p className="mb-2 text-[11px] font-semibold uppercase tracking-widest text-slate-gray">

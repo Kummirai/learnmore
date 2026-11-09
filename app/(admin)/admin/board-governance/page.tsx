@@ -8,6 +8,7 @@ import {
     LuCheckCheck,
     LuClipboardList,
     LuMapPin,
+    LuTrash2,
 } from "react-icons/lu";
 import {AdminHeader} from "@/components/admin/ui";
 import BoardTabs from "@/components/admin/board/BoardTabs";
@@ -73,6 +74,25 @@ export default function BoardGovernancePage() {
             );
         } catch (e) {
             setError(e instanceof Error ? e.message : "Could not save your RSVP.");
+        } finally {
+            setBusy("");
+        }
+    };
+
+    const removeMeeting = async (meeting: BoardMeeting) => {
+        if (
+            !window.confirm(
+                `Delete "${meeting.title}"? It leaves the schedule and the board is told.`,
+            )
+        ) {
+            return;
+        }
+        setBusy(meeting._id);
+        try {
+            await boardApi.deleteMeeting(meeting._id);
+            setMeetings((current) => current.filter((item) => item._id !== meeting._id));
+        } catch (e) {
+            setError(e instanceof Error ? e.message : "Could not delete the meeting.");
         } finally {
             setBusy("");
         }
@@ -257,6 +277,14 @@ export default function BoardGovernancePage() {
                                                 </button>
                                             );
                                         })}
+                                        <button
+                                            type="button"
+                                            disabled={!!busy}
+                                            onClick={() => void removeMeeting(meeting)}
+                                            className="ml-auto inline-flex items-center gap-1 rounded-full border border-rose-200 bg-white px-3 py-1 text-xs font-semibold text-rose-700 transition hover:bg-rose-50"
+                                        >
+                                            <LuTrash2 className="text-[12px]"/> Delete
+                                        </button>
                                     </div>
                                 </article>
                             );
