@@ -1,9 +1,9 @@
 "use client";
 
 import {useState} from "react";
-import {LuCalendarPlus, LuPlus, LuX} from "react-icons/lu";
+import {LuCalendarPlus, LuCornerDownRight, LuPlus, LuX} from "react-icons/lu";
 import {Button, Card, Field, Input} from "@/components/admin/ui";
-import {boardApi, type BoardMeeting} from "@/lib/board";
+import {boardApi, type AgendaItem, type BoardMeeting} from "@/lib/board";
 
 function todayIso(): string {
     const now = new Date();
@@ -26,7 +26,7 @@ export default function MeetingSchedulerForm({
     const [date, setDate] = useState(todayIso());
     const [time, setTime] = useState("09:00");
     const [location, setLocation] = useState("Relate World HQ");
-    const [agenda, setAgenda] = useState<string[]>([""]);
+    const [agenda, setAgenda] = useState<AgendaItem[]>([{text: "", subs: []}]);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -49,10 +49,15 @@ export default function MeetingSchedulerForm({
                 title: title.trim(),
                 scheduledDate,
                 location: location.trim(),
-                agenda: agenda.map((item) => item.trim()).filter(Boolean),
+                agenda: agenda
+                    .map((item) => ({
+                        text: item.text.trim(),
+                        subs: item.subs.map((sub) => sub.trim()).filter(Boolean),
+                    }))
+                    .filter((item) => item.text),
             });
             setTitle("");
-            setAgenda([""]);
+            setAgenda([{text: "", subs: []}]);
             setSuccess("Meeting scheduled — every board member was notified by app, push and email.");
             onCreated(res.data);
         } catch (e) {
@@ -108,42 +113,91 @@ export default function MeetingSchedulerForm({
                         </span>
                         <button
                             type="button"
-                            onClick={() => setAgenda((current) => [...current, ""])}
+                            onClick={() =>
+                                setAgenda((current) => [...current, {text: "", subs: []}])
+                            }
                             className="inline-flex items-center gap-1 text-xs font-semibold text-cyan hover:text-cyan-dark"
                         >
                             <LuPlus className="text-sm"/> Add point
                         </button>
                     </div>
-                    <div className="space-y-2">
-                        {agenda.map((item, index) => (
-                            <div key={`agenda-${index}`} className="flex items-center gap-2">
-                                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-alice-blue text-[10px] font-bold text-navy">
-                                    {index + 1}
-                                </span>
-                                <Input
-                                    value={item}
-                                    onChange={(e) =>
-                                        setAgenda((current) =>
-                                            current.map((entry, i) => (i === index ? e.target.value : entry)),
-                                        )
-                                    }
-                                    placeholder="Budget review, safeguarding update…"
-                                    maxLength={240}
-                                />
-                                <button
-                                    type="button"
-                                    aria-label="Remove agenda point"
-                                    onClick={() =>
-                                        setAgenda((current) =>
-                                            current.length === 1 ? [""] : current.filter((_, i) => i !== index),
-                                        )
-                                    }
-                                    className="grid size-8 shrink-0 place-items-center rounded-lg text-slate-gray transition hover:bg-alice-blue hover:text-navy"
-                                >
-                                    <LuX/>
-                                </button>
-                            </div>
-                        ))}
+                    <div className="space-y-3">
+                        {agenda.map((item, index) => {
+                            const patch = (next: Partial<AgendaItem>) =>
+                                setAgenda((current) =>
+                                    current.map((entry, i) => (i === index ? {...entry, ...next} : entry)),
+                                );
+                            return (
+                                <div key={`agenda-${index}`} className="space-y-1.5">
+                                    <div className="flex items-center gap-2">
+                                        <span className="grid size-6 shrink-0 place-items-center rounded-full bg-alice-blue text-[10px] font-bold text-navy">
+                                            {index + 1}
+                                        </span>
+                                        <Input
+                                            value={item.text}
+                                            onChange={(e) => patch({text: e.target.value})}
+                                            placeholder="Budget review, safeguarding update…"
+                                            maxLength={240}
+                                        />
+                                        <button
+                                            type="button"
+                                            aria-label="Remove agenda point"
+                                            onClick={() =>
+                                                setAgenda((current) =>
+                                                    current.length === 1
+                                                        ? [{text: "", subs: []}]
+                                                        : current.filter((_, i) => i !== index),
+                                                )
+                                            }
+                                            className="grid size-8 shrink-0 place-items-center rounded-lg text-slate-gray transition hover:bg-alice-blue hover:text-navy"
+                                        >
+                                            <LuX/>
+                                        </button>
+                                    </div>
+
+                                    {item.subs.map((sub, subIndex) => (
+                                        <div
+                                            key={`agenda-${index}-sub-${subIndex}`}
+                                            className="flex items-center gap-2 pl-8"
+                                        >
+                                            <span className="w-6 shrink-0 text-[10px] font-semibold text-cyan">
+                                                {`${index + 1}${String.fromCharCode(97 + subIndex)}`}
+                                            </span>
+                                            <Input
+                                                value={sub}
+                                                onChange={(e) =>
+                                                    patch({
+                                                        subs: item.subs.map((entry, i) =>
+                                                            i === subIndex ? e.target.value : entry,
+                                                        ),
+                                                    })
+                                                }
+                                                placeholder="Sub-point detail"
+                                                maxLength={240}
+                                            />
+                                            <button
+                                                type="button"
+                                                aria-label={`Remove sub-point ${index + 1}${String.fromCharCode(97 + subIndex)}`}
+                                                onClick={() =>
+                                                    patch({subs: item.subs.filter((_, i) => i !== subIndex)})
+                                                }
+                                                className="grid size-8 shrink-0 place-items-center rounded-lg text-slate-gray transition hover:bg-alice-blue hover:text-navy"
+                                            >
+                                                <LuX/>
+                                            </button>
+                                        </div>
+                                    ))}
+
+                                    <button
+                                        type="button"
+                                        onClick={() => patch({subs: [...item.subs, ""]})}
+                                        className="ml-8 inline-flex items-center gap-1 text-[11px] font-semibold text-cyan hover:text-cyan-dark"
+                                    >
+                                        <LuCornerDownRight className="text-xs"/> Add sub-point
+                                    </button>
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
             </div>

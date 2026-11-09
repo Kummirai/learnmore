@@ -170,9 +170,35 @@ export default function MinutesArchiveAndTaskTracker({
                             </span>
                         </div>
 
-                        <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-gray-700">
-                            {minutes.summary}
-                        </p>
+                        {minutes.sections.length > 0 ? (
+                            <div className="mt-3 space-y-3">
+                                {minutes.sections.map((section, index) => (
+                                    <div
+                                        key={`${minutes._id}-section-${index}`}
+                                        className="border-l-2 border-cyan/40 pl-3"
+                                    >
+                                        <p className="text-sm font-bold text-navy">
+                                            {section.title || `Section ${index + 1}`}
+                                        </p>
+                                        <ul className="mt-1 space-y-1">
+                                            {section.points.map((point, pointIndex) => (
+                                                <li
+                                                    key={`${minutes._id}-section-${index}-point-${pointIndex}`}
+                                                    className="flex gap-2 text-sm leading-relaxed text-gray-700"
+                                                >
+                                                    <span className="mt-1.5 size-1 shrink-0 rounded-full bg-cyan"/>
+                                                    <span>{point}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="mt-3 whitespace-pre-line text-sm leading-relaxed text-gray-700">
+                                {minutes.summary}
+                            </p>
+                        )}
 
                         {minutes.minutesDocumentUrl ? (
                             <a

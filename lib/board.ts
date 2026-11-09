@@ -28,12 +28,14 @@ export type MeetingCounts = {
     total: number;
 };
 
+export type AgendaItem = { text: string; subs: string[] };
+
 export type BoardMeeting = {
     _id: string;
     title: string;
     scheduledDate: string | null;
     location: string;
-    agenda: string[];
+    agenda: AgendaItem[];
     rsvps: BoardRsvp[];
     status: MeetingStatus;
     createdAt: string | null;
@@ -57,6 +59,8 @@ export type TaskCounts = {
     total: number;
 };
 
+export type MinutesSection = { title: string; points: string[] };
+
 export type BoardMinutes = {
     _id: string;
     meetingId: string;
@@ -68,6 +72,7 @@ export type BoardMinutes = {
     hoursAfterMeeting: number | null;
     within48h: boolean;
     summary: string;
+    sections: MinutesSection[];
     minutesDocumentUrl: string;
     actionItems: BoardActionItem[];
     createdAt: string | null;
@@ -90,6 +95,7 @@ export type MinutesListResponse = {
 export type AttendanceInput = { userId: string; status: "ATTENDING" | "APOLOGY" };
 
 export type ActionItemInput = {
+    taskId?: string;
     assigneeId: string;
     taskDescription: string;
     dueDate?: string | null;
@@ -97,10 +103,19 @@ export type ActionItemInput = {
 
 export type PublishMinutesInput = {
     meetingId: string;
-    summary: string;
+    summary?: string;
+    sections?: MinutesSection[];
     minutesDocumentUrl: string;
     attendance: AttendanceInput[];
     actionItems: ActionItemInput[];
+};
+
+export type UpdateMinutesInput = {
+    summary?: string;
+    sections?: MinutesSection[];
+    minutesDocumentUrl?: string;
+    attendance?: AttendanceInput[];
+    actionItems?: ActionItemInput[];
 };
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
@@ -124,7 +139,7 @@ export const boardApi = {
         title: string;
         scheduledDate: string;
         location: string;
-        agenda: string[];
+        agenda: AgendaItem[];
     }) =>
         apiFetch<{ data: BoardMeeting }>("/api/board/meetings", {
             method: "POST",
@@ -138,7 +153,7 @@ export const boardApi = {
             title: string;
             scheduledDate: string;
             location: string;
-            agenda: string[];
+            agenda: AgendaItem[];
             status: MeetingStatus;
         }>,
     ) =>
@@ -163,6 +178,13 @@ export const boardApi = {
     publishMinutes: (input: PublishMinutesInput) =>
         apiFetch<{ data: BoardMinutes }>("/api/board/minutes", {
             method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(input),
+        }),
+
+    updateMinutes: (id: string, input: UpdateMinutesInput) =>
+        apiFetch<{ data: BoardMinutes }>(`/api/board/minutes/${id}`, {
+            method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(input),
         }),

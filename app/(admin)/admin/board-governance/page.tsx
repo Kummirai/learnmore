@@ -206,11 +206,24 @@ export default function BoardGovernancePage() {
                                     {meeting.agenda.length > 0 ? (
                                         <ol className="mt-3 space-y-1 border-t border-gray-100 pt-3">
                                             {meeting.agenda.map((item, index) => (
-                                                <li key={`${meeting._id}-agenda-${index}`} className="flex gap-2 text-sm text-gray-700">
-                                                    <span className="w-4 shrink-0 text-xs font-bold leading-5 text-cyan">
-                                                        {index + 1}
-                                                    </span>
-                                                    <span className="leading-5">{item}</span>
+                                                <li key={`${meeting._id}-agenda-${index}`} className="space-y-1">
+                                                    <div className="flex gap-2 text-sm text-gray-700">
+                                                        <span className="w-4 shrink-0 text-xs font-bold leading-5 text-cyan">
+                                                            {index + 1}
+                                                        </span>
+                                                        <span className="leading-5">{item.text}</span>
+                                                    </div>
+                                                    {item.subs.map((sub, subIndex) => (
+                                                        <div
+                                                            key={`${meeting._id}-agenda-${index}-${subIndex}`}
+                                                            className="flex gap-2 pl-4 text-xs text-slate-gray"
+                                                        >
+                                                            <span className="w-6 shrink-0 font-semibold leading-5 text-cyan">
+                                                                {`${index + 1}${String.fromCharCode(97 + subIndex)}`}
+                                                            </span>
+                                                            <span className="leading-5">{sub}</span>
+                                                        </div>
+                                                    ))}
                                                 </li>
                                             ))}
                                         </ol>
