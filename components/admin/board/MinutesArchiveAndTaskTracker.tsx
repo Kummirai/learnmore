@@ -269,11 +269,7 @@ export default function MinutesArchiveAndTaskTracker({
                                                     )}
                                                     <span className="min-w-0 flex-1">
                                                         <span
-                                                            className={`block text-sm ${
-                                                                task.status === "DONE"
-                                                                    ? "text-gray-400 line-through"
-                                                                    : "text-gray-700"
-                                                            }`}
+                                                            className="block text-sm text-gray-700"
                                                         >
                                                             {task.taskDescription}
                                                         </span>
