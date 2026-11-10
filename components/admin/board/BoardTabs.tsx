@@ -6,7 +6,7 @@ import {usePathname} from "next/navigation";
 const TABS = [
     {href: "/admin/board-governance", label: "Meetings"},
     {href: "/admin/board-governance/minutes", label: "Log minutes"},
-    {href: "/admin/board-governance/archive", label: "Archive & actions"},
+    {href: "/admin/board-governance/archive", label: "Minutes"},
 ];
 
 export default function BoardTabs() {

@@ -9,7 +9,7 @@ export default function BoardArchivePage() {
         <div>
             <AdminHeader
                 eyebrow="Governance"
-                title="Minutes archive"
+                title="Minutes"
                 sub="Every published sitting, its decisions and the action items still open."
             />
             <BoardTabs/>

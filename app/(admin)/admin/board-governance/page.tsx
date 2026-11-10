@@ -29,8 +29,8 @@ const LINKS = [
     },
     {
         href: "/admin/board-governance/archive",
-        label: "Minutes archive",
-        body: "Search past sittings and track every action item to done.",
+        label: "Minutes",
+        body: "Browse past sittings and track every action item to done.",
         icon: LuCalendarDays,
     },
 ];
