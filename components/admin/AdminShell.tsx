@@ -6,6 +6,7 @@ import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {LuChevronLeft, LuLoaderCircle, LuShieldAlert, LuX} from "react-icons/lu";
 import {useAuth} from "@/components/AuthProvider";
+import NotificationsMenu from "@/components/NotificationsMenu";
 import {ADMIN_NAV, isAdminRole, type AdminNavCounts} from "@/components/admin/nav";
 
 /**
@@ -135,17 +136,20 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
                     />
                     <span className="font-black tracking-tight text-navy">Dashboard</span>
                 </Link>
-                <button
-                    onClick={() => setDrawerOpen(true)}
-                    aria-label="Open dashboard menu"
-                    className="rounded-lg p-2 text-navy transition hover:bg-alice-blue"
-                >
-                    <span className="flex flex-col gap-1">
-                        <span className="block h-0.5 w-5 rounded bg-current"/>
-                        <span className="block h-0.5 w-5 rounded bg-current"/>
-                        <span className="block h-0.5 w-5 rounded bg-current"/>
-                    </span>
-                </button>
+                <div className="flex items-center gap-2">
+                    <NotificationsMenu/>
+                    <button
+                        onClick={() => setDrawerOpen(true)}
+                        aria-label="Open dashboard menu"
+                        className="rounded-lg p-2 text-navy transition hover:bg-alice-blue"
+                    >
+                        <span className="flex flex-col gap-1">
+                            <span className="block h-0.5 w-5 rounded bg-current"/>
+                            <span className="block h-0.5 w-5 rounded bg-current"/>
+                            <span className="block h-0.5 w-5 rounded bg-current"/>
+                        </span>
+                    </button>
+                </div>
             </header>
 
             <div className="lg:flex">
@@ -255,15 +259,16 @@ function SidebarContent({
                 ))}
             </nav>
 
-            <div className="border-t border-gray-100 p-3">
+            <div className="flex items-center gap-2 border-t border-gray-100 p-3">
                 <Link
                     href="/"
                     onClick={onNavigate}
-                    className="flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-gray-500 transition hover:bg-alice-blue hover:text-navy"
+                    className="flex flex-1 items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-semibold text-gray-500 transition hover:bg-alice-blue hover:text-navy"
                 >
                     <LuChevronLeft className="text-base"/>
                     Back to site
                 </Link>
+                <NotificationsMenu dropUp align="left"/>
             </div>
         </>
     );
