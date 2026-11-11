@@ -19,6 +19,7 @@ export type BoardRsvp = {
     name: string;
     role: string;
     status: RsvpStatus;
+    reason: string;
 };
 
 export type MeetingCounts = {
@@ -92,7 +93,11 @@ export type MinutesListResponse = {
     currentUserId?: string;
 };
 
-export type AttendanceInput = { userId: string; status: "ATTENDING" | "APOLOGY" };
+export type AttendanceInput = {
+    userId: string;
+    status: "ATTENDING" | "APOLOGY";
+    reason?: string;
+};
 
 export type ActionItemInput = {
     taskId?: string;
@@ -163,11 +168,15 @@ export const boardApi = {
             body: JSON.stringify(input),
         }),
 
-    rsvp: (id: string, status: "ATTENDING" | "APOLOGY") =>
+    rsvp: (id: string, status: "ATTENDING" | "APOLOGY", reason?: string) =>
         apiFetch<{ data: BoardMeeting }>(`/api/board/meetings/${id}/rsvp`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status }),
+            body: JSON.stringify(
+                status === "APOLOGY" && reason !== undefined
+                    ? { status, reason }
+                    : { status },
+            ),
         }),
 
     deleteMeeting: (id: string) =>

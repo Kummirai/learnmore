@@ -42,6 +42,7 @@ export default function BoardGovernancePage() {
     const [loading, setLoading] = useState(true);
     const [busy, setBusy] = useState("");
     const [error, setError] = useState("");
+    const [reasons, setReasons] = useState<Record<string, string>>({});
 
     const load = useCallback(async () => {
         try {
@@ -68,10 +69,15 @@ export default function BoardGovernancePage() {
         if (busy) return;
         setBusy(meeting._id);
         try {
-            const res = await boardApi.rsvp(meeting._id, status);
+            const existing = meeting.rsvps.find((r) => r.userId === userId)?.reason || "";
+            const reason =
+                status === "APOLOGY" ? (reasons[meeting._id] ?? existing).trim() : undefined;
+            const res = await boardApi.rsvp(meeting._id, status, reason);
             setMeetings((current) =>
                 current.map((item) => (item._id === meeting._id ? res.data : item)),
             );
+            const mine = res.data.rsvps.find((r) => r.userId === userId);
+            setReasons((current) => ({...current, [meeting._id]: mine?.reason || ""}));
         } catch (e) {
             setError(e instanceof Error ? e.message : "Could not save your RSVP.");
         } finally {
@@ -286,6 +292,31 @@ export default function BoardGovernancePage() {
                                             <LuTrash2 className="text-[12px]"/> Delete
                                         </button>
                                     </div>
+
+                                    {myStatus === "APOLOGY" ? (
+                                        <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                                            <input
+                                                value={reasons[meeting._id] ?? mine?.reason ?? ""}
+                                                onChange={(e) =>
+                                                    setReasons((current) => ({
+                                                        ...current,
+                                                        [meeting._id]: e.target.value,
+                                                    }))
+                                                }
+                                                placeholder="Reason for your apology (optional)"
+                                                maxLength={300}
+                                                className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs text-gray-700 outline-none transition focus:border-cyan/50"
+                                            />
+                                            <button
+                                                type="button"
+                                                disabled={!!busy}
+                                                onClick={() => void respond(meeting, "APOLOGY")}
+                                                className="rounded-full border border-navy/15 bg-navy px-3.5 py-1.5 text-xs font-semibold text-white transition hover:bg-navy/90"
+                                            >
+                                                Save reason
+                                            </button>
+                                        </div>
+                                    ) : null}
                                 </article>
                             );
                         })}

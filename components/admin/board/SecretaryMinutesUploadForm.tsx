@@ -37,6 +37,7 @@ export default function SecretaryMinutesUploadForm({
 }) {
     const [meetingId, setMeetingId] = useState(meetings[0]?._id ?? "");
     const [attendance, setAttendance] = useState<Record<string, "ATTENDING" | "APOLOGY">>({});
+    const [reasons, setReasons] = useState<Record<string, string>>({});
     const [summary, setSummary] = useState("");
     const [documentUrl, setDocumentUrl] = useState("");
     const [documentName, setDocumentName] = useState("");
@@ -57,6 +58,17 @@ export default function SecretaryMinutesUploadForm({
 
     const mark = (memberId: string, status: "ATTENDING" | "APOLOGY") => {
         setAttendance((current) => ({...current, [memberId]: status}));
+    };
+
+    const reasonFor = (memberId: string): string => {
+        const typed = reasons[memberId];
+        if (typed !== undefined) return typed;
+        const rsvp = activeMeeting?.rsvps.find((r) => r.userId === memberId);
+        return rsvp?.reason || "";
+    };
+
+    const setReason = (memberId: string, reason: string) => {
+        setReasons((current) => ({...current, [memberId]: reason}));
     };
 
     const upload = async (file: File | undefined) => {
@@ -107,10 +119,16 @@ export default function SecretaryMinutesUploadForm({
                 meetingId: activeMeeting._id,
                 summary: summary.trim(),
                 minutesDocumentUrl: documentUrl.trim(),
-                attendance: boardMembers.map((member) => ({
-                    userId: member.id,
-                    status: statusFor(member.id),
-                })),
+                attendance: boardMembers.map((member) => {
+                    const status = statusFor(member.id);
+                    return {
+                        userId: member.id,
+                        status,
+                        ...(status === "APOLOGY"
+                            ? { reason: reasonFor(member.id).trim() }
+                            : {}),
+                    };
+                }),
                 actionItems: filled.map((task) => ({
                     assigneeId: task.assigneeId,
                     taskDescription: task.description.trim(),
@@ -121,6 +139,7 @@ export default function SecretaryMinutesUploadForm({
             setDocumentUrl("");
             setDocumentName("");
             setAttendance({});
+            setReasons({});
             setTasks([]);
             setSuccess("Minutes published — the board was notified and action items are on their trackers.");
             onPublished();
@@ -156,7 +175,11 @@ export default function SecretaryMinutesUploadForm({
                     <Field label="Meeting">
                         <Select
                             value={activeMeeting?._id ?? ""}
-                            onChange={(e) => setMeetingId(e.target.value)}
+                            onChange={(e) => {
+                                setMeetingId(e.target.value);
+                                setAttendance({});
+                                setReasons({});
+                            }}
                         >
                             {meetings.map((meeting) => (
                                 <option key={meeting._id} value={meeting._id}>
@@ -174,34 +197,42 @@ export default function SecretaryMinutesUploadForm({
                             {boardMembers.map((member) => {
                                 const status = statusFor(member.id);
                                 return (
-                                    <div
-                                        key={member.id}
-                                        className="flex items-center justify-between gap-3 px-3 py-2.5"
-                                    >
-                                        <span className="min-w-0 truncate text-sm text-gray-700">
-                                            {member.name}
-                                        </span>
-                                        <div className="flex shrink-0 gap-1.5">
-                                            {(["ATTENDING", "APOLOGY"] as const).map((option) => {
-                                                const on = status === option;
-                                                return (
-                                                    <button
-                                                        key={option}
-                                                        type="button"
-                                                        onClick={() => mark(member.id, option)}
-                                                        className={`rounded-full border px-3 py-1 text-[11px] font-semibold transition ${
-                                                            on
-                                                                ? option === "ATTENDING"
-                                                                    ? "border-emerald-200 bg-emerald-50 text-emerald-700"
-                                                                    : "border-rose-200 bg-rose-50 text-rose-700"
-                                                                : "border-gray-200 bg-white text-slate-gray hover:bg-alice-blue"
-                                                        }`}
-                                                    >
-                                                        {option === "ATTENDING" ? "Present" : "Apology"}
-                                                    </button>
-                                                );
-                                            })}
+                                    <div key={member.id} className="px-3 py-2.5">
+                                        <div className="flex items-center justify-between gap-3">
+                                            <span className="min-w-0 truncate text-sm text-gray-700">
+                                                {member.name}
+                                            </span>
+                                            <div className="flex shrink-0 gap-1.5">
+                                                {(["ATTENDING", "APOLOGY"] as const).map((option) => {
+                                                    const on = status === option;
+                                                    return (
+                                                        <button
+                                                            key={option}
+                                                            type="button"
+                                                            onClick={() => mark(member.id, option)}
+                                                            className={`rounded-full border px-3 py-1 text-[11px] font-semibold transition ${
+                                                                on
+                                                                    ? option === "ATTENDING"
+                                                                        ? "border-emerald-200 bg-emerald-50 text-emerald-700"
+                                                                        : "border-rose-200 bg-rose-50 text-rose-700"
+                                                                    : "border-gray-200 bg-white text-slate-gray hover:bg-alice-blue"
+                                                            }`}
+                                                        >
+                                                            {option === "ATTENDING" ? "Present" : "Apology"}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
+                                        {status === "APOLOGY" ? (
+                                            <Input
+                                                value={reasonFor(member.id)}
+                                                onChange={(e) => setReason(member.id, e.target.value)}
+                                                placeholder="Reason for the apology (optional)"
+                                                maxLength={300}
+                                                className="mt-2"
+                                            />
+                                        ) : null}
                                     </div>
                                 );
                             })}
