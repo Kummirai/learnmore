@@ -36,6 +36,7 @@ export type BoardMeeting = {
     title: string;
     scheduledDate: string | null;
     location: string;
+    meetingLink: string;
     agenda: AgendaItem[];
     rsvps: BoardRsvp[];
     status: MeetingStatus;
@@ -144,6 +145,7 @@ export const boardApi = {
         title: string;
         scheduledDate: string;
         location: string;
+        meetingLink: string;
         agenda: AgendaItem[];
     }) =>
         apiFetch<{ data: BoardMeeting }>("/api/board/meetings", {
@@ -158,6 +160,7 @@ export const boardApi = {
             title: string;
             scheduledDate: string;
             location: string;
+            meetingLink: string;
             agenda: AgendaItem[];
             status: MeetingStatus;
         }>,

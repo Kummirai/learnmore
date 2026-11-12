@@ -9,6 +9,7 @@ import {
     LuClipboardList,
     LuMapPin,
     LuTrash2,
+    LuVideo,
 } from "react-icons/lu";
 import {AdminHeader} from "@/components/admin/ui";
 import BoardTabs from "@/components/admin/board/BoardTabs";
@@ -215,6 +216,16 @@ export default function BoardGovernancePage() {
                                             <p className="mt-0.5 flex items-center gap-1 text-xs text-slate-gray">
                                                 <LuMapPin className="text-[11px]"/> {meeting.location}
                                             </p>
+                                            {meeting.meetingLink ? (
+                                                <a
+                                                    href={meeting.meetingLink}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-cyan px-3 py-1 text-[11px] font-bold text-navy transition hover:bg-cyan-dark"
+                                                >
+                                                    <LuVideo className="text-[12px]"/> Join online
+                                                </a>
+                                            ) : null}
                                         </div>
                                         <div className="flex flex-wrap gap-1.5">
                                             <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">

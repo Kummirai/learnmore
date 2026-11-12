@@ -26,6 +26,7 @@ export default function MeetingSchedulerForm({
     const [date, setDate] = useState(todayIso());
     const [time, setTime] = useState("09:00");
     const [location, setLocation] = useState("Relate World HQ");
+    const [meetingLink, setMeetingLink] = useState("");
     const [agenda, setAgenda] = useState<AgendaItem[]>([{text: "", subs: []}]);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
@@ -43,12 +44,18 @@ export default function MeetingSchedulerForm({
             setError("Choose a valid date and time.");
             return;
         }
+        const link = meetingLink.trim();
+        if (link && !/^https?:\/\//i.test(link)) {
+            setError("Enter the full meeting link, starting with https://");
+            return;
+        }
         setSaving(true);
         try {
             const res = await boardApi.createMeeting({
                 title: title.trim(),
                 scheduledDate,
                 location: location.trim(),
+                meetingLink: link,
                 agenda: agenda
                     .map((item) => ({
                         text: item.text.trim(),
@@ -105,6 +112,20 @@ export default function MeetingSchedulerForm({
                         maxLength={160}
                     />
                 </Field>
+
+                <Field label="Online meeting link (optional)">
+                    <Input
+                        type="url"
+                        value={meetingLink}
+                        onChange={(e) => setMeetingLink(e.target.value)}
+                        placeholder="https://zoom.us/j/123456789"
+                        maxLength={600}
+                    />
+                </Field>
+                <p className="-mt-1 text-xs text-slate-gray">
+                    Zoom, Google Meet, Teams or any join link — board members get a
+                    one-click Join button.
+                </p>
 
                 <div>
                     <div className="mb-1.5 flex items-center justify-between">
