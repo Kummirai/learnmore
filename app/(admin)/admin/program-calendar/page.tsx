@@ -183,7 +183,7 @@ function CalendarBody() {
     };
 
     const removeYear = async () => {
-        if (!window.confirm(`Delete the whole ${year} calendar for ${clubSlug}?`)) return;
+        if (!window.confirm(`Delete the whole ${year} calendar for ${club ? club.name : capitalize(clubSlug)}?`)) return;
         setNotice(null);
         try {
             const res = await fetch(`/api/admin/program-calendar/${clubSlug}?year=${year}`, {
@@ -225,12 +225,13 @@ function CalendarBody() {
             <AdminHeader
                 eyebrow={club ? club.name : capitalize(clubSlug)}
                 title="Program Calendar"
-                sub="One year per club. Saved dates replace the pillar list on the club page for every visitor."
+                sub="One year per club, plus a Relate calendar for the whole organization. Club dates replace the pillar list on the club page for every visitor."
                 actions={
                     <>
                         <label className="relative">
                             <span className="sr-only">Club</span>
                             <Select value={clubSlug} onChange={(e) => setClubSlug(e.target.value)}>
+                                <option value="relate">Relate (whole organization)</option>
                                 {allClubs.length === 0 && <option value={clubSlug}>{capitalize(clubSlug)}</option>}
                                 {allClubs.map((c) => (
                                     <option key={c.slug} value={c.slug}>
@@ -249,12 +250,14 @@ function CalendarBody() {
                                 ))}
                             </Select>
                         </label>
-                        <Link
-                            href={`/${clubSlug}`}
-                            className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-alice-blue transition"
-                        >
-                            <LuExternalLink className="text-sm" /> Public page
-                        </Link>
+                        {clubSlug !== "relate" && (
+                            <Link
+                                href={`/${clubSlug}`}
+                                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-alice-blue transition"
+                            >
+                                <LuExternalLink className="text-sm" /> Public page
+                            </Link>
+                        )}
                         <Button variant="accent" onClick={addEntry} disabled={loading}>
                             <LuPlus /> Add date
                         </Button>
@@ -319,7 +322,7 @@ function CalendarBody() {
                 <div className="rounded-xl border border-dashed border-gray-300 px-4 py-10 text-center">
                     <p className="text-sm font-semibold text-navy">Nothing here yet</p>
                     <p className="mt-1 text-xs text-slate-gray">
-                        Add a date to start the {year} calendar for {club ? club.name : clubSlug}. Sessions usually run
+                        Add a date to start the {year} calendar for {club ? club.name : capitalize(clubSlug)}. Sessions usually run
                         fortnightly — “Add date” lands two weeks after the last one.
                     </p>
                     <Button variant="accent" className="mt-4" onClick={addEntry}>
