@@ -168,7 +168,7 @@ export default function AppraisalDetailView({
                     </Link>
                     <button
                         onClick={() => void load()}
-                        className="rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft"
+                        className="rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
                     >
                         Retry
                     </button>
@@ -315,7 +315,7 @@ export default function AppraisalDetailView({
                     <button
                         onClick={submit}
                         disabled={busy}
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-3 text-sm font-semibold text-white transition hover:bg-navy-soft disabled:opacity-60"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl btn-signin px-4 py-3 text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-60"
                     >
                         {busy ? (
                             <LuLoaderCircle className="animate-spin" />
@@ -409,7 +409,7 @@ export default function AppraisalDetailView({
                         <button
                             onClick={() => review("approve")}
                             disabled={busy}
-                            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft disabled:opacity-60"
+                            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-60"
                         >
                             {busy ? <LuLoaderCircle className="animate-spin" /> : <LuCheck className="size-4" />}
                             Approve

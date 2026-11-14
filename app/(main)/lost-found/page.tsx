@@ -56,7 +56,7 @@ export default function LostFoundPage() {
 
                 <div className={"text-center mt-8"}>
                     <Link href={"/contact"}
-                          className={"inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-lg hover:bg-navy-dark transition-colors"}>
+                          className={"inline-flex items-center gap-2 btn-signin text-white px-6 py-3 rounded-lg hover:brightness-95 transition-colors"}>
                         <LuPlus/> Report a Lost or Found Item
                     </Link>
                 </div>

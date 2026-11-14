@@ -100,7 +100,7 @@ export function StoreCard({item}: {item: StoreItem}) {
                             href={`/store/${item.id}`}
                             aria-label={`Choose a size for ${item.name}`}
                             title="Choose a size"
-                            className={"grid size-10 shrink-0 place-items-center rounded-xl bg-navy text-white transition-colors hover:bg-blue"}
+                            className={"grid size-10 shrink-0 place-items-center rounded-xl btn-signin text-white transition-colors hover:brightness-95"}
                         >
                             <LuShoppingBag className={"text-base"}/>
                         </Link>
@@ -245,7 +245,7 @@ function HeroSpotlight({item, loading}: {item: StoreItem | null; loading: boolea
                 </div>
                 <Link
                     href={href}
-                    className="inline-flex h-9 shrink-0 items-center gap-1 rounded-lg bg-navy px-3.5 text-xs font-semibold text-white transition-colors hover:bg-blue"
+                    className="inline-flex h-9 shrink-0 items-center gap-1 rounded-lg btn-signin px-3.5 text-xs font-semibold text-white transition-colors hover:brightness-95"
                 >
                     Shop <LuArrowRight className="text-sm" />
                 </Link>
@@ -346,7 +346,7 @@ export default function StorePage() {
                                 <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
                                     <a
                                         href="#stock"
-                                        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-navy px-5 text-sm font-semibold text-white transition hover:bg-blue"
+                                        className="inline-flex h-11 items-center justify-center gap-2 rounded-lg btn-signin px-5 text-sm font-semibold text-white transition hover:brightness-95"
                                     >
                                         Shop the collection <LuArrowRight className="text-base" />
                                     </a>
@@ -531,7 +531,7 @@ export default function StorePage() {
                             </p>
                             <button
                                 onClick={() => { setCategory("All"); setSearch("") }}
-                                className={"mt-4 min-h-11 rounded-lg bg-navy px-5 text-sm font-semibold text-white transition hover:bg-navy-soft"}
+                                className={"mt-4 min-h-11 rounded-lg btn-signin px-5 text-sm font-semibold text-white transition hover:brightness-95"}
                             >
                                 Show all products
                             </button>

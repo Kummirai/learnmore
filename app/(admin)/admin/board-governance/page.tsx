@@ -322,7 +322,7 @@ export default function BoardGovernancePage() {
                                                 type="button"
                                                 disabled={!!busy}
                                                 onClick={() => void respond(meeting, "APOLOGY")}
-                                                className="rounded-full border border-navy/15 bg-navy px-3.5 py-1.5 text-xs font-semibold text-white transition hover:bg-navy/90"
+                                                className="rounded-full border border-navy/15 btn-signin px-3.5 py-1.5 text-xs font-semibold text-white transition hover:brightness-95"
                                             >
                                                 Save reason
                                             </button>

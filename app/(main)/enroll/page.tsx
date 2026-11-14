@@ -133,7 +133,7 @@ export default function EnrollPage() {
                         )}
 
                         <button type={"submit"} disabled={pending}
-                                className={"w-full bg-navy text-white py-3 rounded text-sm font-medium hover:bg-navy-dark disabled:opacity-60 disabled:cursor-not-allowed transition-colors"}>
+                                className={"w-full btn-signin text-white py-3 rounded text-sm font-medium hover:brightness-95 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"}>
                             {pending ? "Submitting..." : "Submit Enrollment"}
                         </button>
                     </form>

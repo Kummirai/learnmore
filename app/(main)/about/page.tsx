@@ -159,7 +159,7 @@ export default function AboutPage() {
           <Link
             href={"/manual"}
             className={
-              "inline-flex items-center gap-2 bg-navy text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:bg-navy/90 transition-colors"
+              "inline-flex items-center gap-2 btn-signin text-white px-5 py-2.5 rounded-lg font-medium text-sm hover:brightness-95 transition-colors"
             }
           >
             Read the Relate Manual

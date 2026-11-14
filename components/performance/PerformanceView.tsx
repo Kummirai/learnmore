@@ -125,7 +125,7 @@ export default function PerformanceView({
                 <p className="mt-1 text-sm text-slate-gray">{error}</p>
                 <button
                     onClick={refresh}
-                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft"
+                    className="mt-4 inline-flex items-center gap-2 rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
                 >
                     <LuRefreshCw className={refreshing ? "animate-spin" : ""} /> Retry
                 </button>

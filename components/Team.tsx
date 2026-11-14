@@ -245,7 +245,7 @@ export default function Team() {
                       <button
                         onClick={() => setShowAll(!showAll)}
                         className={
-                          "px-6 py-3 min-h-11 rounded-lg bg-navy text-white font-medium text-sm hover:bg-navy-dark transition-colors"
+                          "px-6 py-3 min-h-11 rounded-lg btn-signin text-white font-medium text-sm hover:brightness-95 transition-colors"
                         }
                       >
                         {showAll

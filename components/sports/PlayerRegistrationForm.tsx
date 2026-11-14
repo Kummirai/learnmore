@@ -204,7 +204,7 @@ export default function PlayerRegistrationForm({
               setChecking(true);
               setCheckAttempt((n) => n + 1);
             }}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
           >
             <LuRefreshCw /> Try again
           </button>
@@ -366,7 +366,7 @@ export default function PlayerRegistrationForm({
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href={`/sports/${team.id}`}
-              className="inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-navy-dark transition-colors"
+              className="inline-flex items-center justify-center gap-2 btn-signin text-white px-6 py-3 rounded-lg font-bold text-sm hover:brightness-95 transition-colors"
             >
               View the squad <LuArrowRight />
             </Link>
@@ -420,7 +420,7 @@ export default function PlayerRegistrationForm({
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href={`/sports/${existing.teamId}`}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
             >
               View my squad <LuArrowRight />
             </Link>
@@ -481,7 +481,7 @@ export default function PlayerRegistrationForm({
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href={`/join?club=${encodeURIComponent(team.clubSlug)}`}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
             >
               Join {clubName} <LuArrowRight />
             </Link>
@@ -756,7 +756,7 @@ export default function PlayerRegistrationForm({
           <button
             type="submit"
             disabled={sending}
-            className="w-full inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3.5 rounded-lg font-bold text-sm hover:bg-navy-dark transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full inline-flex items-center justify-center gap-2 btn-signin text-white px-6 py-3.5 rounded-lg font-bold text-sm hover:brightness-95 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {sending ? (
               <>

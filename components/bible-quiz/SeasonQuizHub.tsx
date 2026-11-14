@@ -133,7 +133,7 @@ export default function SeasonQuizHub() {
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link
                   href="#overview"
-                  className="inline-flex items-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-navy-dark transition-colors"
+                  className="inline-flex items-center gap-2 btn-signin text-white px-6 py-3 rounded-lg font-semibold text-sm hover:brightness-95 transition-colors"
                 >
                   See the season&apos;s top 5 <FaArrowRight className="text-xs" />
                 </Link>

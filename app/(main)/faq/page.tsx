@@ -124,7 +124,7 @@ export default function FAQPage() {
           <Link
             href={"/contact"}
             className={
-              "inline-block bg-navy text-white px-8 py-3 text-sm font-medium rounded hover:bg-navy-dark transition-colors"
+              "inline-block btn-signin text-white px-8 py-3 text-sm font-medium rounded hover:brightness-95 transition-colors"
             }
           >
             Contact Us

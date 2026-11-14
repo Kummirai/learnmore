@@ -6,7 +6,6 @@ import Image from "next/image";
 import {usePathname} from "next/navigation";
 import {LuChevronLeft, LuLoaderCircle, LuShieldAlert, LuX} from "react-icons/lu";
 import {useAuth} from "@/components/AuthProvider";
-import NotificationsMenu from "@/components/NotificationsMenu";
 import {ADMIN_NAV, isAdminRole, type AdminNavCounts} from "@/components/admin/nav";
 
 /**
@@ -86,7 +85,7 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
                     </p>
                     <Link
                         href="/signin"
-                        className="mt-6 inline-flex items-center gap-2 rounded-lg bg-navy px-8 py-3 text-sm font-semibold text-white transition hover:bg-navy-soft"
+                        className="mt-6 inline-flex items-center gap-2 rounded-lg btn-signin px-8 py-3 text-sm font-semibold text-white transition hover:brightness-95"
                     >
                         Sign in
                     </Link>
@@ -137,7 +136,6 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
                     <span className="font-black tracking-tight text-navy">Dashboard</span>
                 </Link>
                 <div className="flex items-center gap-2">
-                    <NotificationsMenu/>
                     <button
                         onClick={() => setDrawerOpen(true)}
                         aria-label="Open dashboard menu"
@@ -268,7 +266,6 @@ function SidebarContent({
                     <LuChevronLeft className="text-base"/>
                     Back to site
                 </Link>
-                <NotificationsMenu dropUp align="left"/>
             </div>
         </>
     );

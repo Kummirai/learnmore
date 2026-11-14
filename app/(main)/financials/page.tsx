@@ -78,7 +78,7 @@ export default function FinancialsPage() {
                                 setLoading(true);
                                 void load();
                             }}
-                            className="mt-4 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft"
+                            className="mt-4 rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
                         >
                             Retry
                         </button>

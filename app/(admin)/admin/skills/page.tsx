@@ -503,7 +503,7 @@ function SkillsBody() {
                             type="button"
                             onClick={() => void saveSignOff()}
                             disabled={saving || gridLoading || signOffRequirements.length === 0}
-                            className="inline-flex items-center gap-2 rounded-xl bg-navy px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-navy/90 disabled:opacity-50"
+                            className="inline-flex items-center gap-2 rounded-xl btn-signin px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-50"
                         >
                             {saving ? <LuLoaderCircle className="animate-spin" /> : <LuCheck />}
                             {saving ? "Saving…" : "Save sign-off"}

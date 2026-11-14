@@ -174,7 +174,7 @@ export default function AppraisalList({
                         setLoading(true);
                         void load();
                     }}
-                    className="mt-4 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft"
+                    className="mt-4 rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95"
                 >
                     Retry
                 </button>
@@ -300,7 +300,7 @@ export default function AppraisalList({
                         <button
                             onClick={allocate}
                             disabled={assigning}
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft disabled:opacity-60"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-60"
                         >
                             {assigning ? (
                                 <LuLoaderCircle className="animate-spin" />

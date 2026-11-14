@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
       }
       target={"_blank"}
       className={
-        "fixed bottom-6 right-6 z-40 size-14 rounded-full bg-navy text-white flex items-center justify-center shadow-lg hover:bg-navy-dark hover:scale-110 transition-all duration-300"
+        "fixed bottom-6 right-6 z-40 size-14 rounded-full btn-signin text-white flex items-center justify-center shadow-lg hover:brightness-95 hover:scale-110 transition-all duration-300"
       }
     >
       <FaWhatsapp className={"text-3xl"} />

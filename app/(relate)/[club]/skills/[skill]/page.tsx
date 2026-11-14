@@ -586,7 +586,7 @@ export default async function SkillDetailPage({
               <JoinCta
                 href={`/join?club=${club}`}
                 className={
-                  "inline-flex items-center justify-center gap-2 w-full bg-navy text-white px-5 py-3 rounded-lg font-semibold text-sm hover:bg-navy/90 transition-colors"
+                  "inline-flex items-center justify-center gap-2 w-full btn-signin text-white px-5 py-3 rounded-lg font-semibold text-sm hover:brightness-95 transition-colors"
                 }
               >
                 Join {capitalize(club)}

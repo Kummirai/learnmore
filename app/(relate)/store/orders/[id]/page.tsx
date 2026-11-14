@@ -95,7 +95,7 @@ export default function OrderDetailPage() {
                         <p className="text-sm font-semibold text-navy">{error || "Order not found."}</p>
                         <Link
                             href="/store/orders"
-                            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg bg-navy px-5 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+                            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg btn-signin px-5 text-sm font-semibold text-white transition-colors hover:brightness-95"
                         >
                             <LuReceiptText /> All my orders
                         </Link>
@@ -307,7 +307,7 @@ export default function OrderDetailPage() {
                         </Link>
                         <Link
                             href="/store"
-                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-navy-soft"
+                            className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl btn-signin px-5 py-3 text-sm font-bold text-white transition-colors hover:brightness-95"
                         >
                             Keep shopping <LuArrowRight />
                         </Link>

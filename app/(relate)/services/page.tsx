@@ -402,7 +402,7 @@ export default function ServicesPage() {
                                                             setSubmittingId(isOpenForm ? null : s._id);
                                                             setError("");
                                                         }}
-                                                        className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white transition hover:bg-navy-soft"
+                                                        className="inline-flex min-h-11 items-center gap-2 rounded-lg btn-signin px-4 py-2 text-sm font-semibold text-white transition hover:brightness-95"
                                                     >
                                                         <LuUpload/> {isOpenForm ? "Close form" : "Submit work"}
                                                     </button>

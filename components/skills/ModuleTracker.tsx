@@ -238,7 +238,7 @@ export default function ModuleTracker({
           <a
             href={`/signin?next=${encodeURIComponent(`/${clubSlug}/skills/${skill.id}`)}`}
             className={
-              "mt-3 inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white hover:bg-navy/90 transition-colors"
+              "mt-3 inline-flex items-center gap-2 rounded-lg btn-signin px-4 py-2.5 text-sm font-semibold text-white hover:brightness-95 transition-colors"
             }
           >
             <LuLogIn /> Sign in to start

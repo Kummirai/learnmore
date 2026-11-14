@@ -318,14 +318,14 @@ export default function JoinForm({
             {clubHasTeams ? (
               <Link
                 href="/join-team"
-                className="inline-flex self-center items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-navy/90 transition-colors sm:self-auto"
+                className="inline-flex self-center items-center justify-center gap-2 btn-signin text-white px-6 py-3 rounded-full font-semibold text-sm hover:brightness-95 transition-colors sm:self-auto"
               >
                 Join a team <LuArrowRight className="text-xs" />
               </Link>
             ) : null}
             <Link
               href="/membership"
-              className="inline-flex self-center items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-full font-semibold text-sm hover:bg-navy/90 transition-colors sm:self-auto"
+              className="inline-flex self-center items-center justify-center gap-2 btn-signin text-white px-6 py-3 rounded-full font-semibold text-sm hover:brightness-95 transition-colors sm:self-auto"
             >
               View my membership <LuArrowRight className="text-xs" />
             </Link>
@@ -377,7 +377,7 @@ export default function JoinForm({
               setChecking(true);
               setCheckAttempt((n) => n + 1);
             }}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl btn-signin px-6 text-sm font-semibold text-white transition-colors hover:brightness-95"
           >
             <LuRefreshCw className="text-xs" /> Try again
           </button>
@@ -418,7 +418,7 @@ export default function JoinForm({
           <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/membership"
-              className="inline-flex min-h-11 self-center items-center justify-center gap-2 rounded-full bg-navy px-6 text-sm font-semibold text-white transition-colors hover:bg-navy-soft sm:self-auto"
+              className="inline-flex min-h-11 self-center items-center justify-center gap-2 rounded-full btn-signin px-6 text-sm font-semibold text-white transition-colors hover:brightness-95 sm:self-auto"
             >
               View my membership <LuArrowRight className="text-xs" />
             </Link>
@@ -924,7 +924,7 @@ export default function JoinForm({
           <button
             type="submit"
             disabled={sending}
-            className="w-full inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3.5 rounded-xl font-bold text-sm hover:bg-navy/90 transition-colors disabled:opacity-60"
+            className="w-full inline-flex items-center justify-center gap-2 btn-signin text-white px-6 py-3.5 rounded-xl font-bold text-sm hover:brightness-95 transition-colors disabled:opacity-60"
           >
             {sending ? (
               <>

@@ -570,7 +570,7 @@ export default function ReportEditor({
                     <button
                         onClick={save}
                         disabled={saving}
-                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-navy px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-navy-soft disabled:opacity-60"
+                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl btn-signin px-4 py-2.5 text-sm font-semibold text-white transition hover:brightness-95 disabled:opacity-60"
                     >
                         {saving ? (
                             <LuLoaderCircle className="animate-spin" />

@@ -125,7 +125,7 @@ export default function SavingsPage() {
                     </p>
                     <a
                         href="#install-smart-saver"
-                        className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-bold text-white transition hover:bg-navy-dark"
+                        className="mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl btn-signin px-5 py-3 text-sm font-bold text-white transition hover:brightness-95"
                     >
                         <LuDownload className="size-4" /> Download Smart Saver
                     </a>

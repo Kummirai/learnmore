@@ -134,7 +134,7 @@ export default function ContactPage() {
                   type={"submit"}
                   disabled={pending}
                   className={
-                    "w-full bg-navy text-white py-3 rounded text-sm font-medium hover:bg-navy-dark disabled:opacity-60 transition-colors"
+                    "w-full btn-signin text-white py-3 rounded text-sm font-medium hover:brightness-95 disabled:opacity-60 transition-colors"
                   }
                 >
                   {pending ? "Sending..." : "Send Message"}

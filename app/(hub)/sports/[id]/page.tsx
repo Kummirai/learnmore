@@ -429,7 +429,7 @@ export default async function TeamPage({
               </div>
               <Link
                 href={`/sports/${team.id}/register`}
-                className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-navy-dark transition-colors"
+                className="shrink-0 inline-flex items-center justify-center gap-2 btn-signin text-white px-6 py-3 rounded-lg font-bold text-sm hover:brightness-95 transition-colors"
               >
                 Register as a player <LuArrowRight />
               </Link>
@@ -563,7 +563,7 @@ export default async function TeamPage({
               </div>
               <Link
                 href={`/sports/${team.id}/register`}
-                className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-6 py-3 rounded-lg font-bold text-sm hover:bg-navy/90 transition-colors"
+                className="shrink-0 inline-flex items-center justify-center gap-2 btn-signin text-white px-6 py-3 rounded-lg font-bold text-sm hover:brightness-95 transition-colors"
               >
                 Register to join <LuArrowRight />
               </Link>

@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
 import JoinCta from "@/components/join/JoinCta";
 import UserAvatar from "./UserAvatar";
-import NotificationsMenu from "./NotificationsMenu";
 import { useClubs } from "@/lib/useClubs";
 
 type NavItem = { link: string; path: string };
@@ -293,7 +292,6 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
           </ul>
         </nav>
         <div className={"flex items-center gap-3"}>
-          <NotificationsMenu />
           <UserAvatar />
           <button
             ref={menuButtonRef}

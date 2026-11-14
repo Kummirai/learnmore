@@ -117,7 +117,7 @@ export default function CheckoutPage() {
                             </p>
                             <Link
                                 href="/store"
-                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-navy-soft"
+                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full btn-signin px-6 py-3 text-sm font-bold text-white transition-colors hover:brightness-95"
                             >
                                 Browse the store <LuArrowRight />
                             </Link>
@@ -272,7 +272,7 @@ export default function CheckoutPage() {
                                     <button
                                         type="submit"
                                         disabled={submitting}
-                                        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-soft disabled:cursor-not-allowed disabled:opacity-60"
+                                        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-60"
                                     >
                                         {submitting ? (
                                             <>

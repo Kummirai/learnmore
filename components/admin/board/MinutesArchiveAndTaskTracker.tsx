@@ -130,7 +130,7 @@ export default function MinutesArchiveAndTaskTracker({
                                 onClick={() => setFilter(option.key)}
                                 className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
                                     on
-                                        ? "border-navy bg-navy text-white"
+                                        ? "border-navy btn-signin text-white"
                                         : "border-gray-200 bg-white text-slate-gray hover:bg-alice-blue"
                                 }`}
                             >

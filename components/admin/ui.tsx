@@ -50,7 +50,7 @@ export function Button({
     variant?: "primary" | "accent" | "ghost" | "danger";
 }) {
     const styles: Record<string, string> = {
-        primary: "bg-navy text-white hover:bg-navy-soft",
+        primary: "btn-signin text-white hover:brightness-95",
         accent: "bg-cyan text-navy hover:bg-cyan-dark",
         ghost: "border border-gray-200 bg-white text-gray-700 hover:bg-alice-blue",
         danger: "bg-red-600 text-white hover:bg-red-700",

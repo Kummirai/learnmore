@@ -58,7 +58,7 @@ export default function CartPage() {
                             </p>
                             <Link
                                 href="/store"
-                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-navy-soft"
+                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full btn-signin px-6 py-3 text-sm font-bold text-white transition-colors hover:brightness-95"
                             >
                                 Start shopping <LuArrowRight />
                             </Link>
@@ -159,7 +159,7 @@ export default function CartPage() {
 
                                     <Link
                                         href="/store/checkout"
-                                        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-soft"
+                                        className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
                                     >
                                         Checkout <LuArrowRight />
                                     </Link>

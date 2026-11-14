@@ -187,7 +187,7 @@ export default function MagazineReader({doc}: {doc: PubDocument}) {
                         {nextIdx >= 0 && (
                             <button
                                 onClick={() => setPos(nextIdx)}
-                                className={"inline-flex items-center gap-1.5 bg-navy text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-navy-soft transition-colors"}>
+                                className={"inline-flex items-center gap-1.5 btn-signin text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:brightness-95 transition-colors"}>
                                 Go to next reading <span aria-hidden>→</span>
                             </button>
                         )}

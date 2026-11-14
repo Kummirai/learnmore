@@ -194,7 +194,7 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
                         type="button"
                         disabled={busy || !club || !name.trim()}
                         onClick={() => club && begin(club, name.trim())}
-                        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-navy px-6 py-3.5 font-semibold text-sm text-white transition-colors hover:bg-navy-dark disabled:cursor-not-allowed disabled:opacity-40"
+                        className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg btn-signin px-6 py-3.5 font-semibold text-sm text-white transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-40"
                     >
                         {busy ? <LuLoaderCircle className="animate-spin" /> : "Start the round"}
                         {!busy && <FaArrowRight className="text-xs" />}
@@ -339,7 +339,7 @@ export default function QuizSession({ initialClub }: { initialClub?: string }) {
                             <button
                                 type="button"
                                 onClick={reset}
-                                className="inline-flex items-center gap-2 rounded-lg bg-navy px-6 py-3 font-semibold text-sm text-white transition-colors hover:bg-navy-dark"
+                                className="inline-flex items-center gap-2 rounded-lg btn-signin px-6 py-3 font-semibold text-sm text-white transition-colors hover:brightness-95"
                             >
                                 <FaTrophy className="text-xs" /> Play again
                             </button>

@@ -208,7 +208,7 @@ export default function VolunteerApplyForm() {
                                 aria-pressed={selected}
                                 className={`min-h-11 rounded-full border px-3.5 py-3 text-sm font-semibold transition ${
                                     selected
-                                        ? "border-navy bg-navy text-white"
+                                        ? "border-navy btn-signin text-white"
                                         : "border-gray-200 bg-white text-gray-600 hover:border-cyan hover:bg-alice-blue"
                                 }`}
                             >

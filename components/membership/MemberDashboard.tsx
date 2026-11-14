@@ -461,7 +461,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
               <div className="mt-8 flex flex-wrap gap-3 border-t border-gray-100 pt-6">
                 <Link
                   href="/join"
-                  className="inline-flex items-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-navy/90"
+                  className="inline-flex items-center gap-2 rounded-xl btn-signin px-5 py-3 text-sm font-semibold text-white transition-colors hover:brightness-95"
                 >
                   <LuPencil className="text-xs" /> Update my details
                 </Link>

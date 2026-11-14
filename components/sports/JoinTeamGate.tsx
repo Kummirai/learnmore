@@ -142,7 +142,7 @@ export default function JoinTeamGate() {
               setPhase("loading");
               setAttempt((n) => n + 1);
             }}
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
           >
             <LuRefreshCw /> Try again
           </button>
@@ -168,7 +168,7 @@ export default function JoinTeamGate() {
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href="/join"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
             >
               Join a club <LuArrowRight />
             </Link>
@@ -249,7 +249,7 @@ export default function JoinTeamGate() {
           <div className="flex flex-col justify-center gap-3 sm:flex-row">
             <Link
               href={`/sports/${mine.teamId}`}
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-navy px-6 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg btn-signin px-6 text-sm font-bold text-white transition-colors hover:brightness-95"
             >
               Open my team <LuArrowRight />
             </Link>
@@ -309,7 +309,7 @@ function TeamPicker({ membership }: { membership: Membership | null }) {
             </p>
             <Link
               href="/sports"
-              className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg bg-navy px-5 text-sm font-bold text-white transition-colors hover:bg-navy-dark"
+              className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg btn-signin px-5 text-sm font-bold text-white transition-colors hover:brightness-95"
             >
               Browse all teams <LuArrowRight />
             </Link>

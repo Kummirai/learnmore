@@ -109,7 +109,7 @@ export default function OrdersPage() {
                             </p>
                             <Link
                                 href="/store"
-                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-navy-soft"
+                                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full btn-signin px-6 py-3 text-sm font-bold text-white transition-colors hover:brightness-95"
                             >
                                 Browse the store <LuArrowRight />
                             </Link>

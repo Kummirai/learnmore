@@ -265,7 +265,7 @@ function StreaksBody() {
                                     <button
                                         onClick={() => openRestore(m, "prayer")}
                                         disabled={busy === m.id}
-                                        className="rounded-lg bg-navy px-3 py-1.5 text-xs font-semibold text-white hover:bg-navy-soft transition disabled:opacity-40"
+                                        className="rounded-lg btn-signin px-3 py-1.5 text-xs font-semibold text-white hover:brightness-95 transition disabled:opacity-40"
                                     >
                                         Restore prayer
                                     </button>

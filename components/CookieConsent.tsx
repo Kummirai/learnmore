@@ -105,7 +105,7 @@ export default function CookieConsent() {
         <button
           type="button"
           onClick={() => choose(true)}
-          className="min-h-11 rounded-xl bg-navy px-5 text-sm font-semibold text-white transition-colors hover:bg-navy-soft"
+          className="min-h-11 rounded-xl btn-signin px-5 text-sm font-semibold text-white transition-colors hover:brightness-95"
         >
           Accept all
         </button>

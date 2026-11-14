@@ -361,7 +361,7 @@ export default function AdminRecordsPage() {
                                             aria-pressed={on}
                                             className={`rounded-full border px-3.5 py-1.5 text-sm font-semibold transition ${
                                                 on
-                                                    ? "border-navy bg-navy text-white"
+                                                    ? "border-navy btn-signin text-white"
                                                     : "border-gray-200 bg-white text-gray-600 hover:border-cyan hover:bg-alice-blue"
                                             }`}
                                         >

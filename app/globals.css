@@ -171,6 +171,13 @@
     background-color: var(--color-cyan-dark);
   }
 
+  /* The sign-in button's navy→cyan fill. Background and text only, so a
+     button keeps whatever shape and size it already had. */
+  .btn-signin {
+    background-image: linear-gradient(90deg, #1d2a4d 0%, #13c5dd 100%);
+    color: #ffffff;
+  }
+
   .btn-outline-light {
     background-color: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.4);

@@ -401,7 +401,7 @@ export default async function SproutCampPage() {
                   <JoinCta
                     href={"/join?club=sprout"}
                     className={
-                      "inline-flex items-center justify-center gap-2 bg-navy text-white px-5 py-3 rounded-lg font-semibold text-sm hover:bg-navy/90 transition-colors"
+                      "inline-flex items-center justify-center gap-2 btn-signin text-white px-5 py-3 rounded-lg font-semibold text-sm hover:brightness-95 transition-colors"
                     }
                   >
                     Not a Sprout member yet? Join first

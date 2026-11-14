@@ -85,7 +85,7 @@ export default function TeamMembers({
           </p>
           <Link
             href={`/sports/${encodeURIComponent(teamId)}/register`}
-            className="shrink-0 inline-flex items-center justify-center gap-2 bg-navy text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:bg-navy/90 transition-colors"
+            className="shrink-0 inline-flex items-center justify-center gap-2 btn-signin text-white px-5 py-2.5 rounded-lg font-bold text-sm hover:brightness-95 transition-colors"
           >
             Join this team <LuArrowRight className="text-xs" />
           </Link>
