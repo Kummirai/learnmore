@@ -22,6 +22,7 @@ import {
     LuClipboardCheck,
     LuWallet,
     LuGavel,
+    LuBoxes,
 } from "react-icons/lu";
 
 export type AdminNavItem = {
@@ -90,6 +91,13 @@ export const ADMIN_NAV: AdminNavGroup[] = [
                 short: "Board",
                 icon: LuGavel,
                 description: "Schedule board sittings, log minutes and track action items.",
+            },
+            {
+                href: "/admin/assets",
+                label: "Assets",
+                short: "Assets",
+                icon: LuBoxes,
+                description: "Register the equipment Relate World owns — computers, phones and more.",
             },
         ],
     },
