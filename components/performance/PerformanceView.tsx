@@ -6,6 +6,7 @@ import {
     LuArrowUpRight,
     LuChartLine,
     LuCircleAlert,
+    LuDownload,
     LuLoaderCircle,
     LuRefreshCw,
     LuWallet,
@@ -200,6 +201,31 @@ export default function PerformanceView({
                             />
                         </div>
                     </div>
+
+                    {/* App downloads */}
+                    {data.app && (
+                        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+                            <SectionHead icon={LuDownload} title="App downloads" />
+                            <div className="mt-4 grid grid-cols-3 gap-3">
+                                <Stat
+                                    label="Total"
+                                    value={data.app.downloads.toLocaleString("en-US")}
+                                />
+                                <Stat
+                                    label={
+                                        data.app.latestVersion
+                                            ? `v${data.app.latestVersion}`
+                                            : "Latest"
+                                    }
+                                    value={data.app.latestDownloads.toLocaleString("en-US")}
+                                />
+                                <Stat label="Releases" value={String(data.app.releases)} />
+                            </div>
+                            <p className="mt-3 text-[11px] text-slate-gray">
+                                APK downloads from GitHub releases.
+                            </p>
+                        </div>
+                    )}
 
                     {/* Income vs expenditure */}
                     <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">

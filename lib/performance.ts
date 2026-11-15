@@ -29,6 +29,13 @@ export type PerformanceImpact = {
     events: number;
 };
 
+export type AppDownloadStats = {
+    downloads: number;
+    latestVersion: string | null;
+    latestDownloads: number;
+    releases: number;
+};
+
 export type IndividualAppraisalRow = {
     id: string;
     name: string;
@@ -69,6 +76,8 @@ export type PerformanceSummary = {
     incomeMix: IncomeMixRow[];
     /** Approved appraisal scores — null until the first is signed off. */
     appraisals: AppraisalPerformance | null;
+    /** APK downloads from the public GitHub releases; null when unavailable. */
+    app: AppDownloadStats | null;
     latestImpact: PerformanceImpact | null;
     latestReport: {
         period: string;
