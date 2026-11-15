@@ -9,6 +9,7 @@ type TeamMember = {
   name: string;
   role: string;
   src?: string;
+  email?: string;
 };
 
 type TeamGroup = {
@@ -29,15 +30,45 @@ const staticGroups: TeamGroup[] = [
       name: "Milton Kumirai",
       role: "1st President",
       src: "/images/milton_kumirai.png",
+
+      email: "mailto:milton@relateword.org",
     },
     members: [
-      { name: "Constance Lowani", role: "2nd President" },
-      { name: "Moses Fusi", role: "Chief Finance Officer" },
-      { name: "Noma Moyo", role: "Finance Officer" },
-      { name: "Finance Officer", role: "Finance Officer" },
-      { name: "Talayiwa Ngwenya", role: "Secretary" },
-      { name: "Doreen Moyo", role: "Secretary" },
-      { name: "Sipho Ncube", role: "Secretary" },
+      {
+        name: "Constance Lowani",
+        role: "2nd President",
+        email: "mailto:presidency@relateword.org",
+      },
+      {
+        name: "Moses Fusi",
+        role: "Chief Finance Officer",
+        email: "mailto:finance@relateword.org",
+      },
+      {
+        name: "Noma Moyo",
+        role: "Finance Officer",
+        email: "mailto:finance@relateword.org",
+      },
+      {
+        name: "Finance Officer",
+        role: "Finance Officer",
+        email: "mailto:finance@relateword.org",
+      },
+      {
+        name: "Talayiwa Ngwenya",
+        role: "Secretary",
+        email: "mailto:secretary@relateword.org",
+      },
+      {
+        name: "Doreen Moyo",
+        role: "Secretary",
+        email: "mailto:secretary@relateword.org",
+      },
+      {
+        name: "Sipho Ncube",
+        role: "Secretary",
+        email: "mailto:secretary@relateword.org",
+      },
     ],
   },
   {
@@ -135,6 +166,16 @@ function MemberCard({
       <p className={"text-blue text-xs sm:text-sm mb-0 sm:mb-3 flex-1"}>
         {member.role}
       </p>
+      {member.email && (
+        <a
+          href={member.email}
+          className={
+            "text-sm sm:text-base text-blue font-medium hover:underline mt-2"
+          }
+        >
+          Contact
+        </a>
+      )}
     </div>
   );
 }
