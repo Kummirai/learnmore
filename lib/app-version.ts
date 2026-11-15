@@ -24,7 +24,7 @@ export type AppVersionInfo = {
     forceUpdate: boolean;
 };
 
-const LATEST_VERSION = "1.0.4";
+const LATEST_VERSION = "1.0.5";
 
 /** Release-asset URL for a given version — GitHub serves it as an attachment. */
 export const LATEST_APK_URL =
@@ -35,6 +35,6 @@ export const APP_VERSION: AppVersionInfo = {
     minSupportedVersion: "1.0.0",
     apkUrl: LATEST_APK_URL,
     releaseNotes:
-        "• Upgraded to Expo SDK 57\n• Delete your account from Profile\n• Updated app icons\n• Store now shows live products\n• General stability fixes",
+        "• Bundles all recent OTA fixes into a fresh install\n• Home/Discover rail no longer refetches on every screen focus\n• Calendar: full-year view with per-club event colors and ICS download\n• Requests: improved case-file accent contrast\n• Community screens load card/summary payloads more efficiently\n• General stability fixes",
     forceUpdate: false,
 };
