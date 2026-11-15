@@ -33,13 +33,7 @@ export default function ClosingCta() {
             <FaAndroid className={"text-lg"} />
             Download for Android
           </a>
-          <Link
-            href={
-              "https://wa.me/27782677436?text=Hello%20Relate!%20I%27d%20like%20to%20visit%20a%20club."
-            }
-            target={"_blank"}
-            className={"btn-pill btn-outline-light"}
-          >
+          <Link href={"/#clubs"} className={"btn-pill btn-outline-light"}>
             Visit a club
           </Link>
         </div>
