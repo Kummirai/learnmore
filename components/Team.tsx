@@ -173,7 +173,7 @@ function MemberCard({
             "text-sm sm:text-base text-blue font-medium hover:underline mt-2"
           }
         >
-          Contact
+          {member.email.replace("mailto:", "")}
         </a>
       )}
     </div>
