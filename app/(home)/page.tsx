@@ -21,8 +21,8 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <ClubBento />
       <ValueProps />
+      <ClubBento />
       <Stats />
       <EventsSports />
       <PhotoHighlights />
