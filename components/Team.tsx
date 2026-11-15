@@ -33,8 +33,11 @@ const staticGroups: TeamGroup[] = [
     members: [
       { name: "Constance Lowani", role: "2nd President" },
       { name: "Moses Fusi", role: "Chief Finance Officer" },
+      { name: "Noma Moyo", role: "Finance Officer" },
+      { name: "Finance Officer", role: "Finance Officer" },
       { name: "Talayiwa Ngwenya", role: "Secretary" },
-      { name: "Anacleta Ncube", role: "Finance Officer" },
+      { name: "Doreen Moyo", role: "Secretary" },
+      { name: "Sipho Ncube", role: "Secretary" },
     ],
   },
   {
@@ -47,7 +50,10 @@ const staticGroups: TeamGroup[] = [
       { name: "Prime Director", role: "Singles 33+ · peer circles" },
       { name: "Anchor Director", role: "Single parents · support groups" },
       { name: "Spark Director", role: "Newly married 0–5 yrs · gatherings" },
-      { name: "Synergy Director", role: "Married 6+ yrs · retreats & mentoring" },
+      {
+        name: "Synergy Director",
+        role: "Married 6+ yrs · retreats & mentoring",
+      },
       { name: "Education Director", role: "Schools & learning programmes" },
     ],
   },
@@ -155,7 +161,8 @@ export default function Team() {
       : undefined,
     members: sports
       ? sports.teams.map((team) => ({
-          name: sports.getSquad(team.id)?.coach.name ?? `${team.initials} Coach`,
+          name:
+            sports.getSquad(team.id)?.coach.name ?? `${team.initials} Coach`,
           role: `Head Coach · ${team.name}`,
         }))
       : [],
