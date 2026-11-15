@@ -69,22 +69,19 @@ const staticGroups: TeamGroup[] = [
       {
         name: "Talayiwa Ngwenya",
         role: "Secretary",
-        description:
-          "Manages records, correspondence and meeting minutes.",
+        description: "Manages records, correspondence and meeting minutes.",
         email: "mailto:secretary@relateword.org",
       },
       {
         name: "Doreen Moyo",
         role: "Secretary",
-        description:
-          "Coordinates schedules, records and member communication.",
+        description: "Coordinates schedules, records and member communication.",
         email: "mailto:secretary@relateword.org",
       },
       {
         name: "Sipho Ncube",
         role: "Secretary",
-        description:
-          "Keeps meetings organised and maintains official records.",
+        description: "Keeps meetings organised and maintains official records.",
         email: "mailto:secretary@relateword.org",
       },
     ],
@@ -154,8 +151,7 @@ const staticGroups: TeamGroup[] = [
       {
         name: "Deputy Pathways Officer",
         role: "Vice-Head",
-        description:
-          "Supports the head and coordinates day-to-day operations.",
+        description: "Supports the head and coordinates day-to-day operations.",
       },
       {
         name: "Departmental Secretary & Registrar",
@@ -215,7 +211,7 @@ function MemberCard({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setVisible(true)}
       onMouseLeave={() => setVisible(false)}
-      className={`stagger-item group relative h-full min-h-[16rem] w-full overflow-hidden rounded-xl border border-line bg-white p-0.5 shadow-sm transition-shadow duration-300 hover:shadow-lg sm:min-h-[21rem] ${
+      className={`stagger-item group relative h-full min-h-[13rem] w-full overflow-hidden rounded-xl border border-line bg-white p-0.5 shadow-sm transition-shadow duration-300 hover:shadow-lg sm:min-h-[21rem] ${
         featured ? "shadow-md" : ""
       }`}
     >
@@ -227,8 +223,8 @@ function MemberCard({
         />
       )}
 
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-[10px] bg-white p-4 text-center sm:p-6">
-        <div className="mb-3 size-20 overflow-hidden rounded-full shadow-md ring-4 ring-white transition-transform duration-300 group-hover:scale-105 sm:mb-4 sm:size-28">
+      <div className="relative z-10 flex h-full w-full flex-col items-center justify-center rounded-[10px] bg-white p-3 text-center sm:p-6">
+        <div className="mb-2 size-16 overflow-hidden rounded-full shadow-md ring-4 ring-white transition-transform duration-300 group-hover:scale-105 sm:mb-4 sm:size-28">
           {member.src ? (
             <Image
               src={member.src}
@@ -250,19 +246,19 @@ function MemberCard({
         <p className="mt-1 text-xs text-blue sm:text-sm">{member.role}</p>
 
         {member.description && (
-          <p className="mt-2 px-1 text-[11px] leading-relaxed text-slate-gray sm:text-xs">
+          <p className="mt-2 line-clamp-2 text-[11px] leading-relaxed text-slate-gray sm:line-clamp-none sm:px-1 sm:text-xs">
             {member.description}
           </p>
         )}
 
-        <div className="mt-3 flex items-center justify-center gap-4 text-blue sm:mt-4">
+        <div className="mt-2 flex items-center justify-center gap-3 text-blue sm:mt-4 sm:gap-4">
           <a
             href={member.email ?? "#"}
             aria-label={`Email ${member.name}`}
             className="transition hover:-translate-y-0.5 hover:text-cyan-ink"
           >
             <svg
-              className="size-6"
+              className="size-5 sm:size-6"
               viewBox="0 0 512 512"
               fill="currentColor"
               aria-hidden="true"
@@ -278,7 +274,7 @@ function MemberCard({
             className="transition hover:-translate-y-0.5 hover:text-cyan-ink"
           >
             <svg
-              className="size-6"
+              className="size-5 sm:size-6"
               viewBox="0 0 24 24"
               fill="currentColor"
               aria-hidden="true"
@@ -294,7 +290,7 @@ function MemberCard({
             className="transition hover:-translate-y-0.5 hover:text-cyan-ink"
           >
             <svg
-              className="size-6"
+              className="size-5 sm:size-6"
               viewBox="0 0 24 24"
               fill="currentColor"
               aria-hidden="true"
@@ -307,8 +303,6 @@ function MemberCard({
     </div>
   );
 }
-
-
 
 export default function Team() {
   const [showAll, setShowAll] = useState(false);
