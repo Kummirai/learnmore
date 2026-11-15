@@ -2,41 +2,43 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 const photos = [
   {
     label: "Saturday Morning Sprout Club",
-    src: "https://images.unsplash.com/photo-1774599804869-71bafe4e4b59?q=80&w=400&h=300&fit=crop&fm=webp",
+    src: "/images/heroes/sprout.webp",
   },
   {
     label: "Surge Park Day",
-    src: "https://images.unsplash.com/photo-1764192736615-02dad1afc2a3?q=80&w=400&h=300&fit=crop&fm=webp",
+    src: "/images/heroes/surge.webp",
   },
   {
     label: "Pulse Networking Morning",
-    src: "https://images.unsplash.com/photo-1625999874116-dba9a603fa24?q=80&w=400&h=300&fit=crop&fm=webp",
+    src: "/images/heroes/pulse.webp",
+  },
+  {
+    label: "Prime Peer Circle",
+    src: "/images/heroes/prime.webp",
+  },
+  {
+    label: "Anchor Family Outing",
+    src: "/images/heroes/anchor.webp",
   },
   {
     label: "Spark Double Date",
-    src: "https://images.unsplash.com/photo-1744972974629-daa2fdaa15ee?q=80&w=400&h=300&fit=crop&fm=webp",
+    src: "/images/heroes/spark.webp",
   },
   {
     label: "Synergy Couples Retreat",
-    src: "https://images.unsplash.com/photo-1729284440498-19b2295ac7bb?q=80&w=400&h=300&fit=crop&fm=webp",
-  },
-  {
-    label: "Holiday Club Outing",
-    src: "https://images.unsplash.com/photo-1630863494122-6b726a344d3d?q=80&w=400&h=300&fit=crop&fm=webp",
+    src: "/images/heroes/synergy.webp",
   },
 ];
 
 export default function PhotoHighlights() {
-  const [start, setStart] = useState(0);
-  const visible = 4;
-
-  const next = () => setStart((s) => Math.min(s + 1, photos.length - visible));
-  const prev = () => setStart((s) => Math.max(s - 1, 0));
+  const [active, setActive] = useState(0);
+  const count = photos.length;
+  const leftIdx = (active - 1 + count) % count;
+  const rightIdx = (active + 1) % count;
 
   return (
     <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-32"}>
@@ -53,57 +55,105 @@ export default function PhotoHighlights() {
             Moments at Relate
           </h2>
         </div>
-        <div className={"relative"}>
-          <div className={"grid grid-cols-2 md:grid-cols-4 gap-4"}>
-            {photos.slice(start, start + visible).map((p, i) => (
+
+        <div className={"flex flex-col items-center"}>
+          <div className={"flex items-start justify-center gap-3 md:gap-5"}>
+            <button
+              type="button"
+              onClick={() => setActive(leftIdx)}
+              aria-label={`Show ${photos[leftIdx].label}`}
+              className={
+                "hidden w-48 cursor-pointer flex-col items-center md:flex lg:w-56"
+              }
+            >
               <div
-                key={i}
                 className={
-                  "relative rounded-2xl aspect-[4/3] overflow-hidden group hover:scale-[1.02] transition-transform cursor-pointer"
+                  "relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-sm"
                 }
               >
                 <Image
-                  src={p.src}
-                  alt={p.label}
+                  src={photos[leftIdx].src}
+                  alt={photos[leftIdx].label}
                   fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className={"absolute inset-0 size-full object-cover"}
+                  sizes="(max-width: 1024px) 192px, 224px"
+                  className={"object-cover"}
                 />
-                <div
-                  className={
-                    "absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-                  }
-                />
-                <div className={"absolute bottom-0 left-0 right-0 p-3"}>
-                  <span className={"text-sm font-medium text-white"}>
-                    {p.label}
-                  </span>
-                </div>
               </div>
+              <p className={"mt-2 text-center text-sm text-slate-gray"}>
+                {photos[leftIdx].label}
+              </p>
+            </button>
+
+            <div
+              className={
+                "flex w-full max-w-[20rem] flex-col items-center sm:max-w-[24rem] md:w-72 md:max-w-none lg:w-80"
+              }
+            >
+              <div
+                className={
+                  "relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-lg transition-transform duration-300 hover:scale-[1.02]"
+                }
+              >
+                <Image
+                  src={photos[active].src}
+                  alt={photos[active].label}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 320px"
+                  className={"object-cover"}
+                />
+              </div>
+              <p
+                className={
+                  "mt-3 text-center text-base font-semibold text-navy"
+                }
+              >
+                {photos[active].label}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setActive(rightIdx)}
+              aria-label={`Show ${photos[rightIdx].label}`}
+              className={
+                "hidden w-48 cursor-pointer flex-col items-center md:flex lg:w-56"
+              }
+            >
+              <div
+                className={
+                  "relative aspect-[4/3] w-full overflow-hidden rounded-xl shadow-sm"
+                }
+              >
+                <Image
+                  src={photos[rightIdx].src}
+                  alt={photos[rightIdx].label}
+                  fill
+                  sizes="(max-width: 1024px) 192px, 224px"
+                  className={"object-cover"}
+                />
+              </div>
+              <p className={"mt-2 text-center text-sm text-slate-gray"}>
+                {photos[rightIdx].label}
+              </p>
+            </button>
+          </div>
+
+          <div className={"mt-5 flex items-center gap-2"}>
+            {photos.map((photo, i) => (
+              <button
+                key={photo.src}
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`Show ${photo.label}`}
+                aria-current={i === active ? "true" : undefined}
+                className={`cursor-pointer rounded-full transition ${
+                  i === active
+                    ? "size-2.5 bg-navy"
+                    : "size-2 bg-line hover:bg-slate-gray"
+                }`}
+              />
             ))}
           </div>
-          {photos.length > visible && (
-            <>
-              <button
-                onClick={prev}
-                disabled={start === 0}
-                className={
-                  "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
-                }
-              >
-                <LuChevronLeft className={"text-xl"} />
-              </button>
-              <button
-                onClick={next}
-                disabled={start >= photos.length - visible}
-                className={
-                  "absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 size-11 rounded-full bg-white shadow-md flex items-center justify-center text-gray-600 hover:text-cyan disabled:opacity-30 disabled:cursor-not-allowed transition"
-                }
-              >
-                <LuChevronRight className={"text-xl"} />
-              </button>
-            </>
-          )}
         </div>
       </div>
     </section>
