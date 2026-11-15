@@ -43,7 +43,7 @@ export default function Facilities() {
   return (
     <section
       className={
-        "reveal reveal-stagger bg-white px-6 py-24 md:px-4 md:py-32"
+        "reveal bg-white px-6 py-24 md:px-4 md:py-32"
       }
     >
       <div
@@ -85,7 +85,7 @@ export default function Facilities() {
           </p>
         </div>
 
-        <div className={"grid gap-3 sm:grid-cols-2"}>
+        <div className={"reveal reveal-stagger grid gap-3 sm:grid-cols-2"}>
           <div
             className={
               "stagger-item relative overflow-hidden rounded-2xl border border-cyan/20 bg-gradient-to-br from-cyan/10 via-white to-sky/10 p-5 shadow-sm sm:col-span-2"

@@ -48,12 +48,16 @@ export default function NewsHighlights() {
             View all
           </Link>
         </div>
-        <div className={"grid grid-cols-1 gap-6 md:grid-cols-3"}>
+        <div
+          className={
+            "reveal reveal-stagger grid grid-cols-1 gap-6 md:grid-cols-3"
+          }
+        >
           {posts.map((p, i) => (
             <div
               key={i}
               className={
-                "bg-white rounded-2xl p-6 border border-black/5 hover:shadow-lg transition-shadow"
+                "stagger-item bg-white rounded-2xl p-6 border border-black/5 hover:shadow-lg transition-shadow"
               }
             >
               <span

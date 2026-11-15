@@ -58,7 +58,7 @@ export default function ValueProps() {
   return (
     <section
       className={
-        "reveal reveal-stagger bg-white px-6 py-24 md:px-4 md:py-32"
+        "reveal bg-white px-6 py-24 md:px-4 md:py-32"
       }
     >
       <div className={"max-w-6xl mx-auto"}>
@@ -89,7 +89,7 @@ export default function ValueProps() {
 
         <div
           className={
-            "mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line shadow-sm shadow-navy/5 sm:grid-cols-2 md:grid-cols-3"
+            "reveal reveal-stagger mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line shadow-sm shadow-navy/5 sm:grid-cols-2 md:grid-cols-3"
           }
         >
           {points.map(({ icon: Icon, title, body, href, cta }) => (

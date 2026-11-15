@@ -35,9 +35,9 @@ export default function FaqSection() {
                         Frequently asked questions
                     </h2>
                 </div>
-                <div className={"space-y-3 mb-8"}>
+                <div className={"reveal reveal-stagger space-y-3 mb-8"}>
                     {faqs.map((faq, i) => (
-                        <div key={i} className={"bg-white rounded-2xl overflow-hidden border border-black/5"}>
+                        <div key={i} className={"stagger-item bg-white rounded-2xl overflow-hidden border border-black/5"}>
                             <button
                                 type="button"
                                 id={`faq-section-trigger-${i}`}

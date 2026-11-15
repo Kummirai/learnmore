@@ -64,12 +64,16 @@ export default function Contact() {
           </p>
         </div>
         <div className={"grid grid-cols-1 lg:grid-cols-2 gap-10 items-start"}>
-          <div className={"grid grid-cols-1 sm:grid-cols-2 gap-4"}>
+          <div
+            className={
+              "reveal reveal-stagger grid grid-cols-1 sm:grid-cols-2 gap-4"
+            }
+          >
             {details.map((d, i) => (
               <div
                 key={i}
                 className={
-                  "bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-3"
+                  "stagger-item bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-3"
                 }
               >
                 <div className={"mt-0.5 shrink-0"}>{d.icon}</div>
@@ -80,7 +84,7 @@ export default function Contact() {
               </div>
             ))}
           </div>
-          <div className={"bg-white rounded-xl border border-gray-200 p-8"}>
+          <div className={"reveal bg-white rounded-xl border border-gray-200 p-8"}>
             <h3 className={"text-xl font-semibold text-navy mb-4"}>
               Say Hello
             </h3>

@@ -217,7 +217,7 @@ export default function EventsSports() {
         ) : (
           <>
             {/* Featured — the next event, advertised like a product */}
-            <article className="relative overflow-hidden rounded-3xl">
+            <article className="reveal relative overflow-hidden rounded-3xl">
               {featuredImg ? (
                 <Image
                   src={featuredImg}
@@ -264,7 +264,7 @@ export default function EventsSports() {
             </article>
 
             {more.length > 0 && (
-              <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="reveal reveal-stagger mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {more.map((e) => {
                   const { day, month } = dayOf(e.date);
                   const club = clubOf(e.clubSlug);
@@ -273,7 +273,7 @@ export default function EventsSports() {
                     <Link
                       key={e._id}
                       href={`/events/${e._id}`}
-                      className="group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl transition-shadow hover:shadow-lg"
+                      className="stagger-item group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl transition-shadow hover:shadow-lg"
                     >
                       {img ? (
                         <Image
@@ -336,7 +336,7 @@ export default function EventsSports() {
         )}
 
         {/* Sports — a centered product band */}
-        <div className="mt-5 rounded-3xl bg-tile px-6 py-10 text-center md:px-10 md:py-12">
+        <div className="reveal mt-5 rounded-3xl bg-tile px-6 py-10 text-center md:px-10 md:py-12">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan">
             Sports Teams
           </p>

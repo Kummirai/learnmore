@@ -46,10 +46,10 @@ export default function FeesSection() {
                         <p className={"text-sm text-gray-500"}>The store is empty right now — check back soon for new gear.</p>
                     </div>
                 ) : (
-                    <div className={"grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8"}>
+                    <div className={"reveal reveal-stagger grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8"}>
                         {featuredItems.map(({item, featured}) => (
                             <div key={item.id}
-                                 className={`group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-3xl bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${featured ? "ring-2 ring-cyan" : "ring-1 ring-black/5"}`}>
+                                 className={`stagger-item group relative flex flex-col overflow-hidden rounded-2xl sm:rounded-3xl bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg ${featured ? "ring-2 ring-cyan" : "ring-1 ring-black/5"}`}>
                                 {featured && (
                                     <span className={"absolute left-3 top-3 z-10 rounded-full bg-cyan px-2.5 py-0.5 text-[10px] font-semibold text-navy shadow-sm"}>
                                         Most Popular

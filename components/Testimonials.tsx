@@ -44,7 +44,7 @@ export default function Testimonials() {
         </div>
 
         {/* Featured quote — the one big voice */}
-        <figure className={"mx-auto max-w-3xl text-center"}>
+        <figure className={"reveal mx-auto max-w-3xl text-center"}>
           <div className={"mb-6 flex justify-center gap-1 text-gold-500"}>
             {[...Array(5)].map((_, j) => (
               <IoStarSharp key={j} />
@@ -77,9 +77,13 @@ export default function Testimonials() {
         </figure>
 
         {/* Two quieter voices */}
-        <div className={"mt-12 grid grid-cols-1 gap-6 md:grid-cols-2"}>
+        <div
+          className={
+            "reveal reveal-stagger mt-12 grid grid-cols-1 gap-6 md:grid-cols-2"
+          }
+        >
           {rest.map((t) => (
-            <div key={t.name} className={"rounded-3xl bg-tile p-7"}>
+            <div key={t.name} className={"stagger-item rounded-3xl bg-tile p-7"}>
               <div className={"mb-4 flex gap-1 text-gold-500"}>
                 {[...Array(5)].map((_, j) => (
                   <IoStarSharp key={j} />

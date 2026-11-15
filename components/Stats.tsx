@@ -36,14 +36,14 @@ export default function Stats() {
 
         <div
           className={
-            "mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4"
+            "reveal reveal-stagger mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 lg:grid-cols-4"
           }
         >
           {stats.map((stat) => (
             <div
               key={stat.label}
               className={
-                "bg-navy px-4 py-9 text-center sm:px-6 sm:py-11"
+                "stagger-item bg-navy px-4 py-9 text-center sm:px-6 sm:py-11"
               }
             >
               <p
