@@ -6,13 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import { FaAndroid } from "react-icons/fa";
 import { LuChevronLeft, LuChevronRight, LuPause, LuPlay } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
-import {
-  MAGAZINES,
-  type RelateClub,
-  type RelateMagazine,
-} from "@/constants/relate";
+import type { RelateClub } from "@/constants/relate";
 import { useClubs } from "@/lib/useClubs";
-import { useNextPrayer } from "@/lib/useNextPrayer";
 import { LATEST_APK_URL } from "@/lib/app-version";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
@@ -47,37 +42,6 @@ const firstWord = (s: string) =>
     .slice(0, 1)
     .join(" ");
 
-function prayerSlide(
-  prayer: { label: string; countdown: string } | null,
-): Slide {
-  return {
-    key: "prayer",
-    chips: [],
-    eyebrow: prayer ? `${prayer.label} Prayer` : undefined,
-    title: prayer ? prayer.countdown : "Pray with us",
-    shortTitle: prayer ? undefined : "Pray",
-    tagline: "six moments, every day",
-    description:
-      "A live countdown to the next prayer moment. Dawn, sunrise, noon, afternoon, sunset and evening — a simple daily rhythm, with a verse for each.",
-    watermark: "6",
-    bg: {
-      backgroundImage: `url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    },
-    actions: (
-      <>
-        <Link href={"/prayer"} className={btnPrimary}>
-          Start praying
-        </Link>
-        <Link href={"/about"} className={btnGhost}>
-          About the rhythm
-        </Link>
-      </>
-    ),
-  };
-}
-
 function brandSlide(): Slide {
   return {
     key: "brand",
@@ -86,7 +50,7 @@ function brandSlide(): Slide {
     title: "Grow",
     tagline: "in every area of life",
     description:
-      "Share your gifts. Connect with your community. Deepen your faith. Relate brings it all together.",
+      "Our vision is to help you be self-reliant and sustainable. Share your gifts, connect with your community, deepen your faith — every club and program is measured against that single outcome.",
     watermark: "Relate",
     bg: {
       backgroundImage: `url(https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80)`,
@@ -101,33 +65,6 @@ function brandSlide(): Slide {
         <JoinCta href={"/join"} className={btnGhost}>
           Join a club
         </JoinCta>
-      </>
-    ),
-  };
-}
-
-function magazineSlide(mag: RelateMagazine): Slide {
-  return {
-    key: mag.slug,
-    chips: [],
-    title: mag.series,
-    shortTitle: firstWord(mag.series),
-    tagline: mag.theme,
-    description: mag.summary,
-    watermark: "13",
-    bg: {
-      backgroundImage: `url(${mag.cover})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-    },
-    actions: (
-      <>
-        <Link href={`/${mag.slug}`} className={btnPrimary}>
-          Read {mag.series}
-        </Link>
-        <Link href={"/about"} className={btnGhost}>
-          About the guides
-        </Link>
       </>
     ),
   };
@@ -171,7 +108,7 @@ function charitySlide(): Slide {
     title: "Care",
     tagline: "share it — we can help",
     description:
-      "Our charity arm stands with orphans, widows and child-headed families — food relief, school fees, uniforms, childcare and counselling. Share your need and we will review, refer or help. Send your request through the app.",
+      "Charity comes first. We stand with orphans, widows and child-headed families — food relief, school fees, uniforms, childcare and counselling — so help today builds independence, not dependence.",
     watermark: "Care",
     bg: {
       backgroundImage: `url(https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&q=80)`,
@@ -194,13 +131,10 @@ function charitySlide(): Slide {
 const AUTOPLAY_MS = 6000;
 
 export default function Hero() {
-  const prayer = useNextPrayer();
   const { clubs } = useClubs();
   const slides: Slide[] = [
     brandSlide(),
-    prayerSlide(prayer),
     charitySlide(),
-    ...MAGAZINES.map(magazineSlide),
     ...clubs.map(clubSlide),
   ];
 
@@ -448,9 +382,7 @@ export default function Hero() {
                 "ml-2 hidden sm:inline text-[11px] uppercase tracking-widest text-white/50"
               }
             >
-              {slide.key === "prayer" && "Prayer rhythm"}
               {slide.key === "charity" && "Charity & care"}
-              {MAGAZINES.some((m) => m.slug === slide.key) && "Season guides"}
               {clubs.some((c) => c.slug === slide.key) && "Clubs"}
             </span>
           </div>
