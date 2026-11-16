@@ -212,23 +212,6 @@ export default function Hero() {
         }
       >
         <div className={"flex flex-col gap-3 text-center md:text-left"}>
-          {/* Chips row + age-range pill on the far right of the same row */}
-          <div
-            className={
-              "flex flex-wrap items-center justify-center gap-3 md:justify-start"
-            }
-          >
-            {slide.ageRange && (
-              <span
-                className={
-                  "md:ml-auto inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"
-                }
-              >
-                {slide.ageRange}
-              </span>
-            )}
-          </div>
-
           {slide.eyebrow && (
             <p
               key={`eb-${slide.key}`}
@@ -253,6 +236,15 @@ export default function Hero() {
               {slide.shortTitle ?? slide.title}
             </span>
           </h1>
+          {slide.ageRange && (
+            <span
+              className={
+                "self-center md:self-start inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"
+              }
+            >
+              {slide.ageRange}
+            </span>
+          )}
           <p
             key={`tg-${slide.key}`}
             className={"text-lg md:text-2xl font-medium"}
