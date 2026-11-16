@@ -239,7 +239,7 @@ export default function Hero() {
           {slide.ageRange && (
             <span
               className={
-                "self-center md:self-start my-3 inline-flex items-center gap-2 bg-white/90 px-3 py-1.5 rounded-full text-[11px] tracking-wide text-navy font-semibold"
+                "self-center md:self-start my-3 inline-flex items-center gap-2 bg-white/10 backdrop-blur px-3 py-1.5 rounded-full text-[11px] tracking-wide text-white/90 font-medium"
               }
             >
               {slide.ageRange}
