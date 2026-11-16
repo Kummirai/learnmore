@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import ClubBento from "@/components/ClubBento";
-import ValueProps from "@/components/ValueProps";
+import Vision from "@/components/Vision";
+import Objectives from "@/components/Objectives";
+import Principles from "@/components/Principles";
 import Stats from "@/components/Stats";
 import EventsSports from "@/components/EventsSports";
 import PhotoHighlights from "@/components/PhotoHighlights";
@@ -21,7 +23,9 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <ValueProps />
+      <Vision />
+      <Objectives />
+      <Principles />
       <ClubBento />
       <Stats />
       <EventsSports />
