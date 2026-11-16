@@ -82,6 +82,7 @@ function clubSlide(club: RelateClub): Slide {
     shortTitle: firstWord(club.name),
     tagline: club.tagline,
     description: club.description,
+    ageRange: club.ageRange,
     watermark: numericAge ?? club.name,
     bg: {
       backgroundImage: `url(${club.heroImage})`,
