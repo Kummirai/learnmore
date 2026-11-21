@@ -92,7 +92,7 @@ function clubSlide(club: RelateClub): Slide {
     actions: (
       <>
         <a href={LATEST_APK_URL} download className={btnPrimary}>
-          <FaAndroid /> Download App Apk
+          <FaAndroid /> Download The App
         </a>
         <Link href={`/${club.slug}`} className={btnGhost}>
           Explore {club.name}
