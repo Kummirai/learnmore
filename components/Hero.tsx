@@ -92,7 +92,7 @@ function clubSlide(club: RelateClub): Slide {
     actions: (
       <>
         <a href={LATEST_APK_URL} download className={btnPrimary}>
-          <FaAndroid /> Download App Apk
+          <FaAndroid /> Download Android App
         </a>
         <Link href={`/${club.slug}`} className={btnGhost}>
           Explore {club.name}
@@ -195,10 +195,7 @@ export default function Hero() {
 
       <Navbar overlay />
 
-      <p
-        aria-live={autoplay ? "off" : "polite"}
-        className="sr-only"
-      >
+      <p aria-live={autoplay ? "off" : "polite"} className="sr-only">
         Slide {index + 1} of {slides.length}: {slide.tagline}
       </p>
 
@@ -347,7 +344,9 @@ export default function Hero() {
             <button
               type="button"
               aria-label="Previous slide"
-              onClick={() => setIndex((index - 1 + slides.length) % slides.length)}
+              onClick={() =>
+                setIndex((index - 1 + slides.length) % slides.length)
+              }
               className="grid size-11 place-items-center rounded-full border border-white/30 text-white hover:bg-white/10 transition-colors"
             >
               <LuChevronLeft aria-hidden />
