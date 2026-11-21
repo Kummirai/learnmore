@@ -60,7 +60,7 @@ function brandSlide(): Slide {
     actions: (
       <>
         <a href={LATEST_APK_URL} download className={btnPrimary}>
-          <FaAndroid /> Download Apk
+          <FaAndroid /> Download The App
         </a>
         <JoinCta href={"/join"} className={btnGhost}>
           Join a club
