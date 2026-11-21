@@ -24,7 +24,7 @@ export type AppVersionInfo = {
     forceUpdate: boolean;
 };
 
-const LATEST_VERSION = "1.0.5";
+const LATEST_VERSION = "1.0.6";
 
 /** Release-asset URL for a given version — GitHub serves it as an attachment. */
 export const LATEST_APK_URL =
@@ -35,6 +35,6 @@ export const APP_VERSION: AppVersionInfo = {
     minSupportedVersion: "1.0.0",
     apkUrl: LATEST_APK_URL,
     releaseNotes:
-        "• Bundles all recent OTA fixes into a fresh install\n• Home/Discover rail no longer refetches on every screen focus\n• Calendar: full-year view with per-club event colors and ICS download\n• Requests: improved case-file accent contrast\n• Community screens load card/summary payloads more efficiently\n• General stability fixes",
+        "• Club Chat: realtime messaging with image sharing, @mentions, replies, reactions, drafts and push notifications\n• Club Chat: image posts now render without a colored bubble, like emoji-only messages\n• Club Chat: safer sending and message actions before the chat schema migration\n• Prayer Focus: per-session focus, history and badge screens, plus legacy data repair\n• Dashboard: member details, streak restore, growth charts and faster search\n• Onboarding: admin induction, task reasons, deep-linked notifications and daily Verse of the Day reminders\n• Web: refreshed home sections, club age labels and app download stats\n• General performance and stability fixes",
     forceUpdate: false,
 };

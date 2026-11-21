@@ -19,8 +19,8 @@ The ecosystem bridges web and mobile access, featuring a [Next.js](https://nextj
 ## 📱 Mobile Application & Updates
 
 The mobile app is distributed directly via Android APK builds hosted on GitHub Releases:
-* **Current Version:** `v1.0.1`
-* **Download Latest APK:** [Relate World App v1.0.1 Release](https://github.com/Kummirai/learnmore/releases/tag/v1.0.1)
+* **Current Version:** `v1.0.6`
+* **Download Latest APK:** [Relate World App v1.0.6 Release](https://github.com/Kummirai/learnmore/releases/tag/v1.0.6)
 * **In-App Updates:** The app automatically checks your Next.js API endpoint on startup and prompts users when a new APK build is available.
 
 ---
