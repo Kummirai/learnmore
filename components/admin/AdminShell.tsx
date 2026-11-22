@@ -19,47 +19,41 @@ export default function AdminShell({children}: {children: React.ReactNode}) {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [counts, setCounts] = useState<AdminNavCounts>({});
 
-    // Pending-queue badges. Each endpoint already exists; a failure here must
-    // never block the dashboard, so counts simply stay absent.
     const loadCounts = useCallback(async (signal?: AbortSignal) => {
-        const endpoints: [string, string][] = [
-            ["/admin/volunteers", "/api/admin/volunteers?status=new&countOnly=1"],
-            ["/admin/help-requests", "/api/help-requests?status=open&countOnly=1"],
-            ["/admin/social-joins", "/api/community/social-join?status=pending&countOnly=1"],
-            ["/admin/orders", "/api/admin/orders?status=received&countOnly=1"],
-        ];
-        const results = await Promise.all(
-            endpoints.map(async ([href, url]) => {
-                try {
-                    const res = await fetch(url, {signal, cache: "no-store"});
-                    if (!res.ok) return [href, 0] as const;
-                    const json = await res.json().catch(() => null);
-                    const data = json?.data;
-                    if (typeof json?.count === "number") return [href, json.count] as const;
-                    return [href, Array.isArray(data) ? data.length : 0] as const;
-                } catch {
-                    return [href, 0] as const;
-                }
-            }),
-        );
-        const next: AdminNavCounts = {};
-        for (const [href, count] of results) {
-            if (count > 0) next[href] = count;
+        try {
+            const res = await fetch("/api/admin/nav-counts", {signal, cache: "no-store"});
+            if (!res.ok) return {};
+            const json = await res.json().catch(() => null);
+            const source = json?.counts;
+            const next: AdminNavCounts = {};
+            for (const [href, count] of Object.entries(source ?? {})) {
+                if (typeof count === "number" && count > 0) next[href] = count;
+            }
+            return next;
+        } catch {
+            return {};
         }
-        return next;
     }, []);
 
     useEffect(() => {
+        if (!user || !isAdminRole(user.role)) return;
         const controller = new AbortController();
-        void loadCounts(controller.signal).then(setCounts).catch(() => undefined);
-        const timer = setInterval(() => {
+        const run = () => {
+            if (document.visibilityState !== "visible") return;
             void loadCounts(controller.signal).then(setCounts).catch(() => undefined);
-        }, 60_000);
+        };
+        const onVisibilityChange = () => {
+            if (document.visibilityState === "visible") run();
+        };
+        run();
+        document.addEventListener("visibilitychange", onVisibilityChange);
+        const timer = setInterval(run, 300_000);
         return () => {
             controller.abort();
             clearInterval(timer);
+            document.removeEventListener("visibilitychange", onVisibilityChange);
         };
-    }, [loadCounts]);
+    }, [loadCounts, user]);
 
     if (loading) {
         return (
