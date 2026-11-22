@@ -1,4 +1,4 @@
-const CACHE = "relate-web-v2";
+const CACHE = "relate-web-v3";
 const PRECACHE = [
   "/app/",
   "/app/index.html",
