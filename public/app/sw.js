@@ -1,4 +1,4 @@
-const CACHE = "relate-web-v1";
+const CACHE = "relate-web-v2";
 const PRECACHE = [
   "/app/",
   "/app/index.html",
@@ -73,4 +73,53 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(staleWhileRevalidate(event.request));
+});
+
+self.addEventListener("push", (event) => {
+  let payload = {};
+  if (event.data) {
+    try {
+      payload = event.data.json();
+    } catch {
+      payload = { body: event.data.text() };
+    }
+  }
+
+  const title = payload.title || "Relate";
+  const notificationData = payload.data && typeof payload.data === "object" ? payload.data : {};
+  const options = {
+    body: payload.body || payload.message || "",
+    icon: payload.icon || "/app/icons/icon-192.png",
+    data: { ...notificationData, url: payload.url || notificationData.url || "/app/" },
+    badge: payload.badge || "/app/icons/icon-192.png",
+    tag: payload.tag,
+  };
+
+  event.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener("notificationclick", (event) => {
+  const rawTarget =
+    (event.notification.data && event.notification.data.url) ||
+    "/app/";
+  const target = new URL(rawTarget, self.location.origin);
+  if (target.origin !== self.location.origin) {
+    target.href = self.location.origin + "/app/";
+  }
+
+  event.waitUntil(
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clients) => {
+        const appClient = clients.find((client) =>
+          new URL(client.url).pathname.startsWith("/app/"),
+        );
+        if (appClient && "navigate" in appClient) {
+          return appClient.navigate(target.href).then(() => appClient.focus());
+        }
+        if (appClient && "focus" in appClient) return appClient.focus();
+        return self.clients.openWindow(target.href);
+      })
+      .finally(() => event.notification.close()),
+  );
 });
