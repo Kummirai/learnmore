@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FaAndroid } from "react-icons/fa";
 import { LuArrowDownToLine } from "react-icons/lu";
 
+import IosPwaInstallCta from "@/components/IosPwaInstallCta";
 import { LATEST_APK_URL as APK_URL } from "@/lib/app-version";
 
 /** One dark closing band — enrolment and the club visit, side by side. */
@@ -37,13 +38,21 @@ export default function ClosingCta() {
             Visit a club
           </Link>
         </div>
-        <p
+        <div
           className={
-            "mt-6 flex items-center justify-center gap-2 text-sm text-cyan"
+            "mt-6 flex flex-col items-center justify-center gap-4"
           }
         >
-          <LuArrowDownToLine /> Free download · Android 8.0+ · iOS coming soon
-        </p>
+          <p
+            className={
+              "flex items-center justify-center gap-2 text-sm text-cyan"
+            }
+          >
+            <LuArrowDownToLine /> Free download · Android 8.0+ · iPhone PWA
+            available
+          </p>
+          <IosPwaInstallCta tone="dark" align="center" />
+        </div>
       </div>
     </section>
   );

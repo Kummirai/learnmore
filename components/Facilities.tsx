@@ -10,6 +10,7 @@ import {
   LuUsers,
 } from "react-icons/lu";
 
+import IosPwaInstallCta from "@/components/IosPwaInstallCta";
 import { LATEST_APK_URL as APK_URL } from "@/lib/app-version";
 
 const features = [
@@ -79,10 +80,13 @@ export default function Facilities() {
               Explore the clubs
             </Link>
           </div>
-          <p className={"mt-6 flex items-center gap-2 text-sm text-navy/60"}>
-            <LuSmartphone className={"size-4 text-cyan-ink"} />
-            Free on Android · iOS coming soon
-          </p>
+          <div className={"mt-6 flex flex-wrap items-center gap-x-5 gap-y-3"}>
+            <p className={"flex items-center gap-2 text-sm text-navy/60"}>
+              <LuSmartphone className={"size-4 text-cyan-ink"} />
+              Free on Android · iPhone PWA available
+            </p>
+            <IosPwaInstallCta tone="light" />
+          </div>
         </div>
 
         <div className={"reveal reveal-stagger grid gap-3 sm:grid-cols-2"}>
