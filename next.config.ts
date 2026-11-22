@@ -81,6 +81,10 @@ const nextConfig: NextConfig = {
                     destination: `${apiBase}/api/:path*`,
                 },
                 {
+                    source: "/app/appraisals",
+                    destination: "/app/appraisals.html",
+                },
+                {
                     source: "/app/:path*",
                     destination: "/app/index.html",
                 },
