@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "sync:pwa": "node scripts/sync-pwa.mjs",
+    "build:pwa": "npm --prefix ../mobile_app run build:web && node scripts/sync-pwa.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

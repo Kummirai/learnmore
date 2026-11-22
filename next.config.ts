@@ -11,6 +11,7 @@ const apiBase =
     "https://relate-iota.vercel.app";
 
 const nextConfig: NextConfig = {
+    skipTrailingSlashRedirect: true,
     turbopack: {
         root,
     },
@@ -68,12 +69,24 @@ const nextConfig: NextConfig = {
         // BFF proxy: every /api/* request the app makes is forwarded to the
         // Relate backend so sessions and cookies stay first-party on this
         // origin. The browser never talks to the backend directly.
-        return [
-            {
-                source: "/api/:path*",
-                destination: `${apiBase}/api/:path*`,
-            },
-        ];
+        return {
+            beforeFiles: [],
+            afterFiles: [
+                {
+                    source: "/app",
+                    destination: "/app/index.html",
+                },
+                {
+                    source: "/api/:path*",
+                    destination: `${apiBase}/api/:path*`,
+                },
+                {
+                    source: "/app/:path*",
+                    destination: "/app/index.html",
+                },
+            ],
+            fallback: [],
+        };
     },
 };
 
