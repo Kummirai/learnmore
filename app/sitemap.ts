@@ -9,6 +9,7 @@ const SITE_URL = "https://relateworld.org";
 const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekly" | "daily" | "always" | "hourly" | "never"; priority: number }[] = [
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/about", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/education", changeFrequency: "monthly", priority: 0.7 },
   { path: "/team", changeFrequency: "monthly", priority: 0.7 },
   { path: "/offices", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },

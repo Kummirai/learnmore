@@ -53,6 +53,7 @@ export default function Footer() {
             <ul className={"space-y-2 text-sm"}>
               {[
                 { label: "About Us", path: "/about" },
+                { label: "Education", path: "/education" },
                 { label: "Our Clubs", path: "/sprout" },
                 { label: "Our Team", path: "/team" },
                 { label: "Store", path: "/store" },

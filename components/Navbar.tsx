@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { LuMenu, LuX, LuChevronDown } from "react-icons/lu";
+import { LuMenu, LuX, LuChevronDown, LuChevronRight } from "react-icons/lu";
 import JoinCta from "@/components/join/JoinCta";
 import UserAvatar from "./UserAvatar";
 import { useClubs } from "@/lib/useClubs";
 
-type NavItem = { link: string; path: string };
+type NavItem = { link: string; path: string; children?: NavItem[] };
 type NavGroup = { link: string; short: string; items: NavItem[] };
 
 const navGroups: NavGroup[] = [
@@ -45,13 +45,28 @@ const navGroups: NavGroup[] = [
     ],
   },
   {
-    link: "Prayer & Requests",
-    short: "Prayer",
+    link: "Empowerment",
+    short: "Empowerment",
+    items: [{ link: "Education", path: "/education" }],
+  },
+  {
+    link: "Faith",
+    short: "Faith",
     items: [
-      { link: "Prayer Requests", path: "/prayer-requests" },
-      { link: "Requests", path: "/requests" },
-      { link: "Today's Prayer Times", path: "/prayer" },
-      { link: "My Prayer Streak", path: "/profile#streaks" },
+      {
+        link: "Season Guides",
+        path: "/magazines/anchor",
+        children: [],
+      },
+      {
+        link: "Prayer Requests",
+        path: "/prayer-requests",
+        children: [
+          { link: "Requests", path: "/requests" },
+          { link: "Today's Prayer Times", path: "/prayer" },
+          { link: "My Prayer Streak", path: "/profile#streaks" },
+        ],
+      },
     ],
   },
   {
@@ -67,35 +82,83 @@ const navGroups: NavGroup[] = [
 const panelId = (name: string) =>
   `nav-panel-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
+const submenuId = (group: string, path: string) =>
+  `nav-sub-${panelId(`${group} ${path}`)}`;
+
 export default function Navbar({ overlay = false }: { overlay?: boolean }) {
   const { clubs, subClubs, loading } = useClubs();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(
     {},
   );
+  const [expandedSubmenus, setExpandedSubmenus] = useState<
+    Record<string, boolean>
+  >({});
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const groups: NavGroup[] = loading
     ? navGroups
-    : [
-        ...navGroups.slice(0, 3),
-        {
-          link: "Season Guides",
-          short: "Guides",
-          items: [...clubs.filter((c) => c.slug !== "sprout"), ...subClubs].map(
-            (c) => ({ link: `${c.name} S.G`, path: `/magazines/${c.slug}` }),
-          ),
-        },
-        ...navGroups.slice(3),
-      ];
+    : navGroups.map((group) =>
+        group.link === "Faith"
+          ? {
+              ...group,
+              items: group.items.map((item) =>
+                item.link === "Season Guides"
+                  ? {
+                      ...item,
+                      children: [
+                        ...clubs.filter((c) => c.slug !== "sprout"),
+                        ...subClubs,
+                      ].map((c) => ({
+                        link: c.name,
+                        path: `/magazines/${c.slug}`,
+                      })),
+                    }
+                  : item,
+              ),
+            }
+          : group,
+      );
+
+  const navItemKey = (group: string, item: NavItem) => `${group}:${item.path}`;
 
   const toggleGroup = (name: string) => {
     setExpandedGroups((prev) => ({ ...prev, [name]: !prev[name] }));
   };
+
+  const toggleSubmenu = (key: string) => {
+    setExpandedSubmenus((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  const renderItemLink = (
+    item: NavItem,
+    className: string,
+    onClick: () => void,
+  ) =>
+    item.path === "/join" ? (
+      <JoinCta
+        href={item.path}
+        memberLabel={null}
+        onClick={onClick}
+        className={className}
+      >
+        {item.link}
+      </JoinCta>
+    ) : (
+      <Link
+        href={item.path}
+        aria-current={pathname === item.path ? "page" : undefined}
+        onClick={onClick}
+        className={className}
+      >
+        {item.link}
+      </Link>
+    );
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -202,15 +265,20 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                   key={group.link}
                   className={"relative"}
                   onMouseEnter={() => setOpenGroup(group.link)}
-                  onMouseLeave={() => setOpenGroup(null)}
+                  onMouseLeave={() => {
+                    setOpenGroup(null);
+                    setOpenSubmenu(null);
+                  }}
                   onBlur={(event) => {
                     if (!event.currentTarget.contains(event.relatedTarget)) {
                       setOpenGroup(null);
+                      setOpenSubmenu(null);
                     }
                   }}
                   onKeyDown={(event) => {
                     if (event.key === "Escape") {
                       setOpenGroup(null);
+                      setOpenSubmenu(null);
                       event.currentTarget
                         .querySelector<HTMLButtonElement>("button")
                         ?.focus();
@@ -221,7 +289,10 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                     type="button"
                     aria-expanded={expanded}
                     aria-controls={id}
-                    onClick={() => setOpenGroup(expanded ? null : group.link)}
+                    onClick={() => {
+                      setOpenGroup(expanded ? null : group.link);
+                      setOpenSubmenu(null);
+                    }}
                     onFocus={() => setOpenGroup(group.link)}
                     className={`inline-flex min-h-11 items-center gap-1 text-[13px] ${hoverText} transition-colors`}
                     style={triggerShadow}
@@ -245,35 +316,91 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                         "bg-white rounded-lg shadow-xl border border-gray-100 py-2 min-w-44"
                       }
                     >
-                      {group.items.map((item) =>
-                        item.path === "/join" ? (
-                          <JoinCta
+                      {group.items.map((item) => {
+                        const key = navItemKey(group.link, item);
+                        const itemExpanded = openSubmenu === key;
+                        const hasChildren = Boolean(item.children?.length);
+                        return (
+                          <div
                             key={item.path}
-                            href={item.path}
-                            memberLabel={null}
-                            onClick={() => setOpenGroup(null)}
-                            className={
-                              "flex min-h-11 items-center px-4 py-2 text-[13px] text-gray-700 hover:bg-alice-blue hover:text-cyan-ink transition-colors"
+                            className={"relative"}
+                            onMouseEnter={() =>
+                              hasChildren && setOpenSubmenu(key)
+                            }
+                            onMouseLeave={() =>
+                              hasChildren && setOpenSubmenu(null)
                             }
                           >
-                            {item.link}
-                          </JoinCta>
-                        ) : (
-                          <Link
-                            key={item.path}
-                            href={item.path}
-                            aria-current={
-                              pathname === item.path ? "page" : undefined
-                            }
-                            onClick={() => setOpenGroup(null)}
-                            className={
-                              "flex min-h-11 items-center px-4 py-2 text-[13px] text-gray-700 hover:bg-alice-blue hover:text-cyan-ink transition-colors"
-                            }
-                          >
-                            {item.link}
-                          </Link>
-                        ),
-                      )}
+                            <div className={"flex items-center"}>
+                              {renderItemLink(
+                                item,
+                                "flex min-h-11 flex-1 items-center px-4 py-2 text-[13px] text-gray-700 hover:bg-alice-blue hover:text-cyan-ink transition-colors",
+                                () => {
+                                  setOpenGroup(null);
+                                  setOpenSubmenu(null);
+                                },
+                              )}
+                              {hasChildren ? (
+                                <button
+                                  type="button"
+                                  aria-label={`Toggle ${item.link} submenu`}
+                                  aria-expanded={itemExpanded}
+                                  aria-controls={submenuId(group.link, item.path)}
+                                  onFocus={() => setOpenSubmenu(key)}
+                                  onClick={() =>
+                                    setOpenSubmenu(itemExpanded ? null : key)
+                                  }
+                                  className={
+                                    "flex min-h-11 items-center px-2 text-gray-500 hover:text-cyan-ink"
+                                  }
+                                >
+                                  <LuChevronRight
+                                    aria-hidden
+                                    className={`text-xs transition-transform ${itemExpanded ? "rotate-90" : ""}`}
+                                  />
+                                </button>
+                              ) : null}
+                            </div>
+                            {hasChildren ? (
+                              <div
+                                id={submenuId(group.link, item.path)}
+                                className={`absolute top-0 left-full pl-1 transition-all duration-200 ${
+                                  itemExpanded
+                                    ? "visible opacity-100"
+                                    : "invisible opacity-0"
+                                }`}
+                              >
+                                <div
+                                  className={
+                                    "bg-white rounded-lg shadow-xl border border-gray-100 py-2 min-w-44"
+                                  }
+                                >
+                                  {item.children?.map((child) => (
+                                    <Link
+                                      key={child.path}
+                                      href={child.path}
+                                      aria-current={
+                                        pathname === child.path
+                                          ? "page"
+                                          : undefined
+                                      }
+                                      onClick={() => {
+                                        setOpenGroup(null);
+                                        setOpenSubmenu(null);
+                                      }}
+                                      className={
+                                        "flex min-h-11 items-center px-4 py-2 text-[13px] text-gray-700 hover:bg-alice-blue hover:text-cyan-ink transition-colors"
+                                      }
+                                    >
+                                      {child.link}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : null}
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </li>
@@ -381,35 +508,65 @@ export default function Navbar({ overlay = false }: { overlay?: boolean }) {
                     </button>
                     {expanded && (
                       <div id={id} className={"flex flex-col gap-1 pb-3"}>
-                        {group.items.map((item) =>
-                          item.path === "/join" ? (
-                            <JoinCta
-                              key={item.path}
-                              href={item.path}
-                              memberLabel={null}
-                              onClick={() => setMenuOpen(false)}
-                              className={
-                                "flex min-h-11 items-center border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-cyan-light hover:text-white transition-colors"
-                              }
-                            >
-                              {item.link}
-                            </JoinCta>
-                          ) : (
-                            <Link
-                              key={item.path}
-                              href={item.path}
-                              aria-current={
-                                pathname === item.path ? "page" : undefined
-                              }
-                              onClick={() => setMenuOpen(false)}
-                              className={
-                                "flex min-h-11 items-center border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-cyan-light hover:text-white transition-colors"
-                              }
-                            >
-                              {item.link}
-                            </Link>
-                          ),
-                        )}
+                        {group.items.map((item) => {
+                          const key = navItemKey(group.link, item);
+                          const itemExpanded = Boolean(expandedSubmenus[key]);
+                          const hasChildren = Boolean(item.children?.length);
+                          return (
+                            <div key={item.path}>
+                              <div className={"flex items-center"}>
+                                {renderItemLink(
+                                  item,
+                                  "flex min-h-11 flex-1 items-center border-l-2 border-white/20 pl-4 py-1.5 text-[13px] text-white/75 hover:border-cyan-light hover:text-white transition-colors",
+                                  () => setMenuOpen(false),
+                                )}
+                                {hasChildren ? (
+                                  <button
+                                    type="button"
+                                    aria-label={`Toggle ${item.link} submenu`}
+                                    aria-expanded={itemExpanded}
+                                    aria-controls={`mobile-${submenuId(group.link, item.path)}`}
+                                    onClick={() => toggleSubmenu(key)}
+                                    className={
+                                      "flex min-h-11 items-center px-3 text-white/70 hover:text-white"
+                                    }
+                                  >
+                                    <LuChevronDown
+                                      aria-hidden
+                                      className={`text-sm transition-transform ${itemExpanded ? "rotate-180" : ""}`}
+                                    />
+                                  </button>
+                                ) : null}
+                              </div>
+                              {hasChildren && itemExpanded ? (
+                                <div
+                                  id={`mobile-${submenuId(group.link, item.path)}`}
+                                  className={
+                                    "ml-4 flex flex-col gap-1 border-l border-white/10 pl-4 pb-2"
+                                  }
+                                >
+                                  {item.children?.map((child) => (
+                                    <Link
+                                      key={child.path}
+                                      href={child.path}
+                                      aria-current={
+                                        pathname === child.path
+                                          ? "page"
+                                          : undefined
+                                      }
+                                      onClick={() => setMenuOpen(false)}
+                                      className={
+                                        "flex min-h-11 items-center border-l-2 border-white/10 pl-4 py-1.5 text-[13px] text-white/65 hover:border-cyan-light hover:text-white transition-colors"
+                                      }
+                                    >
+                                      {child.link}
+                                    </Link>
+                                  ))}
+                                </div>
+                              ) : null}
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
