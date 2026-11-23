@@ -47,7 +47,10 @@ const navGroups: NavGroup[] = [
   {
     link: "Empowerment",
     short: "Empowerment",
-    items: [{ link: "Education", path: "/education" }],
+    items: [
+      { link: "Education", path: "/education" },
+      { link: "Care & Connect Day", path: "/care-connect-day" },
+    ],
   },
   {
     link: "Faith",

@@ -10,6 +10,7 @@ const MAIN_PAGES: { path: string; changeFrequency: "yearly" | "monthly" | "weekl
   { path: "/", changeFrequency: "weekly", priority: 1 },
   { path: "/about", changeFrequency: "monthly", priority: 0.8 },
   { path: "/education", changeFrequency: "monthly", priority: 0.7 },
+  { path: "/care-connect-day", changeFrequency: "monthly", priority: 0.7 },
   { path: "/team", changeFrequency: "monthly", priority: 0.7 },
   { path: "/offices", changeFrequency: "monthly", priority: 0.7 },
   { path: "/contact", changeFrequency: "yearly", priority: 0.6 },

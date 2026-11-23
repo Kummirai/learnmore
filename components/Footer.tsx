@@ -54,6 +54,7 @@ export default function Footer() {
               {[
                 { label: "About Us", path: "/about" },
                 { label: "Education", path: "/education" },
+                { label: "Care & Connect Day", path: "/care-connect-day" },
                 { label: "Our Clubs", path: "/sprout" },
                 { label: "Our Team", path: "/team" },
                 { label: "Store", path: "/store" },
