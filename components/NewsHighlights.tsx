@@ -1,31 +1,7 @@
 import Link from "next/link";
+import { newsPosts } from "@/lib/news";
 
-const posts = [
-  {
-    title: "Spring Season Reading Guides Are Live",
-    excerpt:
-      "Footsteps for Surge and Rooted for Sprout — thirteen weeks of daily verses, try-its and prayers are ready in the app.",
-    date: "1 Sep 2026",
-    tag: "Reading Guides",
-    color: "bg-ice-blue text-navy-dark",
-  },
-  {
-    title: "Sprout Camp Bookings Are Open",
-    excerpt:
-      "Four days of skills, hikes and campfires — leaders on hand to sign off requirements. Places are limited, so book early.",
-    date: "15 Aug 2026",
-    tag: "Sprout",
-    color: "bg-blue-100 text-blue-700",
-  },
-  {
-    title: "New Clubs Opened for Parents & Families",
-    excerpt:
-      "Anchor, Spark and Synergy bring single parents and couples of every stage into the Relate family — every season now has a home.",
-    date: "2 Aug 2026",
-    tag: "Community",
-    color: "bg-purple-100 text-purple-700",
-  },
-];
+const posts = newsPosts.slice(0, 3);
 
 export default function NewsHighlights() {
   return (
@@ -39,18 +15,16 @@ export default function NewsHighlights() {
             "mx-auto mb-10 flex max-w-2xl flex-col items-center gap-4 text-center"
           }
         >
-          <div>
-            <p
-              className={
-                "mb-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
-              }
-            >
-              Latest news
-            </p>
-            <h2 className={"text-3xl font-semibold text-navy md:text-4xl"}>
-              From the Relate community
-            </h2>
-          </div>
+          <p
+            className={
+              "text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
+            }
+          >
+            Latest news
+          </p>
+          <h2 className={"text-3xl font-semibold text-navy md:text-4xl"}>
+            From the Relate community
+          </h2>
           <Link href={"/news"} className={"link-chevron"}>
             View all
           </Link>
@@ -60,11 +34,11 @@ export default function NewsHighlights() {
             "reveal reveal-stagger grid grid-cols-1 gap-6 md:grid-cols-3"
           }
         >
-          {posts.map((p, i) => (
-            <div
-              key={i}
+          {posts.map((p) => (
+            <article
+              key={p.slug}
               className={
-                "stagger-item bg-white rounded-2xl p-6 border border-black/5 hover:shadow-lg transition-shadow"
+                "stagger-item hover-lift rounded-2xl border border-black/5 bg-white p-6"
               }
             >
               <span
@@ -78,8 +52,8 @@ export default function NewsHighlights() {
               <p className={"text-sm text-navy/70 leading-relaxed mb-3"}>
                 {p.excerpt}
               </p>
-              <p className={"text-xs text-navy/70"}>{p.date}</p>
-            </div>
+              <p className={"text-xs text-navy/70"}>{p.dateLabel}</p>
+            </article>
           ))}
         </div>
       </div>
