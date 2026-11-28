@@ -184,7 +184,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
           <div className="absolute -right-16 bottom-0 size-72 rounded-full bg-navy-soft/50 blur-3xl" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-28 md:pt-36 lg:pb-6">
+        <div className="relative mx-auto max-w-6xl px-5 sm:px-6 pb-14 pt-28 md:pt-36 lg:pb-6">
           <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_auto] lg:gap-14">
             <div className="min-w-0">
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-cyan-light">
@@ -257,7 +257,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
       </section>
 
       {/* ── The record ──────────────────────────────────────────────── */}
-      <section className="bg-white px-4 pb-16 pt-24 md:pt-32">
+      <section className="bg-white px-5 sm:px-6 pb-16 pt-24 md:pt-32">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 max-w-2xl">
             <p className="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">
@@ -398,7 +398,7 @@ export default function MemberDashboard({ member }: { member: Membership }) {
       </section>
 
       {/* ── Status, next steps, squad ───────────────────────────────── */}
-      <section className="bg-alice-blue px-4 py-16 md:py-20">
+      <section className="bg-alice-blue px-5 sm:px-6 py-16 md:py-20">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-6 lg:grid-cols-[1.15fr_1fr]">
             <div className="rounded-3xl border border-white bg-white p-6 shadow-[0_1px_2px_rgba(21,31,58,0.05)] md:p-8">

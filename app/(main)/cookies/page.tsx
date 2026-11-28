@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function CookiesPage() {
   const doc = COOKIE_DOC;
   return (
-    <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
+    <section className={"reveal flex-1 px-5 sm:px-6 py-16 md:py-24"}>
       <div className={"mx-auto max-w-4xl"}>
         <div className={"mb-12 text-center"}>
           <div

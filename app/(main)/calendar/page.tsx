@@ -29,7 +29,7 @@ const typeColor: Record<string, string> = {
 
 export default function CalendarPage() {
     return (
-        <section className={"flex-1 px-4 py-12"}>
+        <section className={"flex-1 px-5 sm:px-6 py-12"}>
             <div className={"max-w-4xl mx-auto"}>
                 <div className={"text-center mb-10"}>
                     <h1 className={"text-3xl md:text-4xl font-semibold text-gray-800 mb-3"}>School Calendar</h1>

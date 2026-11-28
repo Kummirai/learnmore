@@ -61,7 +61,7 @@ export default function RegisterPage() {
         meta={[{ label: "6 clubs", value: "" }]}
       />
 
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-12 bg-white">
         <div className="max-w-3xl mx-auto">
           {step === "choose" ? (
             <>

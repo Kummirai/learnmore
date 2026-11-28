@@ -40,7 +40,7 @@ const principles = [
 
 export default function AboutPage() {
   return (
-    <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
+    <section className={"reveal flex-1 px-5 py-16 sm:px-6 md:py-24"}>
       <div className={"max-w-4xl mx-auto"}>
         <div className={"text-center mb-12"}>
           <h1

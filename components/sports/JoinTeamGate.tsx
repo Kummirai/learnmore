@@ -113,7 +113,7 @@ export default function JoinTeamGate() {
 
   if (phase === "loading") {
     return (
-      <section className="flex-1 bg-white px-4 py-24">
+      <section className="flex-1 bg-white px-5 py-24 sm:px-6">
         <div className="mx-auto flex max-w-xl items-center justify-center gap-3 text-sm text-slate-gray">
           <LuLoaderCircle className="animate-spin text-2xl" />
           Checking your membership…
@@ -124,7 +124,7 @@ export default function JoinTeamGate() {
 
   if (phase === "error") {
     return (
-      <section className="flex-1 bg-white px-4 py-16">
+      <section className="flex-1 bg-white px-5 py-16 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-red-50">
             <LuRefreshCw className="text-3xl text-red-600" />
@@ -153,7 +153,7 @@ export default function JoinTeamGate() {
 
   if (phase === "no-membership") {
     return (
-      <section className="flex-1 bg-white px-4 py-16">
+      <section className="flex-1 bg-white px-5 py-16 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-gold-100">
             <LuIdCard className="text-3xl text-gold-700" />
@@ -187,7 +187,7 @@ export default function JoinTeamGate() {
   if (phase === "on-team" && mine) {
     const onSheet = mine.status === "active";
     return (
-      <section className="flex-1 bg-white px-4 py-12 md:py-16">
+      <section className="flex-1 bg-white px-5 py-12 sm:px-6 md:py-16">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-blue-soft">
             <LuShieldCheck className="text-3xl text-blue" />
@@ -277,7 +277,7 @@ function TeamPicker({ membership }: { membership: Membership | null }) {
   const teams = sports ? sports.teamsForClub(clubSlug) : [];
 
   return (
-    <section className="flex-1 bg-white px-4 py-12 md:py-16">
+    <section className="flex-1 bg-white px-5 py-12 sm:px-6 md:py-16">
       <div className="mx-auto max-w-2xl">
         <p className="mb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-blue">
           Relate · Join a team

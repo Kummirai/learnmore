@@ -75,7 +75,7 @@ export default function OrderDetailPage() {
         return (
             <>
                 <Navbar />
-                <section className="flex flex-1 items-center justify-center bg-white px-4 py-24">
+                <section className="flex flex-1 items-center justify-center bg-white px-5 py-24 sm:px-6">
                     <div className="flex items-center gap-3 text-slate-gray" role="status">
                         <LuLoaderCircle className="animate-spin text-2xl" />
                         <span className="text-sm">Fetching your order…</span>
@@ -89,7 +89,7 @@ export default function OrderDetailPage() {
         return (
             <>
                 <Navbar />
-                <section className="flex-1 bg-white px-4 py-16">
+                <section className="flex-1 bg-white px-5 py-16 sm:px-6">
                     <div className="mx-auto max-w-xl rounded-2xl bg-alice-blue/40 px-6 py-14 text-center shadow-sm">
                         <LuCircleAlert className="mx-auto mb-3 text-3xl text-slate-gray" />
                         <p className="text-sm font-semibold text-navy">{error || "Order not found."}</p>
@@ -113,7 +113,7 @@ export default function OrderDetailPage() {
     return (
         <>
             <Navbar />
-            <section className="flex-1 bg-white px-4 py-10 md:py-14">
+            <section className="flex-1 bg-white px-5 py-10 sm:px-6 md:py-14">
                 <div className="mx-auto max-w-4xl">
                     <Link
                         href="/store/orders"

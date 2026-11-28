@@ -102,7 +102,7 @@ export default async function SproutCampPage() {
         }
       />
 
-      <section className={"flex-1 px-4 py-12 bg-white"}>
+      <section className={"flex-1 px-5 sm:px-6 py-12 bg-white"}>
         <div className={"max-w-6xl mx-auto"}>
           {/* At a glance */}
           <div className={"grid grid-cols-2 lg:grid-cols-4 gap-3 mb-12"}>

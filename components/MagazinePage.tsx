@@ -26,7 +26,7 @@ export default async function MagazinePage({slug}: {slug: string}) {
 
     if (!doc) {
         return (
-            <section className={"flex-1 px-4 py-12"}>
+            <section className={"flex-1 px-5 sm:px-6 py-12"}>
                 <div className={"max-w-4xl mx-auto"}>
                     {catalogueFailed ? (
                         <DataError label={"This season guide"}/>

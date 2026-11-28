@@ -4,7 +4,7 @@ export default function NotFound() {
   return (
     <main
       id="main-content"
-      className="flex flex-1 items-center justify-center bg-stage px-4 py-24"
+      className="flex flex-1 items-center justify-center bg-stage px-5 sm:px-6 py-24"
     >
       <div className="max-w-md text-center">
         <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan-ink">

@@ -23,7 +23,7 @@ function CatalogError() {
   return (
     <>
       <Navbar />
-      <section className="flex-1 px-4 py-24 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-24 bg-white">
         <div className="mx-auto max-w-xl text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">
             Relate · Registration

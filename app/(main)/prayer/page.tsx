@@ -88,7 +88,7 @@ export default function PrayerPage() {
                         backgroundPosition: "center",
                     }}
                 />
-                <div className="relative container mx-auto max-w-6xl px-6 py-14 md:py-20">
+                <div className="relative container mx-auto max-w-6xl px-6 py-14 text-center md:py-20 md:text-left">
 
                     <p className={'mt-8 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-light'}>
                         Daily rhythm
@@ -160,7 +160,7 @@ export default function PrayerPage() {
                     })}
                 </div>
 
-                <p className="mt-8 text-sm text-slate-500">
+                <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-slate-500">
                     Times are derived from today&apos;s astronomic sunrise and sunset (
                     {PRAYER_COORDS.lat}°S, {PRAYER_COORDS.lng}°E — Johannesburg). Dawn &amp; Evening sit 90 minutes before
                     sunrise and after sunset; Afternoon is the midpoint between noon and sunset. If the live sunrise

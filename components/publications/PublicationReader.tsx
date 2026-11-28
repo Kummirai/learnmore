@@ -26,7 +26,7 @@ export default function PublicationReader({doc, club}: PublicationReaderProps) {
         <>
             <Navbar/>
 
-            <section style={clubVars} className={"flex-1 px-4 pt-8 pb-12"}>
+            <section style={clubVars} className={"flex-1 px-5 pt-8 pb-12 sm:px-6"}>
                 <header className={"max-w-3xl mx-auto mb-8"}>
                     <p className={"text-[11px] font-bold uppercase tracking-[0.2em] text-(--club-accent-dark)"}>
                         {[isMagazine ? "Season Guide" : "Bulletin", club?.name ?? doc.clubSlug, seasonLabel]

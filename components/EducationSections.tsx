@@ -230,10 +230,10 @@ const seasons: Season[] = [
 export default function EducationSections() {
   return (
     <>
-      <section id="mission" className="reveal bg-stage px-4 py-16 md:py-24">
+      <section id="mission" className="reveal bg-stage px-5 py-16 sm:px-6 md:py-24">
         <div className="mx-auto max-w-6xl">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="max-w-3xl">
+            <div className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
                 Education Department
               </p>
@@ -280,11 +280,11 @@ export default function EducationSections() {
 
       <section
         id="pillars"
-        className="bg-white px-4 pt-16 pb-6 md:pt-24 md:pb-10"
+        className="bg-white px-5 pt-16 pb-6 sm:px-6 md:pt-24 md:pb-10"
       >
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
                 Our four education pillars
               </p>
@@ -292,7 +292,7 @@ export default function EducationSections() {
                 Four ways we help learners grow.
               </h2>
             </div>
-            <p className="max-w-md text-sm leading-relaxed text-slate-gray md:text-base">
+            <p className="mx-auto max-w-md text-center text-sm leading-relaxed text-slate-gray md:mx-0 md:text-left md:text-base">
               Each pillar can stand on its own. Together they cover the tools,
               relationships, revision and next steps a learner needs.
             </p>
@@ -306,7 +306,7 @@ export default function EducationSections() {
         return (
           <section
             key={pillar.title}
-            className="px-4 py-12 md:py-16"
+            className="px-5 py-12 sm:px-6 md:py-16"
             style={{ background: pillar.tint }}
           >
             <div className="mx-auto grid max-w-6xl items-center gap-8 md:grid-cols-2 md:gap-14">
@@ -332,8 +332,8 @@ export default function EducationSections() {
                   <Icon />
                 </span>
               </div>
-              <div className="reveal">
-                <div className="flex items-baseline gap-4">
+              <div className="reveal text-center md:text-left">
+                <div className="flex items-baseline justify-center gap-4 md:justify-start">
                   <span
                     className="font-display text-4xl font-black leading-none md:text-5xl"
                     style={{ color: pillar.ink, opacity: 0.22 }}
@@ -353,7 +353,7 @@ export default function EducationSections() {
                 <p className="mt-3 text-sm leading-relaxed text-slate-gray md:text-base">
                   {pillar.body}
                 </p>
-                <ul className="mt-5 space-y-3">
+                <ul className="mt-5 space-y-3 text-left">
                   {pillar.points.map((point) => (
                     <li
                       key={point}
@@ -373,9 +373,9 @@ export default function EducationSections() {
         );
       })}
 
-      <section id="season" className="bg-stage px-4 py-16 md:py-24">
+      <section id="season" className="bg-stage px-5 py-16 sm:px-6 md:py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
+          <div className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
               How the year moves
             </p>
@@ -468,9 +468,9 @@ export default function EducationSections() {
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-16 text-white md:py-24">
+      <section className="bg-navy px-5 py-16 text-white sm:px-6 md:py-24">
         <div className="mx-auto flex max-w-5xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-2xl">
+          <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-light">
               Bring it into your club
             </p>
@@ -483,7 +483,7 @@ export default function EducationSections() {
               to serve.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col items-center gap-3 sm:flex-row">
             <Link href="/join" className="btn-pill btn-light">
               Join a club <LuArrowRight />
             </Link>

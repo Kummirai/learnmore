@@ -48,7 +48,7 @@ export default async function ProgrammingPortalPage() {
           }
         />
 
-        <div className={"relative mx-auto max-w-6xl px-4 pt-32 pb-12"}>
+        <div className={"relative mx-auto max-w-6xl px-5 sm:px-6 pt-32 pb-12"}>
           <nav
             aria-label={"Breadcrumb"}
             className={"mb-8 flex flex-wrap items-center gap-2 text-xs"}

@@ -128,7 +128,7 @@ export default async function SkillDetailPage({
           style={{ backgroundColor: level?.color ?? targetClub?.color ?? "#13c5dd" }}
         />
 
-        <div className={"relative max-w-6xl mx-auto px-4 pt-32 pb-14"}>
+        <div className={"relative max-w-6xl mx-auto px-5 sm:px-6 pt-32 pb-14"}>
           <nav
             aria-label={"Breadcrumb"}
             className={"mb-8 flex flex-wrap items-center gap-2 text-xs"}
@@ -233,7 +233,7 @@ export default async function SkillDetailPage({
         </div>
       </header>
 
-      <section className={"flex-1 px-4 py-12 bg-white"}>
+      <section className={"flex-1 px-5 py-12 bg-white sm:px-6"}>
         <div
           className={
             "max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 items-start"
@@ -606,7 +606,7 @@ function SkillUnavailable({ clubSlug, skillId }: { clubSlug: string; skillId: st
         className={"relative overflow-hidden text-white bg-navy"}
       >
         <Navbar overlay />
-        <div className={"relative max-w-6xl mx-auto px-4 pt-32 pb-14"}>
+        <div className={"relative max-w-6xl mx-auto px-5 sm:px-6 pt-32 pb-14"}>
           <h1
             className={"font-black tracking-tight leading-[1.05]"}
             style={{ fontSize: "clamp(2rem, 7vw, 3.5rem)" }}
@@ -624,7 +624,7 @@ function SkillUnavailable({ clubSlug, skillId }: { clubSlug: string; skillId: st
         </div>
       </header>
 
-      <section className={"flex-1 px-4 py-12 bg-white"}>
+      <section className={"flex-1 px-5 py-12 bg-white sm:px-6"}>
         <div
           className={
             "max-w-xl mx-auto text-center rounded-2xl border border-red-200 bg-red-50 px-6 py-14"

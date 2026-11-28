@@ -17,7 +17,7 @@ export default async function ClubEventsPage() {
     clubs = (await getClubsCatalog()).clubs;
   } catch {
     return (
-      <section className="flex-1 px-4 py-16">
+      <section className="flex-1 px-5 sm:px-6 py-16">
         <div className="max-w-3xl mx-auto">
           <DataError label={"The club list"} />
         </div>
@@ -49,12 +49,12 @@ export default async function ClubEventsPage() {
         }
       />
 
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
-          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1 text-center md:text-left">
             Relate clubs
           </p>
-          <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-8">
+          <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-8 text-center md:text-left">
             Pick a club
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

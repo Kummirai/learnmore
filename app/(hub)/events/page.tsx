@@ -333,7 +333,7 @@ export default function EventsPage() {
   return (
     <>
       <HeroCarousel slides={EVENT_SLIDES} />
-      <section className="flex-1 px-4 py-12">
+      <section className="flex-1 px-5 sm:px-6 py-12">
         <div className="max-w-6xl mx-auto">
           {loading && (
             <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">

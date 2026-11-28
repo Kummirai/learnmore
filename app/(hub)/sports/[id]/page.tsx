@@ -32,7 +32,7 @@ function CatalogError() {
   return (
     <>
       <Navbar />
-      <section className="flex-1 px-4 py-24 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-24 bg-white">
         <div className="mx-auto max-w-xl text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">
             Relate · Sports
@@ -300,16 +300,16 @@ export default async function TeamPage({
           </div>
         </header>
 
-        <section className="flex-1 px-4 py-12 bg-white">
+        <section className="flex-1 px-5 sm:px-6 py-12 bg-white">
           <div className="max-w-6xl mx-auto">
-            <div className="mb-8">
+            <div className="mb-8 text-center md:text-left">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
                 {club?.name ?? "Relate"} · Squad
               </p>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy">
                 The {team.initials} squad
               </h2>
-              <p className="text-gray-500 mt-1 text-sm max-w-2xl">
+              <p className="text-gray-500 mt-1 text-sm max-w-2xl mx-auto md:mx-0">
                 {roster.registered === 0
                   ? `Open to registration — the first ${squad.players.length} players to register make up the team sheet.`
                   : squad.coach.name
@@ -436,7 +436,7 @@ export default async function TeamPage({
             </div>
 
             {squad?.coach && (
-              <div className="mt-12">
+              <div className="mt-12 text-center md:text-left">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
                   Head Coach
                 </p>
@@ -483,14 +483,14 @@ export default async function TeamPage({
               clubName={club?.name}
             />
 
-            <div className="mt-12">
+            <div className="mt-12 text-center md:text-left">
               <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
                 Match day
               </p>
               <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-2">
                 Upcoming fixtures
               </h2>
-              <p className="text-gray-500 mt-1 text-sm max-w-2xl mb-6">
+              <p className="text-gray-500 mt-1 text-sm max-w-2xl mb-6 mx-auto md:mx-0">
                 {squad.fixtures.length > 0
                   ? `Upcoming fixtures for ${team.name}.`
                   : "No fixtures have been published for this team yet. Check back for upcoming matches."}

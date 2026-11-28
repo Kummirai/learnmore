@@ -34,7 +34,7 @@ export default function MembershipFaq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="border-t border-gray-100 bg-alice-blue px-4 py-16 md:py-20">
+    <section className="border-t border-gray-100 bg-alice-blue px-5 sm:px-6 py-16 md:py-20">
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 text-center">
           <p className="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">

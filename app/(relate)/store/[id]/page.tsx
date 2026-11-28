@@ -43,7 +43,7 @@ export default async function ProductPage({
     return (
       <>
         <Navbar />
-        <section className="flex-1 px-4 py-12 bg-white">
+        <section className="flex-1 px-5 py-12 sm:px-6 bg-white">
           <div className="max-w-xl mx-auto text-center rounded-2xl bg-red-50 px-6 py-14 shadow-sm">
             <p className="text-base font-semibold text-red-700 mb-1">
               We couldn&rsquo;t load the store.
@@ -83,7 +83,7 @@ export default async function ProductPage({
   return (
     <>
       <Navbar />
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 py-12 sm:px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <nav
             className="flex items-center gap-1.5 text-xs text-slate-gray mb-8 flex-wrap"

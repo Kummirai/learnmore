@@ -51,7 +51,7 @@ export default function EventDetailPage() {
     return (
       <>
         <Navbar />
-        <section className="flex-1 px-4 py-16">
+        <section className="flex-1 px-5 sm:px-6 py-16">
           <div className="max-w-6xl mx-auto flex items-center gap-2 text-sm text-gray-400">
             <LuLoaderCircle className="animate-spin" />
             Loading event…
@@ -65,7 +65,7 @@ export default function EventDetailPage() {
     return (
       <>
         <Navbar />
-        <section className="flex-1 px-4 py-16">
+        <section className="flex-1 px-5 sm:px-6 py-16">
           <div
             role="alert"
             className="max-w-2xl mx-auto border border-red-200 bg-red-50 rounded-xl px-5 py-4 text-sm text-red-700"
@@ -85,7 +85,7 @@ export default function EventDetailPage() {
     return (
       <>
         <Navbar />
-        <section className="flex-1 px-4 py-16">
+        <section className="flex-1 px-5 sm:px-6 py-16">
           <div className="max-w-2xl mx-auto text-center">
             <h1 className="text-2xl font-bold text-gray-800 mb-3">
               Event not found
@@ -147,7 +147,7 @@ export default function EventDetailPage() {
   return (
     <>
       <Navbar />
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
           <nav
             className="flex items-center gap-1.5 text-xs text-slate-gray mb-8 flex-wrap"

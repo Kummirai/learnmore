@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function TeamPage() {
   return (
     <>
-      <section className={"reveal flex-1 px-4 pt-16 md:pt-24 pb-4"}>
+      <section className={"reveal flex-1 px-5 pt-16 pb-4 sm:px-6 md:pt-24"}>
         <div className={"max-w-4xl mx-auto text-center"}>
           <h1
             className={"text-4xl md:text-5xl font-semibold text-navy mb-4"}

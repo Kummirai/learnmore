@@ -219,7 +219,7 @@ export default function ServicesPage() {
                     className="absolute inset-0 pointer-events-none"
                     style={{background: "linear-gradient(120deg, rgba(19,197,221,0.08) 0%, rgba(255,255,255,0) 55%)"}}
                 />
-                <div className="relative max-w-6xl mx-auto px-4 lg:px-0 py-14 md:py-16">
+                <div className="relative max-w-6xl mx-auto px-5 sm:px-6 lg:px-0 py-14 md:py-16 text-center md:text-left">
                     <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-3">Relate Marketplace</p>
                     <h1 className="tracking-tight leading-[1.05] text-navy">
                         <span className="block text-3xl md:text-5xl font-black">Skills at work.</span>
@@ -227,12 +227,12 @@ export default function ServicesPage() {
                             Claim it. Ship it. Get it approved.
                         </span>
                     </h1>
-                    <p className="mt-4 max-w-2xl text-slate-gray leading-relaxed">
+                    <p className="mt-4 max-w-2xl mx-auto md:mx-0 text-slate-gray leading-relaxed">
                         The team posts real tasks here — bug fixes, design work and practical jobs. Claim one,
                         deliver your work, and an admin reviews it. One member per service, no bidding, no payment
                         in the app — just work that gets done.
                     </p>
-                    <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-gray">
+                    <ul className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-slate-gray md:justify-start">
                         {["Claim one at a time", "Bug fixes link to GitHub", "Designs share the finished image"].map((t) => (
                             <li key={t} className="inline-flex items-center gap-1.5">
                                 <LuCheck className="text-cyan"/> {t}
@@ -250,7 +250,7 @@ export default function ServicesPage() {
                 </div>
             </header>
 
-            <div className="bg-ghost-white min-h-[50vh] px-4 py-10">
+            <div className="bg-ghost-white min-h-[50vh] px-5 py-10 sm:px-6">
                 <div className="mx-auto max-w-6xl">
                     {error ? (
                         <p className="mb-4 rounded-lg bg-red-50 px-4 py-2.5 text-sm text-red-600">{error}</p>

@@ -22,7 +22,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
     club = await getClub(slug);
   } catch {
     return (
-      <section className={"flex-1 px-4 py-12"}>
+      <section className={"flex-1 px-5 py-12 sm:px-6"}>
         <div className={"max-w-4xl mx-auto"}>
           <DataError label={"This club"} />
         </div>
@@ -32,7 +32,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
 
   if (!club) {
     return (
-      <section className={"flex-1 px-4 py-12"}>
+      <section className={"flex-1 px-5 py-12 sm:px-6"}>
         <div className={"max-w-4xl mx-auto"}>
           <h1 className={"text-3xl font-semibold text-gray-800"}>
             Club not found
@@ -89,7 +89,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
       {skillsError && (
         <section
           id={"skills"}
-          className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
+          className={"px-5 sm:px-6 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
         >
           <div className={"max-w-6xl mx-auto"}>
             <span
@@ -120,24 +120,24 @@ export default async function ClubPage({ slug }: { slug: string }) {
       {skills && skills.levels.length > 0 && (
         <section
           id={"skills"}
-          className={"px-4 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
+          className={"px-5 sm:px-6 py-12 bg-white scroll-mt-6 border-b border-gray-100"}
         >
           <div className={"max-w-6xl mx-auto"}>
             <span
               className={
-                "text-xs uppercase tracking-widest text-cyan font-medium"
+                "block text-center text-xs uppercase tracking-widest text-cyan font-medium md:text-left"
               }
             >
               Skills
             </span>
             <h2
               className={
-                "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"
+                "mt-1 mb-2 text-center text-2xl font-semibold text-gray-800 md:text-left md:text-3xl"
               }
             >
               What {club.name} members develop
             </h2>
-            <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+            <p className={"mx-auto mb-6 max-w-xl text-center text-sm text-gray-500 md:mx-0 md:text-left"}>
               {skills.count} skills across {skills.levels.length} levels in the {club.name} framework
             </p>
 
@@ -246,7 +246,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
             <Link
               href={`/${club.slug}/skills`}
               className={
-                "mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-cyan-dark transition-colors"
+                "mx-auto mt-5 flex w-fit items-center gap-2 text-sm font-semibold text-cyan transition-colors hover:text-cyan-dark md:mx-0"
               }
             >
               All {club.name} skills →
@@ -261,19 +261,19 @@ export default async function ClubPage({ slug }: { slug: string }) {
             <div className={"mb-10"}>
               <span
                 className={
-                  "text-xs uppercase tracking-widest text-cyan font-medium"
+                  "block text-center text-xs uppercase tracking-widest text-cyan font-medium md:text-left"
                 }
               >
                 Age groups
               </span>
               <h2
                 className={
-                  "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"
+                  "mt-1 mb-2 text-center text-2xl font-semibold text-gray-800 md:text-left md:text-3xl"
                 }
               >
                 {club.name} runs in three age groups
               </h2>
-              <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+              <p className={"mx-auto mb-6 max-w-xl text-center text-sm text-gray-500 md:mx-0 md:text-left"}>
                 Pick the band that fits your child — each has its own leaders,
                 rhythm and weekly program.
               </p>
@@ -461,7 +461,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                   "relative px-6 py-8 md:px-10 md:py-10 flex flex-col md:flex-row md:items-center md:justify-between gap-5"
                 }
               >
-                <div>
+                <div className={"text-center md:text-left"}>
                   <span
                     className={
                       "text-[11px] uppercase tracking-widest font-medium"
@@ -479,7 +479,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                   </h3>
                   <p
                     className={
-                      "mt-2 text-white/80 text-sm md:text-base max-w-xl leading-relaxed"
+                      "mx-auto mt-2 max-w-xl text-sm leading-relaxed text-white/80 md:mx-0 md:text-base"
                     }
                   >
                     {banner.blurb}
@@ -487,7 +487,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                 </div>
                 <div
                   className={
-                    "shrink-0 self-start md:self-center flex flex-wrap items-center gap-3"
+                    "flex shrink-0 flex-wrap items-center justify-center gap-3 self-center md:justify-start"
                   }
                 >
                   <JoinCta
@@ -595,7 +595,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
       />
 
       {isSprout && (ageGroupsBlock || bannerBlock) && (
-        <section className={"px-4 pt-12 pb-6"}>
+        <section className={"px-5 pt-12 pb-6 sm:px-6"}>
           <div className={"max-w-6xl mx-auto"}>
             {ageGroupsBlock}
             {savingsBlock}
@@ -605,7 +605,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
       )}
       {skillsSections}
 
-      <section className={"flex-1 px-4 py-12"}>
+      <section className={"flex-1 px-5 py-12 sm:px-6"}>
         <div className={"max-w-6xl mx-auto"}>
           {(club.mission || club.vision) && (
             <div className={"mb-10 grid gap-4 md:grid-cols-2"}>
@@ -656,19 +656,19 @@ export default async function ClubPage({ slug }: { slug: string }) {
             <div id={"programs"} className={"scroll-mt-8 mb-10"}>
               <span
                 className={
-                  "text-xs uppercase tracking-widest text-cyan font-medium"
+                  "block text-center text-xs uppercase tracking-widest text-cyan font-medium md:text-left"
                 }
               >
                 What happens here
               </span>
               <h2
                 className={
-                  "text-2xl md:text-3xl font-semibold text-gray-800 mt-1"
+                  "mt-1 text-center text-2xl font-semibold text-gray-800 md:text-left md:text-3xl"
                 }
               >
                 Programs &amp; Activities
               </h2>
-              <p className={"text-gray-500 text-sm mt-2 max-w-xl"}>
+              <p className={"mx-auto mt-2 max-w-xl text-center text-sm text-gray-500 md:mx-0 md:text-left"}>
                 {showCalendar
                   ? `Every date for ${club.name} in ${calendar?.year} — pick a date to see what happens.`
                   : `${club.programs.length} programs for ${club.group.toLowerCase()} — the weekly flagship first, then everything grouped under the three pillars: Shift, Sanctuary and Connect.`}
@@ -708,7 +708,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
                         key={p.name}
                         href={`/${club.slug}/${programSlug(p.name)}`}
                         className={
-                          "group -mx-3 flex items-baseline gap-3 rounded-lg px-3 py-4 border-b border-gray-100 hover:bg-alice-blue/70 transition-colors"
+                          "group flex items-baseline gap-3 rounded-lg px-3 py-4 border-b border-gray-100 hover:bg-alice-blue/70 transition-colors"
                         }
                       >
                         <span
@@ -745,19 +745,19 @@ export default async function ClubPage({ slug }: { slug: string }) {
           <div id={"events"} className={"mt-12 scroll-mt-8"}>
             <span
               className={
-                "text-xs uppercase tracking-widest text-cyan font-medium"
+                "block text-center text-xs uppercase tracking-widest text-cyan font-medium md:text-left"
               }
             >
               What&apos;s on
             </span>
             <h2
               className={
-                "text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"
+                "mt-1 mb-2 text-center text-2xl font-semibold text-gray-800 md:text-left md:text-3xl"
               }
             >
               Events &amp; Activities
             </h2>
-            <p className={"text-gray-500 text-sm max-w-xl mb-6"}>
+            <p className={"mx-auto mb-6 max-w-xl text-center text-sm text-gray-500 md:mx-0 md:text-left"}>
               {isSprout
                 ? `Every date on for ${club.name} — weekly gatherings, special days out and the camps that fill the term.`
                 : club.programs.length === 0
@@ -900,7 +900,7 @@ export default async function ClubPage({ slug }: { slug: string }) {
             <Link
               href={"/events"}
               className={
-                "mt-5 inline-flex items-center gap-2 text-sm font-semibold text-cyan hover:text-cyan-dark transition-colors"
+                "mx-auto mt-5 flex w-fit items-center gap-2 text-sm font-semibold text-cyan transition-colors hover:text-cyan-dark md:mx-0"
               }
             >
               All Relate events →

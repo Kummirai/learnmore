@@ -164,7 +164,7 @@ export default function PlayerRegistrationForm({
 
   if (loading || checking) {
     return (
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 py-12 bg-white sm:px-6">
         <div className="max-w-xl mx-auto text-center">
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-2">
             Relate · {team.sport} registration
@@ -185,7 +185,7 @@ export default function PlayerRegistrationForm({
 
   if (checkError) {
     return (
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 py-12 bg-white sm:px-6">
         <div className="max-w-xl mx-auto text-center">
           <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-5">
             <LuShieldAlert className="text-2xl text-red-600" />
@@ -215,7 +215,7 @@ export default function PlayerRegistrationForm({
 
   if (catalogueError || !sports) {
     return (
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 py-12 bg-white sm:px-6">
         <div className="max-w-xl mx-auto text-center">
           <div className="size-16 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-5">
             <FaExclamationTriangle className="text-2xl text-red-600" />
@@ -330,7 +330,7 @@ export default function PlayerRegistrationForm({
   if (done) {
     const onSheet = done.status === "active";
     return (
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 py-12 bg-white sm:px-6">
         <div className="max-w-xl mx-auto text-center">
           <div className="size-16 rounded-full bg-gold-100 flex items-center justify-center mx-auto mb-5">
             <FaCheck className="text-2xl text-gold-700" />
@@ -385,7 +385,7 @@ export default function PlayerRegistrationForm({
   if (existing) {
     const sameTeam = existing.teamId === team.id;
     return (
-      <section className="flex-1 bg-white px-4 py-12">
+      <section className="flex-1 bg-white px-5 py-12 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-blue-soft">
             <LuShieldCheck className="text-3xl text-blue" />
@@ -439,7 +439,7 @@ export default function PlayerRegistrationForm({
   if (!hasMembership) {
     const clubName = club?.name ?? "a Relate club";
     return (
-      <section className="flex-1 bg-white px-4 py-16">
+      <section className="flex-1 bg-white px-5 py-16 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-gold-100">
             <LuIdCard className="text-3xl text-gold-700" />
@@ -498,7 +498,7 @@ export default function PlayerRegistrationForm({
   }
 
   return (
-    <section className="flex-1 px-4 py-12 bg-white">
+    <section className="flex-1 px-5 py-12 bg-white sm:px-6">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue mb-1">

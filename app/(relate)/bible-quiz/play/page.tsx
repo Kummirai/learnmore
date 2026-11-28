@@ -17,7 +17,7 @@ export default function PlayPage() {
         <div className="min-h-screen bg-alice-blue">
             <Suspense
                 fallback={
-                    <section className="flex-1 px-4 py-24 flex items-center justify-center bg-alice-blue">
+                    <section className="flex-1 px-5 sm:px-6 py-24 flex items-center justify-center bg-alice-blue">
                         <div className="flex items-center gap-3 text-slate-gray">
                             <LuLoaderCircle className="animate-spin text-2xl" />
                             <span className="text-sm">Setting up your round…</span>

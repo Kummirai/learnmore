@@ -277,10 +277,10 @@ const actions: Action[] = [
 export default function CareConnectSections() {
   return (
     <>
-      <section id="mission" className="reveal bg-stage px-4 py-16 md:py-24">
+      <section id="mission" className="reveal bg-stage px-5 py-16 sm:px-6 md:py-24">
         <div className="mx-auto max-w-6xl">
           <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="max-w-3xl">
+            <div className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
                 Relate, Care &amp; Connect Day
               </p>
@@ -329,12 +329,12 @@ export default function CareConnectSections() {
 
       <section
         id="standard"
-        className="px-4 pt-16 pb-6 md:pt-24 md:pb-10"
+        className="px-5 pt-16 pb-6 sm:px-6 md:pt-24 md:pb-10"
         style={{ background: "linear-gradient(150deg, #fff8e3 0%, #ffffff 70%)" }}
       >
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
                 How the day works
               </p>
@@ -342,7 +342,7 @@ export default function CareConnectSections() {
                 Four commitments. One local need.
               </h2>
             </div>
-            <p className="max-w-md text-sm leading-relaxed text-slate-gray md:text-base">
+            <p className="mx-auto max-w-md text-center text-sm leading-relaxed text-slate-gray md:mx-0 md:text-left md:text-base">
               Each club carries its own plan from selection to reconciliation,
               so December care is specific, honest and owned locally.
             </p>
@@ -356,7 +356,7 @@ export default function CareConnectSections() {
         return (
           <section
             key={focus.title}
-            className="px-4 py-12 md:py-16"
+            className="px-5 py-12 sm:px-6 md:py-16"
             style={{ background: focus.tint }}
           >
             <div className="mx-auto grid max-w-6xl items-center gap-8 md:grid-cols-2 md:gap-14">
@@ -382,8 +382,8 @@ export default function CareConnectSections() {
                   <Icon />
                 </span>
               </div>
-              <div className="reveal">
-                <div className="flex items-baseline gap-4">
+              <div className="reveal text-center md:text-left">
+                <div className="flex items-baseline justify-center gap-4 md:justify-start">
                   <span
                     className="font-display text-4xl font-black leading-none md:text-5xl"
                     style={{ color: focus.ink, opacity: 0.22 }}
@@ -403,7 +403,7 @@ export default function CareConnectSections() {
                 <p className="mt-3 text-sm leading-relaxed text-slate-gray md:text-base">
                   {focus.body}
                 </p>
-                <ul className="mt-5 space-y-3">
+                <ul className="mt-5 space-y-3 text-left">
                   {focus.points.map((point) => (
                     <li
                       key={point}
@@ -423,9 +423,9 @@ export default function CareConnectSections() {
         );
       })}
 
-      <section id="season" className="bg-stage px-4 py-16 md:py-24">
+      <section id="season" className="bg-stage px-5 py-16 sm:px-6 md:py-24">
         <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
+          <div className="mx-auto max-w-3xl text-center md:mx-0 md:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
               How the year moves
             </p>
@@ -517,14 +517,14 @@ export default function CareConnectSections() {
         </div>
       </section>
 
-      <section id="gallery" className="bg-white px-4 py-16 md:py-24">
+      <section id="gallery" className="bg-white px-5 py-16 sm:px-6 md:py-24">
         <CareConnectGallery />
       </section>
 
-      <section id="get-involved" className="bg-stage px-4 py-16 md:py-24">
+      <section id="get-involved" className="bg-stage px-5 py-16 sm:px-6 md:py-24">
         <div className="mx-auto max-w-6xl">
           <div className="reveal flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
-            <div className="max-w-2xl">
+            <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
               <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-ink">
                 Get involved
               </p>
@@ -532,7 +532,7 @@ export default function CareConnectSections() {
                 Walk alongside our clubs.
               </h2>
             </div>
-            <p className="max-w-md text-sm leading-relaxed text-slate-gray md:text-base">
+            <p className="mx-auto max-w-md text-center text-sm leading-relaxed text-slate-gray md:mx-0 md:text-left md:text-base">
               Families, volunteers, partners and clubs all have a place in
               December&apos;s harvest.
             </p>
@@ -598,9 +598,9 @@ export default function CareConnectSections() {
         </div>
       </section>
 
-      <section className="bg-navy px-4 py-16 text-white md:py-24">
+      <section className="bg-navy px-5 py-16 text-white sm:px-6 md:py-24">
         <div className="mx-auto flex max-w-5xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
-          <div className="max-w-2xl">
+          <div className="mx-auto max-w-2xl text-center md:mx-0 md:text-left">
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-light">
               Serve with us
             </p>
@@ -612,7 +612,7 @@ export default function CareConnectSections() {
               saving into one weekend of real care.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
+          <div className="flex flex-col items-center gap-3 sm:flex-row">
             <Link href="/join" className="btn-pill btn-light">
               Join a club <LuArrowRight />
             </Link>

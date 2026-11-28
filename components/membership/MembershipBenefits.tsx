@@ -67,7 +67,7 @@ export default function MembershipBenefits({
   ];
 
   return (
-    <section className="border-t border-gray-100 bg-white px-4 py-16 md:py-20">
+    <section className="border-t border-gray-100 bg-white px-5 sm:px-6 py-16 md:py-20">
       <div className="mx-auto max-w-6xl">
         <div className="mb-10 max-w-2xl">
           <p className="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">

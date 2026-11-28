@@ -23,7 +23,7 @@ export default function MemberPage({
 }) {
     return (
         <section
-            className="flex-1 px-4 py-10 md:py-14"
+            className="flex-1 px-5 sm:px-6 py-10 md:py-14"
             style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
         >
             <div className={`mx-auto ${wide ? "max-w-4xl" : "max-w-3xl"}`}>

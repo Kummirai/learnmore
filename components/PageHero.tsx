@@ -138,7 +138,7 @@ export default function PageHero({
 
       <div
         className={
-          "relative z-10 max-w-6xl mx-auto w-full px-4 sm:px-6 min-h-screen flex flex-col justify-center py-16"
+          "relative z-10 max-w-6xl mx-auto w-full px-5 sm:px-6 min-h-screen flex flex-col justify-center py-16"
         }
       >
         <div className={"flex flex-col gap-3 text-center md:text-left"}>

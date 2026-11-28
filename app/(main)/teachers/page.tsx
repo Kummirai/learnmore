@@ -86,7 +86,7 @@ const teachers: Teacher[] = [
 
 export default function TeachersPage() {
   return (
-    <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
+    <section className={"reveal flex-1 px-5 sm:px-6 py-16 md:py-24"}>
       <div className={"max-w-6xl mx-auto"}>
         <div className={"text-center mb-12"}>
           <h1

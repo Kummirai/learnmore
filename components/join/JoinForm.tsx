@@ -263,7 +263,7 @@ export default function JoinForm({
 
   if (done) {
     return (
-      <section className="flex-1 px-4 py-16 bg-white">
+      <section className="flex-1 px-5 py-16 bg-white sm:px-6">
         <div className="max-w-xl mx-auto text-center">
           <div className="mx-auto size-16 rounded-full flex items-center justify-center bg-gold-50 mb-5">
             <FaCheck className="text-3xl text-gold-700" />
@@ -343,7 +343,7 @@ export default function JoinForm({
 
   if (checking) {
     return (
-      <section className="flex-1 bg-white px-4 py-16">
+      <section className="flex-1 bg-white px-5 py-16 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-alice-blue">
             <LuLoaderCircle className="animate-spin text-3xl text-cyan" />
@@ -361,7 +361,7 @@ export default function JoinForm({
 
   if (checkError) {
     return (
-      <section className="flex-1 bg-white px-4 py-16">
+      <section className="flex-1 bg-white px-5 py-16 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-red-50">
             <LuShieldAlert className="text-3xl text-red-500" />
@@ -388,7 +388,7 @@ export default function JoinForm({
 
   if (remoteMember?.clubSlug) {
     return (
-      <section className="flex-1 bg-white px-4 py-16">
+      <section className="flex-1 bg-white px-5 py-16 sm:px-6">
         <div className="mx-auto max-w-xl text-center">
           <div className="mx-auto mb-5 grid size-16 place-items-center rounded-full bg-blue-soft">
             <LuShieldCheck className="text-3xl text-blue" />
@@ -533,7 +533,7 @@ export default function JoinForm({
   const sectionBadge = "text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1";
 
   return (
-    <section className="flex-1 px-4 py-12 bg-white">
+    <section className="flex-1 px-5 py-12 bg-white sm:px-6">
       <div className="max-w-3xl mx-auto">
         <div className="mb-8">
           <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-cyan mb-1">

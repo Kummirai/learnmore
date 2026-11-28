@@ -27,7 +27,7 @@ export default function PortalHeader({
     >
       <div
         className={
-          "mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-4 py-3"
+          "mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-3 px-5 py-3 sm:px-6"
         }
       >
         <div className={"flex min-w-0 items-center gap-3"}>

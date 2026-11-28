@@ -66,7 +66,7 @@ export default function MembershipJoinPrompt() {
           <div className="absolute -right-16 bottom-0 size-72 rounded-full bg-navy-soft/50 blur-3xl" />
         </div>
 
-        <div className="relative mx-auto max-w-6xl px-4 pb-14 pt-28 md:pt-36 lg:pb-6">
+        <div className="relative mx-auto max-w-6xl px-5 sm:px-6 pb-14 pt-28 md:pt-36 lg:pb-6">
           <div className="grid items-center gap-10 lg:grid-cols-[1.15fr_auto] lg:gap-14">
             <div className="min-w-0">
               <p className="font-mono text-[11px] font-bold uppercase tracking-[0.3em] text-cyan-light">
@@ -206,7 +206,7 @@ export default function MembershipJoinPrompt() {
       </section>
 
       {/* ── How it works ────────────────────────────────────────────── */}
-      <section id="how-it-works" className="bg-white px-4 pb-16 pt-24 md:pt-32">
+      <section id="how-it-works" className="bg-white px-5 sm:px-6 pb-16 pt-24 md:pt-32">
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 max-w-2xl">
             <p className="mb-2 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-cyan-dark">
@@ -264,7 +264,7 @@ export default function MembershipJoinPrompt() {
       <MembershipFaq />
 
       {/* ── Closing CTA ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-navy-dark px-4 py-16 text-white md:py-20">
+      <section className="relative overflow-hidden bg-navy-dark px-5 sm:px-6 py-16 text-white md:py-20">
         <div
           aria-hidden
           className="absolute inset-0"

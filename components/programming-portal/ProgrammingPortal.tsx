@@ -46,7 +46,7 @@ export default function ProgrammingPortal() {
         studentName={user?.name ?? null}
       />
 
-      <div className={"mx-auto max-w-6xl px-4 py-8"}>
+      <div className={"mx-auto max-w-6xl px-5 py-8 sm:px-6"}>
         {loading ? (
           <p
             className={

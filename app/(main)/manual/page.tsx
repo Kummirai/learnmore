@@ -61,7 +61,7 @@ function SectionBody({ section }: { section: ManualSection }) {
 
 export default function ManualPage() {
   return (
-    <section className={"flex-1 px-4 py-12"}>
+    <section className={"flex-1 px-5 sm:px-6 py-12"}>
       <div className={"max-w-5xl mx-auto"}>
         <Link
           href={"/about"}

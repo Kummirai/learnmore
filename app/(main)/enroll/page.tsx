@@ -38,7 +38,7 @@ export default function EnrollPage() {
 
     if (state?.success) {
         return (
-            <section className={"reveal flex-1 flex items-center justify-center px-4 py-16"}>
+            <section className={"reveal flex-1 flex items-center justify-center px-5 sm:px-6 py-16"}>
                 <div className={"max-w-lg w-full bg-white rounded-xl p-8 md:p-12 text-center shadow-sm"}>
                     <LuCircleCheck className={"text-6xl text-cyan mx-auto mb-4"}/>
                     <h1 className={"text-2xl md:text-3xl font-semibold text-navy mb-3"}>Enrollment Submitted!</h1>
@@ -50,7 +50,7 @@ export default function EnrollPage() {
     }
 
     return (
-        <section className={"reveal flex-1 flex items-center justify-center px-4 py-12"}>
+        <section className={"reveal flex-1 flex items-center justify-center px-5 sm:px-6 py-12"}>
             <div className={"max-w-2xl w-full"}>
                 <div className={"bg-white rounded-xl p-8 md:p-10 shadow-sm"}>
                     <div className={"mb-8"}>

@@ -21,7 +21,7 @@ export default function ContactPage() {
   }, [state]);
 
   return (
-    <section className={"reveal flex-1 px-4 py-16 md:py-24"}>
+    <section className={"reveal flex-1 px-5 sm:px-6 py-16 md:py-24"}>
       <div className={"max-w-4xl mx-auto"}>
         <div className={"text-center mb-10"}>
           <h1

@@ -118,7 +118,7 @@ export default async function SkillsPage({ params }: { params: Promise<Params> }
         }
       />
 
-      <section className={"flex-1 px-4 py-12 bg-white"}>
+      <section className={"flex-1 px-5 py-12 bg-white sm:px-6"}>
         <div className={"max-w-6xl mx-auto"}>
           {club === "sprout-tweens" && (
             <Link
@@ -328,7 +328,7 @@ async function SkillsUnavailable({ clubSlug }: { clubSlug: string }) {
         meta={[{ label: "Club", value: capitalize(clubSlug) }]}
       />
 
-      <section className={"flex-1 px-4 py-12 bg-white"}>
+      <section className={"flex-1 px-5 py-12 bg-white sm:px-6"}>
         <div
           className={
             "max-w-xl mx-auto text-center rounded-2xl border border-red-200 bg-red-50 px-6 py-14"

@@ -141,7 +141,7 @@ export default async function SportsPage() {
     <>
       <HeroCarousel slides={SPORT_SLIDES} />
 
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 py-12 bg-white sm:px-6">
         <div className="max-w-6xl mx-auto">
           {!catalog ? (
             <CatalogNote
@@ -160,13 +160,13 @@ export default async function SportsPage() {
                 id={sport.toLowerCase()}
                 className="scroll-mt-24 mb-14 last:mb-0"
               >
-                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1">
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-1 text-center md:text-left">
                   Relate · {sport}
                 </p>
-                <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-1">
+                <h2 className="text-2xl md:text-3xl font-black tracking-tight text-navy mb-1 text-center md:text-left">
                   {sport}
                 </h2>
-                <p className="text-gray-500 mb-6 max-w-2xl">{sportLine[sport]}</p>
+                <p className="text-gray-500 mb-6 max-w-2xl mx-auto text-center md:mx-0 md:text-left">{sportLine[sport]}</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                   {catalog.teamsForSport(sport).map((team) => (
                     <TeamCard key={team.id} team={team} />

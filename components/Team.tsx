@@ -342,7 +342,7 @@ export default function Team() {
   const groups = [...staticGroups, sportsGroup];
 
   return (
-    <section className={"reveal bg-white px-4 py-16 md:py-24"}>
+    <section className={"reveal bg-white px-5 sm:px-6 py-16 md:py-24"}>
       <div className={"mx-auto max-w-5xl"}>
         <div className={"mb-12 text-center md:mb-16"}>
           <h4 className={"text-blue font-medium mb-3"}>OUR TEAM</h4>

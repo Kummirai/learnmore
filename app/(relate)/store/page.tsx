@@ -311,7 +311,7 @@ export default function StorePage() {
             <Navbar />
 
             <a href="#stock" className="block bg-navy text-white transition hover:bg-navy-soft">
-                <span className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 px-4 py-2 text-[10.5px] font-medium tracking-wide sm:text-[11px]">
+                <span className="mx-auto flex max-w-6xl items-center justify-center gap-1.5 px-5 py-2 text-[10.5px] font-medium tracking-wide sm:px-6 sm:text-[11px]">
                     <span className="truncate">
                         Every purchase funds our charity work
                     </span>
@@ -319,12 +319,12 @@ export default function StorePage() {
                 </span>
             </a>
 
-            <header className="bg-white px-4 pb-8 pt-4 sm:pt-5">
+            <header className="bg-white px-5 pb-8 pt-4 sm:px-6 sm:pt-5">
                 <div className="mx-auto max-w-6xl">
                     <section className="overflow-hidden rounded-xl bg-white">
                         <div className="grid lg:grid-cols-[1.04fr_0.96fr]">
-                            <div className="flex flex-col justify-center px-5 py-7 sm:px-8 sm:py-9 lg:px-10 lg:py-12">
-                                <div className="flex flex-wrap items-center gap-2">
+                            <div className="flex flex-col justify-center px-5 py-7 text-center sm:px-8 sm:py-9 lg:px-10 lg:py-12 lg:text-left">
+                                <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
                                     <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue">
                                         <span className="size-1.5 rounded-full bg-blue" />
                                         Official store
@@ -339,11 +339,11 @@ export default function StorePage() {
                                 <h1 className="mt-3 text-[1.85rem] font-semibold leading-[1.15] tracking-[-0.02em] text-navy sm:text-[2.25rem] lg:text-[2.5rem]">
                                     Connecting hearts <span className="text-blue">across generations.</span>
                                 </h1>
-                                <p className="mt-3 max-w-md text-sm leading-relaxed text-slate-gray">
+                                <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-slate-gray lg:mx-0">
                                     Apparel, accessories and home &amp; study pieces made to carry the Relate story. Checkout by EFT, track every order, and know every purchase funds our charity work.
                                 </p>
 
-                                <div className="mt-6 flex flex-col gap-2.5 sm:flex-row">
+                                <div className="mt-6 flex flex-col gap-2.5 sm:flex-row sm:justify-center lg:justify-start">
                                     <a
                                         href="#stock"
                                         className="inline-flex h-11 items-center justify-center gap-2 rounded-lg btn-signin px-5 text-sm font-semibold text-white transition hover:brightness-95"
@@ -482,7 +482,7 @@ export default function StorePage() {
                 </div>
             </header>
 
-            <section className={"flex-1 px-4 py-10"}>
+            <section className={"flex-1 px-5 py-10 sm:px-6"}>
                 <div className={"mx-auto max-w-6xl"}>
                     <div className={"mb-5 flex items-baseline justify-between gap-4"}>
                         <h2 className={"text-lg font-semibold tracking-tight text-navy md:text-xl"}>

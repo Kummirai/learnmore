@@ -46,7 +46,7 @@ export default async function ClubMagazinesPage({
         <>
             <Navbar/>
 
-            <section className="px-4 pt-8 pb-6">
+            <section className="px-5 pt-8 pb-6 sm:px-6">
                 <div className="max-w-6xl mx-auto">
                     <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
                         {club.name} Season Guides
@@ -57,7 +57,7 @@ export default async function ClubMagazinesPage({
                 </div>
             </section>
 
-            <section style={clubVars} className={"flex-1 px-4 py-12"}>
+            <section style={clubVars} className={"flex-1 px-5 sm:px-6 py-12"}>
                 <div className={"max-w-6xl mx-auto"}>
                     <span className={"text-xs uppercase tracking-widest text-(--club-accent) font-medium"}>Library</span>
                     <h2 className={"text-2xl md:text-3xl font-semibold text-gray-800 mt-1 mb-2"}>

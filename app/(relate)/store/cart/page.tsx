@@ -15,7 +15,7 @@ export default function CartPage() {
     return (
         <>
             <Navbar />
-            <section className="flex-1 bg-white px-4 py-10 md:py-14">
+            <section className="flex-1 bg-white px-5 py-10 sm:px-6 md:py-14">
                 <div className="mx-auto max-w-5xl">
                     <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
                         <div>

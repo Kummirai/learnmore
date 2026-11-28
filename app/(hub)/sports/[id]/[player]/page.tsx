@@ -38,7 +38,7 @@ function CatalogError() {
   return (
     <>
       <Navbar />
-      <section className="flex-1 px-4 py-24 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-24 bg-white">
         <div className="mx-auto max-w-xl text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-cyan mb-2">
             Relate · Sports
@@ -325,7 +325,7 @@ export default async function PlayerPage({
         </div>
       </header>
 
-      <section className="flex-1 px-4 py-12 bg-white">
+      <section className="flex-1 px-5 sm:px-6 py-12 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
             <div className="lg:col-span-2">

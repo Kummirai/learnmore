@@ -13,7 +13,7 @@ export default function RequestAppCta({
   note: string;
 }) {
   return (
-    <section className={"bg-gradient-to-br from-navy via-navy-soft to-navy-dark px-4"}>
+    <section className={"bg-gradient-to-br from-navy via-navy-soft to-navy-dark px-5 sm:px-6"}>
       <div className={"max-w-3xl mx-auto py-14 md:py-20 text-center"}>
         <p className={"text-xs font-semibold uppercase tracking-[0.2em] text-cyan-light"}>
           {eyebrow}

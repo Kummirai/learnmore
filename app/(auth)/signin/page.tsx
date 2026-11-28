@@ -73,7 +73,7 @@ function SignInContent() {
 
     return (
         <section
-            className="flex-1 px-4 py-12 md:py-16"
+            className="flex-1 px-5 sm:px-6 py-12 md:py-16"
             style={{ background: "linear-gradient(115deg, #f5f8fb 0%, #eff5f9 60%, #f5f8fb 100%)" }}
         >
             <div className="max-w-md mx-auto">

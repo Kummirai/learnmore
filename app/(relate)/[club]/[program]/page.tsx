@@ -124,7 +124,7 @@ export default async function ClubProgramPage({
         }
       />
 
-      <section className={"flex-1 px-4 py-12"}>
+      <section className={"flex-1 px-5 py-12 sm:px-6"}>
         <div className={"max-w-6xl mx-auto"}>
           <div style={clubVars}>
             <span
