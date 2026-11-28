@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import {
+    LuBookOpen,
     LuChartLine,
     LuFileText,
     LuHeart,
@@ -156,6 +157,41 @@ export default function ReportView({ report }: { report: FinancialReport }) {
                 />
                 <Line label="Events hosted" value={report.impact.events} isMoney={false} />
             </SectionCard>
+
+            {report.schoolKit &&
+                (report.schoolKit.learners > 0 ||
+                    report.schoolKit.books > 0 ||
+                    report.schoolKit.pencils > 0 ||
+                    report.schoolKit.pens > 0) && (
+                    <SectionCard icon={LuBookOpen} title="School Kit">
+                        <Line
+                            label="Learners with a School Kit"
+                            value={report.schoolKit.learners}
+                            isMoney={false}
+                        />
+                        {report.schoolKit.books > 0 && (
+                            <Line
+                                label="Exercise books issued"
+                                value={report.schoolKit.books}
+                                isMoney={false}
+                            />
+                        )}
+                        {report.schoolKit.pencils > 0 && (
+                            <Line
+                                label="HB pencils issued"
+                                value={report.schoolKit.pencils}
+                                isMoney={false}
+                            />
+                        )}
+                        {report.schoolKit.pens > 0 && (
+                            <Line
+                                label="Ballpoint pens issued"
+                                value={report.schoolKit.pens}
+                                isMoney={false}
+                            />
+                        )}
+                    </SectionCard>
+                )}
 
             {report.otherActivities && (
                 <SectionCard icon={LuSparkles} title="Other activities">

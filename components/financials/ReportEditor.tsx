@@ -25,6 +25,7 @@ import {
     foundersFundOf,
     type FinancialReport,
     type FinancialReportInput,
+    type SchoolKitStatement,
 } from "@/lib/financials";
 
 type Draft = Record<string, string>;
@@ -55,6 +56,10 @@ const EMPTY: Draft = {
     impChildren: "",
     impPlacements: "",
     impEvents: "",
+    impKitLearners: "",
+    impKitBooks: "",
+    impKitPencils: "",
+    impKitPens: "",
 };
 
 function toNum(value: string): number {
@@ -89,6 +94,10 @@ function draftFromReport(r: FinancialReport): Draft {
         impChildren: String(r.impact.children ?? 0),
         impPlacements: String(r.impact.placements ?? 0),
         impEvents: String(r.impact.events ?? 0),
+        impKitLearners: String(r.schoolKit?.learners ?? 0),
+        impKitBooks: String(r.schoolKit?.books ?? 0),
+        impKitPencils: String(r.schoolKit?.pencils ?? 0),
+        impKitPens: String(r.schoolKit?.pens ?? 0),
     };
 }
 
@@ -118,6 +127,12 @@ const IMPACT_FIELDS = [
     { key: "impChildren", label: "Children supported" },
     { key: "impPlacements", label: "Skills and employment placements" },
     { key: "impEvents", label: "Events hosted" },
+];
+
+const KIT_LABELS: { key: "book" | "pencil" | "pen"; label: string }[] = [
+    { key: "book", label: "Exercise books" },
+    { key: "pencil", label: "HB pencils" },
+    { key: "pen", label: "Ballpoint pens" },
 ];
 
 function NumField({
@@ -188,6 +203,7 @@ export default function ReportEditor({
         foundersFund: number;
         amountsUsed: number;
         balanceBroughtDown: number;
+        schoolKit: SchoolKitStatement | null;
     } | null>(null);
     const [fetching, setFetching] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -262,6 +278,12 @@ export default function ReportEditor({
         otherActivities: draft.otherActivities.trim(),
         notes: draft.notes.trim(),
         customFields: customFields.filter((f) => f.title.trim() !== "" || f.content.trim() !== ""),
+        schoolKit: {
+            learners: toNum(draft.impKitLearners),
+            books: toNum(draft.impKitBooks),
+            pencils: toNum(draft.impKitPencils),
+            pens: toNum(draft.impKitPens),
+        },
     });
 
     const save = async () => {
@@ -397,6 +419,65 @@ export default function ReportEditor({
                             </div>
                         ))}
                     </div>
+
+                    {prefill.schoolKit && (
+                        <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3">
+                            <p className="text-xs font-bold text-emerald-900">
+                                School Kit — {prefill.schoolKit.period}
+                            </p>
+                            <div className="mt-2 space-y-1.5">
+                                {KIT_LABELS.map(({ key, label }) => (
+                                    <div
+                                        key={key}
+                                        className="flex items-center justify-between gap-3 text-[11px] text-emerald-900/85"
+                                    >
+                                        <span>{label}</span>
+                                        <span>
+                                            {prefill.schoolKit!.opening[key]} →{" "}
+                                            <span className="font-bold">
+                                                {prefill.schoolKit!.closing[key]}
+                                            </span>
+                                            <span className="text-emerald-800/60">
+                                                {" "}
+                                                ({prefill.schoolKit!.received[key]} in ·{" "}
+                                                {prefill.schoolKit!.issued[key]} out)
+                                            </span>
+                                        </span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="mt-2 flex flex-wrap items-center gap-2">
+                                <span className="text-[11px] text-emerald-900">
+                                    Stationery spend R {prefill.schoolKit.spend.toLocaleString("en-US")}
+                                </span>
+                                <button
+                                    onClick={() =>
+                                        set(
+                                            "expMaterials",
+                                            String(
+                                                toNum(draft.expMaterials) + prefill.schoolKit!.spend,
+                                            ),
+                                        )
+                                    }
+                                    className="inline-flex items-center gap-1 rounded-lg border border-emerald-300 bg-white px-2 py-1 text-[11px] font-bold text-emerald-800 transition hover:bg-emerald-100"
+                                >
+                                    <LuDownload className="size-3" /> Add to Materials
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        const kit = prefill.schoolKit!.impact;
+                                        set("impKitLearners", String(kit.learners));
+                                        set("impKitBooks", String(kit.books));
+                                        set("impKitPencils", String(kit.pencils));
+                                        set("impKitPens", String(kit.pens));
+                                    }}
+                                    className="inline-flex items-center gap-1 rounded-lg border border-emerald-300 bg-white px-2 py-1 text-[11px] font-bold text-emerald-800 transition hover:bg-emerald-100"
+                                >
+                                    <LuDownload className="size-3" /> Import impact
+                                </button>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -455,6 +536,39 @@ export default function ReportEditor({
                             onChange={(v) => set(field.key, v)}
                         />
                     ))}
+                </div>
+            </Section>
+
+            <Section icon={LuFileText} title="School Kit (impact)">
+                <p className="mb-3 text-xs text-slate-gray">
+                    What the School Kit reached this month. Opening/closing stock and spend stay in
+                    the admin School Kit module.
+                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                    <NumField
+                        label="Learners with a kit"
+                        placeholder="0"
+                        value={draft.impKitLearners}
+                        onChange={(v) => set("impKitLearners", v)}
+                    />
+                    <NumField
+                        label="Exercise books issued"
+                        placeholder="0"
+                        value={draft.impKitBooks}
+                        onChange={(v) => set("impKitBooks", v)}
+                    />
+                    <NumField
+                        label="HB pencils issued"
+                        placeholder="0"
+                        value={draft.impKitPencils}
+                        onChange={(v) => set("impKitPencils", v)}
+                    />
+                    <NumField
+                        label="Ballpoint pens issued"
+                        placeholder="0"
+                        value={draft.impKitPens}
+                        onChange={(v) => set("impKitPens", v)}
+                    />
                 </div>
             </Section>
 

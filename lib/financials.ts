@@ -4,6 +4,28 @@
  * viewer and admin editor.
  */
 
+/** School Kit reach stored on a published report — impact only, no stock or spend. */
+export type SchoolKitImpact = {
+    learners: number;
+    books: number;
+    pencils: number;
+    pens: number;
+};
+
+export type KitItemKey = "book" | "pencil" | "pen";
+
+/** Admin-only monthly stock statement returned by the prefill endpoint. */
+export type SchoolKitStatement = {
+    period: string | null;
+    opening: Record<KitItemKey, number>;
+    received: Record<KitItemKey, number>;
+    issued: Record<KitItemKey, number>;
+    closing: Record<KitItemKey, number>;
+    spend: number;
+    learners: number;
+    impact: SchoolKitImpact;
+};
+
 export type FinancialReportInput = {
     period: string;
     preparedBy: string;
@@ -37,6 +59,7 @@ export type FinancialReportInput = {
     otherActivities: string;
     notes: string;
     customFields: { title: string; content: string }[];
+    schoolKit?: SchoolKitImpact;
 };
 
 /** One published financial report as shown in the "Financials" list. */
@@ -63,6 +86,7 @@ export type FinancialReport = {
     otherActivities: string;
     notes: string;
     customFields: { title: string; content: string }[];
+    schoolKit?: SchoolKitImpact;
 };
 
 /** Founders’ Fund amount, falling back to the retired `sponsorships` key. */
@@ -161,6 +185,7 @@ export const financialAdminApi = {
                 amountsUsed: number;
                 balanceBroughtDown: number;
                 period: string;
+                schoolKit: SchoolKitStatement | null;
             };
         }>(`/api/financial-report-data?period=${encodeURIComponent(period)}`),
 };
