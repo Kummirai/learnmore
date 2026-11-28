@@ -34,7 +34,11 @@ export default function NewsHighlights() {
       style={{ background: "linear-gradient(150deg, #fff8e3 0%, #ffffff 70%)" }}
     >
       <div className={"max-w-6xl mx-auto"}>
-        <div className={"mb-10 flex items-center justify-between gap-4"}>
+        <div
+          className={
+            "mx-auto mb-10 flex max-w-2xl flex-col items-center gap-4 text-center"
+          }
+        >
           <div>
             <p
               className={

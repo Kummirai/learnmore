@@ -47,7 +47,7 @@ export default function Contact() {
   return (
     <section className={"reveal bg-white px-6 py-24 md:px-4 md:py-36"}>
       <div className={"max-w-6xl mx-auto"}>
-        <div className={"mb-12 max-w-2xl md:mb-16"}>
+        <div className={"mx-auto mb-12 max-w-2xl text-center md:mb-16"}>
           <p
             className={
               "mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
@@ -157,7 +157,7 @@ export default function Contact() {
               <button
                 type="submit"
                 className={
-                  "btn-pill btn-brand cursor-pointer sm:w-auto"
+                  "btn-pill btn-brand mx-auto flex w-fit cursor-pointer sm:mx-0"
                 }
               >
                 Send via Email <LuArrowRight />

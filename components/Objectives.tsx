@@ -25,7 +25,7 @@ export default function Objectives() {
           "mx-auto grid max-w-5xl gap-10 md:grid-cols-[0.85fr_1.15fr] md:gap-16"
         }
       >
-        <div>
+        <div className={"text-center md:text-left"}>
           <p
             className={
               "text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"
@@ -42,7 +42,7 @@ export default function Objectives() {
           </h2>
           <p
             className={
-              "mt-4 max-w-sm text-sm leading-relaxed text-navy/65 md:text-base"
+              "mx-auto mt-4 max-w-sm text-sm leading-relaxed text-navy/65 md:mx-0 md:text-base"
             }
           >
             Four commitments guide how we identify need and how we respond to

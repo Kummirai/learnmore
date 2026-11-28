@@ -136,10 +136,10 @@ export default function EducationGlance() {
             "mt-10 flex flex-col items-center justify-between gap-5 md:flex-row"
           }
         >
-          <p className={"text-sm text-slate-gray"}>
+          <p className={"text-center text-sm text-slate-gray"}>
             Covers all clubs · Club season March – November · 4 programmes
           </p>
-          <div className={"flex items-center gap-4"}>
+          <div className={"flex flex-wrap items-center justify-center gap-4"}>
             <Link href={"/join"} className={"link-chevron"}>
               Join a club
             </Link>

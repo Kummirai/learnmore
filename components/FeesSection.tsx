@@ -21,7 +21,7 @@ export default function FeesSection() {
             style={{ background: "linear-gradient(150deg, #e7fbff 0%, #ffffff 70%)" }}
         >
             <div className={"max-w-6xl mx-auto"}>
-                <div className={"mb-12 max-w-2xl md:mb-16"}>
+                <div className={"mx-auto mb-12 max-w-2xl text-center md:mb-16"}>
                     <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>
                         Relate Store
                     </p>

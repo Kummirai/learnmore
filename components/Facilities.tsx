@@ -149,7 +149,7 @@ export default function Facilities() {
 
         <figure
           className={
-            "reveal mx-auto mt-16 max-w-4xl rounded-3xl px-8 py-12 text-center"
+            "reveal mx-auto mt-16 max-w-4xl rounded-3xl px-6 py-10 text-center sm:px-8 sm:py-12"
           }
           style={{
             background: "linear-gradient(150deg, #e7fbff 0%, #ffffff 70%)",
