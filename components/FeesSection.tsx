@@ -16,7 +16,10 @@ export default function FeesSection() {
         .map((item, i) => ({item, featured: i === 1}))
 
     return (
-        <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-32"}>
+        <section
+            className={"reveal px-6 py-24 md:px-4 md:py-32"}
+            style={{ background: "linear-gradient(150deg, #e7fbff 0%, #ffffff 70%)" }}
+        >
             <div className={"max-w-6xl mx-auto"}>
                 <div className={"mb-12 max-w-2xl md:mb-16"}>
                     <p className={"mb-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan"}>

@@ -83,7 +83,15 @@ export default function Testimonials() {
           }
         >
           {rest.map((t) => (
-            <div key={t.name} className={"stagger-item rounded-3xl bg-tile p-7"}>
+            <div
+              key={t.name}
+              className={
+                "stagger-item rounded-3xl border border-slate-200/70 p-7 shadow-sm"
+              }
+              style={{
+                background: "linear-gradient(150deg, #eaf4ff 0%, #ffffff 70%)",
+              }}
+            >
               <div className={"mb-4 flex gap-1 text-gold-500"}>
                 {[...Array(5)].map((_, j) => (
                   <IoStarSharp key={j} />

@@ -140,9 +140,12 @@ export default function ClubBento() {
           <Link
             href={"/enroll"}
             className={
-              "reveal flex min-h-[190px] flex-col justify-between rounded-3xl border border-black/5 bg-tile p-6 transition-colors hover:border-cyan/50"
+              "reveal flex min-h-[190px] flex-col justify-between rounded-3xl border border-black/5 p-6 transition-colors hover:border-cyan/50"
             }
-            style={{ transitionDelay: "420ms" }}
+            style={{
+              transitionDelay: "420ms",
+              background: "linear-gradient(150deg, #e7fbff 0%, #ffffff 70%)",
+            }}
           >
             <p className={"text-[11px] uppercase tracking-[0.18em] text-cyan"}>
               Not sure?

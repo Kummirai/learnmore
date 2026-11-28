@@ -1,6 +1,9 @@
 export default function Principles() {
   return (
-    <section className={"reveal bg-tile px-6 py-20 md:px-4 md:py-24"}>
+    <section
+      className={"reveal px-6 py-20 md:px-4 md:py-24"}
+      style={{ background: "linear-gradient(150deg, #eaf4ff 0%, #ffffff 70%)" }}
+    >
       <div className={"mx-auto max-w-4xl text-center"}>
         <p
           className={

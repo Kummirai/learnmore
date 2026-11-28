@@ -1,6 +1,9 @@
 export default function Vision() {
   return (
-    <section className={"reveal bg-stage px-6 py-24 md:px-4 md:py-32"}>
+    <section
+      className={"reveal px-6 py-24 md:px-4 md:py-32"}
+      style={{ background: "linear-gradient(150deg, #fff8e3 0%, #ffffff 70%)" }}
+    >
       <div className={"mx-auto max-w-4xl text-center"}>
         <p
           className={

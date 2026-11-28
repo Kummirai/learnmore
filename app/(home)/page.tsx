@@ -4,9 +4,9 @@ import ClubBento from "@/components/ClubBento";
 import Vision from "@/components/Vision";
 import Objectives from "@/components/Objectives";
 import Principles from "@/components/Principles";
-import Stats from "@/components/Stats";
+import CareConnectBanner from "@/components/CareConnectBanner";
 import EventsSports from "@/components/EventsSports";
-import PhotoHighlights from "@/components/PhotoHighlights";
+import EducationGlance from "@/components/EducationGlance";
 import NewsHighlights from "@/components/NewsHighlights";
 import Facilities from "@/components/Facilities";
 import FeesSection from "@/components/FeesSection";
@@ -27,9 +27,9 @@ export default function Home() {
       <Objectives />
       <Principles />
       <ClubBento />
-      <Stats />
+      <CareConnectBanner />
       <EventsSports />
-      <PhotoHighlights />
+      <EducationGlance />
       <NewsHighlights />
       <Facilities />
       <FeesSection />

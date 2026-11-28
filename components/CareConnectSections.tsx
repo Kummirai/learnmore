@@ -329,7 +329,8 @@ export default function CareConnectSections() {
 
       <section
         id="standard"
-        className="bg-white px-4 pt-16 pb-6 md:pt-24 md:pb-10"
+        className="px-4 pt-16 pb-6 md:pt-24 md:pb-10"
+        style={{ background: "linear-gradient(150deg, #fff8e3 0%, #ffffff 70%)" }}
       >
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">

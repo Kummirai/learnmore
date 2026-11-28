@@ -154,22 +154,6 @@ export default function EventsSports() {
               "Games, meetups and community days — everyone's welcome."
             )}
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {["Free to attend", "Everyone welcome", "New events every week"].map(
-              (chip) => (
-                <span
-                  key={chip}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-cyan/40 bg-cyan/10 px-3 py-1.5 text-xs font-semibold text-navy"
-                >
-                  <span
-                    className="size-1.5 rounded-full bg-cyan"
-                    aria-hidden={true}
-                  />
-                  {chip}
-                </span>
-              ),
-            )}
-          </div>
           <div className="mt-6">
             <Link href="/events" className="link-chevron">
               View all events
@@ -336,7 +320,10 @@ export default function EventsSports() {
         )}
 
         {/* Sports — a centered product band */}
-        <div className="reveal mt-5 rounded-3xl bg-tile px-6 py-10 text-center md:px-10 md:py-12">
+        <div
+          className="reveal mt-5 rounded-3xl px-6 py-10 text-center md:px-10 md:py-12"
+          style={{ background: "linear-gradient(150deg, #fff8e3 0%, #ffffff 70%)" }}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-cyan">
             Sports Teams
           </p>
