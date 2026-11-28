@@ -8,6 +8,8 @@ import { LuArrowUpRight, LuChevronDown } from "react-icons/lu";
 type IosPwaInstallCtaProps = {
   tone?: "light" | "dark";
   align?: "left" | "center";
+  label?: string;
+  emphasis?: "default" | "primary";
 };
 
 const subscribe = () => () => {};
@@ -28,17 +30,24 @@ const getIosBrowserSnapshot = () => {
 
 const getServerSnapshot = () => false;
 
-export default function IosPwaInstallCta({
-  tone = "light",
-  align = "left",
-}: IosPwaInstallCtaProps) {
-  const [open, setOpen] = useState(false);
-  const panelId = useId();
-  const visible = useSyncExternalStore(
+/** True only on iOS Safari when the app is not already on the home screen. */
+export function useIosPwaInstallable() {
+  return useSyncExternalStore(
     subscribe,
     getIosBrowserSnapshot,
     getServerSnapshot,
   );
+}
+
+export default function IosPwaInstallCta({
+  tone = "light",
+  align = "left",
+  label = "Add to Home Screen",
+  emphasis = "default",
+}: IosPwaInstallCtaProps) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const visible = useIosPwaInstallable();
 
   if (!visible) return null;
 
@@ -68,12 +77,16 @@ export default function IosPwaInstallCta({
         onClick={() => setOpen((value) => !value)}
         className={
           dark
-            ? "btn-pill border border-white/35 bg-white/10 text-sm text-white backdrop-blur hover:bg-white/20"
-            : "btn-pill border border-cyan/25 bg-cyan/5 text-sm text-cyan-ink hover:bg-cyan/10"
+            ? emphasis === "primary"
+              ? "btn-pill bg-white text-sm font-semibold text-navy hover:bg-white/90"
+              : "btn-pill border border-white/35 bg-white/10 text-sm text-white backdrop-blur hover:bg-white/20"
+            : emphasis === "primary"
+              ? "btn-pill bg-navy text-sm font-semibold text-white hover:bg-navy/90"
+              : "btn-pill border border-cyan/25 bg-cyan/5 text-sm text-cyan-ink hover:bg-cyan/10"
         }
       >
         <FaApple className="text-base" />
-        Add to Home Screen
+        {label}
         <LuChevronDown
           aria-hidden
           className={`size-4 transition-transform ${open ? "rotate-180" : ""}`}
@@ -93,7 +106,7 @@ export default function IosPwaInstallCta({
         <ol className={`mt-3 space-y-2 ${textClasses}`}>
           <li className="flex gap-2">
             <span className={stepClasses}>1</span>
-            <span>Open the PWA in Safari.</span>
+            <span>Make sure you&apos;re in Safari (not an in-app browser).</span>
           </li>
           <li className="flex gap-2">
             <span className={stepClasses}>2</span>

@@ -6,6 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { FaAndroid } from "react-icons/fa";
 import { LuChevronLeft, LuChevronRight, LuPause, LuPlay } from "react-icons/lu";
 import Navbar from "@/components/Navbar";
+import IosPwaInstallCta, {
+  useIosPwaInstallable,
+} from "@/components/IosPwaInstallCta";
 import type { RelateClub } from "@/constants/relate";
 import { useClubs } from "@/lib/useClubs";
 import { LATEST_APK_URL } from "@/lib/app-version";
@@ -42,7 +45,7 @@ const firstWord = (s: string) =>
     .slice(0, 1)
     .join(" ");
 
-function brandSlide(): Slide {
+function brandSlide(iosInstallable: boolean): Slide {
   return {
     key: "brand",
     chips: [],
@@ -59,7 +62,16 @@ function brandSlide(): Slide {
     },
     actions: (
       <>
-        <a href={LATEST_APK_URL} download className={btnPrimary}>
+        <IosPwaInstallCta
+          tone="dark"
+          emphasis="primary"
+          label="Install PWA"
+        />
+        <a
+          href={LATEST_APK_URL}
+          download
+          className={iosInstallable ? btnGhost : btnPrimary}
+        >
           <FaAndroid /> Download The App
         </a>
         <JoinCta href={"/join"} className={btnGhost}>
@@ -133,8 +145,9 @@ const AUTOPLAY_MS = 6000;
 
 export default function Hero() {
   const { clubs } = useClubs();
+  const iosInstallable = useIosPwaInstallable();
   const slides: Slide[] = [
-    brandSlide(),
+    brandSlide(iosInstallable),
     charitySlide(),
     ...clubs.map(clubSlide),
   ];
